@@ -634,7 +634,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     category: 'daisyUI',
     description: 'daisyUI steps themed preview',
     render: () => (
-      <ul className="steps">
+      <ul className="steps tinyrack-demo-steps">
         <li className="step step-primary">Tokens</li>
         <li className="step step-primary">Adapters</li>
         <li className="step">Apps</li>

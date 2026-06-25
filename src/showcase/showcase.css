@@ -129,6 +129,11 @@
   padding: 0.75rem;
 }
 
+.tinyrack-variant-cell > div:not(.tinyrack-variant-frame) {
+  min-width: 0;
+  width: 100%;
+}
+
 .tinyrack-variant-cell > span {
   color: var(--color-primary, #72a7ff);
   font-size: 0.72rem;
@@ -213,4 +218,23 @@
 
 .tinyrack-demo-drawer .drawer-overlay {
   display: none;
+}
+
+.tinyrack-demo-stepper {
+  max-width: 48rem;
+  width: min(100%, 48rem);
+}
+
+.tinyrack-demo-stepper :where(.mantine-Stepper-steps) {
+  width: 100%;
+}
+
+.tinyrack-demo-stepper-vertical {
+  width: min(100%, 22rem);
+}
+
+.tinyrack-demo-wide-control,
+.tinyrack-demo-tabs,
+.tinyrack-demo-steps {
+  width: min(100%, 40rem);
 }

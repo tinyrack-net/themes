@@ -18,6 +18,7 @@ function ShowcaseCard({
     <article
       className="tinyrack-showcase-card"
       data-showcase-component={entry.name}
+      data-showcase-entry-id={entry.id}
       data-showcase-library={library}
       data-showcase-scenario={scenario.id}
     >

@@ -229,6 +229,41 @@ function MantineProgressVariants() {
   );
 }
 
+function MantineStepperVariants() {
+  return (
+    <VariantMatrix
+      description="Stepper width, vertical rhythm, and compact label behavior on the Tinyrack dark surface."
+      title="Mantine Stepper variants"
+    >
+      <VariantCell label="horizontal">
+        <Mantine.Stepper active={1} className="tinyrack-demo-stepper">
+          <Mantine.Stepper.Step label="Profile" description="Create account" />
+          <Mantine.Stepper.Step label="Workspace" description="Configure rack" />
+          <Mantine.Stepper.Step label="Deploy" description="Launch service" />
+        </Mantine.Stepper>
+      </VariantCell>
+      <VariantCell label="vertical">
+        <Mantine.Stepper
+          active={1}
+          className="tinyrack-demo-stepper-vertical"
+          orientation="vertical"
+        >
+          <Mantine.Stepper.Step label="Profile" description="Create account" />
+          <Mantine.Stepper.Step label="Workspace" description="Configure rack" />
+          <Mantine.Stepper.Step label="Deploy" description="Launch service" />
+        </Mantine.Stepper>
+      </VariantCell>
+      <VariantCell label="compact labels">
+        <Mantine.Stepper active={2} size="sm" className="tinyrack-demo-stepper">
+          <Mantine.Stepper.Step label="Auth" />
+          <Mantine.Stepper.Step label="Theme" />
+          <Mantine.Stepper.Step label="Ship" />
+        </Mantine.Stepper>
+      </VariantCell>
+    </VariantMatrix>
+  );
+}
+
 function DaisyButtonVariants() {
   return (
     <VariantMatrix
@@ -438,6 +473,8 @@ function renderMantineVariants(entry: ShowcaseEntry): ReactElement | undefined {
     case 'mantine-ringprogress':
     case 'mantine-semicircleprogress':
       return <MantineProgressVariants />;
+    case 'mantine-stepper':
+      return <MantineStepperVariants />;
     default:
       return undefined;
   }

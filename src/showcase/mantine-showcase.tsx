@@ -734,7 +734,12 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'RangeSlider',
     category: 'Mantine Core',
     description: '@mantine/core RangeSlider themed preview',
-    render: () => <Mantine.RangeSlider defaultValue={[20, 80]} />,
+    render: () => (
+      <Mantine.RangeSlider
+        className="tinyrack-demo-wide-control"
+        defaultValue={[20, 80]}
+      />
+    ),
   },
   {
     id: 'mantine-rating',
@@ -824,7 +829,9 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Slider',
     category: 'Mantine Core',
     description: '@mantine/core Slider themed preview',
-    render: () => <Mantine.Slider defaultValue={60} />,
+    render: () => (
+      <Mantine.Slider className="tinyrack-demo-wide-control" defaultValue={60} />
+    ),
   },
   {
     id: 'mantine-space',
@@ -868,9 +875,10 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     category: 'Mantine Core',
     description: '@mantine/core Stepper themed preview',
     render: () => (
-      <Mantine.Stepper active={1}>
-        <Mantine.Stepper.Step label="First" />
-        <Mantine.Stepper.Step label="Second" />
+      <Mantine.Stepper active={1} className="tinyrack-demo-stepper">
+        <Mantine.Stepper.Step label="Profile" description="Create account" />
+        <Mantine.Stepper.Step label="Workspace" description="Configure rack" />
+        <Mantine.Stepper.Step label="Deploy" description="Launch service" />
       </Mantine.Stepper>
     ),
   },
@@ -907,7 +915,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     category: 'Mantine Core',
     description: '@mantine/core Tabs themed preview',
     render: () => (
-      <Mantine.Tabs defaultValue="one">
+      <Mantine.Tabs className="tinyrack-demo-tabs" defaultValue="one">
         <Mantine.Tabs.List>
           <Mantine.Tabs.Tab value="one">One</Mantine.Tabs.Tab>
           <Mantine.Tabs.Tab value="two">Two</Mantine.Tabs.Tab>

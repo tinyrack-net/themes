@@ -152,3 +152,60 @@ test('keeps variant cells readable without internal clipping', async () => {
 
   expect(clippedCells).toHaveLength(0);
 });
+
+test('renders layout-sensitive components at useful story widths', async () => {
+  document.documentElement.dataset.theme = 'tinyrack-dark';
+  const entries = [
+    {
+      id: 'mantine-stepper',
+      library: 'mantine' as const,
+      selector: '.mantine-Stepper-root',
+    },
+    {
+      id: 'mantine-slider',
+      library: 'mantine' as const,
+      selector: '.mantine-Slider-root',
+    },
+    {
+      id: 'mantine-rangeslider',
+      library: 'mantine' as const,
+      selector: '.mantine-RangeSlider-root',
+    },
+    { id: 'mantine-tabs', library: 'mantine' as const, selector: '.mantine-Tabs-root' },
+    { id: 'daisyui-steps', library: 'daisyui' as const, selector: '.steps' },
+  ].map((spec) => ({
+    ...spec,
+    entry:
+      spec.library === 'mantine'
+        ? mantineShowcaseEntries.find((entry) => entry.id === spec.id)
+        : daisyUiShowcaseEntries.find((entry) => entry.id === spec.id),
+  }));
+
+  const resolvedEntries = entries.map((spec) => {
+    if (!spec.entry) {
+      throw new Error(`Expected ${spec.id} showcase entry to exist`);
+    }
+
+    return { ...spec, entry: spec.entry };
+  });
+
+  await render(
+    <TinyrackMantineProvider>
+      {resolvedEntries.map((spec) => (
+        <SingleShowcaseStory key={spec.id} entry={spec.entry} library={spec.library} />
+      ))}
+    </TinyrackMantineProvider>,
+  );
+
+  for (const spec of resolvedEntries) {
+    const card = document.querySelector(`[data-showcase-entry-id="${spec.id}"]`);
+    const preview = card?.querySelector('.tinyrack-showcase-card__preview');
+    const component = preview?.querySelector(spec.selector);
+    const previewRect = preview?.getBoundingClientRect();
+    const componentRect = component?.getBoundingClientRect();
+
+    expect(previewRect?.width).toBeGreaterThan(300);
+    expect(componentRect?.width).toBeGreaterThan(280);
+    expect(componentRect?.width).toBeGreaterThan((previewRect?.width ?? 0) * 0.8);
+  }
+});

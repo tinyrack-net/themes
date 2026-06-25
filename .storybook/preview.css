@@ -15,3 +15,17 @@ body {
 .sb-show-main {
   padding: 1rem;
 }
+
+html,
+body,
+#storybook-root {
+  min-height: 100%;
+}
+
+body.sb-show-main {
+  overflow: auto;
+}
+
+#storybook-root {
+  overflow: visible;
+}

@@ -28,6 +28,20 @@ function ShowcaseCard({
   );
 }
 
+export function SingleShowcaseStory({
+  entry,
+  library,
+}: {
+  entry: ShowcaseEntry;
+  library: ShowcaseLibrary;
+}) {
+  return (
+    <section className="tinyrack-showcase-single">
+      <ShowcaseCard entry={entry} library={library} />
+    </section>
+  );
+}
+
 export function ShowcaseGallery({
   entries,
   library,

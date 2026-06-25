@@ -84,6 +84,20 @@ If your Starlight/Astro version does not resolve package subpath CSS inside `cus
 @import "@tinyrack/themes/astro/starlight.css";
 ```
 
+
+## Storybook component galleries
+
+Storybook includes full-theme review galleries for both UI systems:
+
+- `Mantine/All Components`: renders every Mantine Core component selected for Tinyrack theme review.
+- `daisyUI/All Components`: renders every component directory shipped by daisyUI 5.5.
+
+The same registries are covered by browser-mode Vitest so missing or broken previews fail CI:
+
+```bash
+pnpm test:showcase
+```
+
 ## Development
 
 ```bash

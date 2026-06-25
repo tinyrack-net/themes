@@ -73,3 +73,82 @@ test('renders scenario variant matrices for individual component stories', async
     2,
   );
 });
+
+test('keeps simple preview components readable instead of stretched or viewport-tall', async () => {
+  document.documentElement.dataset.theme = 'tinyrack-dark';
+  const daisyButton = daisyUiShowcaseEntries.find(
+    (entry) => entry.id === 'daisyui-button',
+  );
+  const daisyDrawer = daisyUiShowcaseEntries.find(
+    (entry) => entry.id === 'daisyui-drawer',
+  );
+  const mantineAppShell = mantineShowcaseEntries.find(
+    (entry) => entry.id === 'mantine-appshell',
+  );
+
+  if (!daisyButton || !daisyDrawer || !mantineAppShell) {
+    throw new Error('Expected showcase entries to exist');
+  }
+
+  const screen = await render(
+    <TinyrackMantineProvider>
+      <SingleShowcaseStory entry={daisyButton} library="daisyui" />
+      <SingleShowcaseStory entry={daisyDrawer} library="daisyui" />
+      <SingleShowcaseStory entry={mantineAppShell} library="mantine" />
+    </TinyrackMantineProvider>,
+  );
+
+  await expect.element(screen.getByRole('button', { name: 'Button' })).toBeVisible();
+  const firstPreview = document.querySelector('.tinyrack-showcase-card__preview');
+  const button = firstPreview?.querySelector('.btn');
+  const previewRect = firstPreview?.getBoundingClientRect();
+  const buttonRect = button?.getBoundingClientRect();
+
+  expect(previewRect?.width).toBeGreaterThan(300);
+  expect(buttonRect?.width).toBeLessThan((previewRect?.width ?? 0) * 0.5);
+
+  const tallPreviews = [
+    ...document.querySelectorAll('.tinyrack-showcase-card__preview'),
+  ]
+    .map((preview) => preview.getBoundingClientRect().height)
+    .filter((height) => height > 420);
+
+  expect(tallPreviews).toHaveLength(0);
+});
+
+test('keeps variant cells readable without internal clipping', async () => {
+  document.documentElement.dataset.theme = 'tinyrack-dark';
+  const daisyDropdown = daisyUiShowcaseEntries.find(
+    (entry) => entry.id === 'daisyui-dropdown',
+  );
+  const mantineIndicator = mantineShowcaseEntries.find(
+    (entry) => entry.id === 'mantine-indicator',
+  );
+
+  if (!daisyDropdown || !mantineIndicator) {
+    throw new Error('Expected showcase entries to exist');
+  }
+
+  await render(
+    <TinyrackMantineProvider>
+      <SingleShowcaseStory
+        entry={daisyDropdown}
+        library="daisyui"
+        scenarioId="variants"
+      />
+      <SingleShowcaseStory
+        entry={mantineIndicator}
+        library="mantine"
+        scenarioId="variants"
+      />
+    </TinyrackMantineProvider>,
+  );
+
+  const clippedCells = [...document.querySelectorAll('.tinyrack-variant-cell')].filter(
+    (cell) =>
+      cell.scrollWidth > cell.clientWidth + 8 ||
+      cell.scrollHeight > cell.clientHeight + 8,
+  );
+
+  expect(clippedCells).toHaveLength(0);
+});

@@ -63,15 +63,18 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     category: 'Mantine Core',
     description: '@mantine/core AppShell themed preview',
     render: () => (
-      <Mantine.AppShell
-        header={{ height: 36 }}
-        navbar={{ width: 100, breakpoint: 'sm' }}
-        padding="xs"
-      >
-        <Mantine.AppShell.Header px="sm">Header</Mantine.AppShell.Header>
-        <Mantine.AppShell.Navbar p="xs">Nav</Mantine.AppShell.Navbar>
-        <Mantine.AppShell.Main>Main</Mantine.AppShell.Main>
-      </Mantine.AppShell>
+      <Mantine.Box className="tinyrack-demo-appshell">
+        <Mantine.AppShell
+          header={{ height: 40 }}
+          mode="static"
+          navbar={{ width: 128, breakpoint: 'sm' }}
+          padding="sm"
+        >
+          <Mantine.AppShell.Header px="sm">Header</Mantine.AppShell.Header>
+          <Mantine.AppShell.Navbar p="sm">Nav</Mantine.AppShell.Navbar>
+          <Mantine.AppShell.Main>Main content</Mantine.AppShell.Main>
+        </Mantine.AppShell>
+      </Mantine.Box>
     ),
   },
   {

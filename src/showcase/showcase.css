@@ -68,9 +68,14 @@
   background: var(--color-base-200, #f8fafc);
   border-radius: 0.75rem;
   display: grid;
+  justify-items: center;
   min-height: 8rem;
   overflow: auto;
   padding: 1.25rem;
+}
+
+.tinyrack-showcase-card__preview:has(.tinyrack-variant-matrix) {
+  justify-items: stretch;
 }
 
 .tinyrack-showcase-card__description {
@@ -119,7 +124,8 @@
   display: grid;
   gap: 0.65rem;
   min-width: 0;
-  overflow: auto;
+  min-height: 8rem;
+  overflow: visible;
   padding: 0.75rem;
 }
 
@@ -156,4 +162,55 @@
   .tinyrack-variant-matrix__grid {
     grid-template-columns: 1fr;
   }
+}
+
+.tinyrack-demo-drawer {
+  border: 1px solid var(--color-base-300, #272b35);
+  border-radius: 0.75rem;
+  height: 14rem;
+  max-width: 34rem;
+  min-height: 14rem;
+  overflow: hidden;
+  position: relative;
+  width: min(100%, 34rem);
+}
+
+.tinyrack-demo-drawer .drawer-content {
+  align-items: center;
+  display: flex;
+  margin-left: 9rem;
+  min-height: 100%;
+}
+
+.tinyrack-demo-drawer .drawer-side {
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 9rem;
+}
+
+.tinyrack-demo-drawer .drawer-side > *:not(.drawer-overlay) {
+  min-height: 100%;
+  width: 9rem;
+}
+
+.tinyrack-demo-appshell {
+  border: 1px solid var(--color-base-300, #272b35);
+  border-radius: 0.75rem;
+  height: 14rem;
+  max-width: 34rem;
+  overflow: hidden;
+  position: relative;
+  width: min(100%, 34rem);
+}
+
+.tinyrack-showcase-card__preview .dropdown.dropdown-open .dropdown-content {
+  margin-top: 0.5rem;
+  position: static;
+}
+
+.tinyrack-demo-drawer .drawer-overlay {
+  display: none;
 }

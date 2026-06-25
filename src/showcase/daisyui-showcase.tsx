@@ -201,17 +201,17 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     category: 'daisyUI',
     description: 'daisyUI drawer themed preview',
     render: () => (
-      <div className="drawer drawer-open">
+      <div className="drawer drawer-open tinyrack-demo-drawer">
         <input
           aria-label="drawer"
           type="checkbox"
           className="drawer-toggle"
           defaultChecked
         />
-        <div className="drawer-content p-2">Drawer content</div>
+        <div className="drawer-content p-4">Drawer content</div>
         <div className="drawer-side relative">
           <div aria-hidden="true" className="drawer-overlay" />
-          <ul className="menu bg-base-200 min-h-full w-32 p-2">
+          <ul className="menu bg-base-200 min-h-full w-36 p-2">
             <li>
               <a href="#daisyui-drawer-item">Item</a>
             </li>

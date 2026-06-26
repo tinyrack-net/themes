@@ -122,7 +122,7 @@ If your Starlight/Astro version does not resolve package subpath CSS inside `cus
 
 ## Storybook component galleries
 
-Storybook includes full-theme review galleries for both UI systems:
+Storybook includes full-theme review galleries for both UI systems. Cloudflare deployment setup is documented in [docs/storybook-deployment.md](docs/storybook-deployment.md):
 
 - `Mantine/Components/*`: one Storybook story per Mantine Core component selected for Tinyrack theme review.
 - `daisyUI/Components/*`: one Storybook story per component directory shipped by daisyUI 5.5.

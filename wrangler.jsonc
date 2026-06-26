@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tinyrack-themes-storybook",
+  "compatibility_date": "2026-06-26",
+  "assets": {
+    "directory": "./storybook-static",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

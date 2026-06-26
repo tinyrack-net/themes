@@ -12,6 +12,8 @@ pnpm add @tinyrack/themes
 
 Install the peer libraries needed by the surface you are using.
 
+For environment-specific setup recipes, see [docs/setup-guide.md](docs/setup-guide.md). It covers Tailwind-only, Tailwind+daisyUI, Mantine-only, Tailwind+Mantine, Tailwind+daisyUI+Mantine, and Astro Starlight integration.
+
 ## Shared tokens
 
 ```ts

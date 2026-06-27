@@ -99,5 +99,8 @@
     },
     "./astro/starlight.css": "./dist/astro/starlight/theme.css",
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

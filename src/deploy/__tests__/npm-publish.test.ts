@@ -31,6 +31,7 @@ describe('npm package publishing', () => {
     expect(workflow).toContain('id-token: write');
     expect(workflow).toContain('registry-url: https://registry.npmjs.org');
     expect(workflow).toContain('pnpm install --frozen-lockfile');
+    expect(workflow).toContain('pnpm exec playwright install --with-deps chromium');
     expect(workflow).toContain('pnpm run test');
     expect(workflow).toContain('pnpm run biome');
     expect(workflow).toContain('pnpm run build');

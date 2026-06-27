@@ -48,12 +48,13 @@ Before publishing, CI does the following:
 2. Install pnpm `11.3.0` and Node.js `24`.
 3. Configure npm registry access with `registry-url: https://registry.npmjs.org`.
 4. Install dependencies with `pnpm install --frozen-lockfile`.
-5. Verify the pushed tag matches `package.json` version.
-6. Run `pnpm run test`.
-7. Run `pnpm run biome`.
-8. Run `pnpm run build`.
-9. Verify package contents with `pnpm pack --dry-run`.
-10. Publish with `pnpm publish --provenance --access public --no-git-checks`.
+5. Install browser test runtime with `pnpm exec playwright install --with-deps chromium`.
+6. Verify the pushed tag matches `package.json` version.
+7. Run `pnpm run test`.
+8. Run `pnpm run biome`.
+9. Run `pnpm run build`.
+10. Verify package contents with `pnpm pack --dry-run`.
+11. Publish with `pnpm publish --provenance --access public --no-git-checks`.
 
 ## Local validation
 

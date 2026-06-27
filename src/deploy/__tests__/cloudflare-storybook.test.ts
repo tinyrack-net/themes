@@ -38,6 +38,7 @@ describe('Cloudflare Storybook deployment', () => {
     expect(workflow).toContain('- main');
     expect(workflow).toContain('node-version: 24');
     expect(workflow).toContain('pnpm install --frozen-lockfile');
+    expect(workflow).toContain('pnpm exec playwright install --with-deps chromium');
     expect(workflow).toContain('pnpm run biome');
     expect(workflow).toContain('pnpm run storybook:build');
     expect(workflow).toContain('pnpm run deploy:storybook:dry-run');

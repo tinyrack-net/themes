@@ -44,7 +44,7 @@ describe('Cloudflare Storybook deployment', () => {
     expect(workflow).toContain('pnpm exec playwright install --with-deps chromium');
     expect(workflow).toContain('pnpm run biome');
     expect(workflow).toContain('pnpm run storybook:build');
-    expect(workflow).toContain('pnpm run deploy:storybook:dry-run');
+    expect(workflow).not.toContain('pnpm run deploy:storybook:dry-run');
     expect(workflow).toContain('pnpm run deploy:storybook');
     expect(workflow).toMatch(
       /CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/,

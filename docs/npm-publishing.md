@@ -5,7 +5,7 @@
 This follows the release workflow shape used by sibling Tinyrack packages:
 
 - `tinyrack/tinyauth`: publishes from `refs/tags/v*` with npm registry setup.
-- `tinyrack/dotweave` and `tinyrack/proxer`: verify package contents with `pack --dry-run` and publish with npm provenance.
+- `tinyrack/dotweave` and `tinyrack/proxer`: publish with npm provenance from release tags.
 
 ## Workflow
 
@@ -53,8 +53,7 @@ Before publishing, CI does the following:
 7. Run `pnpm run test`.
 8. Run `pnpm run biome`.
 9. Run `pnpm run build`.
-10. Verify package contents with `pnpm pack --dry-run`.
-11. Publish with `pnpm publish --provenance --access public --no-git-checks`.
+10. Publish with `pnpm publish --provenance --access public --no-git-checks`.
 
 ## Local validation
 

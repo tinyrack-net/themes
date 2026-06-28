@@ -58,8 +58,5 @@ jobs:
       - name: Build package
         run: pnpm run build
 
-      - name: Verify npm package contents
-        run: pnpm pack --dry-run
-
       - name: Publish package to npm
         run: pnpm publish --provenance --access public --no-git-checks

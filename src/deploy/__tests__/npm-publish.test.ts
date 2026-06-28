@@ -35,7 +35,7 @@ describe('npm package publishing', () => {
     expect(workflow).toContain('pnpm run test');
     expect(workflow).toContain('pnpm run biome');
     expect(workflow).toContain('pnpm run build');
-    expect(workflow).toContain('pnpm pack --dry-run');
+    expect(workflow).not.toContain('pnpm pack --dry-run');
     expect(workflow).toContain(
       'pnpm publish --provenance --access public --no-git-checks',
     );

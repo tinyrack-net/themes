@@ -54,8 +54,7 @@ The workflow does the following:
 6. Run `pnpm run biome`.
 7. Run `pnpm run build`.
 8. Run `pnpm run storybook:build`.
-9. Validate Wrangler packaging with `pnpm run deploy:storybook:dry-run`.
-10. Deploy `storybook-static` with `pnpm run deploy:storybook`.
+9. Deploy `storybook-static` with `pnpm run deploy:storybook`.
 
 ## Local validation
 

@@ -1,30 +1,31 @@
 # Storybook component pages
 
-Storybook is the visual review surface for the Tinyrack theme adapters. Component pages are split by scenario so reviewers can inspect one design question at a time instead of scanning one large mixed preview.
+Storybook is the visual review surface for the Tinyrack theme adapters. Component pages follow a Spectrum-style model: docs first, then a small set of meaningful stories that describe real component axes.
 
-This model keeps generated coverage broad while making each page useful for a specific review pass: default usage, visual variants, interaction states, production composition, token mapping, accessibility notes, and quick exploration.
+The goal is a browsable catalog, not exhaustive per-component documentation. Each component gets concise docs and a clean default canvas, with additional stories only when they answer a useful design or implementation question.
 
 ## Generated stories
 
 Generated component stories live under `stories/{mantine,daisyui}/components/`.
 
-Do not hand-edit those files directly. Update the showcase registry, scenario metadata, or generator source instead, then regenerate stories.
+Do not hand-edit those files directly. Update the showcase registry, story metadata, or generator source instead, then regenerate stories.
 
 ```bash
 pnpm generate:stories
 ```
 
-## Scenarios
+## Story types
 
-| Scenario | Purpose |
+| Story type | Purpose |
 | --- | --- |
-| Preview | Recommended default usage for the component. |
-| Variants | Visual and style axes, such as color, size, tone, shape, or adapter-specific variants. |
-| States | Interactive and validation states, including disabled, loading, selected, checked, error, and success states where applicable. |
-| Composition | Real product UI examples that show the component with adjacent content, controls, and layout context. |
-| Tokens | Token mapping that explains which Tinyrack semantic tokens drive the rendered component. |
-| Accessibility | Keyboard, ARIA, label, focus, and contrast notes for reviewing accessible usage. |
-| Playground | Quick exploration with Storybook controls or guided examples. |
+| Docs | Always included. Provides an overview, quick preview, and concise notes. |
+| Default | Always included. Shows a clean component canvas for the recommended baseline usage. |
+| Variants | Included only when the component has real visual variants. |
+| Sizes | Included only when size or density is a real axis. |
+| States | Included only when disabled, loading, invalid, selected, or similar states matter. |
+| Examples | Included only for high-value product-like examples that clarify real usage. |
+
+Do not generate universal `Tokens`, `Accessibility`, `Playground`, or `Composition` pages for every component. Put system-level token and adapter guidance in foundations or adapter docs. Add accessibility or composition notes to component docs only when they are specific and useful.
 
 ## Storybook docs pages
 
@@ -38,7 +39,7 @@ Use those pages for system-level guidance. Use generated component pages for ada
 
 ## Verification
 
-Run showcase tests after changing registries, scenario renderers, or generated stories:
+Run showcase tests after changing registries, story renderers, or generated stories:
 
 ```bash
 pnpm test:showcase
@@ -50,7 +51,7 @@ Build Storybook before shipping documentation or showcase changes:
 pnpm storybook:build
 ```
 
-Audit generated Storybook output for missing, blank, narrow, or broken scenario pages:
+Audit generated Storybook output for missing, blank, narrow, or broken story pages:
 
 ```bash
 pnpm storybook:audit

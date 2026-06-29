@@ -7,6 +7,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'alert',
     category: 'daisyUI',
     description: 'daisyUI alert themed preview',
+    storyKinds: ['default', 'variants', 'states'],
     render: () => (
       <div role="alert" className="alert alert-info">
         <span>Alert message</span>
@@ -31,6 +32,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'badge',
     category: 'daisyUI',
     description: 'daisyUI badge themed preview',
+    storyKinds: ['default', 'variants', 'states'],
     render: () => <span className="badge badge-primary">Badge</span>,
   },
   {
@@ -54,6 +56,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'button',
     category: 'daisyUI',
     description: 'daisyUI button themed preview',
+    storyKinds: ['default', 'variants', 'sizes', 'states'],
     render: () => (
       <button className="btn btn-primary" type="button">
         Button
@@ -78,6 +81,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'card',
     category: 'daisyUI',
     description: 'daisyUI card themed preview',
+    storyKinds: ['default', 'examples'],
     render: () => (
       <div className="card bg-base-100 shadow-md">
         <div className="card-body">
@@ -118,6 +122,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'checkbox',
     category: 'daisyUI',
     description: 'daisyUI checkbox themed preview',
+    storyKinds: ['default', 'states', 'sizes'],
     render: () => (
       <input
         aria-label="Checkbox"
@@ -225,6 +230,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'dropdown',
     category: 'daisyUI',
     description: 'daisyUI dropdown themed preview',
+    storyKinds: ['default', 'examples'],
     render: () => (
       <div className="dropdown dropdown-open">
         <button tabIndex={0} className="btn btn-sm" type="button">
@@ -368,6 +374,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'input',
     category: 'daisyUI',
     description: 'daisyUI input themed preview',
+    storyKinds: ['default', 'states', 'sizes'],
     render: () => <input className="input input-primary" placeholder="Input" />,
   },
   {
@@ -465,6 +472,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'modal',
     category: 'daisyUI',
     description: 'daisyUI modal themed preview',
+    storyKinds: ['default', 'states', 'examples'],
     render: () => (
       <div className="modal modal-open relative">
         <div className="modal-box">
@@ -479,6 +487,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'navbar',
     category: 'daisyUI',
     description: 'daisyUI navbar themed preview',
+    storyKinds: ['default', 'examples'],
     render: () => (
       <div className="navbar bg-base-200 rounded-box">
         <div className="flex-1">
@@ -524,6 +533,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'radio',
     category: 'daisyUI',
     description: 'daisyUI radio themed preview',
+    storyKinds: ['default', 'states', 'sizes'],
     render: () => (
       <input
         aria-label="Radio"
@@ -633,6 +643,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'steps',
     category: 'daisyUI',
     description: 'daisyUI steps themed preview',
+    storyKinds: ['default', 'examples'],
     render: () => (
       <ul className="steps tinyrack-demo-steps">
         <li className="step step-primary">Tokens</li>
@@ -659,6 +670,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'tab',
     category: 'daisyUI',
     description: 'daisyUI tab themed preview',
+    storyKinds: ['default', 'variants', 'states'],
     render: () => (
       <div role="tablist" className="tabs tabs-box">
         <button role="tab" className="tab tab-active" type="button">
@@ -675,6 +687,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'table',
     category: 'daisyUI',
     description: 'daisyUI table themed preview',
+    storyKinds: ['default', 'examples'],
     render: () => (
       <div className="overflow-x-auto">
         <table className="table">
@@ -745,6 +758,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     name: 'toggle',
     category: 'daisyUI',
     description: 'daisyUI toggle themed preview',
+    storyKinds: ['default', 'states', 'sizes'],
     render: () => (
       <input
         aria-label="Toggle"

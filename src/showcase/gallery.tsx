@@ -1,18 +1,29 @@
 import { daisyUiShowcaseEntries } from './daisyui-showcase.js';
 import { mantineShowcaseEntries } from './mantine-showcase.js';
-import { getShowcaseScenario } from './scenarios.js';
-import type { ShowcaseEntry, ShowcaseLibrary, ShowcaseScenarioId } from './types.js';
+import { getShowcaseStory } from './scenarios.js';
+import type {
+  ShowcaseEntry,
+  ShowcaseLibrary,
+  ShowcaseScenarioId,
+  ShowcaseStoryKind,
+} from './types.js';
 
 function ShowcaseCard({
   entry,
   library,
-  scenarioId = 'preview',
+  scenarioId,
+  storyKind,
 }: {
   entry: ShowcaseEntry;
   library: ShowcaseLibrary;
   scenarioId?: ShowcaseScenarioId;
+  storyKind?: ShowcaseStoryKind;
 }) {
-  const scenario = getShowcaseScenario({ entry, library, scenarioId });
+  const story = getShowcaseStory({
+    entry,
+    library,
+    storyKind: storyKind ?? scenarioId,
+  });
 
   return (
     <article
@@ -20,21 +31,22 @@ function ShowcaseCard({
       data-showcase-component={entry.name}
       data-showcase-entry-id={entry.id}
       data-showcase-library={library}
-      data-showcase-scenario={scenario.id}
+      data-showcase-scenario={story.id}
+      data-showcase-story-kind={story.id}
     >
       <header className="tinyrack-showcase-card__header">
         <div>
           <p className="tinyrack-showcase-card__category">
-            {entry.category} · {scenario.name}
+            {entry.category} · {story.name}
           </p>
           <h3>{entry.name}</h3>
         </div>
         <code>
-          {entry.id}#{scenario.id}
+          {entry.id}#{story.id}
         </code>
       </header>
-      <div className="tinyrack-showcase-card__preview">{scenario.render()}</div>
-      <p className="tinyrack-showcase-card__description">{scenario.description}</p>
+      <div className="tinyrack-showcase-card__preview">{story.render()}</div>
+      <p className="tinyrack-showcase-card__description">{story.description}</p>
     </article>
   );
 }
@@ -42,15 +54,22 @@ function ShowcaseCard({
 export function SingleShowcaseStory({
   entry,
   library,
-  scenarioId = 'preview',
+  scenarioId,
+  storyKind,
 }: {
   entry: ShowcaseEntry;
   library: ShowcaseLibrary;
   scenarioId?: ShowcaseScenarioId;
+  storyKind?: ShowcaseStoryKind;
 }) {
   return (
     <section className="tinyrack-showcase-single">
-      <ShowcaseCard entry={entry} library={library} scenarioId={scenarioId} />
+      <ShowcaseCard
+        entry={entry}
+        library={library}
+        scenarioId={scenarioId}
+        storyKind={storyKind}
+      />
     </section>
   );
 }

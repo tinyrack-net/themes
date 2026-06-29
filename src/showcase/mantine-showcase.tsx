@@ -44,6 +44,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Alert',
     category: 'Mantine Core',
     description: '@mantine/core Alert themed preview',
+    storyKinds: ['default', 'variants', 'states'],
     render: () => (
       <Mantine.Alert title="Alert" color="tinyrack">
         Important themed message
@@ -131,6 +132,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Badge',
     category: 'Mantine Core',
     description: '@mantine/core Badge themed preview',
+    storyKinds: ['default', 'variants', 'states'],
     render: () => <Mantine.Badge>Tinyrack</Mantine.Badge>,
   },
   {
@@ -177,6 +179,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Button',
     category: 'Mantine Core',
     description: '@mantine/core Button themed preview',
+    storyKinds: ['default', 'variants', 'sizes', 'states'],
     render: () => <Mantine.Button>Button</Mantine.Button>,
   },
   {
@@ -184,6 +187,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Card',
     category: 'Mantine Core',
     description: '@mantine/core Card themed preview',
+    storyKinds: ['default', 'examples'],
     render: () => (
       <Mantine.Card shadow="sm" padding="md" radius="md" withBorder>
         <Mantine.Text fw={600}>Card</Mantine.Text>
@@ -207,6 +211,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Checkbox',
     category: 'Mantine Core',
     description: '@mantine/core Checkbox themed preview',
+    storyKinds: ['default', 'states', 'sizes'],
     render: () => <Mantine.Checkbox label="Checkbox" defaultChecked />,
   },
   {
@@ -474,6 +479,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Input',
     category: 'Mantine Core',
     description: '@mantine/core Input themed preview',
+    storyKinds: ['default', 'states', 'sizes'],
     render: () => <Mantine.Input placeholder="Input" />,
   },
   {
@@ -564,6 +570,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Modal',
     category: 'Mantine Core',
     description: '@mantine/core Modal themed preview',
+    storyKinds: ['default', 'states', 'examples'],
     render: () => (
       <Mantine.Box>
         <Mantine.Modal
@@ -727,6 +734,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Radio',
     category: 'Mantine Core',
     description: '@mantine/core Radio themed preview',
+    storyKinds: ['default', 'states', 'sizes'],
     render: () => <Mantine.Radio label="Radio" defaultChecked />,
   },
   {
@@ -874,6 +882,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Stepper',
     category: 'Mantine Core',
     description: '@mantine/core Stepper themed preview',
+    storyKinds: ['default', 'examples'],
     render: () => (
       <Mantine.Stepper active={1} className="tinyrack-demo-stepper">
         <Mantine.Stepper.Step label="Profile" description="Create account" />
@@ -887,6 +896,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Switch',
     category: 'Mantine Core',
     description: '@mantine/core Switch themed preview',
+    storyKinds: ['default', 'states', 'sizes'],
     render: () => <Mantine.Switch label="Switch" defaultChecked />,
   },
   {
@@ -894,6 +904,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Table',
     category: 'Mantine Core',
     description: '@mantine/core Table themed preview',
+    storyKinds: ['default', 'examples'],
     render: () => (
       <Mantine.Table>
         <Mantine.Table.Thead>
@@ -914,6 +925,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'Tabs',
     category: 'Mantine Core',
     description: '@mantine/core Tabs themed preview',
+    storyKinds: ['default', 'variants', 'states'],
     render: () => (
       <Mantine.Tabs className="tinyrack-demo-tabs" defaultValue="one">
         <Mantine.Tabs.List>
@@ -949,6 +961,7 @@ export const mantineShowcaseEntries: MantineEntrySpec[] = [
     name: 'TextInput',
     category: 'Mantine Core',
     description: '@mantine/core TextInput themed preview',
+    storyKinds: ['default', 'states', 'sizes'],
     render: () => <Mantine.TextInput label="Text input" placeholder="Tinyrack" />,
   },
   {

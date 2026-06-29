@@ -5,26 +5,37 @@ import type {
   ShowcaseLibrary,
   ShowcaseScenario,
   ShowcaseScenarioId,
+  ShowcaseStoryDefinition,
+  ShowcaseStoryKind,
 } from './types.js';
 
-const scenarioIds: ShowcaseScenarioId[] = [
-  'preview',
+const storyKinds: ShowcaseStoryKind[] = [
+  'default',
   'variants',
+  'sizes',
   'states',
-  'composition',
-  'tokens',
-  'accessibility',
-  'playground',
+  'examples',
 ];
 
+const storyNames: Record<ShowcaseStoryKind, string> = {
+  default: 'Default',
+  variants: 'Variants',
+  sizes: 'Sizes',
+  states: 'States',
+  examples: 'Examples',
+};
+
 const scenarioNames: Record<ShowcaseScenarioId, string> = {
+  default: 'Default',
   preview: 'Preview',
   variants: 'Variants',
+  sizes: 'Sizes',
   states: 'States',
   composition: 'Composition',
   tokens: 'Tokens',
   accessibility: 'Accessibility',
   playground: 'Playground',
+  examples: 'Examples',
 };
 
 function VariantMatrix({
@@ -83,36 +94,25 @@ function GenericVariants({
   );
 }
 
-function GenericScenario({
+function GenericStates({
   entry,
   library,
-  scenarioId,
 }: {
   entry: ShowcaseEntry;
   library: ShowcaseLibrary;
-  scenarioId: Exclude<ShowcaseScenarioId, 'preview' | 'variants'>;
 }) {
   const libraryName = library === 'mantine' ? 'Mantine' : 'daisyUI';
-  const scenarioName = scenarioNames[scenarioId];
 
   return (
     <VariantMatrix
-      description={`${scenarioName} fallback documentation for ${libraryName} ${entry.name}. The live component stays visible while reviewing theme coverage.`}
-      title={`${libraryName} ${entry.name} ${scenarioName.toLowerCase()}`}
+      description="Common idle, constrained, and disabled-adjacent review states for the component."
+      title={`${libraryName} ${entry.name} states`}
     >
-      <VariantCell label={`${scenarioName} overview`}>
-        <div className="tinyrack-scenario-note">
-          <strong>{scenarioName}</strong>
-          <p>{entry.description}</p>
+      <VariantCell label="idle">{entry.render()}</VariantCell>
+      <VariantCell label="constrained">
+        <div className="tinyrack-variant-frame tinyrack-variant-frame--compact">
+          {entry.render()}
         </div>
-      </VariantCell>
-      <VariantCell label="Live example">{entry.render()}</VariantCell>
-      <VariantCell label="Review checklist">
-        <ul className="tinyrack-scenario-list">
-          <li>Confirm spacing, color, and typography tokens.</li>
-          <li>Check empty, dense, and overflow-prone content.</li>
-          <li>Review keyboard, label, and contrast expectations.</li>
-        </ul>
       </VariantCell>
     </VariantMatrix>
   );
@@ -1843,57 +1843,124 @@ function renderDaisyUiScenario(
   }
 }
 
-export function getShowcaseScenarioIds(_entry: ShowcaseEntry): ShowcaseScenarioId[] {
-  return scenarioIds;
+function getEntryStoryKinds(entry: ShowcaseEntry): ShowcaseStoryKind[] {
+  const requestedKinds = entry.storyKinds?.filter((storyKind) =>
+    storyKinds.includes(storyKind),
+  );
+
+  if (requestedKinds?.length) {
+    return requestedKinds.includes('default')
+      ? requestedKinds
+      : ['default', ...requestedKinds];
+  }
+
+  return ['default'];
 }
 
+function normalizeStoryKind(storyKind?: ShowcaseScenarioId): ShowcaseStoryKind {
+  if (storyKind === 'preview') {
+    return 'default';
+  }
+
+  if (storyKind && storyKinds.includes(storyKind as ShowcaseStoryKind)) {
+    return storyKind as ShowcaseStoryKind;
+  }
+
+  return 'default';
+}
+
+function renderStoryKind({
+  entry,
+  library,
+  storyKind,
+}: {
+  entry: ShowcaseEntry;
+  library: ShowcaseLibrary;
+  storyKind: ShowcaseStoryKind;
+}): ReactElement {
+  if (storyKind === 'default') {
+    return entry.render();
+  }
+
+  if (storyKind === 'variants') {
+    return (
+      (library === 'mantine'
+        ? renderMantineVariants(entry)
+        : renderDaisyUiVariants(entry)) ?? (
+        <GenericVariants entry={entry} library={library} />
+      )
+    );
+  }
+
+  if (storyKind === 'states') {
+    return (
+      (library === 'mantine'
+        ? renderMantineScenario(entry, 'states')
+        : renderDaisyUiScenario(entry, 'states')) ?? (
+        <GenericStates entry={entry} library={library} />
+      )
+    );
+  }
+
+  if (storyKind === 'sizes') {
+    return <GenericVariants entry={entry} library={library} />;
+  }
+
+  return <GenericStates entry={entry} library={library} />;
+}
+
+export function getShowcaseStories({
+  entry,
+  library,
+}: {
+  entry: ShowcaseEntry;
+  library: ShowcaseLibrary;
+}): ShowcaseStoryDefinition[] {
+  return getEntryStoryKinds(entry).map((storyKind) => ({
+    id: storyKind,
+    exportName: storyKind === 'default' ? 'Default' : storyNames[storyKind],
+    name: storyNames[storyKind],
+    description:
+      storyKind === 'default'
+        ? entry.description
+        : `${entry.name} ${storyNames[storyKind].toLowerCase()} story for theme review`,
+    render: () => renderStoryKind({ entry, library, storyKind }),
+  }));
+}
+
+export function getShowcaseStory({
+  entry,
+  library,
+  storyKind = 'default',
+}: {
+  entry: ShowcaseEntry;
+  library: ShowcaseLibrary;
+  storyKind?: ShowcaseStoryKind | ShowcaseScenarioId;
+}): ShowcaseStoryDefinition {
+  const resolvedStoryKind = normalizeStoryKind(storyKind);
+  const stories = getShowcaseStories({ entry, library });
+
+  return (
+    stories.find((story) => story.id === resolvedStoryKind) ??
+    stories.find((story) => story.id === 'default') ??
+    getShowcaseStories({ entry: { ...entry, storyKinds: ['default'] }, library })[0]
+  );
+}
+
+/** @deprecated Use getShowcaseStories instead. */
+export function getShowcaseScenarioIds(entry: ShowcaseEntry): ShowcaseStoryKind[] {
+  return getEntryStoryKinds(entry);
+}
+
+/** @deprecated Use getShowcaseStory instead. */
 export function getShowcaseScenario({
   entry,
   library,
-  scenarioId = 'preview',
+  scenarioId = 'default',
 }: {
   entry: ShowcaseEntry;
   library: ShowcaseLibrary;
   scenarioId?: ShowcaseScenarioId;
 }): ShowcaseScenario {
-  const resolvedScenarioId = scenarioIds.includes(scenarioId) ? scenarioId : 'preview';
-
-  if (resolvedScenarioId === 'preview') {
-    return {
-      id: 'preview',
-      name: 'Preview',
-      description: entry.description,
-      render: entry.render,
-    };
-  }
-
-  if (resolvedScenarioId === 'variants') {
-    return {
-      id: 'variants',
-      name: 'Variants',
-      description: `${entry.name} scenario matrix for theme review`,
-      render: () =>
-        (library === 'mantine'
-          ? renderMantineVariants(entry)
-          : renderDaisyUiVariants(entry)) ?? (
-          <GenericVariants entry={entry} library={library} />
-        ),
-    };
-  }
-
-  return {
-    id: resolvedScenarioId,
-    name: scenarioNames[resolvedScenarioId],
-    description: `${entry.name} ${scenarioNames[resolvedScenarioId].toLowerCase()} scenario for design-system review`,
-    render: () =>
-      (library === 'mantine'
-        ? renderMantineScenario(entry, resolvedScenarioId)
-        : renderDaisyUiScenario(entry, resolvedScenarioId)) ?? (
-        <GenericScenario
-          entry={entry}
-          library={library}
-          scenarioId={resolvedScenarioId}
-        />
-      ),
-  };
+  return getShowcaseStory({ entry, library, storyKind: scenarioId });
 }

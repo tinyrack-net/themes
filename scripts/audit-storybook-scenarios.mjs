@@ -11,9 +11,15 @@ const preferredPort = Number.parseInt(process.env.STORYBOOK_AUDIT_PORT ?? '61082
 const auditAll = process.env.STORYBOOK_AUDIT_ALL === '1';
 const defaultAuditLimit = 100;
 const scenarioSuffixes = [
-  '--preview',
+  '--default',
   '--variants',
+  '--sizes',
   '--states',
+  '--examples',
+  '--docs',
+];
+const obsoleteScenarioSuffixes = [
+  '--preview',
   '--composition',
   '--tokens',
   '--accessibility',
@@ -56,6 +62,18 @@ function scenarioId(storyId) {
     ?.slice('--'.length);
 }
 
+function isGeneratedComponentEntry(entry) {
+  const importPath = entry.importPath ?? '';
+
+  return /stories\/(mantine|daisyui)\/components\//.test(importPath);
+}
+
+function obsoleteScenarioId(storyId) {
+  return obsoleteScenarioSuffixes
+    .find((suffix) => storyId.endsWith(suffix))
+    ?.slice('--'.length);
+}
+
 function componentSlug(storyId) {
   const suffix = scenarioSuffixes.find((value) => storyId.endsWith(value));
 
@@ -69,14 +87,19 @@ function componentSlug(storyId) {
 
 function isComponentScenario(entry) {
   const id = entry.id ?? '';
-  const title = entry.title ?? '';
-  const importPath = entry.importPath ?? '';
 
   return (
     scenarioSuffixes.some((suffix) => id.endsWith(suffix)) &&
-    (title.startsWith('Mantine/Components/') ||
-      title.startsWith('daisyUI/Components/') ||
-      importPath.includes('/components/'))
+    isGeneratedComponentEntry(entry)
+  );
+}
+
+function isObsoleteComponentScenario(entry) {
+  const id = entry.id ?? '';
+
+  return (
+    obsoleteScenarioSuffixes.some((suffix) => id.endsWith(suffix)) &&
+    isGeneratedComponentEntry(entry)
   );
 }
 
@@ -85,8 +108,20 @@ function readEntries(indexJson) {
 
   return Object.values(rawEntries)
     .filter((entry) => entry && typeof entry === 'object')
-    .filter((entry) => entry.type === undefined || entry.type === 'story')
+    .filter(
+      (entry) =>
+        entry.type === undefined || entry.type === 'story' || entry.type === 'docs',
+    )
     .filter(isComponentScenario)
+    .sort((left, right) => left.id.localeCompare(right.id));
+}
+
+function readObsoleteEntries(indexJson) {
+  const rawEntries = indexJson.entries ?? indexJson.stories ?? indexJson;
+
+  return Object.values(rawEntries)
+    .filter((entry) => entry && typeof entry === 'object')
+    .filter(isObsoleteComponentScenario)
     .sort((left, right) => left.id.localeCompare(right.id));
 }
 
@@ -108,7 +143,7 @@ function selectEntries(entries) {
     const scenario = scenarioId(entry.id);
 
     if (
-      (scenario === 'tokens' || scenario === 'accessibility') &&
+      (scenario === 'sizes' || scenario === 'states') &&
       curatedComponentSlugs.has(componentSlug(entry.id))
     ) {
       add(entry);
@@ -222,17 +257,8 @@ async function close(server) {
   });
 }
 
-function expectedSelectorsFor(scenario) {
-  if (scenario === 'preview') {
-    return [];
-  }
-
-  return [
-    '.tinyrack-variant-matrix',
-    '.tinyrack-docs-page',
-    '.tinyrack-docs-card',
-    '.tinyrack-scenario-list',
-  ];
+function expectedSelectorsFor(_scenario) {
+  return [];
 }
 
 async function auditPage(page, entry, auditPort) {
@@ -306,7 +332,41 @@ async function auditPage(page, entry, auditPort) {
 async function main() {
   const indexJson = JSON.parse(await readFile(indexPath, 'utf8'));
   const entries = readEntries(indexJson);
+  const obsoleteEntries = readObsoleteEntries(indexJson);
   const selectedEntries = selectEntries(entries);
+
+  if (obsoleteEntries.length > 0) {
+    const report = {
+      auditedAt: new Date().toISOString(),
+      auditAll,
+      auditedCount: 0,
+      availableCount: entries.length,
+      defaultAuditLimit,
+      failures: obsoleteEntries.map((entry) => ({
+        id: entry.id,
+        failures: [`obsolete generated story suffix: ${obsoleteScenarioId(entry.id)}`],
+      })),
+      obsoleteCount: obsoleteEntries.length,
+      obsoleteIds: obsoleteEntries.map((entry) => entry.id),
+      port: null,
+      results: [],
+    };
+
+    await mkdir(resolve(root, 'artifacts/storybook-scenario-audit'), {
+      recursive: true,
+    });
+    await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`);
+
+    console.error(
+      `Storybook scenario audit failed: ${obsoleteEntries.length} obsolete generated story IDs found.`,
+    );
+    for (const entry of obsoleteEntries.slice(0, 20)) {
+      console.error(`- ${entry.id}`);
+    }
+    console.error(`Report: ${relative(root, reportPath)}`);
+    process.exitCode = 1;
+    return;
+  }
 
   if (selectedEntries.length === 0) {
     throw new Error(

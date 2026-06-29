@@ -57,21 +57,17 @@ test('renders scenario variant matrices for individual component stories', async
       <SingleShowcaseStory
         entry={mantineButton}
         library="mantine"
-        scenarioId="variants"
+        storyKind="variants"
       />
-      <SingleShowcaseStory
-        entry={daisyButton}
-        library="daisyui"
-        scenarioId="variants"
-      />
+      <SingleShowcaseStory entry={daisyButton} library="daisyui" storyKind="variants" />
     </TinyrackMantineProvider>,
   );
 
   await expect.element(screen.getByText('Mantine Button variants')).toBeVisible();
   await expect.element(screen.getByText('daisyUI button variants')).toBeVisible();
-  expect(document.querySelectorAll('[data-showcase-scenario="variants"]')).toHaveLength(
-    2,
-  );
+  expect(
+    document.querySelectorAll('[data-showcase-story-kind="variants"]'),
+  ).toHaveLength(2);
 });
 
 test('keeps simple preview components readable instead of stretched or viewport-tall', async () => {
@@ -134,12 +130,12 @@ test('keeps variant cells readable without internal clipping', async () => {
       <SingleShowcaseStory
         entry={daisyDropdown}
         library="daisyui"
-        scenarioId="variants"
+        storyKind="variants"
       />
       <SingleShowcaseStory
         entry={mantineIndicator}
         library="mantine"
-        scenarioId="variants"
+        storyKind="variants"
       />
     </TinyrackMantineProvider>,
   );

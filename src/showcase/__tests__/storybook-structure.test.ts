@@ -55,6 +55,26 @@ describe('storybook component story structure', () => {
     );
   });
 
+  it('has a Storybook scenario audit script', () => {
+    const packageJson = JSON.parse(
+      readFileSync(join(repoRoot, 'package.json'), 'utf8'),
+    );
+    const auditScriptPath = join(repoRoot, 'scripts/audit-storybook-scenarios.mjs');
+
+    expect(packageJson.scripts['storybook:audit']).toBe(
+      'node scripts/audit-storybook-scenarios.mjs',
+    );
+    expect(existsSync(auditScriptPath)).toBe(true);
+
+    const auditScript = readFileSync(auditScriptPath, 'utf8');
+
+    expect(auditScript).toContain('storybook-static/index.json');
+    expect(auditScript).toContain('iframe.html?id=');
+    expect(auditScript).toContain('artifacts/storybook-scenario-audit/audit.json');
+    expect(auditScript).toContain('STORYBOOK_AUDIT_PORT');
+    expect(auditScript).toContain('61082');
+  });
+
   it('has one Mantine story file per showcase entry', () => {
     const missing = mantineShowcaseEntries
       .map((entry) => storyPath('mantine', entry.id.replace(/^mantine-/, '')))

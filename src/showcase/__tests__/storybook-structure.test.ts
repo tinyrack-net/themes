@@ -185,6 +185,26 @@ describe('storybook component story structure', () => {
     }
   });
 
+  it('documents the Storybook component-page model', () => {
+    const docsPath = join(repoRoot, 'docs/storybook-component-pages.md');
+
+    expect(existsSync(docsPath)).toBe(true);
+
+    const docs = readFileSync(docsPath, 'utf8');
+    const readme = readFileSync(join(repoRoot, 'README.md'), 'utf8');
+
+    expect(readme).toContain('[docs/storybook-component-pages.md]');
+    expect(docs).toContain('stories/{mantine,daisyui}/components/');
+    expect(docs).toContain('pnpm generate:stories');
+    expect(docs).toContain('pnpm test:showcase');
+    expect(docs).toContain('pnpm storybook:build');
+    expect(docs).toContain('pnpm storybook:audit');
+
+    for (const scenario of requiredScenarioExports) {
+      expect(docs).toContain(scenario);
+    }
+  });
+
   it('includes shared docs page CSS for static Storybook documentation', () => {
     const previewCss = readFileSync(
       join(repoRoot, 'src/showcase/showcase.css'),

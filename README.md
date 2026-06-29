@@ -129,6 +129,8 @@ Storybook includes full-theme review galleries for both UI systems. Cloudflare d
 - `Mantine/Components/*`: one Storybook story per Mantine Core component selected for Tinyrack theme review.
 - `daisyUI/Components/*`: one Storybook story per component directory shipped by daisyUI 5.5.
 
+Component pages are split into focused scenarios for default usage, variants, states, composition, tokens, accessibility, and playground review. See [docs/storybook-component-pages.md](docs/storybook-component-pages.md) for the component-page model, generated-story workflow, and verification commands.
+
 The same registries are covered by browser-mode Vitest so missing/broken previews and missing per-component story files fail CI:
 
 ```bash

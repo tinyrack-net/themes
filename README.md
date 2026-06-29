@@ -131,6 +131,8 @@ Storybook includes full-theme review galleries for both UI systems. Cloudflare d
 
 Component pages use docs first, then a small set of meaningful stories such as `Default`, `Variants`, `Sizes`, `States`, and selective `Examples`. See [docs/storybook-component-pages.md](docs/storybook-component-pages.md) for the component-page model, generated-story workflow, and verification commands.
 
+Environment smoke pages are documented separately in [docs/storybook-environments.md](docs/storybook-environments.md) so the component catalog remains focused on generated component pages.
+
 The same registries are covered by browser-mode Vitest so missing/broken previews and missing per-component story files fail CI:
 
 ```bash

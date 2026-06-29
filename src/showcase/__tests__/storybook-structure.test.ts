@@ -33,6 +33,26 @@ const requiredDocsPages = [
   ['stories/adapters/mantine.stories.tsx', "title: 'Adapters/Mantine'"],
   ['stories/adapters/astro-starlight.stories.tsx', "title: 'Adapters/Astro Starlight'"],
 ] as const;
+const requiredEnvironmentPages = [
+  [
+    'stories/environments/starlight.stories.tsx',
+    "title: 'Environments/Starlight'",
+    'ENVIRONMENT SMOKE · Starlight',
+    'data-environment="starlight"',
+  ],
+  [
+    'stories/environments/mantine-tailwind.stories.tsx',
+    "title: 'Environments/Mantine + Tailwind'",
+    'ENVIRONMENT SMOKE · Mantine + Tailwind',
+    'data-environment="mantine-tailwind"',
+  ],
+  [
+    'stories/environments/daisyui-tailwind.stories.tsx',
+    "title: 'Environments/daisyUI + Tailwind'",
+    'ENVIRONMENT SMOKE · daisyUI + Tailwind',
+    'data-environment="daisyui-tailwind"',
+  ],
+] as const;
 const legacyManualStoryPages = [
   ['stories/daisyui/buttons.stories.tsx', "title: 'daisyUI/Buttons'"],
   ['stories/daisyui/cards.stories.tsx', "title: 'daisyUI/Cards'"],
@@ -97,6 +117,27 @@ describe('storybook component story structure', () => {
     for (const scenarioId of obsoleteScenarioIds) {
       expect(auditScript).toContain(`--${scenarioId}`);
     }
+  });
+
+  it('has a Storybook environment smoke audit script', () => {
+    const packageJson = JSON.parse(
+      readFileSync(join(repoRoot, 'package.json'), 'utf8'),
+    );
+    const auditScriptPath = join(repoRoot, 'scripts/audit-storybook-environments.mjs');
+
+    expect(packageJson.scripts['storybook:audit:environments']).toBe(
+      'node scripts/audit-storybook-environments.mjs',
+    );
+    expect(existsSync(auditScriptPath)).toBe(true);
+
+    const auditScript = readFileSync(auditScriptPath, 'utf8');
+
+    expect(auditScript).toContain('storybook-static/index.json');
+    expect(auditScript).toContain('artifacts/storybook-environment-audit/audit.json');
+    expect(auditScript).toContain('Environments/Starlight');
+    expect(auditScript).toContain('Environments/Mantine + Tailwind');
+    expect(auditScript).toContain('Environments/daisyUI + Tailwind');
+    expect(auditScript).toContain('data-environment');
   });
 
   it('has one Mantine story file per showcase entry', () => {
@@ -222,6 +263,28 @@ describe('storybook component story structure', () => {
     }
   });
 
+  it('has dedicated environment smoke story pages outside the component catalog', () => {
+    for (const [
+      relativePath,
+      title,
+      marker,
+      environmentAttr,
+    ] of requiredEnvironmentPages) {
+      const filePath = join(repoRoot, relativePath);
+
+      expect(existsSync(filePath), `${relativePath} should exist`).toBe(true);
+      const file = readFileSync(filePath, 'utf8');
+
+      expect(file).toContain(title);
+      expect(file).toContain(marker);
+      expect(file).toContain(environmentAttr);
+      expect(file).toContain("layout: 'fullscreen'");
+      expect(relativePath).toContain('stories/environments/');
+      expect(relativePath).not.toContain('stories/mantine/components/');
+      expect(relativePath).not.toContain('stories/daisyui/components/');
+    }
+  });
+
   it('documents the Storybook component-page model', () => {
     const docsPath = join(repoRoot, 'docs/storybook-component-pages.md');
 
@@ -245,6 +308,20 @@ describe('storybook component story structure', () => {
     expect(docs).not.toContain(
       'Preview / Variants / States / Composition / Tokens / Accessibility / Playground',
     );
+  });
+
+  it('documents the Storybook environment smoke pages', () => {
+    const docsPath = join(repoRoot, 'docs/storybook-environments.md');
+
+    expect(existsSync(docsPath)).toBe(true);
+
+    const docs = readFileSync(docsPath, 'utf8');
+    const readme = readFileSync(join(repoRoot, 'README.md'), 'utf8');
+
+    expect(readme).toContain('[docs/storybook-environments.md]');
+    expect(docs).toContain('stories/environments/');
+    expect(docs).toContain('storybook:audit:environments');
+    expect(docs).toContain('artifacts/storybook-environment-audit/audit.json');
   });
 
   it('includes shared docs page CSS for static Storybook documentation', () => {

@@ -43,6 +43,61 @@ export function DocsCard({ title, children }: { title: string; children: ReactNo
   );
 }
 
+export function DocsSection({
+  children,
+  title,
+}: {
+  children: ReactNode;
+  title: string;
+}) {
+  return (
+    <section className="tinyrack-docs-section">
+      <h2>{title}</h2>
+      {children}
+    </section>
+  );
+}
+
+export function DocsCallout({
+  children,
+  title,
+}: {
+  children: ReactNode;
+  title: string;
+}) {
+  return (
+    <aside className="tinyrack-docs-callout">
+      <strong>{title}</strong>
+      <p>{children}</p>
+    </aside>
+  );
+}
+
+export function DocsTable({ columns, rows }: { columns: string[]; rows: string[][] }) {
+  return (
+    <div className="tinyrack-docs-data-table">
+      <table>
+        <thead>
+          <tr>
+            {columns.map((column) => (
+              <th key={column}>{column}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.join('|')}>
+              {row.map((cell) => (
+                <td key={cell}>{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export function TokenTable({ items }: { items: TokenItem[] }) {
   return (
     <div className="tinyrack-docs-table">

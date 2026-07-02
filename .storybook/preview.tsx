@@ -22,10 +22,14 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
+          'Welcome',
+          ['Start Here'],
           'Foundations',
           ['Colors', 'Typography', 'Spacing', 'Radius', 'Shadows'],
           'Adapters',
           ['Tailwind', 'daisyUI', 'Mantine', 'Astro Starlight'],
+          'Demo',
+          ['Mantine Product App', 'daisyUI Product App', 'Starlight Docs Site'],
           'Mantine',
           'daisyUI',
         ],

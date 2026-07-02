@@ -28,7 +28,7 @@ This package is intentionally theme-first. It aligns existing UI libraries; it i
 - **daisyUI 5 themes** with Tinyrack light and dark themes plus JS metadata for tests and tooling
 - **Mantine 9 theme adapter** with a scoped provider for extension and embedded roots
 - **Astro Starlight theme adapter** for Tinyrack documentation sites
-- **Storybook review galleries** for Mantine, daisyUI, foundations, and adapter docs
+- **Storybook review surface** with onboarding, foundations, adapter guides, product-like demos, and component galleries
 
 ## Installation
 
@@ -149,7 +149,7 @@ If your Starlight/Astro version does not resolve package subpath CSS inside `cus
 
 ## Component Galleries
 
-Storybook includes full-theme review galleries for both UI systems. Cloudflare deployment setup is documented in [docs/storybook-deployment.md](docs/storybook-deployment.md):
+Storybook includes onboarding docs, adapter guides, product-like demo pages, and full-theme review galleries for both UI systems. Cloudflare deployment setup is documented in [docs/storybook-deployment.md](docs/storybook-deployment.md):
 
 - `Mantine/*`: generated Spectrum-style component pages for Mantine Core components selected for Tinyrack theme review.
 - `daisyUI/*`: generated Spectrum-style component pages for component directories shipped by daisyUI 5.5.

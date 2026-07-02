@@ -21,6 +21,13 @@ const obsoleteStoryExports = [
   'Playground',
 ] as const;
 const requiredStoryExports = ['Default'] as const;
+const requiredOnboardingPages = [
+  [
+    'stories/welcome.stories.tsx',
+    "title: 'Welcome/Start Here'",
+    'data-storybook-welcome',
+  ],
+] as const;
 const requiredDocsPages = [
   ['stories/foundations/colors.stories.tsx', "title: 'Foundations/Colors'"],
   ['stories/foundations/typography.stories.tsx', "title: 'Foundations/Typography'"],
@@ -31,6 +38,23 @@ const requiredDocsPages = [
   ['stories/adapters/daisyui.stories.tsx', "title: 'Adapters/daisyUI'"],
   ['stories/adapters/mantine.stories.tsx', "title: 'Adapters/Mantine'"],
   ['stories/adapters/astro-starlight.stories.tsx', "title: 'Adapters/Astro Starlight'"],
+] as const;
+const requiredDemoPages = [
+  [
+    'stories/demo/mantine-product-app.stories.tsx',
+    "title: 'Demo/Mantine Product App'",
+    'data-demo-mantine',
+  ],
+  [
+    'stories/demo/daisyui-product-app.stories.tsx',
+    "title: 'Demo/daisyUI Product App'",
+    'data-demo-daisyui',
+  ],
+  [
+    'stories/demo/starlight-docs-site.stories.tsx',
+    "title: 'Demo/Starlight Docs Site'",
+    'data-demo-starlight',
+  ],
 ] as const;
 const legacyManualStoryPages = [
   ['stories/daisyui/buttons.stories.tsx', "title: 'daisyUI/Buttons'"],
@@ -110,6 +134,12 @@ describe('storybook component story structure', () => {
     expect(auditScript).toContain('readObsoleteEntries');
     expect(auditScript).toContain('obsolete generated story suffix');
     expect(auditScript).toContain('readControlContractFailures');
+    expect(auditScript).toContain('requiredStaticStorySelectors');
+    expect(auditScript).toContain('data-storybook-welcome');
+    expect(auditScript).toContain('data-demo-mantine');
+    expect(auditScript).toContain('data-demo-daisyui');
+    expect(auditScript).toContain('data-demo-starlight');
+    expect(auditScript).toContain('.tinyrack-demo-page');
     expect(auditScript).toContain(
       'individual story includes showcase-card gallery chrome',
     );
@@ -287,8 +317,11 @@ describe('storybook component story structure', () => {
     expect(singleComponentSource).not.toContain('tinyrack-showcase-card');
   });
 
-  it('has foundations and adapter design-system story pages', () => {
-    for (const [relativePath, title] of requiredDocsPages) {
+  it('has onboarding, foundations, and adapter design-system story pages', () => {
+    for (const [relativePath, title, marker] of [
+      ...requiredOnboardingPages,
+      ...requiredDocsPages.map((page) => [...page, 'DocsPage'] as const),
+    ]) {
       const filePath = join(repoRoot, relativePath);
 
       expect(existsSync(filePath), `${relativePath} should exist`).toBe(true);
@@ -296,7 +329,21 @@ describe('storybook component story structure', () => {
 
       expect(file).toContain(title);
       expect(file).toContain("layout: 'fullscreen'");
-      expect(file).toContain('DocsPage');
+      expect(file).toContain(marker);
+    }
+  });
+
+  it('has product-like Demo story pages for supported surfaces', () => {
+    for (const [relativePath, title, marker] of requiredDemoPages) {
+      const filePath = join(repoRoot, relativePath);
+
+      expect(existsSync(filePath), `${relativePath} should exist`).toBe(true);
+      const file = readFileSync(filePath, 'utf8');
+
+      expect(file).toContain(title);
+      expect(file).toContain("layout: 'fullscreen'");
+      expect(file).toContain(marker);
+      expect(file).toContain('tinyrack-demo-page');
     }
   });
 
@@ -322,6 +369,9 @@ describe('storybook component story structure', () => {
     expect(docs).toContain('showcase-card');
     expect(docs).toContain('args/argTypes');
     expect(docs).toContain('SingleComponentStory');
+    expect(docs).toContain('Welcome/*');
+    expect(docs).toContain('Demo/*');
+    expect(docs).toContain('product-like Mantine, daisyUI, and Starlight pages');
     expect(docs).not.toContain('seven-scenario');
     expect(docs).not.toContain('seven scenario');
     expect(docs).not.toContain(
@@ -329,20 +379,27 @@ describe('storybook component story structure', () => {
     );
   });
 
-  it('orders Foundations first in the Storybook sidebar', () => {
+  it('orders onboarding, foundations, adapters, demos, then component catalogs', () => {
     const preview = readFileSync(join(repoRoot, '.storybook/preview.tsx'), 'utf8');
     const storySortStart = preview.indexOf('storySort');
 
     expect(storySortStart).toBeGreaterThanOrEqual(0);
 
     const storySortSource = preview.slice(storySortStart);
+    const welcomeOrder = storySortSource.indexOf("'Welcome'");
     const foundationsOrder = storySortSource.indexOf("'Foundations'");
     const adaptersOrder = storySortSource.indexOf("'Adapters'");
-    const mantineOrder = storySortSource.indexOf("'Mantine'");
-    const daisyUiOrder = storySortSource.indexOf("'daisyUI'");
+    const demoOrder = storySortSource.indexOf("'Demo'");
+    const mantineOrder = storySortSource.lastIndexOf("'Mantine'");
+    const daisyUiOrder = storySortSource.lastIndexOf("'daisyUI'");
 
+    expect(welcomeOrder).toBeGreaterThanOrEqual(0);
     expect(foundationsOrder).toBeGreaterThanOrEqual(0);
+    expect(welcomeOrder).toBeLessThan(foundationsOrder);
     expect(foundationsOrder).toBeLessThan(adaptersOrder);
+    expect(adaptersOrder).toBeLessThan(demoOrder);
+    expect(demoOrder).toBeLessThan(mantineOrder);
+    expect(demoOrder).toBeLessThan(daisyUiOrder);
     expect(foundationsOrder).toBeLessThan(mantineOrder);
     expect(foundationsOrder).toBeLessThan(daisyUiOrder);
   });
@@ -356,6 +413,10 @@ describe('storybook component story structure', () => {
     expect(previewCss).toContain('.tinyrack-docs-page');
     expect(previewCss).toContain('.tinyrack-docs-swatch');
     expect(previewCss).toContain('.tinyrack-docs-code');
+    expect(previewCss).toContain('.tinyrack-docs-data-table');
+    expect(previewCss).toContain('.tinyrack-docs-callout');
+    expect(previewCss).toContain('.tinyrack-demo-shell');
+    expect(previewCss).toContain('.tinyrack-starlight-shell');
   });
 
   it('overrides Storybook canvas overflow so long and scrollable previews can scroll', () => {

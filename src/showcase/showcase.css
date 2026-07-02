@@ -449,6 +449,408 @@
   margin: 0;
 }
 
+.tinyrack-docs-section {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.tinyrack-docs-section h2 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.tinyrack-docs-callout {
+  background: color-mix(in srgb, var(--color-primary, #72a7ff) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary, #72a7ff) 32%, transparent);
+  border-radius: 1rem;
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+}
+
+.tinyrack-docs-callout strong,
+.tinyrack-docs-callout p {
+  margin: 0;
+}
+
+.tinyrack-docs-callout p {
+  color: var(--color-base-content, #b8c0cf);
+  line-height: 1.6;
+}
+
+.tinyrack-docs-data-table {
+  border: 1px solid var(--color-base-300, #272b35);
+  border-radius: 1rem;
+  overflow: auto;
+}
+
+.tinyrack-docs-data-table table {
+  border-collapse: collapse;
+  min-width: 42rem;
+  width: 100%;
+}
+
+.tinyrack-docs-data-table th,
+.tinyrack-docs-data-table td {
+  border-bottom: 1px solid var(--color-base-300, #272b35);
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.tinyrack-docs-data-table th {
+  background: color-mix(in srgb, var(--color-base-200, #141821) 88%, transparent);
+  color: var(--color-base-content, #f7f8f8);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.tinyrack-docs-data-table td {
+  color: var(--color-base-content, #b8c0cf);
+  line-height: 1.55;
+}
+
+.tinyrack-docs-data-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.tinyrack-demo-page {
+  background: var(--color-base-100, #0b0d12);
+  box-sizing: border-box;
+  color: var(--color-base-content, #f7f8f8);
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.tinyrack-demo-shell {
+  background: color-mix(in srgb, var(--color-base-200, #141821) 88%, transparent);
+  border: 1px solid var(--color-base-300, #272b35);
+  border-radius: 1rem;
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  min-height: calc(100vh - 2rem);
+  overflow: hidden;
+}
+
+.tinyrack-demo-sidebar {
+  background: color-mix(in srgb, var(--color-base-100, #0b0d12) 72%, black);
+  border-right: 1px solid var(--color-base-300, #272b35);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.tinyrack-demo-brand {
+  align-items: center;
+  display: flex;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.tinyrack-demo-brand-mark {
+  align-items: center;
+  background: var(--color-primary, #72a7ff);
+  border-radius: 0.55rem;
+  color: var(--color-primary-content, #050506);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 0.78rem;
+  font-weight: 800;
+  height: 2rem;
+  justify-content: center;
+  width: 2rem;
+}
+
+.tinyrack-demo-brand strong,
+.tinyrack-demo-brand span {
+  display: block;
+}
+
+.tinyrack-demo-brand span,
+.tinyrack-demo-muted {
+  color: color-mix(in srgb, var(--color-base-content, #f7f8f8) 64%, transparent);
+}
+
+.tinyrack-demo-nav {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.tinyrack-demo-nav a,
+.tinyrack-demo-sidebar-note {
+  border-radius: 0.55rem;
+  color: color-mix(in srgb, var(--color-base-content, #f7f8f8) 76%, transparent);
+  padding: 0.55rem 0.65rem;
+  text-decoration: none;
+}
+
+.tinyrack-demo-nav a[aria-current="page"] {
+  background: color-mix(in srgb, var(--color-primary, #72a7ff) 16%, transparent);
+  color: var(--color-base-content, #f7f8f8);
+}
+
+.tinyrack-demo-sidebar-note {
+  border: 1px solid var(--color-base-300, #272b35);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-top: auto;
+}
+
+.tinyrack-demo-main {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  padding: 1rem;
+}
+
+.tinyrack-demo-header {
+  align-items: start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.tinyrack-demo-header h1,
+.tinyrack-demo-header p,
+.tinyrack-demo-panel h2,
+.tinyrack-demo-panel p,
+.tinyrack-demo-kpi strong,
+.tinyrack-demo-kpi span {
+  margin: 0;
+}
+
+.tinyrack-demo-header h1 {
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  line-height: 1.05;
+}
+
+.tinyrack-demo-header p {
+  color: color-mix(in srgb, var(--color-base-content, #f7f8f8) 68%, transparent);
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+.tinyrack-demo-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.tinyrack-demo-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.tinyrack-demo-kpi,
+.tinyrack-demo-panel {
+  background: var(--color-base-100, #0b0d12);
+  border: 1px solid var(--color-base-300, #272b35);
+  border-radius: 0.75rem;
+  min-width: 0;
+}
+
+.tinyrack-demo-kpi {
+  display: grid;
+  gap: 0.4rem;
+  grid-column: span 3;
+  padding: 1rem;
+}
+
+.tinyrack-demo-kpi span {
+  color: color-mix(in srgb, var(--color-base-content, #f7f8f8) 62%, transparent);
+  font-size: 0.8rem;
+}
+
+.tinyrack-demo-kpi strong {
+  font-size: 1.55rem;
+}
+
+.tinyrack-demo-panel {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem;
+}
+
+.tinyrack-demo-panel--wide {
+  grid-column: span 8;
+}
+
+.tinyrack-demo-panel--side {
+  grid-column: span 4;
+}
+
+.tinyrack-demo-panel--full {
+  grid-column: 1 / -1;
+}
+
+.tinyrack-demo-panel h2 {
+  font-size: 1rem;
+}
+
+.tinyrack-demo-panel p {
+  color: color-mix(in srgb, var(--color-base-content, #f7f8f8) 66%, transparent);
+  line-height: 1.55;
+}
+
+.tinyrack-demo-metric-row,
+.tinyrack-demo-log-row {
+  align-items: center;
+  border-top: 1px solid var(--color-base-300, #272b35);
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+}
+
+.tinyrack-demo-status-dot {
+  background: var(--color-success, #20c997);
+  border-radius: 9999px;
+  display: inline-block;
+  height: 0.55rem;
+  width: 0.55rem;
+}
+
+.tinyrack-demo-code {
+  background: color-mix(in srgb, var(--color-base-200, #141821) 80%, black);
+  border: 1px solid var(--color-base-300, #272b35);
+  border-radius: 0.65rem;
+  color: var(--color-primary, #72a7ff);
+  font-family: var(--tinyrack-font-mono, ui-monospace, monospace);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  margin: 0;
+  overflow: auto;
+  padding: 0.85rem;
+}
+
+.tinyrack-starlight-demo {
+  --sl-color-accent-low: #112347;
+  --sl-color-accent: #72a7ff;
+  --sl-color-accent-high: #d9ebff;
+  --sl-color-white: #f7f8f8;
+  --sl-color-gray-1: #eef0f3;
+  --sl-color-gray-2: #b8c0cf;
+  --sl-color-gray-3: #687181;
+  --sl-color-gray-4: #4b5260;
+  --sl-color-gray-5: #272b35;
+  --sl-color-gray-6: #141821;
+  --sl-color-black: #050506;
+  --sl-font: var(--tinyrack-font-body, ui-sans-serif, system-ui, sans-serif);
+  background: var(--sl-color-black);
+  color: var(--sl-color-gray-1);
+  font-family: var(--sl-font);
+}
+
+.tinyrack-starlight-shell {
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 1rem;
+  display: grid;
+  grid-template-columns: 17rem minmax(0, 1fr) 14rem;
+  min-height: calc(100vh - 2rem);
+  overflow: hidden;
+}
+
+.tinyrack-starlight-sidebar,
+.tinyrack-starlight-toc {
+  background: var(--sl-color-gray-6);
+  padding: 1rem;
+}
+
+.tinyrack-starlight-sidebar {
+  border-right: 1px solid var(--sl-color-gray-5);
+}
+
+.tinyrack-starlight-toc {
+  border-left: 1px solid var(--sl-color-gray-5);
+}
+
+.tinyrack-starlight-content {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.5rem;
+}
+
+.tinyrack-starlight-topbar {
+  align-items: center;
+  border-bottom: 1px solid var(--sl-color-gray-5);
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
+.tinyrack-starlight-search {
+  background: var(--sl-color-gray-6);
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.55rem;
+  color: var(--sl-color-gray-2);
+  min-width: 16rem;
+  padding: 0.55rem 0.75rem;
+}
+
+.tinyrack-starlight-nav,
+.tinyrack-starlight-toc nav {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.tinyrack-starlight-nav a,
+.tinyrack-starlight-toc a {
+  border-radius: 0.5rem;
+  color: var(--sl-color-gray-2);
+  padding: 0.45rem 0.55rem;
+  text-decoration: none;
+}
+
+.tinyrack-starlight-nav a[aria-current="page"] {
+  background: var(--sl-color-accent-low);
+  color: var(--sl-color-accent-high);
+}
+
+.tinyrack-starlight-content h1,
+.tinyrack-starlight-content h2,
+.tinyrack-starlight-content p,
+.tinyrack-starlight-sidebar h2,
+.tinyrack-starlight-toc h2 {
+  margin: 0;
+}
+
+.tinyrack-starlight-content h1 {
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.tinyrack-starlight-content p {
+  color: var(--sl-color-gray-2);
+  line-height: 1.7;
+  max-width: 48rem;
+}
+
+.tinyrack-starlight-callout {
+  background: var(--sl-color-accent-low);
+  border: 1px solid var(--sl-color-accent);
+  border-radius: 0.75rem;
+  color: var(--sl-color-accent-high);
+  padding: 1rem;
+}
+
+.tinyrack-starlight-code {
+  background: var(--sl-color-gray-6);
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  color: var(--sl-color-gray-1);
+  font-family: var(--sl-font-mono, ui-monospace, monospace);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  margin: 0;
+  overflow: auto;
+  padding: 1rem;
+}
+
 @media (max-width: 48rem) {
   .tinyrack-docs-page {
     padding: 1.25rem;
@@ -458,5 +860,33 @@
   .tinyrack-docs-row,
   .tinyrack-docs-scale > div {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 64rem) {
+  .tinyrack-demo-shell,
+  .tinyrack-starlight-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .tinyrack-demo-sidebar,
+  .tinyrack-starlight-sidebar,
+  .tinyrack-starlight-toc {
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .tinyrack-demo-header {
+    display: grid;
+  }
+
+  .tinyrack-demo-header-actions {
+    justify-content: flex-start;
+  }
+
+  .tinyrack-demo-kpi,
+  .tinyrack-demo-panel--wide,
+  .tinyrack-demo-panel--side {
+    grid-column: 1 / -1;
   }
 }

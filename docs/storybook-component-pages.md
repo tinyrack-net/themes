@@ -33,12 +33,22 @@ Do not generate universal `Tokens`, `Accessibility`, `Playground`, or `Compositi
 
 ## Storybook docs pages
 
-Storybook also includes static design-system documentation pages outside the generated component files. The Storybook sidebar starts with foundations so token guidance is available before adapter-specific pages:
+Storybook also includes static design-system documentation pages outside the generated component files. The Storybook sidebar starts with onboarding, then moves from foundations to adapter guidance and product-like demos:
 
+- `Welcome/*` for package purpose, installation, and the recommended review route.
 - `Foundations/*` for colors, typography, spacing, radius, and shadows.
 - `Adapters/*` for Tailwind, daisyUI, Mantine, and Astro Starlight integration notes.
+- `Demo/*` for product-like Mantine, daisyUI, and Starlight pages that show how the adapters feel in real surfaces.
 
 Use those pages for system-level guidance. Use generated component pages for adapter-specific component review.
+
+Adapter docs should answer integration questions directly: which export to import,
+which provider or data attribute is required, when to use combined presets, when to
+switch to explicit composition, and which common mistakes to check before shipping.
+
+Demo pages are not component API documentation. They should look like realistic
+Tinyrack product or docs screens and should combine multiple primitives so spacing,
+contrast, hierarchy, and theme inheritance are visible at page level.
 
 ## Verification
 

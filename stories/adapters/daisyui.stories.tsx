@@ -1,9 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
   CodeSnippet,
+  DocsCallout,
   DocsCard,
   DocsGrid,
   DocsPage,
+  DocsSection,
+  DocsTable,
   GuidanceList,
 } from '../docs-components.js';
 
@@ -14,13 +17,50 @@ function DaisyUiPage() {
       title="daisyUI"
       description="The daisyUI adapter gives Tailwind product surfaces a Tinyrack theme without changing component markup."
     >
+      <DocsSection title="Choose the right entry">
+        <DocsTable
+          columns={['Situation', 'Recommended setup', 'Why']}
+          rows={[
+            [
+              'A normal Tailwind + daisyUI app',
+              '@tinyrack/themes/tailwind/daisyui.css',
+              'Imports Tailwind tokens, Tinyrack daisyUI themes, and daisyUI plugin registration together.',
+            ],
+            [
+              'The app owns daisyUI plugin ordering',
+              'tailwind.css + daisyui.css + app-local @plugin',
+              'Use explicit composition when plugin order or theme registration must stay local.',
+            ],
+            [
+              'A mixed daisyUI + Mantine app',
+              'tailwind.css + daisyui.css + mantine.css',
+              'Avoid importing both combined presets because they duplicate Tailwind token setup.',
+            ],
+          ]}
+        />
+      </DocsSection>
+
       <DocsGrid>
-        <DocsCard title="Install">
-          <CodeSnippet>{`@import '@tinyrack/themes/tailwind.css';
-@import '@tinyrack/themes/daisyui.css';
+        <DocsCard title="Recommended CSS entry">
+          <CodeSnippet>{`@import "tailwindcss";
+@import "@tinyrack/themes/tailwind/daisyui.css";
 
 <html data-theme="tinyrack-dark">`}</CodeSnippet>
         </DocsCard>
+        <DocsCard title="Explicit composition">
+          <CodeSnippet>{`@import "tailwindcss";
+@import "@tinyrack/themes/tailwind.css";
+@import "@tinyrack/themes/daisyui.css";
+
+@plugin "daisyui" {
+  themes:
+    tinyrack-light --default,
+    tinyrack-dark --prefersdark;
+}`}</CodeSnippet>
+        </DocsCard>
+      </DocsGrid>
+
+      <DocsGrid>
         <DocsCard title="Guidance">
           <GuidanceList
             items={[
@@ -30,7 +70,21 @@ function DaisyUiPage() {
             ]}
           />
         </DocsCard>
+        <DocsCard title="Verify">
+          <GuidanceList
+            items={[
+              'Confirm btn btn-primary uses Tinyrack blue on tinyrack-dark.',
+              'Confirm data-theme switches between tinyrack-dark and tinyrack-light.',
+              'Confirm app CSS does not register @plugin "daisyui" twice when using the combined preset.',
+            ]}
+          />
+        </DocsCard>
       </DocsGrid>
+
+      <DocsCallout title="Most common mistake">
+        The combined daisyUI entry already registers the daisyUI plugin themes. Add a
+        local @plugin block only when you intentionally choose explicit composition.
+      </DocsCallout>
     </DocsPage>
   );
 }

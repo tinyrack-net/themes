@@ -53,6 +53,12 @@ const curatedComponentSlugs = new Set([
   'textinput',
   'toggle',
 ]);
+const requiredStaticStorySelectors = new Map([
+  ['welcome-start-here--default', '[data-storybook-welcome="true"]'],
+  ['demo-mantine-product-app--default', '[data-demo-mantine="true"]'],
+  ['demo-daisyui-product-app--default', '[data-demo-daisyui="true"]'],
+  ['demo-starlight-docs-site--default', '[data-demo-starlight="true"]'],
+]);
 
 const contentTypes = new Map([
   ['.css', 'text/css; charset=utf-8'],
@@ -104,6 +110,10 @@ function isComponentScenario(entry) {
   );
 }
 
+function isRequiredStaticStory(entry) {
+  return requiredStaticStorySelectors.has(entry.id ?? '');
+}
+
 function isObsoleteComponentScenario(entry) {
   const id = entry.id ?? '';
 
@@ -122,7 +132,7 @@ function readEntries(indexJson) {
       (entry) =>
         entry.type === undefined || entry.type === 'story' || entry.type === 'docs',
     )
-    .filter(isComponentScenario)
+    .filter((entry) => isComponentScenario(entry) || isRequiredStaticStory(entry))
     .sort((left, right) => left.id.localeCompare(right.id));
 }
 
@@ -142,6 +152,12 @@ function selectEntries(entries) {
 
   const selected = new Map();
   const add = (entry) => selected.set(entry.id, entry);
+
+  for (const entry of entries) {
+    if (isRequiredStaticStory(entry)) {
+      add(entry);
+    }
+  }
 
   for (const entry of entries) {
     if (/^(mantine|daisyui)(-components)?-button--/.test(entry.id)) {
@@ -332,8 +348,10 @@ async function close(server) {
   });
 }
 
-function expectedSelectorsFor(_scenario) {
-  return [];
+function expectedSelectorsFor(entry) {
+  const requiredSelector = requiredStaticStorySelectors.get(entry.id ?? '');
+
+  return requiredSelector ? [requiredSelector] : [];
 }
 
 async function auditPage(page, entry, auditPort) {
@@ -348,7 +366,7 @@ async function auditPage(page, entry, auditPort) {
         '.tinyrack-showcase-single, .tinyrack-component-story',
       );
       const root = document.querySelector(
-        '.tinyrack-component-story, .tinyrack-showcase-single, .tinyrack-docs-page',
+        '.tinyrack-component-story, .tinyrack-showcase-single, .tinyrack-docs-page, .tinyrack-demo-page',
       );
       const rootRect = root?.getBoundingClientRect();
       const bodyStyle = window.getComputedStyle(document.body);
@@ -380,7 +398,7 @@ async function auditPage(page, entry, auditPort) {
       };
     },
     {
-      expectedSelectors: expectedSelectorsFor(storyScenario),
+      expectedSelectors: expectedSelectorsFor(entry),
       galleryChromeSelectors,
     },
   );

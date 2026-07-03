@@ -7,6 +7,7 @@ The goal is a browsable catalog, not exhaustive per-component documentation. Eac
 ## Generated stories
 
 Generated component stories live under `stories/{mantine,daisyui}/components/`.
+They are generated outputs and are intentionally ignored by git.
 
 Do not hand-edit those files directly. Update the showcase registry, story metadata, or generator source instead, then regenerate stories.
 

@@ -1,17 +1,37 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-function assert(condition, message) {
+type DistPackageModule = Record<string, unknown> & {
+  tinyrackTokens: unknown;
+  tinyrackSemanticColors: {
+    dark: {
+      primary: string;
+    };
+  };
+  tinyrackMantineTheme: {
+    primaryColor: string;
+  };
+  tinyrackDaisyUiThemes: {
+    dark: {
+      name: string;
+    };
+  };
+  withTinyrackStarlightTheme: (config: { title: string; customCss: string[] }) => {
+    customCss: string[];
+  };
+};
+
+function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
     throw new Error(message);
   }
 }
 
-function resolvePackageSubpath(subpath) {
+function resolvePackageSubpath(subpath: string) {
   return fileURLToPath(import.meta.resolve(`@tinyrack/themes${subpath}`));
 }
 
-async function assertJsExport(subpath, expectedExports) {
+async function assertJsExport(subpath: string, expectedExports: readonly string[]) {
   const resolvedPath = resolvePackageSubpath(subpath);
 
   assert(
@@ -20,7 +40,7 @@ async function assertJsExport(subpath, expectedExports) {
   );
   assert(existsSync(resolvedPath), `${subpath || '/'} resolved file is missing`);
 
-  const module = await import(`@tinyrack/themes${subpath}`);
+  const module = (await import(`@tinyrack/themes${subpath}`)) as DistPackageModule;
 
   for (const exportName of expectedExports) {
     assert(exportName in module, `${subpath || '/'} is missing export ${exportName}`);
@@ -29,7 +49,7 @@ async function assertJsExport(subpath, expectedExports) {
   return module;
 }
 
-function assertCssExport(subpath, expectedContents) {
+function assertCssExport(subpath: string, expectedContents: readonly string[]) {
   const resolvedPath = resolvePackageSubpath(subpath);
 
   assert(

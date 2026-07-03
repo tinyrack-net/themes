@@ -1,20 +1,23 @@
 import { globSync } from 'node:fs';
 import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const root = resolve(import.meta.dirname, '..');
 const srcRoot = resolve(root, 'src');
 const distRoot = resolve(root, 'dist');
 const checkMode = process.argv.includes('--check');
 
-const { createTinyrackThemeCssFiles } = await import(
-  '../dist/css/create-tinyrack-theme-css.js'
-).catch((error) => {
+type ThemeCssModule = typeof import('../src/css/create-tinyrack-theme-css.js');
+
+const { createTinyrackThemeCssFiles } = (await import(
+  pathToFileURL(resolve(root, 'dist/css/create-tinyrack-theme-css.js')).href
+).catch((error: unknown) => {
   throw new Error(
     'CSS generation needs compiled theme helpers. Run `pnpm build:types` before this script.',
     { cause: error },
   );
-});
+})) as ThemeCssModule;
 
 const generatedCssFiles = createTinyrackThemeCssFiles();
 

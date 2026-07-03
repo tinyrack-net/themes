@@ -26,7 +26,7 @@ describe('npm package publishing', () => {
     expect(packageJson.scripts.verify).toContain('pnpm build');
     expect(packageJson.scripts.verify).toContain('pnpm test:dist');
     expect(packageJson.scripts.verify).toContain('pnpm test:astro-fixture:built');
-    expect(packageJson.scripts['test:dist']).toBe('node scripts/test-dist-package.mjs');
+    expect(packageJson.scripts['test:dist']).toBe('node scripts/test-dist-package.ts');
   });
 
   it('declares the package as a public scoped npm package', async () => {

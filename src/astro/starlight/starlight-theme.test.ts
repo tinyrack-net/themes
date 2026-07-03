@@ -29,4 +29,13 @@ describe('tinyrack starlight theme helper', () => {
     expect(css).toContain('--sl-color-gray-6: #171717;');
     expect(css).toContain('--sl-color-accent-low: #171717;');
   });
+
+  it('exposes Tinyrack rhythm tokens to Starlight docs surfaces', () => {
+    const css = createTinyrackThemeCssFiles()['astro/starlight/theme.css'];
+
+    expect(css).toContain('--tinyrack-starlight-space-lg: 1rem;');
+    expect(css).toContain('--sl-content-pad-x: var(--tinyrack-starlight-space-lg);');
+    expect(css).toContain('border-radius: var(--tinyrack-starlight-radius-surface);');
+    expect(css).toContain('starlight-tabs [role="tab"]');
+  });
 });

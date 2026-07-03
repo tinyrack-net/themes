@@ -3,6 +3,7 @@ import {
   tinyrackPalettes,
   tinyrackRadii,
   tinyrackSemanticColors,
+  tinyrackSpacing,
   tinyrackTypography,
 } from '../tokens/index.js';
 
@@ -222,9 +223,66 @@ export function createTinyrackMantineStylesCss() {
   );
 }
 
+function createStarlightRhythmDeclarations(): CssDeclaration[] {
+  return [
+    ['--tinyrack-starlight-space-xs', tinyrackSpacing.xs],
+    ['--tinyrack-starlight-space-sm', tinyrackSpacing.sm],
+    ['--tinyrack-starlight-space-md', tinyrackSpacing.md],
+    ['--tinyrack-starlight-space-lg', tinyrackSpacing.lg],
+    ['--tinyrack-starlight-space-xl', tinyrackSpacing.xl],
+    ['--tinyrack-starlight-space-2xl', tinyrackSpacing['2xl']],
+    ['--tinyrack-starlight-radius-control', tinyrackRadii.md],
+    ['--tinyrack-starlight-radius-surface', tinyrackRadii.lg],
+    ['--tinyrack-starlight-radius-pill', tinyrackRadii.full],
+    ['--sl-content-pad-x', 'var(--tinyrack-starlight-space-lg)'],
+    ['--sl-sidebar-pad-x', 'var(--tinyrack-starlight-space-lg)'],
+    ['--sl-content-gap-y', 'var(--tinyrack-starlight-space-lg)'],
+    ['--sl-line-height', tinyrackTypography.lineHeight.relaxed],
+  ];
+}
+
+function createStarlightDesktopRhythmCss() {
+  return `@media (min-width: 72rem) {
+  :root {
+    --sl-content-pad-x: var(--tinyrack-starlight-space-xl);
+    --sl-sidebar-pad-x: var(--tinyrack-starlight-space-xl);
+  }
+}`;
+}
+
+function createStarlightComponentRhythmCss() {
+  return `@layer starlight.components {
+  .card {
+    border-radius: var(--tinyrack-starlight-radius-surface);
+    gap: var(--tinyrack-starlight-space-md);
+    padding: var(--tinyrack-starlight-space-lg);
+  }
+
+  .card .icon {
+    border-radius: var(--tinyrack-starlight-radius-control);
+  }
+
+  .card .body {
+    font-size: var(--sl-text-body);
+  }
+
+  .sl-link-card {
+    border-radius: var(--tinyrack-starlight-radius-surface);
+    gap: var(--tinyrack-starlight-space-sm);
+    padding: var(--tinyrack-starlight-space-lg);
+  }
+
+  starlight-tabs [role="tab"] {
+    min-height: 2.5rem;
+    padding-block: var(--tinyrack-starlight-space-sm);
+  }
+}`;
+}
+
 export function createTinyrackStarlightThemeCss() {
   return createFile(
     createBlock(':root', [
+      ...createStarlightRhythmDeclarations(),
       [
         '--sl-font',
         createFontFallbackVar(
@@ -264,6 +322,8 @@ export function createTinyrackStarlightThemeCss() {
       ['--sl-color-gray-6', tinyrackPalettes.neutral[900]],
       ['--sl-color-black', tinyrackSemanticColors.dark.surface],
     ]),
+    createStarlightDesktopRhythmCss(),
+    createStarlightComponentRhythmCss(),
   );
 }
 

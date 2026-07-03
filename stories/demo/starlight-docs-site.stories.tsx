@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 import '../../src/astro/starlight/theme.css';
 
 const navItems = [
@@ -16,6 +16,16 @@ const cards = [
   ['Content blocks', 'Use cards, asides, links, and badges in real prose.'],
   ['Release checks', 'Build the fixture before publishing.'],
 ] as const;
+
+const installCommands = {
+  pnpm: 'pnpm add @tinyrack/themes @astrojs/starlight astro',
+  npm: 'npm install @tinyrack/themes @astrojs/starlight astro',
+  yarn: 'yarn add @tinyrack/themes @astrojs/starlight astro',
+} as const;
+
+type InstallTool = keyof typeof installCommands;
+
+const installTools = Object.keys(installCommands) as InstallTool[];
 
 const releaseSteps = [
   ['Build the package', 'Generate CSS and type declarations before fixture checks.'],
@@ -60,6 +70,8 @@ function DemoUse({
 }
 
 function StarlightDocsSite() {
+  const [installTool, setInstallTool] = useState<InstallTool>('pnpm');
+
   return (
     <main
       className="box-border h-screen min-h-screen overflow-y-auto bg-[#0a0a0a] p-2 font-[var(--sl-font)] text-[#f5f5f5]"
@@ -76,7 +88,27 @@ function StarlightDocsSite() {
               <span className="block break-words text-[#a3a3a3]">Docs adapter</span>
             </div>
           </div>
-          <nav className="mt-4 grid gap-1.5" aria-label="Docs navigation">
+          <details className="mt-4 lg:hidden">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-lg border border-[#404040] bg-[#171717] px-3 py-2 font-semibold text-white">
+              Sections
+              <span aria-hidden="true">+</span>
+            </summary>
+            <nav className="mt-2 grid gap-2" aria-label="Mobile docs navigation">
+              {navItems.map(([href, label], index) => (
+                <a
+                  aria-current={index === 0 ? 'page' : undefined}
+                  className={`rounded-lg px-3 py-2.5 text-[#d4d4d4] no-underline ${
+                    index === 0 ? 'bg-[#171717] text-white' : ''
+                  }`}
+                  href={href}
+                  key={href}
+                >
+                  {label}
+                </a>
+              ))}
+            </nav>
+          </details>
+          <nav className="mt-4 hidden gap-1.5 lg:grid" aria-label="Docs navigation">
             {navItems.map(([href, label], index) => (
               <a
                 aria-current={index === 0 ? 'page' : undefined}
@@ -97,23 +129,29 @@ function StarlightDocsSite() {
             <span className="break-words text-[#a3a3a3]">
               Docs / Adapters / Starlight
             </span>
-            <div className="w-full min-w-0 max-w-64 rounded-md border border-[#404040] bg-[#171717] px-3 py-2 text-[#d4d4d4] sm:w-[min(16rem,100%)]">
-              Search docs...
-            </div>
+            <label className="sr-only" htmlFor="starlight-demo-search">
+              Search docs
+            </label>
+            <input
+              className="w-full min-w-0 rounded-md border border-[#404040] bg-[#171717] px-3 py-2 text-[#d4d4d4] placeholder:text-[#a3a3a3] sm:w-[min(18rem,100%)] lg:max-w-72"
+              id="starlight-demo-search"
+              placeholder="Search docs..."
+              type="search"
+            />
           </header>
 
           <section className="grid min-w-0 gap-3 pt-2 pb-1" id="start">
             <div className="flex min-w-0 flex-wrap items-center gap-2">
               <DemoUse id="starlight-badge" inline>
-                <span className="inline-flex rounded border border-[#fafafa] bg-[#fafafa] px-2 py-1 font-[var(--sl-font-mono)] text-[0.72rem] leading-none font-extrabold text-[#0a0a0a]">
+                <span className="inline-flex min-h-6 items-center rounded border border-[#fafafa] bg-[#fafafa] px-2 py-1 font-[var(--sl-font-mono)] text-xs leading-none font-extrabold text-[#0a0a0a]">
                   Starlight 0.40
                 </span>
               </DemoUse>
-              <span className="inline-flex rounded border border-[#fafafa] bg-transparent px-2 py-1 font-[var(--sl-font-mono)] text-[0.72rem] leading-none font-extrabold text-[#f5f5f5]">
+              <span className="inline-flex min-h-6 items-center rounded border border-[#fafafa] bg-transparent px-2 py-1 font-[var(--sl-font-mono)] text-xs leading-none font-extrabold text-[#f5f5f5]">
                 Theme adapter
               </span>
             </div>
-            <h1 className="m-0 text-balance text-[clamp(1.8rem,3.6vw,2.8rem)] leading-[1.08] tracking-normal break-words">
+            <h1 className="m-0 text-balance text-3xl leading-[1.08] tracking-normal break-words sm:text-4xl lg:text-[2.8rem]">
               Build Tinyrack docs with Astro Starlight
             </h1>
             <p className="m-0 max-w-3xl break-words text-[1.05rem] leading-7 text-[#d4d4d4]">
@@ -124,14 +162,14 @@ function StarlightDocsSite() {
             <div className="flex min-w-0 flex-wrap items-center gap-2">
               <DemoUse id="starlight-link-button" inline>
                 <a
-                  className="inline-flex min-h-9 items-center justify-center rounded-full border border-[#fafafa] bg-[#fafafa] px-4 py-2 text-sm font-extrabold text-[#0a0a0a] no-underline"
+                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#fafafa] bg-[#fafafa] px-4 py-2 text-sm font-extrabold text-[#0a0a0a] no-underline"
                   href="#install"
                 >
                   Start setup
                 </a>
               </DemoUse>
               <a
-                className="inline-flex min-h-9 items-center justify-center rounded-full border border-[#fafafa] bg-transparent px-4 py-2 text-sm font-extrabold text-[#f5f5f5] no-underline"
+                className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#fafafa] bg-transparent px-4 py-2 text-sm font-extrabold text-[#f5f5f5] no-underline"
                 href="#release"
               >
                 Review checklist
@@ -141,7 +179,7 @@ function StarlightDocsSite() {
 
           <DemoUse
             id="starlight-aside"
-            className="grid min-w-0 gap-2 rounded-lg border border-[#fafafa] bg-[#0a0a0a] p-4 text-white"
+            className="grid min-w-0 gap-2 rounded-lg border border-[#404040] bg-[#0a0a0a] p-4 text-white"
           >
             <strong>Before shipping</strong>
             <p className="m-0 max-w-3xl break-words leading-7 text-[#d4d4d4]">
@@ -160,42 +198,45 @@ function StarlightDocsSite() {
             </div>
             <DemoUse
               id="starlight-tabs"
-              className="grid min-w-0 gap-3 rounded-md border border-[#404040] bg-[#0a0a0a] p-2.5"
+              className="grid min-w-0 gap-3 rounded-lg border border-[#404040] bg-[#0a0a0a] p-3"
             >
               <div
-                className="flex min-w-0 flex-wrap items-center gap-1.5 border-b border-[#404040] pb-2"
+                className="flex min-w-0 flex-wrap items-center gap-2 border-b border-[#404040] pb-3"
                 role="tablist"
                 aria-label="Install command tabs"
               >
-                <button
-                  aria-selected="true"
-                  className="cursor-pointer rounded border border-[#404040] bg-[#171717] px-2 py-1.5 text-[0.82rem] text-white"
-                  role="tab"
-                  type="button"
-                >
-                  pnpm
-                </button>
-                <button
-                  aria-selected="false"
-                  className="cursor-pointer rounded border border-transparent bg-transparent px-2 py-1.5 text-[0.82rem] text-[#d4d4d4]"
-                  role="tab"
-                  type="button"
-                >
-                  npm
-                </button>
-                <button
-                  aria-selected="false"
-                  className="cursor-pointer rounded border border-transparent bg-transparent px-2 py-1.5 text-[0.82rem] text-[#d4d4d4]"
-                  role="tab"
-                  type="button"
-                >
-                  yarn
-                </button>
+                {installTools.map((tool) => {
+                  const selected = installTool === tool;
+
+                  return (
+                    <button
+                      aria-controls="starlight-install-panel"
+                      aria-selected={selected}
+                      className={`min-h-10 cursor-pointer rounded-md border px-3 py-2 text-sm ${
+                        selected
+                          ? 'border-[#404040] bg-[#171717] text-white'
+                          : 'border-transparent bg-transparent text-[#d4d4d4]'
+                      }`}
+                      id={`starlight-install-tab-${tool}`}
+                      key={tool}
+                      onClick={() => setInstallTool(tool)}
+                      role="tab"
+                      type="button"
+                    >
+                      {tool}
+                    </button>
+                  );
+                })}
               </div>
               <DemoUse id="starlight-tab-item" className="grid min-w-0 gap-3">
                 <DemoUse id="starlight-code" className="min-w-0">
-                  <pre className="m-0 box-border w-full max-w-full overflow-auto rounded-lg border border-[#404040] bg-[#0a0a0a] p-4 font-[var(--sl-font-mono)] text-[0.85rem] leading-[1.65] text-[#f5f5f5]">
-                    pnpm add @tinyrack/themes @astrojs/starlight astro
+                  <pre
+                    aria-labelledby={`starlight-install-tab-${installTool}`}
+                    className="m-0 box-border w-full max-w-full overflow-auto rounded-lg border border-[#404040] bg-[#0a0a0a] p-4 font-[var(--sl-font-mono)] text-[0.85rem] leading-[1.65] whitespace-pre-wrap break-words text-[#f5f5f5]"
+                    id="starlight-install-panel"
+                    role="tabpanel"
+                  >
+                    {installCommands[installTool]}
                   </pre>
                 </DemoUse>
               </DemoUse>
@@ -211,7 +252,7 @@ function StarlightDocsSite() {
               </p>
             </div>
             <DemoUse id="starlight-code" className="min-w-0">
-              <pre className="m-0 box-border w-full max-w-full overflow-auto rounded-lg border border-[#404040] bg-[#0a0a0a] p-4 font-[var(--sl-font-mono)] text-[0.85rem] leading-[1.65] text-[#f5f5f5]">
+              <pre className="m-0 box-border w-full max-w-full overflow-auto rounded-lg border border-[#404040] bg-[#0a0a0a] p-4 font-[var(--sl-font-mono)] text-[0.85rem] leading-[1.65] whitespace-pre-wrap break-words text-[#f5f5f5]">
                 {configCode}
               </pre>
             </DemoUse>
@@ -232,11 +273,15 @@ function StarlightDocsSite() {
               {cards.map(([title, copy]) => (
                 <DemoUse
                   id="starlight-card"
-                  className="grid min-w-0 gap-3 rounded-md border border-[#404040] bg-[#0a0a0a] p-3"
+                  className="grid min-w-0 gap-3 rounded-lg border border-[#404040] bg-[#0a0a0a] p-3"
                   key={title}
                 >
                   <div className="flex min-w-0 items-center gap-2">
-                    <DemoUse id="starlight-icon" inline>
+                    <DemoUse
+                      id="starlight-icon"
+                      inline
+                      className="inline-flex h-6 w-6 flex-none items-center leading-none"
+                    >
                       <span
                         className='relative inline-block h-6 w-6 flex-none rounded border border-[#404040] bg-[#171717] after:absolute after:top-1/2 after:left-1/2 after:h-[0.45rem] after:w-[0.45rem] after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:bg-[#fafafa] after:content-[""]'
                         aria-hidden="true"
@@ -284,7 +329,7 @@ function StarlightDocsSite() {
             </div>
             <DemoUse
               id="starlight-file-tree"
-              className="grid min-w-0 gap-2 rounded-md border border-[#404040] bg-[#0a0a0a] p-3 font-[var(--sl-font-mono)] text-[0.78rem]"
+              className="grid min-w-0 gap-2 rounded-lg border border-[#404040] bg-[#0a0a0a] p-3 font-[var(--sl-font-mono)] text-[0.78rem]"
             >
               {[
                 'astro.config.mjs',

@@ -17,6 +17,8 @@ describe('tinyrack mantine theme', () => {
     expect(theme.fontFamily).toContain('var(--tinyrack-font-body)');
     expect(theme.headings?.fontFamily).toContain('var(--tinyrack-font-heading)');
     expect(theme.defaultRadius).toBe('sm');
+    expect(theme.spacing?.md).toBe('0.75rem');
+    expect(theme.spacing?.['2xl']).toBe('2rem');
     expect(theme.autoContrast).toBe(true);
   });
 

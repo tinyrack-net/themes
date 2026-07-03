@@ -103,7 +103,7 @@ function MantineProductApp() {
                   <DemoUse id="mantine-menu">
                     <Mantine.Menu shadow="sm" width={180} withinPortal={false}>
                       <Mantine.Menu.Target>
-                        <Mantine.Button size="xs" variant="default">
+                        <Mantine.Button size="sm" variant="default">
                           Queue menu
                         </Mantine.Button>
                       </Mantine.Menu.Target>
@@ -115,10 +115,10 @@ function MantineProductApp() {
                     </Mantine.Menu>
                   </DemoUse>
                   <DemoUse id="mantine-button">
-                    <Mantine.Button>Apply config</Mantine.Button>
+                    <Mantine.Button size="sm">Apply config</Mantine.Button>
                   </DemoUse>
                   <DemoUse id="mantine-actionicon">
-                    <Mantine.ActionIcon aria-label="Sync rack state">
+                    <Mantine.ActionIcon aria-label="Sync rack state" size={36}>
                       S
                     </Mantine.ActionIcon>
                   </DemoUse>

@@ -126,6 +126,16 @@ describe('storybook component story structure', () => {
     expect(packageJson.scripts['generate:stories']).toBe(
       'node scripts/generate-showcase-stories.ts',
     );
+    expect(packageJson.scripts['check:stories']).toBe(
+      'pnpm generate:stories && node scripts/generate-showcase-stories.ts --check',
+    );
+  });
+
+  it('keeps generated component stories ignored by git', () => {
+    const gitignore = readFileSync(join(repoRoot, '.gitignore'), 'utf8');
+
+    expect(gitignore).toContain('stories/daisyui/components/*.stories.tsx');
+    expect(gitignore).toContain('stories/mantine/components/*.stories.tsx');
   });
 
   it('has a Storybook scenario audit script', () => {

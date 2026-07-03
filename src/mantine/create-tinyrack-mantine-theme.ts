@@ -94,6 +94,7 @@ export function createTinyrackMantineTheme(
       md: tinyrackSpacing.md,
       lg: tinyrackSpacing.lg,
       xl: tinyrackSpacing.xl,
+      '2xl': tinyrackSpacing['2xl'],
     },
     shadows: {
       xs: tinyrackShadows.sm,

@@ -590,9 +590,9 @@
   border-right: 1px solid var(--color-base-300, #404040);
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
+  gap: 0.75rem;
   min-width: 0;
-  padding: 0.625rem;
+  padding: 0.75rem;
 }
 
 .tinyrack-demo-brand {
@@ -636,7 +636,9 @@
 .tinyrack-demo-sidebar-note {
   border-radius: 0.25rem;
   color: color-mix(in srgb, var(--color-base-content, #fafafa) 76%, transparent);
-  padding: 0.45rem 0.55rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  padding: 0.5rem 0.75rem;
   text-decoration: none;
   overflow-wrap: anywhere;
 }
@@ -656,10 +658,10 @@
 .tinyrack-demo-main {
   align-content: start;
   display: grid;
-  gap: 0.625rem;
+  gap: 0.75rem;
   min-width: 0;
   overflow: hidden;
-  padding: 0.625rem;
+  padding: 0.75rem;
 }
 
 .tinyrack-demo-header {
@@ -697,6 +699,7 @@
 }
 
 .tinyrack-demo-header-actions {
+  align-items: center;
   display: flex;
   flex: 0 1 auto;
   flex-wrap: wrap;
@@ -709,7 +712,7 @@
   align-content: start;
   align-items: start;
   display: grid;
-  gap: 0.625rem;
+  gap: 0.75rem;
   grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 
@@ -723,9 +726,9 @@
 
 .tinyrack-demo-kpi {
   display: grid;
-  gap: 0.3rem;
+  gap: 0.5rem;
   grid-column: span 3;
-  padding: 0.625rem;
+  padding: 0.75rem;
 }
 
 .tinyrack-demo-kpi span {
@@ -739,8 +742,8 @@
 
 .tinyrack-demo-panel {
   display: grid;
-  gap: 0.625rem;
-  padding: 0.625rem;
+  gap: 0.75rem;
+  padding: 0.75rem;
 }
 
 .tinyrack-demo-panel > *,
@@ -883,10 +886,13 @@
 
 .tinyrack-demo-panel h2 {
   font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .tinyrack-demo-panel p {
   color: color-mix(in srgb, var(--color-base-content, #fafafa) 66%, transparent);
+  font-size: 0.875rem;
   line-height: 1.55;
 }
 
@@ -909,6 +915,13 @@
 .tinyrack-demo-table-scroll table,
 .tinyrack-showcase-table-scroll table {
   min-width: 34rem;
+}
+
+.tinyrack-demo-table-scroll .mantine-Table-th,
+.tinyrack-demo-table-scroll .mantine-Table-td,
+.tinyrack-showcase-table-scroll .mantine-Table-th,
+.tinyrack-showcase-table-scroll .mantine-Table-td {
+  padding-inline: 0.75rem;
 }
 
 .tinyrack-control-review {
@@ -934,7 +947,7 @@
 
 .tinyrack-control-review__field {
   display: grid;
-  gap: 0.35rem;
+  gap: 0.5rem;
   min-width: 0;
 }
 
@@ -1039,7 +1052,7 @@
   line-height: 1.6;
   margin: 0;
   overflow: auto;
-  padding: 0.85rem;
+  padding: 0.75rem;
 }
 
 @media (max-width: 48rem) {
@@ -1094,8 +1107,11 @@
   }
 
   .tinyrack-demo-sidebar {
-    gap: 0.75rem;
     padding: 0.75rem;
+  }
+
+  .tinyrack-demo-sidebar [data-demo-component="mantine-blockquote"] {
+    display: none;
   }
 
   .tinyrack-demo-nav {
@@ -1105,7 +1121,7 @@
   .tinyrack-demo-nav a,
   .tinyrack-demo-sidebar-note {
     font-size: 0.85rem;
-    padding: 0.5rem 0.55rem;
+    padding: 0.5rem;
   }
 
   .tinyrack-demo-sidebar-note {
@@ -1113,7 +1129,7 @@
   }
 
   .tinyrack-demo-main {
-    padding: 0.85rem;
+    padding: 0.75rem;
   }
 
   .tinyrack-demo-header h1 {
@@ -1122,5 +1138,15 @@
 
   .tinyrack-demo-header-actions > * {
     flex: 1 1 9rem;
+  }
+
+  .tinyrack-demo-header-actions
+    :where([data-demo-component="mantine-menu"], [data-demo-component="mantine-button"])
+    .mantine-Button-root {
+    width: 100%;
+  }
+
+  .tinyrack-demo-header-actions [data-demo-component="mantine-actionicon"] {
+    flex: 0 0 2.25rem;
   }
 }

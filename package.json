@@ -37,7 +37,7 @@
     "docs"
   ],
   "scripts": {
-    "dev": "pnpm generate:stories && pnpm generate:css && storybook dev -p 6006 --host 127.0.0.1",
+    "dev": "pnpm generate:stories && pnpm generate:css && storybook dev -p 6006 --host 127.0.0.1 --no-open",
     "build": "pnpm build:css",
     "build:types": "tsc -p tsconfig.build.json",
     "generate:css": "pnpm build:types && node scripts/copy-css.ts --src-only",
@@ -53,7 +53,7 @@
     "test:component": "pnpm generate:css && vitest run --project browser",
     "test:coverage": "vitest run --project unit --project browser --coverage",
     "test:dist": "node scripts/test-dist-package.ts",
-    "storybook": "pnpm generate:stories && pnpm generate:css && storybook dev -p 6006 --host 127.0.0.1",
+    "storybook": "pnpm generate:stories && pnpm generate:css && storybook dev -p 6006 --host 127.0.0.1 --no-open",
     "storybook:build": "pnpm generate:stories && pnpm generate:css && storybook build",
     "storybook:audit": "node scripts/audit-storybook-scenarios.ts",
     "biome": "biome check .",

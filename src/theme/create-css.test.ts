@@ -247,6 +247,9 @@ describe('generated Tinyrack theme CSS', () => {
     expect(mantineCss).toContain('[data-mantine-color-scheme] .mantine-Tabs-root');
     expect(mantineCss).toContain('height: var(--tinyrack-tabs-height-md);');
     expect(mantineCss).toContain('[data-mantine-color-scheme] .mantine-Timeline-root');
+    expect(mantineCss).toContain(
+      '--tinyrack-timeline-active-text-color: var(--tinyrack-primary-contrast);',
+    );
     expect(mantineCss).toContain('[data-mantine-color-scheme] .mantine-Stepper-root');
     expect(mantineCss).toContain(
       '--stepper-icon-size-sm: var(--tinyrack-stepper-icon-size-sm);',

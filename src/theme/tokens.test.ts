@@ -260,6 +260,9 @@ describe('tinyrack design tokens', () => {
       paddingX: '1rem',
     });
     expect(tinyrackTimelineContract.lineWidth).toBe('0.375rem');
+    expect(tinyrackTimelineContract.activeTextColor).toBe(
+      'var(--tinyrack-primary-contrast)',
+    );
   });
 
   it('defines Stepper and Range contracts for size and state parity', () => {

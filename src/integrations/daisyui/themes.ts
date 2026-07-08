@@ -1,4 +1,8 @@
 import { tinyrackPalettes } from '../../theme/colors.js';
+import {
+  tinyrackControlContract,
+  tinyrackSelectionControlContract,
+} from '../../theme/components.js';
 import { tinyrackRadii } from '../../theme/radii.js';
 import { tinyrackSemanticColors } from '../../theme/semantic.js';
 
@@ -11,9 +15,9 @@ export type TinyrackDaisyUiTheme = {
 };
 
 const tinyrackDaisyUiComponentTokens = {
-  '--size-selector': '0.25rem',
-  '--size-field': '0.25rem',
-  '--border': '1px',
+  '--size-selector': tinyrackSelectionControlContract.sizes.md.padding,
+  '--size-field': tinyrackControlContract.radius,
+  '--border': tinyrackControlContract.borderWidth,
   '--depth': '1',
   '--noise': '0',
 } as const;

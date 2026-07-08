@@ -51,8 +51,8 @@ function VariantMatrix({
   return (
     <section className="grid w-full gap-3" data-showcase-variant-matrix="true">
       <header className="grid gap-1">
-        <h4 className="m-0 text-base">{title}</h4>
-        <p className="m-0 text-[0.8rem] text-base-content/75">{description}</p>
+        <h4 className="m-0 text-tinyrack-md">{title}</h4>
+        <p className="m-0 text-tinyrack-xs text-base-content/75">{description}</p>
       </header>
       <div className="grid items-stretch gap-2 [grid-template-columns:repeat(auto-fit,minmax(14rem,1fr))] max-md:grid-cols-1">
         {children}
@@ -67,7 +67,7 @@ function VariantCell({ label, children }: { label: string; children: ReactNode }
       className="grid min-h-28 min-w-0 gap-2 overflow-visible rounded-md border border-base-300 bg-base-100/80 p-2.5 [&>div]:min-w-0 [&>div]:w-full"
       data-showcase-variant-cell="true"
     >
-      <span className="text-[0.72rem] font-bold tracking-[0.06em] text-primary uppercase">
+      <span className="text-tinyrack-2xs font-bold tracking-tinyrack-md text-primary uppercase">
         {label}
       </span>
       <div>{children}</div>
@@ -251,7 +251,7 @@ function MantineButtonScenario({
             <Mantine.Button disabled>Paused action</Mantine.Button>
           </VariantCell>
           <VariantCell label="accessibility note">
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Button text should describe the rack action.</li>
               <li>
                 Disabled buttons need adjacent explanation when the reason is unclear.
@@ -350,7 +350,7 @@ function MantineInputScenario({
           </VariantCell>
           <VariantCell label="accessibility input error">
             <ul
-              className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75"
+              className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75"
               id="mantine-input-help"
             >
               <li>Every input needs a persistent label.</li>
@@ -439,7 +439,7 @@ function MantineAlertScenario({
             </Mantine.Alert>
           </VariantCell>
           <VariantCell label="accessibility alert copy">
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Alert titles should summarize the status.</li>
               <li>Use assertive roles only for urgent interruptions.</li>
             </ul>
@@ -513,7 +513,7 @@ function MantineBadgeScenario({
             <Mantine.Badge aria-label="Node status: healthy">Healthy</Mantine.Badge>
           </VariantCell>
           <VariantCell label="accessibility badge note">
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Badge text should not rely on color alone.</li>
               <li>Status labels need clear adjacent context.</li>
             </ul>
@@ -593,7 +593,7 @@ function MantineControlScenario({
           </VariantCell>
           <VariantCell label={`accessibility ${component} help`}>
             <ul
-              className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75"
+              className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75"
               id={`${component}-help`}
             >
               <li>Use a visible label for every {component}.</li>
@@ -651,7 +651,7 @@ function MantineLayoutScenario({
             </Mantine.Card>
           </VariantCell>
           <VariantCell label={`${scenarioId} card action`}>
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Card surface contrast should frame related content.</li>
               <li>Card action placement should remain predictable.</li>
             </ul>
@@ -681,7 +681,7 @@ function MantineLayoutScenario({
             </Mantine.Modal>
           </VariantCell>
           <VariantCell label={`${scenarioId} confirm note`}>
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Modal dialog copy should name the confirm action.</li>
               <li>Keep cancellation available next to confirm.</li>
             </ul>
@@ -702,7 +702,7 @@ function MantineLayoutScenario({
             </Mantine.Tabs>
           </VariantCell>
           <VariantCell label={`${scenarioId} panel note`}>
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Tabs navigation should expose the active panel.</li>
               <li>Panel content should follow the tab list.</li>
             </ul>
@@ -728,7 +728,7 @@ function MantineLayoutScenario({
             </Mantine.Table>
           </VariantCell>
           <VariantCell label={`${scenarioId} row note`}>
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Table status text should be readable per row.</li>
               <li>Rows need enough contrast for dense data.</li>
             </ul>
@@ -748,7 +748,7 @@ function MantineLayoutScenario({
             </Mantine.Stepper>
           </VariantCell>
           <VariantCell label={`${scenarioId} progress note`}>
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Stepper progress should make the active step clear.</li>
               <li>Flow labels should remain short at narrow widths.</li>
             </ul>
@@ -1108,7 +1108,7 @@ function DaisyButtonScenario({
             </button>
           </VariantCell>
           <VariantCell label="accessibility note">
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Button text should describe the rack action.</li>
               <li>Icon-only buttons need an accessible name.</li>
             </ul>
@@ -1215,7 +1215,7 @@ function DaisyInputScenario({
           </VariantCell>
           <VariantCell label="accessibility input error">
             <ul
-              className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75"
+              className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75"
               id="daisy-input-help"
             >
               <li>Every input needs a visible label.</li>
@@ -1302,7 +1302,7 @@ function DaisyAlertScenario({
             </div>
           </VariantCell>
           <VariantCell label="accessibility alert note">
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Alert status text should describe the result.</li>
               <li>Use role alert only for urgent changes.</li>
             </ul>
@@ -1372,7 +1372,7 @@ function DaisyBadgeScenario({
             <span className="badge badge-success">Healthy</span>
           </VariantCell>
           <VariantCell label="accessibility badge note">
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Badge status should not rely on color alone.</li>
               <li>Keep badge text short and descriptive.</li>
             </ul>
@@ -1483,7 +1483,7 @@ function DaisyControlScenario({
           </VariantCell>
           <VariantCell label={`accessibility ${component} help`}>
             <ul
-              className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75"
+              className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75"
               id={`${component}-help`}
             >
               <li>Use a visible label for every {component}.</li>
@@ -1558,7 +1558,7 @@ function DaisyLayoutScenario({
             </div>
           </VariantCell>
           <VariantCell label={`${scenarioId} action note`}>
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Card surface contrast should group related content.</li>
               <li>Card action placement should stay consistent.</li>
             </ul>
@@ -1584,7 +1584,7 @@ function DaisyLayoutScenario({
             </div>
           </VariantCell>
           <VariantCell label={`${scenarioId} confirm note`}>
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Modal dialog text should name the confirm action.</li>
               <li>Confirm buttons need adjacent cancel actions.</li>
             </ul>
@@ -1609,7 +1609,7 @@ function DaisyLayoutScenario({
             </div>
           </VariantCell>
           <VariantCell label={`${scenarioId} panel note`}>
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Tabs navigation should identify the active panel.</li>
               <li>Panel content should stay close to tabs.</li>
             </ul>
@@ -1637,7 +1637,7 @@ function DaisyLayoutScenario({
             </div>
           </VariantCell>
           <VariantCell label={`${scenarioId} row note`}>
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Table status should be visible in each row.</li>
               <li>Rows need enough spacing for scanning.</li>
             </ul>
@@ -1674,7 +1674,7 @@ function DaisyLayoutScenario({
             )}
           </VariantCell>
           <VariantCell label={`${scenarioId} action note`}>
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Navigation menu items should describe the action.</li>
               <li>Keep primary actions reachable from the menu.</li>
             </ul>
@@ -1691,7 +1691,7 @@ function DaisyLayoutScenario({
             </ul>
           </VariantCell>
           <VariantCell label={`${scenarioId} progress note`}>
-            <ul className="m-0 grid gap-1 pl-[1.1rem] text-[0.85rem] text-base-content/75">
+            <ul className="m-0 grid gap-1 pl-[1.1rem] text-tinyrack-sm text-base-content/75">
               <li>Steps should communicate flow progress.</li>
               <li>Step labels should stay short on narrow screens.</li>
             </ul>

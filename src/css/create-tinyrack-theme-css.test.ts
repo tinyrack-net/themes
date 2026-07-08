@@ -44,6 +44,18 @@ describe('generated Tinyrack theme CSS', () => {
     expect(css).toContain('--tinyrack-mantine-filled-color: #0a0a0a;');
   });
 
+  it('generates shared typography variables and language font selectors', () => {
+    const css = createTinyrackThemeCssFiles()['tailwind/theme.css'];
+
+    expect(css).toContain('--tinyrack-font-body:');
+    expect(css).toContain('"Noto Sans KR"');
+    expect(css).toContain('--tinyrack-text-md: 1rem;');
+    expect(css).toContain('--tinyrack-leading-lg: 1.65;');
+    expect(css).toContain('--tinyrack-tracking-none: 0;');
+    expect(css).toContain(':where(:lang(ko))');
+    expect(css).toContain('font-family: var(--tinyrack-font-korean);');
+  });
+
   it('hardens Mantine generated CSS against low-contrast light states', () => {
     const css = createTinyrackThemeCssFiles()['mantine/styles.css'];
 

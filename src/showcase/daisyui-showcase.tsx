@@ -402,7 +402,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     category: 'daisyUI',
     description: 'daisyUI breadcrumbs themed preview',
     render: () => (
-      <div className="breadcrumbs text-sm">
+      <div className="breadcrumbs text-tinyrack-sm">
         <ul>
           <li>
             <a href="#daisyui-breadcrumbs-home">Rack</a>
@@ -494,7 +494,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     category: 'daisyUI',
     description: 'daisyUI calendar themed preview',
     render: () => (
-      <div className="mockup-code text-xs">
+      <div className="mockup-code text-tinyrack-xs">
         <pre data-prefix=">">
           <code>calendar class preview</code>
         </pre>
@@ -526,7 +526,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
         >
           {layout === 'side' ? (
             <figure className="bg-base-200 min-w-24">
-              <div className="text-primary text-2xl font-bold">TR</div>
+              <div className="text-primary text-tinyrack-2xl font-bold">TR</div>
             </figure>
           ) : null}
           <div className="card-body">
@@ -611,7 +611,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     category: 'daisyUI',
     description: 'daisyUI countdown themed preview',
     render: () => (
-      <span className="countdown font-mono text-2xl">
+      <span className="countdown font-tinyrack-mono text-tinyrack-2xl">
         <span className="[--value:42]" aria-live="polite">
           42
         </span>
@@ -626,12 +626,12 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
     render: () => (
       <div className="diff aspect-16/9 max-h-24">
         <div className="diff-item-1">
-          <div className="bg-primary text-primary-content grid place-content-center text-sm">
+          <div className="bg-primary text-primary-content grid place-content-center text-tinyrack-sm">
             Before
           </div>
         </div>
         <div className="diff-item-2">
-          <div className="bg-secondary text-secondary-content grid place-content-center text-sm">
+          <div className="bg-secondary text-secondary-content grid place-content-center text-tinyrack-sm">
             After
           </div>
         </div>
@@ -799,7 +799,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
       <div className="hero bg-base-200 min-h-32">
         <div className="hero-content text-center">
           <div>
-            <h3 className="text-xl font-bold">Rack console</h3>
+            <h3 className="text-tinyrack-xl font-bold">Rack console</h3>
             <p>Node status preview</p>
           </div>
         </div>
@@ -1054,7 +1054,7 @@ export const daisyUiShowcaseEntries: ShowcaseEntry[] = [
       return (
         <div className="navbar bg-base-200 rounded-box">
           <div className={layout === 'centered' ? 'navbar-start' : 'flex-1'}>
-            <a className="btn btn-ghost text-xl" href="#daisyui-navbar-home">
+            <a className="btn btn-ghost text-tinyrack-xl" href="#daisyui-navbar-home">
               Tinyrack
             </a>
           </div>

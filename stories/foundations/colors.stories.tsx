@@ -167,8 +167,8 @@ function TokenChip({ mode, name }: { mode: ColorMode; name: SemanticTokenName })
     <span className="inline-flex min-w-0 items-center gap-2 rounded-md border border-base-300 bg-base-100 px-2 py-1.5">
       <TokenSwatch value={value} />
       <span className="grid min-w-0 gap-0.5">
-        <strong className="text-[0.75rem] leading-none">{mode}</strong>
-        <code className="text-[0.72rem] text-base-content/70 [overflow-wrap:anywhere]">
+        <strong className="text-tinyrack-xs leading-tinyrack-xs">{mode}</strong>
+        <code className="text-tinyrack-2xs text-base-content/70 [overflow-wrap:anywhere]">
           {value}
         </code>
       </span>
@@ -181,15 +181,19 @@ function SemanticTokenCard({ token }: { token: SemanticToken }) {
     <article className="grid min-w-0 gap-2 rounded-md border border-base-300 bg-base-100 p-3">
       <div className="flex min-w-0 flex-wrap items-start justify-between gap-2">
         <div className="min-w-0">
-          <h3 className="m-0 text-[0.95rem] leading-snug">{token.name}</h3>
-          <p className="m-0 text-sm leading-5 text-base-content/70">{token.intent}</p>
+          <h3 className="m-0 text-tinyrack-md leading-tinyrack-sm">{token.name}</h3>
+          <p className="m-0 text-tinyrack-sm leading-tinyrack-sm text-base-content/70">
+            {token.intent}
+          </p>
         </div>
         <div className="flex min-w-0 flex-wrap gap-1.5">
           <TokenChip mode="dark" name={token.name} />
           <TokenChip mode="light" name={token.name} />
         </div>
       </div>
-      <p className="m-0 text-sm leading-6 text-base-content/75">{token.use}</p>
+      <p className="m-0 text-tinyrack-sm leading-tinyrack-md text-base-content/75">
+        {token.use}
+      </p>
     </article>
   );
 }
@@ -220,7 +224,7 @@ function PairPreview({
 
   return (
     <span
-      className="inline-flex min-h-8 items-center rounded-md border border-base-300 px-2.5 py-1 text-[0.78rem] font-bold"
+      className="inline-flex min-h-8 items-center rounded-md border border-base-300 px-2.5 py-1 text-tinyrack-xs font-bold"
       style={{ backgroundColor: background, color }}
     >
       {tone}
@@ -258,7 +262,7 @@ function ContentPairs() {
             className="grid gap-2 rounded-md border border-base-300 bg-base-100 p-3"
             key={mode}
           >
-            <h3 className="m-0 text-[0.95rem] capitalize">{mode}</h3>
+            <h3 className="m-0 text-tinyrack-md capitalize">{mode}</h3>
             <div className="flex flex-wrap gap-2">
               {contentPairs.map((tone) => (
                 <PairPreview key={`${mode}-${tone}`} mode={mode} tone={tone} />
@@ -275,7 +279,7 @@ function UsageExamples() {
   return (
     <DocsGrid>
       <DocsCard title="Do">
-        <ul className="m-0 grid gap-2 pl-4 leading-6 text-base-content/75">
+        <ul className="m-0 grid gap-2 pl-4 leading-tinyrack-md text-base-content/75">
           <li>Use surface tokens before reaching for a new gray value.</li>
           <li>
             Use status tokens only when the state changes user attention or action.
@@ -288,7 +292,7 @@ function UsageExamples() {
 <section className="border border-base-300 bg-base-100">...</section>`}</CodeSnippet>
       </DocsCard>
       <DocsCard title="Do not">
-        <ul className="m-0 grid gap-2 pl-4 leading-6 text-base-content/75">
+        <ul className="m-0 grid gap-2 pl-4 leading-tinyrack-md text-base-content/75">
           <li>Do not use raw hex values in reusable demo surfaces.</li>
           <li>Do not use library color names as user-facing design language.</li>
           <li>Do not use warning or error colors for decorative emphasis.</li>
@@ -305,10 +309,10 @@ function UsageExamples() {
 function PaletteAppendix() {
   return (
     <details className="grid gap-3 rounded-lg border border-base-300 bg-base-200/80 p-3.5 shadow-sm">
-      <summary className="cursor-pointer text-[0.95rem] font-semibold">
+      <summary className="cursor-pointer text-tinyrack-md font-semibold">
         Raw palette appendix
       </summary>
-      <p className="mt-3 mb-0 leading-6 text-base-content/70">
+      <p className="mt-3 mb-0 leading-tinyrack-md text-base-content/70">
         These scales are implementation ingredients. Prefer semantic tokens in product
         surfaces, component examples, and application code.
       </p>
@@ -323,7 +327,7 @@ function PaletteAppendix() {
                 >
                   <TokenSwatch value={value} />
                   <strong>{step}</strong>
-                  <code className="text-[0.78rem] text-base-content/70 [overflow-wrap:anywhere]">
+                  <code className="text-tinyrack-xs text-base-content/70 [overflow-wrap:anywhere]">
                     {value}
                   </code>
                 </div>

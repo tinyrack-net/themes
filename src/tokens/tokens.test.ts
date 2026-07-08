@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { tinyrackSemanticColors, tinyrackTokens } from './index.js';
+import { tinyrackSemanticColors, tinyrackTokens, tinyrackTypography } from './index.js';
 
 const cssColorPattern = /^(#[0-9a-f]{6}|#[0-9a-f]{8}|var\(--[a-z0-9-]+\))$/i;
 const minimumContrastRatio = 4.5;
@@ -95,5 +95,45 @@ describe('tinyrack design tokens', () => {
     expect(serialized).not.toContain('mantine');
     expect(serialized).not.toContain('daisy');
     expect(serialized).not.toContain('starlight');
+  });
+
+  it('uses Noto font stacks with explicit Korean and Japanese families', () => {
+    expect(tinyrackTypography.fontStack.body).toContain('"Noto Sans"');
+    expect(tinyrackTypography.fontStack.korean).toContain('"Noto Sans KR"');
+    expect(tinyrackTypography.fontStack.japanese).toContain('"Noto Sans JP"');
+    expect(tinyrackTypography.fontFamily.korean).toContain(
+      'var(--tinyrack-font-korean)',
+    );
+    expect(tinyrackTypography.fontFamily.japanese).toContain(
+      'var(--tinyrack-font-japanese)',
+    );
+  });
+
+  it('uses named typography scale keys instead of legacy descriptor keys', () => {
+    expect(tinyrackTypography.fontSize).toMatchObject({
+      xs: expect.any(String),
+      sm: expect.any(String),
+      md: expect.any(String),
+      lg: expect.any(String),
+      xl: expect.any(String),
+    });
+    expect(tinyrackTypography.lineHeight).toMatchObject({
+      xs: expect.any(String),
+      sm: expect.any(String),
+      md: expect.any(String),
+      lg: expect.any(String),
+      xl: expect.any(String),
+    });
+    expect(tinyrackTypography.letterSpacing).toMatchObject({
+      none: expect.any(String),
+      sm: expect.any(String),
+      md: expect.any(String),
+      lg: expect.any(String),
+      xl: expect.any(String),
+    });
+    expect(tinyrackTypography.lineHeight).not.toHaveProperty('tight');
+    expect(tinyrackTypography.lineHeight).not.toHaveProperty('normal');
+    expect(tinyrackTypography.lineHeight).not.toHaveProperty('relaxed');
+    expect(tinyrackTypography.letterSpacing).not.toHaveProperty('wide');
   });
 });

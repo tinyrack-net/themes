@@ -40,19 +40,19 @@ function ShowcaseCard({
     >
       <header className="flex items-start justify-between gap-2">
         <div>
-          <p className="m-0 text-xs font-bold tracking-[0.08em] text-primary uppercase">
+          <p className="m-0 text-tinyrack-xs font-bold tracking-tinyrack-lg text-primary uppercase">
             {entry.category} · {story.name}
           </p>
-          <h3 className="m-0 mt-0.5 text-[1.05rem]">{entry.name}</h3>
+          <h3 className="m-0 mt-0.5 text-tinyrack-lg">{entry.name}</h3>
         </div>
-        <code className="rounded bg-base-200 px-1.5 py-0.5 text-[0.7rem]">
+        <code className="rounded bg-base-200 px-1.5 py-0.5 text-tinyrack-2xs">
           {entry.id}#{story.id}
         </code>
       </header>
       <div className="grid min-h-28 items-center justify-items-center overflow-auto rounded-md bg-base-200 p-3.5 [&:has([data-showcase-variant-matrix])]:justify-items-stretch [&_.dropdown.dropdown-open_.dropdown-content]:static [&_.dropdown.dropdown-open_.dropdown-content]:mt-2 [&_.hover-3d>_:first-child]:before:hidden">
         {story.render(controlValues)}
       </div>
-      <p className="m-0 text-[0.85rem] text-base-content">{story.description}</p>
+      <p className="m-0 text-tinyrack-sm text-base-content">{story.description}</p>
     </article>
   );
 }
@@ -129,7 +129,7 @@ export function ShowcaseGallery({
   return (
     <section className="grid gap-4">
       <header className="max-w-4xl">
-        <p className="m-0 text-xs font-bold tracking-[0.08em] text-primary uppercase">
+        <p className="m-0 text-tinyrack-xs font-bold tracking-tinyrack-lg text-primary uppercase">
           {library}
         </p>
         <h2>{title}</h2>

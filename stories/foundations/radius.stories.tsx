@@ -27,7 +27,7 @@ function RadiusPage() {
             key={name}
           >
             <strong>{name}</strong>
-            <code className="text-[0.78rem] text-primary [overflow-wrap:anywhere]">
+            <code className="text-tinyrack-xs text-primary [overflow-wrap:anywhere]">
               {value}
             </code>
           </div>

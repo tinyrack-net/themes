@@ -88,6 +88,27 @@ const infoScale = createSemanticScale(
   tinyrackSemanticColors.light.info,
 );
 
+const tinyrackMantineFontSizes = {
+  xs: tinyrackTypography.fontSize.xs,
+  sm: tinyrackTypography.fontSize.sm,
+  md: tinyrackTypography.fontSize.md,
+  lg: tinyrackTypography.fontSize.lg,
+  xl: tinyrackTypography.fontSize.xl,
+  '2xs': tinyrackTypography.fontSize['2xs'],
+  '2xl': tinyrackTypography.fontSize['2xl'],
+  '3xl': tinyrackTypography.fontSize['3xl'],
+  '4xl': tinyrackTypography.fontSize['4xl'],
+  '5xl': tinyrackTypography.fontSize['5xl'],
+} as const;
+
+const tinyrackMantineLineHeights = {
+  xs: tinyrackTypography.lineHeight.xs,
+  sm: tinyrackTypography.lineHeight.sm,
+  md: tinyrackTypography.lineHeight.md,
+  lg: tinyrackTypography.lineHeight.lg,
+  xl: tinyrackTypography.lineHeight.xl,
+} as const;
+
 const tinyrackVariantColorResolver: VariantColorsResolver = (input) => {
   const colors = defaultVariantColorsResolver(input);
 
@@ -190,9 +211,39 @@ export function createTinyrackMantineTheme(
     },
     variantColorResolver: tinyrackVariantColorResolver,
     fontFamily: options.fontFamily ?? tinyrackTypography.fontFamily.body,
+    fontFamilyMonospace: tinyrackTypography.fontFamily.mono,
+    fontSizes: tinyrackMantineFontSizes,
+    lineHeights: tinyrackMantineLineHeights,
     headings: {
       fontFamily: options.headingFontFamily ?? tinyrackTypography.fontFamily.heading,
       fontWeight: '700',
+      textWrap: 'balance',
+      sizes: {
+        h1: {
+          fontSize: tinyrackTypography.fontSize['4xl'],
+          lineHeight: tinyrackTypography.lineHeight.sm,
+        },
+        h2: {
+          fontSize: tinyrackTypography.fontSize['3xl'],
+          lineHeight: tinyrackTypography.lineHeight.sm,
+        },
+        h3: {
+          fontSize: tinyrackTypography.fontSize['2xl'],
+          lineHeight: tinyrackTypography.lineHeight.sm,
+        },
+        h4: {
+          fontSize: tinyrackTypography.fontSize.xl,
+          lineHeight: tinyrackTypography.lineHeight.md,
+        },
+        h5: {
+          fontSize: tinyrackTypography.fontSize.lg,
+          lineHeight: tinyrackTypography.lineHeight.md,
+        },
+        h6: {
+          fontSize: tinyrackTypography.fontSize.md,
+          lineHeight: tinyrackTypography.lineHeight.md,
+        },
+      },
     },
     defaultRadius: 'sm',
     radius: {

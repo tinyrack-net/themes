@@ -1,13 +1,37 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function BreadcrumbsStory() {
+type ComponentStoryProps = {
+  compact?: boolean;
+  current?: 'services' | 'node' | 'logs';
+};
+
+function BreadcrumbsStory(controlValues: ComponentStoryProps) {
+  const compact = controlValues.compact ?? false;
+  const current = controlValues.current ?? 'node';
+
   return (
-    <div className="breadcrumbs text-tinyrack-sm">
+    <div className={Controls.cx('breadcrumbs', compact ? 'text-xs' : 'text-sm')}>
       <ul>
         <li>
-          <a href="#daisyui-breadcrumbs-home">Rack</a>
+          <a href="#top">Rack</a>
         </li>
-        <li>Nodes</li>
+        <li>
+          <a
+            className={current === 'services' ? 'text-primary' : undefined}
+            href="#top"
+          >
+            Services
+          </a>
+        </li>
+        <li>
+          <a className={current === 'node' ? 'text-primary' : undefined} href="#top">
+            nas-01
+          </a>
+        </li>
+        <li>
+          <span className={current === 'logs' ? 'text-primary' : undefined}>Logs</span>
+        </li>
       </ul>
     </div>
   );
@@ -19,6 +43,17 @@ const meta = {
   title: 'daisyUI/Breadcrumbs',
   component: BreadcrumbsStory,
   tags: ['autodocs'],
+  args: {
+    compact: false,
+    current: 'node',
+  },
+  argTypes: {
+    compact: Controls.booleanControl('Uses a compact text scale.'),
+    current: Controls.selectControl(
+      ['services', 'node', 'logs'],
+      'Highlighted breadcrumb item.',
+    ),
+  },
   parameters: {
     layout: 'centered',
     docs: {

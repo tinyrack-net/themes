@@ -1,10 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function StatusStory() {
+type ComponentStoryProps = {
+  tone?: (typeof Controls.daisyToneOptions)[number];
+  size?: (typeof Controls.daisySizeOptions)[number];
+};
+
+function StatusStory(controlValues: ComponentStoryProps) {
   return (
-    <div className="flex items-center gap-2">
-      <span className="status status-success" /> Ready
-    </div>
+    <span className="inline-flex items-center gap-2">
+      <span
+        className={Controls.cx(
+          'status',
+          `status-${controlValues.tone ?? 'primary'}`,
+          `status-${controlValues.size ?? 'md'}`,
+        )}
+      />
+      Healthy
+    </span>
   );
 }
 
@@ -14,6 +27,14 @@ const meta = {
   title: 'daisyUI/Status',
   component: StatusStory,
   tags: ['autodocs'],
+  args: {
+    tone: 'primary',
+    size: 'md',
+  },
+  argTypes: {
+    tone: Controls.selectControl(Controls.daisyToneOptions, 'Color modifier class.'),
+    size: Controls.selectControl(Controls.daisySizeOptions, 'Size modifier class.'),
+  },
   parameters: {
     layout: 'centered',
     docs: {

@@ -1,12 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function HovergalleryStory() {
+type ComponentStoryProps = {
+  active?: 'one' | 'two' | 'three';
+};
+
+function HovergalleryStory(controlValues: ComponentStoryProps) {
+  const active = controlValues.active ?? 'two';
+
   return (
-    <div className="hovergallery">
-      <img
-        alt="gallery"
-        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 48'%3E%3Crect width='80' height='48' fill='%231762ae'/%3E%3C/svg%3E"
-      />
+    <div className="hovergallery flex w-96 gap-2">
+      {['one', 'two', 'three'].map((item) => (
+        <div
+          className={Controls.cx(
+            'rounded-box bg-base-200 p-6 transition-all',
+            active === item ? 'basis-2/3 bg-primary text-primary-content' : 'basis-1/6',
+          )}
+          key={item}
+        >
+          {item}
+        </div>
+      ))}
     </div>
   );
 }
@@ -17,6 +31,12 @@ const meta = {
   title: 'daisyUI/Hovergallery',
   component: HovergalleryStory,
   tags: ['autodocs'],
+  args: {
+    active: 'two',
+  },
+  argTypes: {
+    active: Controls.selectControl(['one', 'two', 'three'], 'Expanded gallery item.'),
+  },
   parameters: {
     layout: 'centered',
     docs: {

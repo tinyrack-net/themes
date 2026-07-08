@@ -1,13 +1,32 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function RadialprogressStory() {
+type ComponentStoryProps = {
+  tone?: (typeof Controls.daisyToneOptions)[number];
+  value?: number;
+  controlSize?: number;
+};
+
+function RadialprogressStory(controlValues: ComponentStoryProps) {
+  const tone = controlValues.tone ?? 'primary';
+  const value = controlValues.value ?? 68;
+  const controlSize = controlValues.controlSize ?? 6;
+
   return (
     <div
-      className="radial-progress text-primary [--value:70]"
-      aria-valuenow={70}
+      aria-valuemax={100}
+      aria-valuemin={0}
+      aria-valuenow={value}
+      className={Controls.cx('radial-progress', `text-${tone}`)}
       role="progressbar"
+      style={
+        {
+          '--value': value,
+          '--size': `${String(controlSize)}rem`,
+        } as React.CSSProperties
+      }
     >
-      70%
+      {value}%
     </div>
   );
 }
@@ -18,6 +37,24 @@ const meta = {
   title: 'daisyUI/Radialprogress',
   component: RadialprogressStory,
   tags: ['autodocs'],
+  args: {
+    tone: 'primary',
+    value: 68,
+    controlSize: 6,
+  },
+  argTypes: {
+    tone: Controls.selectControl(Controls.daisyToneOptions, 'Color modifier class.'),
+    value: Controls.rangeControl('Radial progress value custom property.', {
+      min: 0,
+      max: 100,
+      step: 5,
+    }),
+    controlSize: Controls.rangeControl('Radial progress size in rem.', {
+      min: 3,
+      max: 10,
+      step: 1,
+    }),
+  },
   parameters: {
     layout: 'centered',
     docs: {

@@ -1,57 +1,39 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
 type ComponentStoryProps = {
-  style?: 'default' | 'border' | 'lift' | 'box';
+  style?: (typeof Controls.daisyTabStyleOptions)[number];
+  size?: (typeof Controls.daisySizeOptions)[number];
   placement?: 'top' | 'bottom';
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  activeTab?: 'first' | 'second';
-  disabled?: boolean;
+  active?: 'status' | 'logs' | 'settings';
 };
 
 function TabStory(controlValues: ComponentStoryProps) {
-  const style = controlValues.style ?? 'box';
-  const placement = controlValues.placement ?? 'top';
+  const style = controlValues.style ?? 'border';
   const size = controlValues.size ?? 'md';
-  const activeTab = controlValues.activeTab ?? 'first';
-  const disabled = controlValues.disabled ?? false;
+  const placement = controlValues.placement ?? 'top';
+  const active = controlValues.active ?? 'status';
 
   return (
     <div
       role="tablist"
-      className={[
+      className={Controls.cx(
         'tabs',
-        style === 'default' ? undefined : `tabs-${style}`,
-        `tabs-${placement}`,
+        `tabs-${style}`,
         `tabs-${size}`,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+        `tabs-${placement}`,
+      )}
     >
-      <button
-        aria-selected={activeTab === 'first'}
-        role="tab"
-        className={['tab', activeTab === 'first' && 'tab-active']
-          .filter(Boolean)
-          .join(' ')}
-        type="button"
-      >
-        Overview
-      </button>
-      <button
-        aria-selected={activeTab === 'second'}
-        role="tab"
-        className={[
-          'tab',
-          activeTab === 'second' && 'tab-active',
-          disabled && 'tab-disabled',
-        ]
-          .filter(Boolean)
-          .join(' ')}
-        disabled={disabled}
-        type="button"
-      >
-        Logs
-      </button>
+      {['status', 'logs', 'settings'].map((item) => (
+        <button
+          className={Controls.cx('tab', active === item ? 'tab-active' : undefined)}
+          key={item}
+          role="tab"
+          type="button"
+        >
+          {item}
+        </button>
+      ))}
     </div>
   );
 }
@@ -63,37 +45,19 @@ const meta = {
   component: TabStory,
   tags: ['autodocs'],
   args: {
-    style: 'box',
-    placement: 'top',
+    style: 'border',
     size: 'md',
-    activeTab: 'first',
-    disabled: false,
+    placement: 'top',
+    active: 'status',
   },
   argTypes: {
-    style: {
-      control: 'select',
-      options: ['default', 'border', 'lift', 'box'],
-      description: 'Tabs container treatment class.',
-    },
-    placement: {
-      control: 'select',
-      options: ['top', 'bottom'],
-      description: 'Tabs placement class.',
-    },
-    size: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
-      description: 'Size modifier class from xs through xl.',
-    },
-    activeTab: {
-      control: 'select',
-      options: ['first', 'second'],
-      description: 'Moves the tab-active state class.',
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Applies tab-disabled to the second tab.',
-    },
+    style: Controls.selectControl(
+      Controls.daisyTabStyleOptions,
+      'Tabs treatment class.',
+    ),
+    size: Controls.selectControl(Controls.daisySizeOptions, 'Size modifier class.'),
+    placement: Controls.selectControl(['top', 'bottom'], 'Tab placement class.'),
+    active: Controls.selectControl(['status', 'logs', 'settings'], 'Active tab.'),
   },
   parameters: {
     layout: 'centered',

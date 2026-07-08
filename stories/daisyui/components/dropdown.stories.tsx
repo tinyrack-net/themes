@@ -1,36 +1,34 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
 type ComponentStoryProps = {
   placement?: 'bottom' | 'top' | 'left' | 'right';
   align?: 'start' | 'center' | 'end';
   open?: boolean;
-  hover?: boolean;
 };
 
 function DropdownStory(controlValues: ComponentStoryProps) {
   const placement = controlValues.placement ?? 'bottom';
   const align = controlValues.align ?? 'start';
-  const open = controlValues.open ?? true;
-  const hover = controlValues.hover ?? false;
 
   return (
     <div
-      className={[
+      className={Controls.cx(
         'dropdown',
         `dropdown-${placement}`,
-        align === 'start' ? undefined : `dropdown-${align}`,
-        open && 'dropdown-open',
-        hover && 'dropdown-hover',
-      ]
-        .filter(Boolean)
-        .join(' ')}
+        `dropdown-${align}`,
+        (controlValues.open ?? true) ? 'dropdown-open' : undefined,
+      )}
     >
-      <button tabIndex={0} className="btn btn-sm" type="button">
-        Dropdown
+      <button tabIndex={0} className="btn btn-primary" type="button">
+        Actions
       </button>
-      <ul className="dropdown-content menu bg-base-100 rounded-box z-1 w-40 p-2 shadow">
+      <ul className="dropdown-content menu z-1 w-52 rounded-box bg-base-200 p-2 shadow">
         <li>
-          <a href="#daisyui-dropdown-item">Item</a>
+          <a href="#top">Restart service</a>
+        </li>
+        <li>
+          <a href="#top">View logs</a>
         </li>
       </ul>
     </div>
@@ -47,24 +45,17 @@ const meta = {
     placement: 'bottom',
     align: 'start',
     open: true,
-    hover: false,
   },
   argTypes: {
-    placement: {
-      control: 'select',
-      options: ['bottom', 'top', 'left', 'right'],
-      description: 'Dropdown placement class.',
-    },
-    align: {
-      control: 'select',
-      options: ['start', 'center', 'end'],
-      description: 'Dropdown horizontal alignment class.',
-    },
-    open: { control: 'boolean', description: 'Applies the dropdown-open state class.' },
-    hover: {
-      control: 'boolean',
-      description: 'Applies the dropdown-hover trigger class.',
-    },
+    placement: Controls.selectControl(
+      ['bottom', 'top', 'left', 'right'],
+      'Dropdown placement class.',
+    ),
+    align: Controls.selectControl(
+      ['start', 'center', 'end'],
+      'Dropdown alignment class.',
+    ),
+    open: Controls.booleanControl('Applies dropdown-open state.'),
   },
   parameters: {
     layout: 'centered',

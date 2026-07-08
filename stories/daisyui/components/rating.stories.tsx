@@ -1,21 +1,36 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function RatingStory() {
+type ComponentStoryProps = {
+  size?: (typeof Controls.daisySizeOptions)[number];
+  value?: number;
+  half?: boolean;
+};
+
+function RatingStory(controlValues: ComponentStoryProps) {
+  const value = controlValues.value ?? 4;
+  const size = controlValues.size ?? 'md';
+  const half = controlValues.half ?? false;
+
   return (
-    <div className="rating">
-      <input
-        type="radio"
-        name="rating-preview"
-        className="mask mask-star-2 bg-orange-400"
-        aria-label="1 star"
-      />
-      <input
-        type="radio"
-        name="rating-preview"
-        className="mask mask-star-2 bg-orange-400"
-        aria-label="2 stars"
-        defaultChecked
-      />
+    <div
+      className={Controls.cx(
+        'rating',
+        `rating-${size}`,
+        half ? 'rating-half' : undefined,
+      )}
+    >
+      {[1, 2, 3, 4, 5].map((item) => (
+        <input
+          aria-label={`${String(item)} star`}
+          checked={value === item}
+          className="mask mask-star-2 bg-warning"
+          key={item}
+          name="rating-preview"
+          readOnly
+          type="radio"
+        />
+      ))}
     </div>
   );
 }
@@ -26,6 +41,16 @@ const meta = {
   title: 'daisyUI/Rating',
   component: RatingStory,
   tags: ['autodocs'],
+  args: {
+    size: 'md',
+    value: 4,
+    half: false,
+  },
+  argTypes: {
+    size: Controls.selectControl(Controls.daisySizeOptions, 'Size modifier class.'),
+    value: Controls.numberControl('Selected rating value.', { min: 1, max: 5 }),
+    half: Controls.booleanControl('Applies rating-half class.'),
+  },
   parameters: {
     layout: 'centered',
     docs: {

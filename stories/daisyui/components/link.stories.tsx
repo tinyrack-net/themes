@@ -1,9 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function LinkStory() {
+type ComponentStoryProps = {
+  tone?: (typeof Controls.daisyToneOptions)[number];
+  hover?: boolean;
+};
+
+function LinkStory(controlValues: ComponentStoryProps) {
+  const tone = controlValues.tone ?? 'primary';
+
   return (
-    <a className="link link-primary" href="#daisyui-link-preview">
-      Tinyrack link
+    <a
+      className={Controls.cx(
+        'link',
+        `link-${tone}`,
+        (controlValues.hover ?? false) ? 'link-hover' : undefined,
+      )}
+      href="#top"
+    >
+      Open node details
     </a>
   );
 }
@@ -14,6 +29,14 @@ const meta = {
   title: 'daisyUI/Link',
   component: LinkStory,
   tags: ['autodocs'],
+  args: {
+    tone: 'primary',
+    hover: false,
+  },
+  argTypes: {
+    tone: Controls.selectControl(Controls.daisyToneOptions, 'Color modifier class.'),
+    hover: Controls.booleanControl('Applies link-hover behavior.'),
+  },
   parameters: {
     layout: 'centered',
     docs: {

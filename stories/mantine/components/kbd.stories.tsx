@@ -1,8 +1,13 @@
 import * as Mantine from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function KbdStory() {
-  return <Mantine.Kbd>Ctrl K</Mantine.Kbd>;
+type ComponentStoryProps = {
+  size?: (typeof Controls.mantineSizeOptions)[number];
+};
+
+function KbdStory(controlValues: ComponentStoryProps) {
+  return <Mantine.Kbd size={controlValues.size ?? 'sm'}>Ctrl K</Mantine.Kbd>;
 }
 
 KbdStory.displayName = 'KbdStory';
@@ -11,6 +16,12 @@ const meta = {
   title: 'Mantine/Kbd',
   component: KbdStory,
   tags: ['autodocs'],
+  args: {
+    size: 'sm',
+  },
+  argTypes: {
+    size: Controls.selectControl(Controls.mantineSizeOptions, 'Mantine size token.'),
+  },
   parameters: {
     layout: 'centered',
     docs: {

@@ -56,8 +56,8 @@ export const tinyrackDaisyUiThemes = {
   dark: {
     name: 'tinyrack-dark',
     colorScheme: 'dark',
-    isDefault: true,
-    prefersDark: true,
+    isDefault: false,
+    prefersDark: false,
     tokens: {
       '--color-base-100': tinyrackSemanticColors.dark.surface,
       '--color-base-200': tinyrackSemanticColors.dark.surfaceMuted,

@@ -167,6 +167,7 @@ test('TinyrackMantineProvider renders Mantine components with theme variables', 
 
   await expect.element(screen.getByText('Save')).toBeVisible();
   await expect.element(screen.getByLabelText('Name')).toBeVisible();
+  await waitForMantineColorScheme('dark');
   expect(
     getComputedStyle(document.documentElement).getPropertyValue('--tinyrack-font-body'),
   ).toContain('"Noto Sans"');

@@ -60,6 +60,13 @@ For shared Tinyrack Tailwind tokens without a component library:
 ```
 
 This exposes utilities such as `bg-tinyrack-surface`, `text-tinyrack-text`, `text-tinyrack-primary`, `font-tinyrack-body`, and `rounded-tinyrack-box`.
+The import only adds Tinyrack tokens; set `data-theme="tinyrack-dark"` or `data-theme="tinyrack-light"` on the app root to opt into semantic values.
+
+```html
+<main data-theme="tinyrack-dark" class="bg-tinyrack-surface text-tinyrack-text">
+  ...
+</main>
+```
 
 ### Mantine
 
@@ -73,6 +80,8 @@ export function App({ children }: { children: React.ReactNode }) {
   return <MantineProvider theme={tinyrackMantineTheme}>{children}</MantineProvider>;
 }
 ```
+
+The CSS import is scheme-scoped and does not change the host page by itself. Mantine variables are applied when a Mantine provider sets `data-mantine-color-scheme`.
 
 For extension/content-script roots that need scoped Mantine CSS variables:
 
@@ -93,6 +102,12 @@ Use the combined preset when you want Tailwind utilities and Tinyrack daisyUI th
 @import "@tinyrack/themes/tailwind/daisyui.css";
 ```
 
+Set the theme explicitly on the app root:
+
+```html
+<html data-theme="tinyrack-dark">
+```
+
 Equivalent explicit composition:
 
 ```css
@@ -100,7 +115,7 @@ Equivalent explicit composition:
 @import "@tinyrack/themes/tailwind.css";
 @import "@tinyrack/themes/daisyui.css";
 @plugin "daisyui" {
-  themes: tinyrack-light, tinyrack-dark --default --prefersdark;
+  themes: tinyrack-light, tinyrack-dark;
 }
 ```
 

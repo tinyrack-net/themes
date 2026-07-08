@@ -48,7 +48,10 @@ function TailwindPage() {
 @import '@tinyrack/themes/tailwind.css';`}</CodeSnippet>
         </DocsCard>
         <DocsCard title="Available utility examples">
-          <CodeSnippet>{`<section class="bg-tinyrack-surface text-tinyrack-text rounded-tinyrack-box">
+          <CodeSnippet>{`<section
+  data-theme="tinyrack-dark"
+  class="bg-tinyrack-surface text-tinyrack-text rounded-tinyrack-box"
+>
   <h1 class="font-tinyrack-heading text-tinyrack-primary">
     Tinyrack
   </h1>
@@ -62,7 +65,7 @@ function TailwindPage() {
             items={[
               'Shared CSS custom properties for Tinyrack color and rhythm.',
               'A stable base before applying daisyUI or app-specific utilities.',
-              'Dark-first surfaces with light mode aliases available through theme data.',
+              'Explicit tinyrack-dark or tinyrack-light surfaces through data-theme.',
             ]}
           />
         </DocsCard>

@@ -41,6 +41,8 @@ describe('generated Tinyrack theme CSS', () => {
   it('sets Mantine filled text fallback to the dark primary contrast token', () => {
     const css = createTinyrackThemeCssFiles()['mantine/styles.css'];
 
+    expect(css).not.toContain(':root {');
+    expect(css).toContain('[data-mantine-color-scheme="dark"]');
     expect(css).toContain('--tinyrack-mantine-filled-color: #0a0a0a;');
   });
 
@@ -52,7 +54,7 @@ describe('generated Tinyrack theme CSS', () => {
     expect(css).toContain('--tinyrack-text-md: 1rem;');
     expect(css).toContain('--tinyrack-leading-lg: 1.65;');
     expect(css).toContain('--tinyrack-tracking-none: 0;');
-    expect(css).toContain(':where(:lang(ko))');
+    expect(css).toContain('[data-theme="tinyrack-dark"] :lang(ko)');
     expect(css).toContain('font-family: var(--tinyrack-font-korean);');
   });
 

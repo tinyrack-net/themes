@@ -21,6 +21,16 @@ type SemanticMode = keyof typeof tinyrackSemanticColors;
 const generatedHeader =
   '/* Generated from src/css/create-tinyrack-theme-css.ts. Do not edit directly. */';
 
+const tinyrackThemeSelectors = [
+  '[data-theme="tinyrack-light"]',
+  '[data-theme="tinyrack-dark"]',
+] as const;
+
+const mantineColorSchemeSelectors = [
+  '[data-mantine-color-scheme="light"]',
+  '[data-mantine-color-scheme="dark"]',
+] as const;
+
 function createFile(...sections: string[]) {
   return `${generatedHeader}\n\n${sections.join('\n\n')}\n`;
 }
@@ -45,6 +55,28 @@ function createFontFallbackVar(name: string, fontStack: string) {
   return `var(\n    ${name},\n${fallbackLines
     .map((line, index) => `    ${line}${index === fallbackLines.length - 1 ? '' : ','}`)
     .join('\n')}\n  )`;
+}
+
+function createSelectorList(selectors: readonly string[]) {
+  return `:where(${selectors.join(', ')})`;
+}
+
+function createScopedLanguageSelector(
+  scopeSelectors: readonly string[] | undefined,
+  language: string,
+) {
+  const languageSelector = `:lang(${language})`;
+
+  if (!scopeSelectors) {
+    return `:where(${languageSelector})`;
+  }
+
+  return `:where(${scopeSelectors
+    .flatMap((scopeSelector) => [
+      `${scopeSelector}${languageSelector}`,
+      `${scopeSelector} ${languageSelector}`,
+    ])
+    .join(', ')})`;
 }
 
 function createTinyrackTokenDeclarations(
@@ -100,10 +132,12 @@ function createTailwindTextDeclarations(): CssDeclaration[] {
   });
 }
 
-function createLanguageFontCss() {
+function createLanguageFontCss(scopeSelectors?: readonly string[]) {
   return [
-    createBlock(':where(:lang(ko))', [['font-family', 'var(--tinyrack-font-korean)']]),
-    createBlock(':where(:lang(ja))', [
+    createBlock(createScopedLanguageSelector(scopeSelectors, 'ko'), [
+      ['font-family', 'var(--tinyrack-font-korean)'],
+    ]),
+    createBlock(createScopedLanguageSelector(scopeSelectors, 'ja'), [
       ['font-family', 'var(--tinyrack-font-japanese)'],
     ]),
   ].join('\n\n');
@@ -217,13 +251,10 @@ function createTailwindThemeDeclarations(): CssDeclaration[] {
 export function createTinyrackTailwindThemeCss() {
   return createFile(
     createBlock('@theme static', createTailwindThemeDeclarations()),
-    createBlock(':root', [
-      ...createBaseDeclarations(),
-      ...createSemanticDeclarations('dark'),
-    ]),
+    createBlock(createSelectorList(tinyrackThemeSelectors), createBaseDeclarations()),
     createBlock('[data-theme="tinyrack-light"]', createSemanticDeclarations('light')),
     createBlock('[data-theme="tinyrack-dark"]', createSemanticDeclarations('dark')),
-    createLanguageFontCss(),
+    createLanguageFontCss(tinyrackThemeSelectors),
   );
 }
 
@@ -290,16 +321,10 @@ function createMantineSchemeDeclarations(mode: SemanticMode): CssDeclaration[] {
 
 export function createTinyrackMantineStylesCss() {
   return createFile(
-    createBlock(':root', [
-      ...createBaseDeclarations(),
-      ...createSemanticDeclarations('dark'),
-      ['--tinyrack-mantine-filled-color', tinyrackSemanticColors.dark.primaryContent],
-      ['--tinyrack-mantine-stepper-outline-color', tinyrackPalettes.neutral[700]],
-      [
-        '--mantine-color-disabled-color',
-        `${tinyrackSemanticColors.dark.textMuted} !important`,
-      ],
-    ]),
+    createBlock(
+      createSelectorList(mantineColorSchemeSelectors),
+      createBaseDeclarations(),
+    ),
     createBlock(
       '[data-mantine-color-scheme="light"]',
       createMantineSchemeDeclarations('light'),
@@ -335,7 +360,7 @@ export function createTinyrackMantineStylesCss() {
       '[data-mantine-color-scheme] .mantine-SegmentedControl-label[data-active] .mantine-SegmentedControl-innerLabel',
       [['color', 'var(--tinyrack-mantine-filled-color) !important']],
     ),
-    createLanguageFontCss(),
+    createLanguageFontCss(mantineColorSchemeSelectors),
   );
 }
 

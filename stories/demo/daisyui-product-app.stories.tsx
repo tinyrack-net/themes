@@ -87,7 +87,7 @@ function CalendarPreview() {
 
   return (
     <fieldset className="react-day-picker block w-full max-w-full overflow-hidden">
-      <legend className="px-1 text-xs font-semibold text-base-content/65">
+      <legend className="px-1 text-tinyrack-xs font-semibold text-base-content/65">
         July deploy calendar
       </legend>
       <div className="rdp-months !grid !max-w-full !gap-0 !p-1">
@@ -99,7 +99,10 @@ function CalendarPreview() {
             <thead>
               <tr>
                 {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day) => (
-                  <th className="rdp-weekday !h-6 !w-6 !py-1 text-[0.65rem]" key={day}>
+                  <th
+                    className="rdp-weekday !h-6 !w-6 !py-1 text-tinyrack-2xs"
+                    key={day}
+                  >
                     {day}
                   </th>
                 ))}
@@ -124,7 +127,7 @@ function CalendarPreview() {
                       >
                         {isEmptyDay ? null : (
                           <button
-                            className="rdp-day_button !h-6 !w-6 text-[0.68rem]"
+                            className="rdp-day_button !h-6 !w-6 text-tinyrack-2xs"
                             type="button"
                           >
                             {day}
@@ -137,7 +140,7 @@ function CalendarPreview() {
               ))}
             </tbody>
           </table>
-          <div className="rdp-footer text-xs">Freeze: July 22-24</div>
+          <div className="rdp-footer text-tinyrack-xs">Freeze: July 22-24</div>
         </div>
       </div>
     </fieldset>
@@ -161,7 +164,7 @@ function DaisyUiProductApp() {
               </div>
               <div className="min-w-0">
                 <strong className="block truncate">Tinyrack</strong>
-                <span className="block truncate text-sm text-base-content/65">
+                <span className="block truncate text-tinyrack-sm text-base-content/65">
                   SSR Console
                 </span>
               </div>
@@ -172,7 +175,7 @@ function DaisyUiProductApp() {
             <ul className="menu grid gap-1 p-0" aria-label="daisyUI demo navigation">
               <li>
                 <a
-                  className="flex items-center justify-between rounded px-2 py-2 text-sm text-base-content/75"
+                  className="flex items-center justify-between rounded px-2 py-2 text-tinyrack-sm text-base-content/75"
                   href="#overview"
                   aria-current="page"
                 >
@@ -182,7 +185,7 @@ function DaisyUiProductApp() {
               </li>
               <li>
                 <a
-                  className="rounded px-2 py-2 text-sm text-base-content/75"
+                  className="rounded px-2 py-2 text-tinyrack-sm text-base-content/75"
                   href="#routes"
                 >
                   Routes
@@ -190,7 +193,7 @@ function DaisyUiProductApp() {
               </li>
               <li>
                 <a
-                  className="rounded px-2 py-2 text-sm text-base-content/75"
+                  className="rounded px-2 py-2 text-tinyrack-sm text-base-content/75"
                   href="#deployments"
                 >
                   Deployments
@@ -198,7 +201,7 @@ function DaisyUiProductApp() {
               </li>
               <li>
                 <a
-                  className="rounded px-2 py-2 text-sm text-base-content/75"
+                  className="rounded px-2 py-2 text-tinyrack-sm text-base-content/75"
                   href="#reviews"
                 >
                   Reviews
@@ -206,7 +209,7 @@ function DaisyUiProductApp() {
               </li>
               <li>
                 <a
-                  className="rounded px-2 py-2 text-sm text-base-content/75"
+                  className="rounded px-2 py-2 text-tinyrack-sm text-base-content/75"
                   href="#settings"
                 >
                   Settings
@@ -216,7 +219,7 @@ function DaisyUiProductApp() {
           </DemoUse>
 
           <div className="grid min-w-0 gap-2 rounded-md border border-base-300 p-2">
-            <span className="text-xs font-extrabold tracking-wide text-base-content/65 uppercase">
+            <span className="text-tinyrack-xs font-extrabold tracking-tinyrack-sm text-base-content/65 uppercase">
               Traffic window
             </span>
             <DemoUse id="daisyui-calendar">
@@ -234,7 +237,7 @@ function DaisyUiProductApp() {
             </div>
           </DemoUse>
 
-          <div className="mt-auto rounded border border-base-300 p-2 text-sm leading-6 text-base-content/70">
+          <div className="mt-auto rounded border border-base-300 p-2 text-tinyrack-sm leading-tinyrack-md text-base-content/70">
             Production SSR deploys stay guarded until cache warmup, card probes, and
             rollback snapshots are all green.
           </div>
@@ -249,10 +252,10 @@ function DaisyUiProductApp() {
                     daisyUI production SSR surface
                   </span>
                 </DemoUse>
-                <h1 className="m-0 mt-2 text-2xl leading-tight font-semibold text-balance">
+                <h1 className="m-0 mt-2 text-tinyrack-2xl leading-tinyrack-sm font-semibold text-balance">
                   SSR release control room
                 </h1>
-                <p className="m-0 max-w-3xl text-base-content/70 leading-6">
+                <p className="m-0 max-w-3xl text-base-content/70 leading-tinyrack-md">
                   A dense production dashboard for route health, cache readiness,
                   guarded deploys, incident review, and operator handoff.
                 </p>
@@ -301,7 +304,7 @@ function DaisyUiProductApp() {
                 <div className="hero-content !grid w-full max-w-none grid-cols-1 gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_minmax(12rem,18rem)]">
                   <div className="grid min-w-0 gap-3">
                     <DemoUse id="daisyui-breadcrumbs">
-                      <div className="breadcrumbs text-sm">
+                      <div className="breadcrumbs text-tinyrack-sm">
                         <ul>
                           <li>
                             <a href="#apps">Apps</a>
@@ -313,16 +316,16 @@ function DaisyUiProductApp() {
                         </ul>
                       </div>
                     </DemoUse>
-                    <h2 className="m-0 text-3xl leading-tight font-extrabold text-balance xl:text-4xl">
+                    <h2 className="m-0 text-tinyrack-3xl leading-tinyrack-sm font-extrabold text-balance xl:text-tinyrack-4xl">
                       Checkout SSR is serving 40% canary traffic.
                     </h2>
-                    <p className="m-0 max-w-3xl text-base-content/70 leading-7">
+                    <p className="m-0 max-w-3xl text-base-content/70 leading-tinyrack-lg">
                       Cache hit rate is stable, but card authorization probes need one
                       more pass before this release can move to 100%.
                     </p>
                     <div className="flex min-w-0 flex-wrap items-center gap-2">
                       <DemoUse id="daisyui-countdown">
-                        <span className="countdown font-mono text-2xl">
+                        <span className="countdown font-tinyrack-mono text-tinyrack-2xl">
                           <span className="[--value:2]" />h
                         </span>
                       </DemoUse>
@@ -368,7 +371,7 @@ function DaisyUiProductApp() {
               <div className="stats overflow-hidden">
                 <div className="stat p-0">
                   <span className="stat-title">SSR p95</span>
-                  <strong className="stat-value text-xl">164 ms</strong>
+                  <strong className="stat-value text-tinyrack-xl">164 ms</strong>
                   <small className="stat-desc">12 ms faster today</small>
                 </div>
               </div>
@@ -379,7 +382,7 @@ function DaisyUiProductApp() {
             >
               <article className="card min-w-0">
                 <span className="text-base-content/65">Cache hit rate</span>
-                <strong className="text-lg">96.8%</strong>
+                <strong className="text-tinyrack-lg">96.8%</strong>
                 <small className="text-base-content/65">edge regions warmed</small>
               </article>
             </DemoUse>
@@ -393,7 +396,7 @@ function DaisyUiProductApp() {
                 </span>
                 <div className="grid min-w-0 gap-1 pr-8">
                   <span className="text-base-content/65">Guarded routes</span>
-                  <strong className="text-lg">2</strong>
+                  <strong className="text-tinyrack-lg">2</strong>
                   <small className="text-base-content/65">checkout and docs</small>
                 </div>
               </div>
@@ -403,17 +406,17 @@ function DaisyUiProductApp() {
               className="grid min-w-0 content-start gap-1 rounded-md border border-base-300 bg-base-100 p-2 md:col-span-1 xl:col-span-3"
             >
               <span className="text-base-content/65">Hydration budget</span>
-              <strong className="text-lg">82 KB</strong>
+              <strong className="text-tinyrack-lg">82 KB</strong>
               <div className="skeleton h-2 w-full" />
             </DemoUse>
 
             <section className="grid min-w-0 content-start gap-2 rounded-md border border-base-300 bg-base-100 p-2 md:col-span-4 xl:col-span-8">
               <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0 max-w-2xl">
-                  <h2 className="m-0 text-base font-semibold">
+                  <h2 className="m-0 text-tinyrack-md font-semibold">
                     Route health and SSR runtime
                   </h2>
-                  <p className="m-0 text-base-content/70 leading-6">
+                  <p className="m-0 text-base-content/70 leading-tinyrack-md">
                     Server-rendered routes, cache health, runtime target, and owner in
                     one review surface.
                   </p>
@@ -446,13 +449,13 @@ function DaisyUiProductApp() {
                 <div className="grid gap-2 md:hidden">
                   {routes.map((route) => (
                     <article
-                      className="grid min-w-0 gap-2 rounded border border-base-300 bg-base-200/60 p-2 text-sm"
+                      className="grid min-w-0 gap-2 rounded border border-base-300 bg-base-200/60 p-2 text-tinyrack-sm"
                       key={route.service}
                     >
                       <div className="flex min-w-0 items-start justify-between gap-2">
                         <div className="min-w-0">
                           <strong className="block truncate">{route.service}</strong>
-                          <code className="block truncate text-xs text-base-content/65">
+                          <code className="block truncate text-tinyrack-xs text-base-content/65">
                             {route.route}
                           </code>
                         </div>
@@ -468,7 +471,7 @@ function DaisyUiProductApp() {
                           {route.status}
                         </span>
                       </div>
-                      <dl className="grid grid-cols-3 gap-2 text-xs">
+                      <dl className="grid grid-cols-3 gap-2 text-tinyrack-xs">
                         <div className="min-w-0">
                           <dt className="text-base-content/55">Runtime</dt>
                           <dd className="m-0 truncate">{route.runtime}</dd>
@@ -494,7 +497,7 @@ function DaisyUiProductApp() {
                   ))}
                 </div>
                 <div className="hidden min-w-0 overflow-x-auto md:block">
-                  <table className="table table-zebra table-sm min-w-full text-xs">
+                  <table className="table table-zebra table-sm min-w-full text-tinyrack-xs">
                     <thead>
                       <tr>
                         <th className="whitespace-nowrap px-2">Service</th>
@@ -541,7 +544,7 @@ function DaisyUiProductApp() {
             </section>
 
             <section className="grid min-w-0 content-start gap-2 rounded-md border border-base-300 bg-base-100 p-2 md:col-span-4 xl:col-span-4">
-              <h2 className="m-0 text-base font-semibold">Guardrails</h2>
+              <h2 className="m-0 text-tinyrack-md font-semibold">Guardrails</h2>
               <DemoUse id="daisyui-alert">
                 <div className="alert alert-warning alert-soft" role="alert">
                   <span>
@@ -571,8 +574,8 @@ function DaisyUiProductApp() {
             <section className="grid min-w-0 content-start gap-2 rounded-md border border-base-300 bg-base-100 p-2 md:col-span-4 xl:col-span-8">
               <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <h2 className="m-0 text-base font-semibold">Release lane</h2>
-                  <p className="m-0 text-base-content/70 leading-6">
+                  <h2 className="m-0 text-tinyrack-md font-semibold">Release lane</h2>
+                  <p className="m-0 text-base-content/70 leading-tinyrack-md">
                     Tabs, timeline, deploy events, and rollback logs in context.
                   </p>
                 </div>
@@ -602,7 +605,7 @@ function DaisyUiProductApp() {
                   {deployEvents.map(([time, label, tone], index) => (
                     <li key={label}>
                       {index > 0 ? <hr /> : null}
-                      <div className="timeline-start w-12 text-xs">{time}</div>
+                      <div className="timeline-start w-12 text-tinyrack-xs">{time}</div>
                       <div className="timeline-middle">
                         <span
                           className={
@@ -614,7 +617,7 @@ function DaisyUiProductApp() {
                           }
                         />
                       </div>
-                      <div className="timeline-end timeline-box max-w-40 break-words text-xs leading-5 sm:max-w-none sm:text-sm">
+                      <div className="timeline-end timeline-box max-w-40 break-words text-tinyrack-xs leading-tinyrack-sm sm:max-w-none sm:text-tinyrack-sm">
                         {label}
                       </div>
                       {index < deployEvents.length - 1 ? <hr /> : null}
@@ -623,7 +626,7 @@ function DaisyUiProductApp() {
                 </ul>
               </DemoUse>
               <DemoUse id="daisyui-mockup">
-                <div className="mockup-code max-w-full overflow-hidden text-xs">
+                <div className="mockup-code max-w-full overflow-hidden text-tinyrack-xs">
                   <pre
                     className="max-w-full break-all whitespace-pre-wrap [overflow-wrap:anywhere]"
                     data-prefix="$"
@@ -648,7 +651,7 @@ function DaisyUiProductApp() {
             </section>
 
             <section className="grid min-w-0 content-start gap-2 rounded-md border border-base-300 bg-base-100 p-2 md:col-span-4 xl:col-span-4">
-              <h2 className="m-0 text-base font-semibold">Operator controls</h2>
+              <h2 className="m-0 text-tinyrack-md font-semibold">Operator controls</h2>
               <div className="flex min-w-0 flex-wrap items-center gap-2">
                 <DemoUse id="daisyui-rating">
                   <div className="rating rating-sm">
@@ -725,7 +728,7 @@ function DaisyUiProductApp() {
             </section>
 
             <section className="grid min-w-0 content-start gap-2 rounded-md border border-base-300 bg-base-100 p-2 md:col-span-4 xl:col-span-8">
-              <h2 className="m-0 text-base font-semibold">Experience preview</h2>
+              <h2 className="m-0 text-tinyrack-md font-semibold">Experience preview</h2>
               <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                 <DemoUse
                   id="daisyui-carousel"
@@ -760,12 +763,12 @@ function DaisyUiProductApp() {
                 >
                   <div className="diff h-40 w-full">
                     <div className="diff-item-1">
-                      <div className="grid h-full place-content-center bg-base-200 text-sm text-base-content">
+                      <div className="grid h-full place-content-center bg-base-200 text-tinyrack-sm text-base-content">
                         old SSR bundle
                       </div>
                     </div>
                     <div className="diff-item-2">
-                      <div className="grid h-full place-content-center bg-primary text-sm text-primary-content">
+                      <div className="grid h-full place-content-center bg-primary text-tinyrack-sm text-primary-content">
                         new SSR bundle
                       </div>
                     </div>
@@ -828,7 +831,7 @@ function DaisyUiProductApp() {
             </section>
 
             <section className="grid min-w-0 content-start gap-2 rounded-md border border-base-300 bg-base-100 p-2 md:col-span-4 xl:col-span-4">
-              <h2 className="m-0 text-base font-semibold">Support room</h2>
+              <h2 className="m-0 text-tinyrack-md font-semibold">Support room</h2>
               <DemoUse id="daisyui-chat">
                 <div className="grid gap-2">
                   {supportMessages.map(([align, sender, message]) => (
@@ -859,7 +862,7 @@ function DaisyUiProductApp() {
             </section>
 
             <section className="grid min-w-0 content-start gap-2 rounded-md border border-base-300 bg-base-100 p-2 md:col-span-4 xl:col-span-8">
-              <h2 className="m-0 text-base font-semibold">Release request</h2>
+              <h2 className="m-0 text-tinyrack-md font-semibold">Release request</h2>
               <DemoUse id="daisyui-fieldset">
                 <fieldset className="fieldset">
                   <legend className="fieldset-legend">Promote SSR route</legend>
@@ -915,7 +918,7 @@ function DaisyUiProductApp() {
             </section>
 
             <section className="grid min-w-0 content-start gap-2 rounded-md border border-base-300 bg-base-100 p-2 md:col-span-4 xl:col-span-4">
-              <h2 className="m-0 text-base font-semibold">Review checklist</h2>
+              <h2 className="m-0 text-tinyrack-md font-semibold">Review checklist</h2>
               <DemoUse id="daisyui-checkbox">
                 <label className="label cursor-pointer justify-start gap-3">
                   <input
@@ -953,7 +956,7 @@ function DaisyUiProductApp() {
             </section>
 
             <section className="grid min-w-0 content-start gap-2 rounded-md border border-base-300 bg-base-100 p-2 md:col-span-4 xl:col-span-8">
-              <h2 className="m-0 text-base font-semibold">
+              <h2 className="m-0 text-tinyrack-md font-semibold">
                 Inspector drawer and restart dialog
               </h2>
               <DemoUse id="daisyui-drawer">
@@ -1012,8 +1015,8 @@ function DaisyUiProductApp() {
             </section>
 
             <section className="relative grid min-h-52 min-w-0 content-start gap-2 overflow-hidden rounded-md border border-base-300 bg-base-100 p-2 md:col-span-4 xl:col-span-4">
-              <h2 className="m-0 text-base font-semibold">Floating actions</h2>
-              <p className="m-0 text-base-content/70 leading-6">
+              <h2 className="m-0 text-tinyrack-md font-semibold">Floating actions</h2>
+              <p className="m-0 text-base-content/70 leading-tinyrack-md">
                 Focus the action cluster to reveal fast recovery commands.
               </p>
               <DemoUse id="daisyui-fab">

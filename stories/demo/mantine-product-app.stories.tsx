@@ -31,8 +31,8 @@ function MantineProductApp() {
   ] as const;
   const statusClass = (status: string) =>
     status === 'Healthy'
-      ? "inline-flex items-center gap-1.5 rounded-md border border-success/40 bg-success/10 px-2 py-1 text-[0.72rem] leading-none font-bold whitespace-nowrap text-success before:inline-block before:h-[0.45rem] before:w-[0.45rem] before:rounded-full before:bg-current before:content-['']"
-      : "inline-flex items-center gap-1.5 rounded-md border border-warning/40 bg-warning/10 px-2 py-1 text-[0.72rem] leading-none font-bold whitespace-nowrap text-warning before:inline-block before:h-[0.45rem] before:w-[0.45rem] before:rounded-full before:bg-current before:content-['']";
+      ? "inline-flex items-center gap-1.5 rounded-md border border-success/40 bg-success/10 px-2 py-1 text-tinyrack-2xs leading-tinyrack-xs font-bold whitespace-nowrap text-success before:inline-block before:h-[0.45rem] before:w-[0.45rem] before:rounded-full before:bg-current before:content-['']"
+      : "inline-flex items-center gap-1.5 rounded-md border border-warning/40 bg-warning/10 px-2 py-1 text-tinyrack-2xs leading-tinyrack-xs font-bold whitespace-nowrap text-warning before:inline-block before:h-[0.45rem] before:w-[0.45rem] before:rounded-full before:bg-current before:content-['']";
 
   return (
     <main
@@ -143,7 +143,7 @@ function MantineProductApp() {
                 ].map(([label, value, note]) => (
                   <DemoUse id="mantine-card" key={label}>
                     <Mantine.Card
-                      className="grid min-w-0 gap-2 rounded-md border border-base-300 bg-base-100 p-3 [&_span]:m-0 [&_span]:text-xs [&_span]:text-base-content/60 [&_strong]:m-0 [&_strong]:text-lg"
+                      className="grid min-w-0 gap-2 rounded-md border border-base-300 bg-base-100 p-3 [&_span]:m-0 [&_span]:text-tinyrack-xs [&_span]:text-base-content/60 [&_strong]:m-0 [&_strong]:text-tinyrack-lg"
                       padding="sm"
                       radius="md"
                       withBorder
@@ -159,7 +159,7 @@ function MantineProductApp() {
               </Mantine.SimpleGrid>
             </DemoUse>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <Mantine.Group justify="space-between">
                 <div>
                   <h2>Rack inventory</h2>
@@ -206,7 +206,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Guardrail status</h2>
               <DemoUse id="mantine-alert">
                 <Mantine.Alert
@@ -231,7 +231,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <Mantine.Group justify="space-between">
                 <div>
                   <h2>Deployment queue</h2>
@@ -309,7 +309,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Operator controls</h2>
               <DemoUse id="mantine-group">
                 <Mantine.Group>
@@ -338,7 +338,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Topology and media</h2>
               <DemoUse id="mantine-grid">
                 <Mantine.Grid gap="xs">
@@ -389,7 +389,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Service readiness</h2>
               <DemoUse id="mantine-ringprogress">
                 <Mantine.RingProgress
@@ -419,7 +419,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Rack setup form</h2>
               <DemoUse id="mantine-fieldset">
                 <Mantine.Fieldset legend="Maintenance window">
@@ -475,7 +475,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Access setup</h2>
               <DemoUse id="mantine-pininput">
                 <Mantine.PinInput defaultValue="1234" />
@@ -498,7 +498,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Theme controls</h2>
               <Mantine.SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xs">
                 <DemoUse id="mantine-colorinput">
@@ -530,7 +530,7 @@ function MantineProductApp() {
               </Mantine.SimpleGrid>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Pills and commands</h2>
               <DemoUse id="mantine-pillsinput">
                 <Mantine.PillsInput label="Service tags">
@@ -563,7 +563,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Runbook navigation</h2>
               <DemoUse id="mantine-breadcrumbs">
                 <Mantine.Breadcrumbs>
@@ -602,7 +602,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Surface states</h2>
               <DemoUse id="mantine-notification">
                 <Mantine.Notification title="Config saved" withCloseButton={false}>
@@ -622,7 +622,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Inspector shell</h2>
               <DemoUse id="mantine-appshell">
                 <div className="relative h-52 w-[min(100%,34rem)] max-w-[34rem] overflow-hidden rounded-md border border-base-300 [&_.mantine-AppShell-header]:!absolute [&_.mantine-AppShell-header]:!right-0 [&_.mantine-AppShell-header]:!left-0 [&_.mantine-AppShell-header]:!top-0 [&_.mantine-AppShell-main]:!min-h-full [&_.mantine-AppShell-main]:!pl-36 [&_.mantine-AppShell-main]:!pt-12 [&_.mantine-AppShell-navbar]:!absolute [&_.mantine-AppShell-navbar]:!bottom-0 [&_.mantine-AppShell-navbar]:!left-0 [&_.mantine-AppShell-navbar]:!top-10 [&_.mantine-AppShell-navbar]:!h-auto [&_.mantine-AppShell-navbar]:!w-32 [&_.mantine-AppShell-navbar]:!max-w-32 [&_.mantine-AppShell-navbar]:!transform-none [&_.mantine-AppShell-root]:!relative [&_.mantine-AppShell-root]:!h-full [&_.mantine-AppShell-root]:!min-h-full [&_.mantine-AppShell-root]:!overflow-hidden">
@@ -723,7 +723,7 @@ function MantineProductApp() {
               </Mantine.Group>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Context help</h2>
               <DemoUse id="mantine-popover">
                 <Mantine.Popover withinPortal={false}>
@@ -751,11 +751,11 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-8 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Logs and details</h2>
               <DemoUse id="mantine-scrollarea">
                 <Mantine.ScrollArea h={140}>
-                  <pre className="m-0 overflow-auto rounded-lg border border-base-300 bg-base-200/80 p-3 font-mono text-[0.78rem] leading-6 text-primary">{`10:30 backup-sync complete
+                  <pre className="m-0 overflow-auto rounded-lg border border-base-300 bg-base-200/80 p-3 font-tinyrack-mono text-tinyrack-xs leading-tinyrack-md text-primary">{`10:30 backup-sync complete
 10:31 edge-proxy route probe healthy
 10:36 nas-01 storage threshold review
 10:40 deploy window scheduled`}</pre>
@@ -786,7 +786,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 lg:col-span-4 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Numbers and empty states</h2>
               <DemoUse id="mantine-numberformatter">
                 <Mantine.Text fw={800}>
@@ -822,7 +822,7 @@ function MantineProductApp() {
               </DemoUse>
             </section>
 
-            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:leading-snug [&_p]:m-0 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-base-content/70">
+            <section className="col-span-12 grid min-w-0 gap-3 rounded-md border border-base-300 bg-base-100 p-3 [&>*]:min-w-0 [&_[data-demo-component]]:min-w-0 [&_h2]:m-0 [&_h2]:text-tinyrack-md [&_h2]:font-semibold [&_h2]:leading-tinyrack-sm [&_p]:m-0 [&_p]:text-tinyrack-sm [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
               <h2>Floating recovery action</h2>
               <DemoUse id="mantine-paper">
                 <Mantine.Paper p="sm" withBorder>

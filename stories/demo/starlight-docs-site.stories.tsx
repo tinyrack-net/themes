@@ -74,13 +74,13 @@ function StarlightDocsSite() {
 
   return (
     <main
-      className="box-border h-screen min-h-screen overflow-y-auto bg-[var(--sl-color-black)] p-2 font-[var(--sl-font)] text-[var(--sl-color-white)]"
+      className="box-border h-screen min-h-screen overflow-y-auto bg-[var(--sl-color-black)] p-2 font-tinyrack-body text-[var(--sl-color-white)]"
       data-demo-starlight="true"
     >
       <div className="mx-auto grid min-h-[calc(100vh-1rem)] max-w-[90rem] grid-cols-1 overflow-visible rounded-lg border border-[var(--sl-color-gray-5)] lg:grid-cols-[minmax(12rem,14rem)_minmax(0,1fr)] lg:overflow-clip xl:grid-cols-[minmax(12rem,14rem)_minmax(0,1fr)_minmax(10rem,12rem)]">
         <aside className="min-w-0 border-b border-[var(--sl-color-gray-5)] bg-[var(--sl-color-black)] p-4 lg:border-r lg:border-b-0">
           <div className="flex min-w-0 items-center gap-2">
-            <span className="inline-flex h-7 w-7 flex-none items-center justify-center rounded bg-[var(--sl-color-accent)] text-xs font-extrabold text-[var(--sl-color-black)]">
+            <span className="inline-flex h-7 w-7 flex-none items-center justify-center rounded bg-[var(--sl-color-accent)] text-tinyrack-xs font-extrabold text-[var(--sl-color-black)]">
               TR
             </span>
             <div className="min-w-0">
@@ -149,18 +149,18 @@ function StarlightDocsSite() {
           <section className="grid min-w-0 gap-3 pt-2 pb-1" id="start">
             <div className="flex min-w-0 flex-wrap items-center gap-2">
               <DemoUse id="starlight-badge" inline>
-                <span className="inline-flex min-h-6 items-center rounded border border-[var(--sl-color-accent)] bg-[var(--sl-color-accent)] px-2 py-1 font-[var(--sl-font-mono)] text-xs leading-none font-extrabold text-[var(--sl-color-black)]">
+                <span className="inline-flex min-h-6 items-center rounded border border-[var(--sl-color-accent)] bg-[var(--sl-color-accent)] px-2 py-1 font-tinyrack-mono text-tinyrack-xs leading-tinyrack-xs font-extrabold text-[var(--sl-color-black)]">
                   Starlight 0.40
                 </span>
               </DemoUse>
-              <span className="inline-flex min-h-6 items-center rounded border border-[var(--sl-color-accent)] bg-transparent px-2 py-1 font-[var(--sl-font-mono)] text-xs leading-none font-extrabold text-[var(--sl-color-white)]">
+              <span className="inline-flex min-h-6 items-center rounded border border-[var(--sl-color-accent)] bg-transparent px-2 py-1 font-tinyrack-mono text-tinyrack-xs leading-tinyrack-xs font-extrabold text-[var(--sl-color-white)]">
                 Theme adapter
               </span>
             </div>
-            <h1 className="m-0 text-balance text-3xl leading-[1.08] tracking-normal break-words sm:text-4xl lg:text-[2.8rem]">
+            <h1 className="m-0 text-balance text-tinyrack-3xl leading-tinyrack-sm tracking-tinyrack-none break-words sm:text-tinyrack-4xl lg:text-tinyrack-5xl">
               Build Tinyrack docs with Astro Starlight
             </h1>
-            <p className="m-0 max-w-3xl break-words text-[1.05rem] leading-7 text-[var(--sl-color-gray-2)]">
+            <p className="m-0 max-w-3xl break-words text-tinyrack-lg leading-tinyrack-lg text-[var(--sl-color-gray-2)]">
               Use this guide to install the adapter, wire it into Starlight, and verify
               that real documentation components inherit the Tinyrack type, surfaces,
               borders, and contrast.
@@ -168,14 +168,14 @@ function StarlightDocsSite() {
             <div className="flex min-w-0 flex-wrap items-center gap-2">
               <DemoUse id="starlight-link-button" inline>
                 <a
-                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--sl-color-accent)] bg-[var(--sl-color-accent)] px-4 py-2 text-sm font-extrabold text-[var(--sl-color-black)] no-underline"
+                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--sl-color-accent)] bg-[var(--sl-color-accent)] px-4 py-2 text-tinyrack-sm font-extrabold text-[var(--sl-color-black)] no-underline"
                   href="#install"
                 >
                   Start setup
                 </a>
               </DemoUse>
               <a
-                className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--sl-color-accent)] bg-transparent px-4 py-2 text-sm font-extrabold text-[var(--sl-color-white)] no-underline"
+                className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--sl-color-accent)] bg-transparent px-4 py-2 text-tinyrack-sm font-extrabold text-[var(--sl-color-white)] no-underline"
                 href="#release"
               >
                 Review checklist
@@ -188,7 +188,7 @@ function StarlightDocsSite() {
             className="grid min-w-0 gap-2 rounded-lg border border-[var(--sl-color-gray-5)] bg-[var(--sl-color-black)] p-4 text-[var(--sl-color-white)]"
           >
             <strong>Before shipping</strong>
-            <p className="m-0 max-w-3xl break-words leading-7 text-[var(--sl-color-gray-2)]">
+            <p className="m-0 max-w-3xl break-words leading-tinyrack-lg text-[var(--sl-color-gray-2)]">
               Keep the adapter thin. Starlight owns navigation and content behavior;
               Tinyrack only supplies the visual language for docs surfaces.
             </p>
@@ -196,8 +196,10 @@ function StarlightDocsSite() {
 
           <section className="grid min-w-0 gap-3" id="install">
             <div className="grid min-w-0 gap-2">
-              <h2 className="m-0 text-base font-semibold">Choose an install path</h2>
-              <p className="m-0 max-w-3xl break-words leading-7 text-[var(--sl-color-gray-2)]">
+              <h2 className="m-0 text-tinyrack-md font-semibold">
+                Choose an install path
+              </h2>
+              <p className="m-0 max-w-3xl break-words leading-tinyrack-lg text-[var(--sl-color-gray-2)]">
                 The same docs page should stay readable whether teams install through
                 pnpm, npm, or yarn.
               </p>
@@ -218,7 +220,7 @@ function StarlightDocsSite() {
                     <button
                       aria-controls="starlight-install-panel"
                       aria-selected={selected}
-                      className={`min-h-10 cursor-pointer rounded-md border px-3 py-2 text-sm ${
+                      className={`min-h-10 cursor-pointer rounded-md border px-3 py-2 text-tinyrack-sm ${
                         selected
                           ? 'border-[var(--sl-color-gray-5)] bg-[var(--sl-color-accent-low)] text-[var(--sl-color-white)]'
                           : 'border-transparent bg-transparent text-[var(--sl-color-gray-2)]'
@@ -238,7 +240,7 @@ function StarlightDocsSite() {
                 <DemoUse id="starlight-code" className="min-w-0">
                   <pre
                     aria-labelledby={`starlight-install-tab-${installTool}`}
-                    className="m-0 box-border w-full max-w-full overflow-auto rounded-lg border border-[var(--sl-color-gray-5)] bg-[var(--sl-color-black)] p-4 font-[var(--sl-font-mono)] text-[0.85rem] leading-[1.65] whitespace-pre-wrap break-words text-[var(--sl-color-white)]"
+                    className="m-0 box-border w-full max-w-full overflow-auto rounded-lg border border-[var(--sl-color-gray-5)] bg-[var(--sl-color-black)] p-4 font-tinyrack-mono text-tinyrack-sm leading-tinyrack-lg whitespace-pre-wrap break-words text-[var(--sl-color-white)]"
                     id="starlight-install-panel"
                     role="tabpanel"
                   >
@@ -251,14 +253,16 @@ function StarlightDocsSite() {
 
           <section className="grid min-w-0 gap-3" id="configure">
             <div className="grid min-w-0 gap-2">
-              <h2 className="m-0 text-base font-semibold">Configure the adapter</h2>
-              <p className="m-0 max-w-3xl break-words leading-7 text-[var(--sl-color-gray-2)]">
+              <h2 className="m-0 text-tinyrack-md font-semibold">
+                Configure the adapter
+              </h2>
+              <p className="m-0 max-w-3xl break-words leading-tinyrack-lg text-[var(--sl-color-gray-2)]">
                 Wrap the Starlight config so packaged CSS is loaded before local
                 overrides.
               </p>
             </div>
             <DemoUse id="starlight-code" className="min-w-0">
-              <pre className="m-0 box-border w-full max-w-full overflow-auto rounded-lg border border-[var(--sl-color-gray-5)] bg-[var(--sl-color-black)] p-4 font-[var(--sl-font-mono)] text-[0.85rem] leading-[1.65] whitespace-pre-wrap break-words text-[var(--sl-color-white)]">
+              <pre className="m-0 box-border w-full max-w-full overflow-auto rounded-lg border border-[var(--sl-color-gray-5)] bg-[var(--sl-color-black)] p-4 font-tinyrack-mono text-tinyrack-sm leading-tinyrack-lg whitespace-pre-wrap break-words text-[var(--sl-color-white)]">
                 {configCode}
               </pre>
             </DemoUse>
@@ -266,8 +270,10 @@ function StarlightDocsSite() {
 
           <section className="grid min-w-0 gap-3" id="content">
             <div className="grid min-w-0 gap-2">
-              <h2 className="m-0 text-base font-semibold">Write useful docs pages</h2>
-              <p className="m-0 max-w-3xl break-words leading-7 text-[var(--sl-color-gray-2)]">
+              <h2 className="m-0 text-tinyrack-md font-semibold">
+                Write useful docs pages
+              </h2>
+              <p className="m-0 max-w-3xl break-words leading-tinyrack-lg text-[var(--sl-color-gray-2)]">
                 These examples cover the Starlight authoring components that should
                 inherit the Tinyrack docs theme.
               </p>
@@ -286,16 +292,16 @@ function StarlightDocsSite() {
                     <DemoUse
                       id="starlight-icon"
                       inline
-                      className="inline-flex h-6 w-6 flex-none items-center leading-none"
+                      className="inline-flex h-6 w-6 flex-none items-center leading-tinyrack-xs"
                     >
                       <span
                         className='relative inline-block h-6 w-6 flex-none rounded border border-[var(--sl-color-gray-5)] bg-[var(--sl-color-accent-low)] after:absolute after:top-1/2 after:left-1/2 after:h-[0.45rem] after:w-[0.45rem] after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:bg-[var(--sl-color-accent)] after:content-[""]'
                         aria-hidden="true"
                       />
                     </DemoUse>
-                    <h3 className="m-0 text-[0.95rem] font-semibold">{title}</h3>
+                    <h3 className="m-0 text-tinyrack-md font-semibold">{title}</h3>
                   </div>
-                  <p className="m-0 max-w-3xl break-words leading-7 text-[var(--sl-color-gray-2)]">
+                  <p className="m-0 max-w-3xl break-words leading-tinyrack-lg text-[var(--sl-color-gray-2)]">
                     {copy}
                   </p>
                 </DemoUse>
@@ -313,7 +319,7 @@ function StarlightDocsSite() {
                 >
                   Adapter reference
                 </a>
-                <p className="m-0 max-w-3xl break-words leading-7 text-[var(--sl-color-gray-2)]">
+                <p className="m-0 max-w-3xl break-words leading-tinyrack-lg text-[var(--sl-color-gray-2)]">
                   Config, CSS fallback, and token boundaries.
                 </p>
               </DemoUse>
@@ -324,7 +330,7 @@ function StarlightDocsSite() {
                 >
                   Release checklist
                 </a>
-                <p className="m-0 max-w-3xl break-words leading-7 text-[var(--sl-color-gray-2)]">
+                <p className="m-0 max-w-3xl break-words leading-tinyrack-lg text-[var(--sl-color-gray-2)]">
                   What to inspect before the package is published.
                 </p>
               </div>
@@ -333,15 +339,15 @@ function StarlightDocsSite() {
 
           <section className="grid min-w-0 gap-3" id="structure">
             <div className="grid min-w-0 gap-2">
-              <h2 className="m-0 text-base font-semibold">Project structure</h2>
-              <p className="m-0 max-w-3xl break-words leading-7 text-[var(--sl-color-gray-2)]">
+              <h2 className="m-0 text-tinyrack-md font-semibold">Project structure</h2>
+              <p className="m-0 max-w-3xl break-words leading-tinyrack-lg text-[var(--sl-color-gray-2)]">
                 The fixture mirrors a small Starlight site so imports, content, and
                 local CSS overrides are tested together.
               </p>
             </div>
             <DemoUse
               id="starlight-file-tree"
-              className="grid min-w-0 gap-2 rounded-lg border border-[var(--sl-color-gray-5)] bg-[var(--sl-color-black)] p-3 font-[var(--sl-font-mono)] text-[0.78rem]"
+              className="grid min-w-0 gap-2 rounded-lg border border-[var(--sl-color-gray-5)] bg-[var(--sl-color-black)] p-3 font-tinyrack-mono text-tinyrack-xs"
             >
               {[
                 'astro.config.mjs',
@@ -361,8 +367,8 @@ function StarlightDocsSite() {
 
           <section className="grid min-w-0 gap-3" id="release">
             <div className="grid min-w-0 gap-2">
-              <h2 className="m-0 text-base font-semibold">Release checklist</h2>
-              <p className="m-0 max-w-3xl break-words leading-7 text-[var(--sl-color-gray-2)]">
+              <h2 className="m-0 text-tinyrack-md font-semibold">Release checklist</h2>
+              <p className="m-0 max-w-3xl break-words leading-tinyrack-lg text-[var(--sl-color-gray-2)]">
                 Steps should read as instructions, not as component samples, while still
                 exposing the full theme surface.
               </p>
@@ -374,11 +380,11 @@ function StarlightDocsSite() {
                     className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-start gap-x-2 gap-y-1"
                     key={title}
                   >
-                    <span className="inline-flex h-[1.35rem] w-[1.35rem] items-center justify-center rounded bg-[var(--sl-color-accent)] text-[0.72rem] font-extrabold text-[var(--sl-color-black)]">
+                    <span className="inline-flex h-[1.35rem] w-[1.35rem] items-center justify-center rounded bg-[var(--sl-color-accent)] text-tinyrack-2xs font-extrabold text-[var(--sl-color-black)]">
                       {index + 1}
                     </span>
                     <strong>{title}</strong>
-                    <span className="col-start-2 leading-6 text-[var(--sl-color-gray-2)]">
+                    <span className="col-start-2 leading-tinyrack-md text-[var(--sl-color-gray-2)]">
                       {copy}
                     </span>
                   </li>
@@ -389,7 +395,7 @@ function StarlightDocsSite() {
         </article>
 
         <aside className="hidden min-w-0 border-l border-[var(--sl-color-gray-5)] bg-[var(--sl-color-black)] p-4 xl:block">
-          <h2 className="m-0 text-base font-semibold">On this page</h2>
+          <h2 className="m-0 text-tinyrack-md font-semibold">On this page</h2>
           <nav className="mt-4 grid gap-1.5" aria-label="Table of contents">
             {navItems.map(([href, label]) => (
               <a

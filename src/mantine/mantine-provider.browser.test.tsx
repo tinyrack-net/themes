@@ -169,7 +169,7 @@ test('TinyrackMantineProvider renders Mantine components with theme variables', 
   await expect.element(screen.getByLabelText('Name')).toBeVisible();
   expect(
     getComputedStyle(document.documentElement).getPropertyValue('--tinyrack-font-body'),
-  ).toContain('Inter');
+  ).toContain('"Noto Sans"');
 });
 
 test('TinyrackMantineProvider supports scoped css variable selectors', async () => {

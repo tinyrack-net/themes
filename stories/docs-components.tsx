@@ -20,13 +20,13 @@ export function DocsPage({
   return (
     <main className="mx-auto grid min-h-screen w-[min(100%,76rem)] box-border content-start items-start gap-3.5 bg-base-100 px-4 py-5 text-base-content max-md:p-5">
       <header className="flex max-w-[54rem] flex-col items-start gap-2.5">
-        <p className="m-0 text-[0.76rem] font-extrabold tracking-[0.14em] text-primary uppercase">
+        <p className="m-0 text-tinyrack-xs leading-tinyrack-xs font-extrabold tracking-tinyrack-xl text-primary uppercase">
           {eyebrow}
         </p>
-        <h1 className="m-0 text-[clamp(1.75rem,3vw,2.5rem)] leading-none text-balance [overflow-wrap:anywhere] max-md:text-[clamp(1.8rem,10vw,2.6rem)]">
+        <h1 className="m-0 text-tinyrack-4xl leading-tinyrack-sm text-balance [overflow-wrap:anywhere] max-md:text-tinyrack-3xl">
           {title}
         </h1>
-        <p className="m-0 text-[0.95rem] leading-6 text-base-content/70">
+        <p className="m-0 text-tinyrack-md leading-tinyrack-md text-base-content/70">
           {description}
         </p>
       </header>
@@ -45,8 +45,8 @@ export function DocsGrid({ children }: { children: ReactNode }) {
 
 export function DocsCard({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="grid min-w-0 items-start gap-3 rounded-lg border border-base-300 bg-base-200/80 p-3.5 shadow-sm [&_p]:m-0 [&_p]:leading-6 [&_p]:text-base-content/70">
-      <h2 className="m-0 text-[0.95rem] font-semibold">{title}</h2>
+    <section className="grid min-w-0 items-start gap-3 rounded-lg border border-base-300 bg-base-200/80 p-3.5 shadow-sm [&_p]:m-0 [&_p]:leading-tinyrack-md [&_p]:text-base-content/70">
+      <h2 className="m-0 text-tinyrack-md font-semibold">{title}</h2>
       {children}
     </section>
   );
@@ -61,7 +61,7 @@ export function DocsSection({
 }) {
   return (
     <section className="grid gap-2.5">
-      <h2 className="m-0 text-base">{title}</h2>
+      <h2 className="m-0 text-tinyrack-md">{title}</h2>
       {children}
     </section>
   );
@@ -77,7 +77,7 @@ export function DocsCallout({
   return (
     <aside className="grid gap-1.5 rounded-lg border border-primary/25 bg-primary/10 p-3">
       <strong className="m-0">{title}</strong>
-      <p className="m-0 leading-6 text-base-content/70">{children}</p>
+      <p className="m-0 leading-tinyrack-md text-base-content/70">{children}</p>
     </aside>
   );
 }
@@ -90,7 +90,7 @@ export function DocsTable({ columns, rows }: { columns: string[]; rows: string[]
           <tr>
             {columns.map((column) => (
               <th
-                className="border-b border-base-300 bg-base-200/90 px-2.5 py-2 text-left align-top text-[0.78rem] text-base-content uppercase"
+                className="border-b border-base-300 bg-base-200/90 px-2.5 py-2 text-left align-top text-tinyrack-xs text-base-content uppercase"
                 key={column}
               >
                 {column}
@@ -106,7 +106,7 @@ export function DocsTable({ columns, rows }: { columns: string[]; rows: string[]
 
                 return (
                   <td
-                    className="border-b border-base-300 px-2.5 py-2 text-left align-top leading-6 text-base-content/70 last:border-b-0"
+                    className="border-b border-base-300 px-2.5 py-2 text-left align-top leading-tinyrack-md text-base-content/70 last:border-b-0"
                     data-label={column}
                     key={`${column}-${cell}`}
                   >
@@ -131,11 +131,13 @@ export function TokenTable({ items }: { items: TokenItem[] }) {
           key={item.name}
         >
           <strong>{item.name}</strong>
-          <code className="text-[0.78rem] text-primary [overflow-wrap:anywhere]">
+          <code className="text-tinyrack-xs text-primary [overflow-wrap:anywhere]">
             {item.value}
           </code>
           {item.note ? (
-            <span className="leading-6 text-base-content/70">{item.note}</span>
+            <span className="leading-tinyrack-md text-base-content/70">
+              {item.note}
+            </span>
           ) : null}
         </div>
       ))}
@@ -145,7 +147,7 @@ export function TokenTable({ items }: { items: TokenItem[] }) {
 
 export function CodeSnippet({ children }: { children: string }) {
   return (
-    <pre className="m-0 overflow-auto whitespace-pre-wrap rounded-md border border-primary/20 bg-base-300 p-3 text-[0.86rem] text-base-content">
+    <pre className="m-0 overflow-auto whitespace-pre-wrap rounded-md border border-primary/20 bg-base-300 p-3 text-tinyrack-sm leading-tinyrack-lg text-base-content">
       {children}
     </pre>
   );
@@ -153,7 +155,7 @@ export function CodeSnippet({ children }: { children: string }) {
 
 export function GuidanceList({ items }: { items: string[] }) {
   return (
-    <ul className="m-0 grid gap-1.5 pl-[1.1rem] leading-6 text-base-content/70">
+    <ul className="m-0 grid gap-1.5 pl-[1.1rem] leading-tinyrack-md text-base-content/70">
       {items.map((item) => (
         <li key={item}>{item}</li>
       ))}

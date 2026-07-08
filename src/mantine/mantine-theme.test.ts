@@ -47,7 +47,16 @@ describe('tinyrack mantine theme', () => {
     expect(theme.colors?.[darkColorKey]?.[9]).toBe('#0a0a0a');
     expect(theme.colors?.[darkColorKey]?.[7]).toBe('#171717');
     expect(theme.fontFamily).toContain('var(--tinyrack-font-body)');
+    expect(theme.fontFamilyMonospace).toContain('var(--tinyrack-font-mono)');
     expect(theme.headings?.fontFamily).toContain('var(--tinyrack-font-heading)');
+    expect(theme.headings?.textWrap).toBe('balance');
+    expect(theme.headings?.sizes?.h1).toMatchObject({
+      fontSize: '2.25rem',
+      lineHeight: '1.2',
+    });
+    expect(theme.fontSizes?.md).toBe('1rem');
+    expect(theme.fontSizes?.['2xs']).toBe('0.6875rem');
+    expect(theme.lineHeights?.lg).toBe('1.65');
     expect(theme.defaultRadius).toBe('sm');
     expect(theme.spacing?.md).toBe('0.75rem');
     expect(theme.spacing?.['2xl']).toBe('2rem');

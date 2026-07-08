@@ -47,6 +47,68 @@ function createFontFallbackVar(name: string, fontStack: string) {
     .join('\n')}\n  )`;
 }
 
+function createTinyrackTokenDeclarations(
+  namespace: string,
+  tokens: Record<string, string>,
+): CssDeclaration[] {
+  return Object.entries(tokens).map(
+    ([name, value]) => [`--tinyrack-${namespace}-${name}`, value] as const,
+  );
+}
+
+function createTailwindThemeTokenDeclarations(
+  namespace: string,
+  tokens: Record<string, string>,
+): CssDeclaration[] {
+  return Object.keys(tokens).map(
+    (name) =>
+      [
+        `--${namespace}-tinyrack-${name}`,
+        `var(--tinyrack-${namespace}-${name})`,
+      ] as const,
+  );
+}
+
+const tailwindFontSizeLineHeight = {
+  '2xs': 'sm',
+  xs: 'sm',
+  sm: 'md',
+  md: 'md',
+  lg: 'md',
+  xl: 'sm',
+  '2xl': 'sm',
+  '3xl': 'sm',
+  '4xl': 'sm',
+  '5xl': 'sm',
+} as const satisfies Record<
+  keyof typeof tinyrackTypography.fontSize,
+  keyof typeof tinyrackTypography.lineHeight
+>;
+
+function createTailwindTextDeclarations(): CssDeclaration[] {
+  return Object.keys(tinyrackTypography.fontSize).flatMap((name) => {
+    const sizeName = name as keyof typeof tinyrackTypography.fontSize;
+    const lineHeightName = tailwindFontSizeLineHeight[sizeName];
+
+    return [
+      [`--text-tinyrack-${name}`, `var(--tinyrack-text-${name})`] as const,
+      [
+        `--text-tinyrack-${name}--line-height`,
+        `var(--tinyrack-leading-${lineHeightName})`,
+      ] as const,
+    ];
+  });
+}
+
+function createLanguageFontCss() {
+  return [
+    createBlock(':where(:lang(ko))', [['font-family', 'var(--tinyrack-font-korean)']]),
+    createBlock(':where(:lang(ja))', [
+      ['font-family', 'var(--tinyrack-font-japanese)'],
+    ]),
+  ].join('\n\n');
+}
+
 function createSemanticDeclarations(mode: SemanticMode): CssDeclaration[] {
   const colors = tinyrackSemanticColors[mode];
 
@@ -88,6 +150,17 @@ function createBaseDeclarations(): CssDeclaration[] {
       createWrappedFontStack(tinyrackTypography.fontStack.heading),
     ],
     ['--tinyrack-font-mono', createWrappedFontStack(tinyrackTypography.fontStack.mono)],
+    [
+      '--tinyrack-font-korean',
+      createWrappedFontStack(tinyrackTypography.fontStack.korean),
+    ],
+    [
+      '--tinyrack-font-japanese',
+      createWrappedFontStack(tinyrackTypography.fontStack.japanese),
+    ],
+    ...createTinyrackTokenDeclarations('text', tinyrackTypography.fontSize),
+    ...createTinyrackTokenDeclarations('leading', tinyrackTypography.lineHeight),
+    ...createTinyrackTokenDeclarations('tracking', tinyrackTypography.letterSpacing),
     ['--tinyrack-black', tinyrackPalettes.brand[950]],
     ['--tinyrack-primary-solid', tinyrackSemanticColors.light.primary],
     ['--tinyrack-radius-selector', tinyrackRadii.md],
@@ -101,6 +174,14 @@ function createTailwindThemeDeclarations(): CssDeclaration[] {
     ['--font-tinyrack-body', 'var(--tinyrack-font-body)'],
     ['--font-tinyrack-heading', 'var(--tinyrack-font-heading)'],
     ['--font-tinyrack-mono', 'var(--tinyrack-font-mono)'],
+    ['--font-tinyrack-korean', 'var(--tinyrack-font-korean)'],
+    ['--font-tinyrack-japanese', 'var(--tinyrack-font-japanese)'],
+    ...createTailwindTextDeclarations(),
+    ...createTailwindThemeTokenDeclarations('leading', tinyrackTypography.lineHeight),
+    ...createTailwindThemeTokenDeclarations(
+      'tracking',
+      tinyrackTypography.letterSpacing,
+    ),
     ['--color-tinyrack-black', 'var(--tinyrack-black)'],
     ['--color-tinyrack-canvas', 'var(--tinyrack-canvas)'],
     ['--color-tinyrack-surface', 'var(--tinyrack-surface)'],
@@ -142,6 +223,7 @@ export function createTinyrackTailwindThemeCss() {
     ]),
     createBlock('[data-theme="tinyrack-light"]', createSemanticDeclarations('light')),
     createBlock('[data-theme="tinyrack-dark"]', createSemanticDeclarations('dark')),
+    createLanguageFontCss(),
   );
 }
 
@@ -253,6 +335,7 @@ export function createTinyrackMantineStylesCss() {
       '[data-mantine-color-scheme] .mantine-SegmentedControl-label[data-active] .mantine-SegmentedControl-innerLabel',
       [['color', 'var(--tinyrack-mantine-filled-color) !important']],
     ),
+    createLanguageFontCss(),
   );
 }
 
@@ -270,7 +353,27 @@ function createStarlightRhythmDeclarations(): CssDeclaration[] {
     ['--sl-content-pad-x', 'var(--tinyrack-starlight-space-lg)'],
     ['--sl-sidebar-pad-x', 'var(--tinyrack-starlight-space-lg)'],
     ['--sl-content-gap-y', 'var(--tinyrack-starlight-space-lg)'],
-    ['--sl-line-height', tinyrackTypography.lineHeight.relaxed],
+    ['--sl-text-2xs', tinyrackTypography.fontSize['2xs']],
+    ['--sl-text-xs', tinyrackTypography.fontSize.xs],
+    ['--sl-text-sm', tinyrackTypography.fontSize.sm],
+    ['--sl-text-base', tinyrackTypography.fontSize.md],
+    ['--sl-text-lg', tinyrackTypography.fontSize.lg],
+    ['--sl-text-xl', tinyrackTypography.fontSize.xl],
+    ['--sl-text-2xl', tinyrackTypography.fontSize['2xl']],
+    ['--sl-text-3xl', tinyrackTypography.fontSize['3xl']],
+    ['--sl-text-4xl', tinyrackTypography.fontSize['4xl']],
+    ['--sl-text-5xl', tinyrackTypography.fontSize['5xl']],
+    ['--sl-text-body', 'var(--sl-text-base)'],
+    ['--sl-text-body-sm', 'var(--sl-text-xs)'],
+    ['--sl-text-code', 'var(--sl-text-sm)'],
+    ['--sl-text-code-sm', 'var(--sl-text-xs)'],
+    ['--sl-text-h1', 'var(--sl-text-4xl)'],
+    ['--sl-text-h2', 'var(--sl-text-3xl)'],
+    ['--sl-text-h3', 'var(--sl-text-2xl)'],
+    ['--sl-text-h4', 'var(--sl-text-xl)'],
+    ['--sl-text-h5', 'var(--sl-text-lg)'],
+    ['--sl-line-height', tinyrackTypography.lineHeight.xl],
+    ['--sl-line-height-headings', tinyrackTypography.lineHeight.sm],
   ];
 }
 
@@ -315,6 +418,7 @@ function createStarlightComponentRhythmCss() {
 export function createTinyrackStarlightThemeCss() {
   return createFile(
     createBlock(':root', [
+      ...createBaseDeclarations(),
       ...createStarlightRhythmDeclarations(),
       [
         '--sl-font',
@@ -355,6 +459,7 @@ export function createTinyrackStarlightThemeCss() {
       ['--sl-color-gray-6', tinyrackPalettes.neutral[900]],
       ['--sl-color-black', tinyrackSemanticColors.dark.surface],
     ]),
+    createLanguageFontCss(),
     createStarlightDesktopRhythmCss(),
     createStarlightComponentRhythmCss(),
   );

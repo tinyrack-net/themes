@@ -258,6 +258,7 @@ function createTinyrackNavigationDataDeclarations(): CssDeclaration[] {
       ];
     }),
     ['--tinyrack-timeline-active-color', tinyrackTimelineContract.activeColor],
+    ['--tinyrack-timeline-active-text-color', tinyrackTimelineContract.activeTextColor],
     [
       '--tinyrack-timeline-bullet-background',
       tinyrackTimelineContract.bulletBackground,

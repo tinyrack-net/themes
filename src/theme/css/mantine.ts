@@ -655,7 +655,7 @@ export function createTinyrackMantineStylesCss() {
       [
         ['background-color', 'var(--tinyrack-timeline-active-color)'],
         ['border-color', 'var(--tinyrack-timeline-active-color)'],
-        ['color', 'var(--tinyrack-primary-contrast)'],
+        ['color', 'var(--tinyrack-timeline-active-text-color)'],
       ],
     ),
     createBlock('[data-mantine-color-scheme] .mantine-Timeline-itemTitle', [

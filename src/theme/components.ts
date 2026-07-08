@@ -496,6 +496,7 @@ export const tinyrackTabsContract = {
 
 export const tinyrackTimelineContract = {
   activeColor: 'var(--tinyrack-primary)',
+  activeTextColor: 'var(--tinyrack-primary-contrast)',
   bulletBackground: 'var(--tinyrack-surface)',
   bulletSize: tinyrackControlSizes.sm.height,
   lineColor: 'var(--tinyrack-border)',

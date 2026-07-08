@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { tinyrackDaisyUiThemes } from '../../exports/daisyui.js';
+import {
+  tinyrackControlContract,
+  tinyrackSelectionControlContract,
+} from '../../exports/tokens.js';
 
 const requiredVariables = [
   '--color-base-100',
@@ -45,6 +49,16 @@ describe('tinyrack daisyUI themes', () => {
       for (const variable of requiredVariables) {
         expect(theme.tokens[variable]).toEqual(expect.any(String));
       }
+    }
+  });
+
+  it('derives shared daisyUI component primitives from Tinyrack contracts', () => {
+    for (const theme of Object.values(tinyrackDaisyUiThemes)) {
+      expect(theme.tokens['--size-selector']).toBe(
+        tinyrackSelectionControlContract.sizes.md.padding,
+      );
+      expect(theme.tokens['--size-field']).toBe(tinyrackControlContract.radius);
+      expect(theme.tokens['--border']).toBe(tinyrackControlContract.borderWidth);
     }
   });
 });

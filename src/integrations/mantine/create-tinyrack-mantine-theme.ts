@@ -5,6 +5,16 @@ import {
   type VariantColorsResolver,
 } from '@mantine/core';
 import { tinyrackPalettes } from '../../theme/colors.js';
+import {
+  tinyrackAvatarContract,
+  tinyrackIndicatorContract,
+  tinyrackLoaderContract,
+  tinyrackRangeContract,
+  tinyrackRatingContract,
+  tinyrackStepperContract,
+  tinyrackTabsContract,
+  tinyrackTimelineContract,
+} from '../../theme/components.js';
 import { tinyrackRadii } from '../../theme/radii.js';
 import { tinyrackSemanticColors } from '../../theme/semantic.js';
 import { tinyrackShadows } from '../../theme/shadows.js';
@@ -24,6 +34,7 @@ type ComponentVarsProps = Record<string, unknown> & {
 };
 
 const tinyrackMantineFilledColorVariable = 'var(--tinyrack-mantine-filled-color)';
+const tinyrackPrimaryVariable = 'var(--tinyrack-primary)';
 
 const brandScale = [
   tinyrackPalettes.brand[50],
@@ -107,15 +118,19 @@ const tinyrackMantineLineHeights = {
   xl: tinyrackTypography.lineHeight.xl,
 } as const;
 
+function createTokenVariableFallback(name: string, fallback: string) {
+  return `var(${name}, ${fallback})`;
+}
+
 const tinyrackVariantColorResolver: VariantColorsResolver = (input) => {
   const colors = defaultVariantColorsResolver(input);
 
   if (input.color === 'tinyrack' && input.variant === 'filled') {
     return {
       ...colors,
-      background: 'var(--tinyrack-primary)',
+      background: tinyrackPrimaryVariable,
       hover: 'var(--tinyrack-accent)',
-      color: 'var(--tinyrack-mantine-filled-color)',
+      color: tinyrackMantineFilledColorVariable,
     };
   }
 
@@ -152,13 +167,6 @@ function createTinyrackFilledTextVars(cssVariable: string) {
       : {};
 }
 
-function createTinyrackActiveTextVars(cssVariable: string) {
-  return (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
-    usesTinyrackColor(props)
-      ? createRootVars({ [cssVariable]: tinyrackMantineFilledColorVariable })
-      : {};
-}
-
 const tinyrackMantineComponentOverrides = {
   Avatar: {
     defaultProps: {
@@ -168,10 +176,18 @@ const tinyrackMantineComponentOverrides = {
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--avatar-bg': 'var(--tinyrack-surface-muted)',
-            '--avatar-bd':
-              'var(--tinyrack-avatar-border-width) solid var(--tinyrack-border)',
-            '--avatar-color': 'var(--tinyrack-text)',
+            '--avatar-bg': createTokenVariableFallback(
+              '--tinyrack-avatar-background',
+              tinyrackAvatarContract.background,
+            ),
+            '--avatar-bd': `${createTokenVariableFallback(
+              '--tinyrack-avatar-border-width',
+              tinyrackAvatarContract.borderWidth,
+            )} solid var(--tinyrack-border)`,
+            '--avatar-color': createTokenVariableFallback(
+              '--tinyrack-avatar-color',
+              tinyrackAvatarContract.color,
+            ),
           })
         : {},
   },
@@ -199,7 +215,7 @@ const tinyrackMantineComponentOverrides = {
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--checkbox-color': 'var(--tinyrack-primary)',
+            '--checkbox-color': tinyrackPrimaryVariable,
             '--checkbox-icon-color': tinyrackMantineFilledColorVariable,
           })
         : {},
@@ -216,8 +232,14 @@ const tinyrackMantineComponentOverrides = {
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--indicator-color': 'var(--tinyrack-primary)',
-            '--indicator-text-color': tinyrackMantineFilledColorVariable,
+            '--indicator-color': createTokenVariableFallback(
+              '--tinyrack-indicator-background',
+              tinyrackIndicatorContract.background,
+            ),
+            '--indicator-text-color': createTokenVariableFallback(
+              '--tinyrack-indicator-color',
+              tinyrackIndicatorContract.color,
+            ),
           })
         : {},
   },
@@ -228,7 +250,10 @@ const tinyrackMantineComponentOverrides = {
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--loader-color': 'var(--tinyrack-primary)',
+            '--loader-color': createTokenVariableFallback(
+              '--tinyrack-loader-color',
+              tinyrackLoaderContract.color,
+            ),
           })
         : {},
   },
@@ -250,7 +275,7 @@ const tinyrackMantineComponentOverrides = {
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--pagination-active-bg': 'var(--tinyrack-primary)',
+            '--pagination-active-bg': tinyrackPrimaryVariable,
             '--pagination-active-color': tinyrackMantineFilledColorVariable,
           })
         : {},
@@ -267,7 +292,7 @@ const tinyrackMantineComponentOverrides = {
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--radio-color': 'var(--tinyrack-primary)',
+            '--radio-color': tinyrackPrimaryVariable,
             '--radio-icon-color': tinyrackMantineFilledColorVariable,
           })
         : {},
@@ -279,7 +304,10 @@ const tinyrackMantineComponentOverrides = {
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--rating-color': 'var(--tinyrack-primary)',
+            '--rating-color': createTokenVariableFallback(
+              '--tinyrack-rating-color',
+              tinyrackRatingContract.color,
+            ),
           })
         : {},
   },
@@ -292,7 +320,10 @@ const tinyrackMantineComponentOverrides = {
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--slider-color': 'var(--tinyrack-primary)',
+            '--slider-color': createTokenVariableFallback(
+              '--tinyrack-range-color',
+              tinyrackRangeContract.color,
+            ),
           })
         : {},
   },
@@ -303,7 +334,7 @@ const tinyrackMantineComponentOverrides = {
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--sc-color': 'var(--tinyrack-primary)',
+            '--sc-color': tinyrackPrimaryVariable,
             '--sc-label-color': tinyrackMantineFilledColorVariable,
           })
         : {},
@@ -317,7 +348,10 @@ const tinyrackMantineComponentOverrides = {
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--slider-color': 'var(--tinyrack-primary)',
+            '--slider-color': createTokenVariableFallback(
+              '--tinyrack-range-color',
+              tinyrackRangeContract.color,
+            ),
           })
         : {},
   },
@@ -325,7 +359,15 @@ const tinyrackMantineComponentOverrides = {
     defaultProps: {
       color: 'tinyrack',
     },
-    vars: createTinyrackActiveTextVars('--stepper-icon-color'),
+    vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
+      usesTinyrackColor(props)
+        ? createRootVars({
+            '--stepper-icon-color': createTokenVariableFallback(
+              '--tinyrack-stepper-active-text-color',
+              tinyrackStepperContract.activeTextColor,
+            ),
+          })
+        : {},
   },
   Table: {
     defaultProps: {
@@ -346,7 +388,7 @@ const tinyrackMantineComponentOverrides = {
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--switch-color': 'var(--tinyrack-primary)',
+            '--switch-color': tinyrackPrimaryVariable,
           })
         : {},
   },
@@ -354,7 +396,15 @@ const tinyrackMantineComponentOverrides = {
     defaultProps: {
       color: 'tinyrack',
     },
-    vars: createTinyrackActiveTextVars('--tabs-text-color'),
+    vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
+      usesTinyrackColor(props)
+        ? createRootVars({
+            '--tabs-text-color': createTokenVariableFallback(
+              '--tinyrack-tabs-active-color',
+              tinyrackTabsContract.activeColor,
+            ),
+          })
+        : {},
   },
   ThemeIcon: {
     defaultProps: {
@@ -366,7 +416,15 @@ const tinyrackMantineComponentOverrides = {
     defaultProps: {
       color: 'tinyrack',
     },
-    vars: createTinyrackActiveTextVars('--tl-icon-color'),
+    vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
+      usesTinyrackColor(props)
+        ? createRootVars({
+            '--tl-icon-color': createTokenVariableFallback(
+              '--tinyrack-timeline-active-text-color',
+              tinyrackTimelineContract.activeTextColor,
+            ),
+          })
+        : {},
   },
 };
 

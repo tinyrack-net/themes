@@ -145,10 +145,10 @@ describe('tinyrack mantine theme', () => {
     expect(componentDefaultProp(theme, 'Tooltip', 'radius')).toBe('sm');
     expect(componentDefaultProp(theme, 'ThemeIcon', 'color')).toBe('tinyrack');
     expect(componentRootVar(theme, 'Avatar', '--avatar-bg')).toBe(
-      'var(--tinyrack-surface-muted)',
+      'var(--tinyrack-avatar-background, var(--tinyrack-surface-muted))',
     );
     expect(componentRootVar(theme, 'Avatar', '--avatar-color')).toBe(
-      'var(--tinyrack-text)',
+      'var(--tinyrack-avatar-color, var(--tinyrack-text))',
     );
     expect(componentRootVar(theme, 'Badge', '--badge-color')).toBe(
       tinyrackFilledTextVariable,
@@ -163,13 +163,13 @@ describe('tinyrack mantine theme', () => {
       tinyrackFilledTextVariable,
     );
     expect(componentRootVar(theme, 'Indicator', '--indicator-color')).toBe(
-      'var(--tinyrack-primary)',
+      'var(--tinyrack-indicator-background, var(--tinyrack-primary))',
     );
     expect(componentRootVar(theme, 'Indicator', '--indicator-text-color')).toBe(
-      tinyrackFilledTextVariable,
+      'var(--tinyrack-indicator-color, var(--tinyrack-primary-contrast))',
     );
     expect(componentRootVar(theme, 'Loader', '--loader-color')).toBe(
-      'var(--tinyrack-primary)',
+      'var(--tinyrack-loader-color, var(--tinyrack-primary))',
     );
     expect(componentRootVar(theme, 'Pagination', '--pagination-active-bg')).toBe(
       'var(--tinyrack-primary)',
@@ -184,19 +184,28 @@ describe('tinyrack mantine theme', () => {
       tinyrackFilledTextVariable,
     );
     expect(componentRootVar(theme, 'RangeSlider', '--slider-color')).toBe(
-      'var(--tinyrack-primary)',
+      'var(--tinyrack-range-color, var(--tinyrack-primary))',
     );
     expect(componentRootVar(theme, 'Rating', '--rating-color')).toBe(
-      'var(--tinyrack-primary)',
+      'var(--tinyrack-rating-color, var(--tinyrack-primary))',
     );
     expect(componentRootVar(theme, 'Slider', '--slider-color')).toBe(
-      'var(--tinyrack-primary)',
+      'var(--tinyrack-range-color, var(--tinyrack-primary))',
     );
     expect(componentRootVar(theme, 'Switch', '--switch-color')).toBe(
       'var(--tinyrack-primary)',
     );
     expect(componentRootVar(theme, 'ThemeIcon', '--ti-color')).toBe(
       tinyrackFilledTextVariable,
+    );
+    expect(componentRootVar(theme, 'Stepper', '--stepper-icon-color')).toBe(
+      'var(--tinyrack-stepper-active-text-color, var(--tinyrack-primary-contrast))',
+    );
+    expect(componentRootVar(theme, 'Tabs', '--tabs-text-color')).toBe(
+      'var(--tinyrack-tabs-active-color, var(--tinyrack-text))',
+    );
+    expect(componentRootVar(theme, 'Timeline', '--tl-icon-color')).toBe(
+      'var(--tinyrack-timeline-active-text-color, var(--tinyrack-primary-contrast))',
     );
     expect(componentRootVar(theme, 'SegmentedControl', '--sc-color')).toBe(
       'var(--tinyrack-primary)',

@@ -2,7 +2,6 @@ import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 type DistPackageModule = Record<string, unknown> & {
-  tinyrackTokens: unknown;
   tinyrackSemanticColors: {
     dark: {
       primary: string;
@@ -68,9 +67,9 @@ function assertCssExport(subpath: string, expectedContents: readonly string[]) {
   }
 }
 
-const rootModule = await assertJsExport('', ['tinyrackTokens']);
+const rootModule = await assertJsExport('', ['tinyrackSemanticColors']);
 const tokensModule = await assertJsExport('/tokens', [
-  'tinyrackTokens',
+  'tinyrackPalettes',
   'tinyrackSemanticColors',
 ]);
 const mantineModule = await assertJsExport('/mantine', [
@@ -85,8 +84,8 @@ const starlightModule = await assertJsExport('/astro/starlight', [
 ]);
 
 assert(
-  rootModule.tinyrackTokens === tokensModule.tinyrackTokens,
-  'root tokens export should match /tokens',
+  rootModule.tinyrackSemanticColors === tokensModule.tinyrackSemanticColors,
+  'root semantic color export should match /tokens',
 );
 assert(
   tokensModule.tinyrackSemanticColors.dark.primary === '#fafafa',

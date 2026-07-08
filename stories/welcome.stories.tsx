@@ -22,7 +22,7 @@ function WelcomePage() {
           <DocsCard title="What this package is">
             <GuidanceList
               items={[
-                'Design tokens for color, typography, spacing, radius, shadow, and motion.',
+                'Design tokens for color, typography, spacing, radius, and shadow.',
                 'Thin adapters for Tailwind CSS 4, daisyUI 5, Mantine 9, and Astro Starlight.',
                 'A visual review surface for checking dense node, service, and runbook screens.',
               ]}

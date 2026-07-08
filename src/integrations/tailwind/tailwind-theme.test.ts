@@ -28,8 +28,6 @@ describe('Tailwind CSS theme exports', () => {
     expect(css).toContain('--tinyrack-primary: #fafafa;');
     expect(css).toContain('--font-tinyrack-body:');
     expect(css).toContain('--font-tinyrack-mono: var(--tinyrack-font-mono);');
-    expect(css).toContain('--font-tinyrack-korean: var(--tinyrack-font-korean);');
-    expect(css).toContain('--font-tinyrack-japanese: var(--tinyrack-font-japanese);');
     expect(css).toContain('--text-tinyrack-md: var(--tinyrack-text-md);');
     expect(css).toContain(
       '--text-tinyrack-md--line-height: var(--tinyrack-leading-md);',

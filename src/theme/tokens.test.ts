@@ -21,7 +21,6 @@ import {
   tinyrackTableContract,
   tinyrackTabsContract,
   tinyrackTimelineContract,
-  tinyrackTokens,
   tinyrackTooltipContract,
   tinyrackTypography,
 } from '../exports/tokens.js';
@@ -74,7 +73,7 @@ describe('tinyrack design tokens', () => {
   it('provides required light and dark semantic colors', () => {
     for (const mode of ['light', 'dark'] as const) {
       expect(tinyrackSemanticColors[mode]).toMatchObject({
-        background: expect.any(String),
+        canvas: expect.any(String),
         surface: expect.any(String),
         text: expect.any(String),
         border: expect.any(String),
@@ -115,13 +114,6 @@ describe('tinyrack design tokens', () => {
     }
   });
 
-  it('keeps shared tokens library-agnostic', () => {
-    const serialized = JSON.stringify(tinyrackTokens).toLowerCase();
-    expect(serialized).not.toContain('mantine');
-    expect(serialized).not.toContain('daisy');
-    expect(serialized).not.toContain('starlight');
-  });
-
   it('uses a single IBM Plex Sans font stack without explicit fallback families', () => {
     expect(Object.values(tinyrackTypography.fontStack)).toEqual(
       Array.from(
@@ -133,8 +125,6 @@ describe('tinyrack design tokens', () => {
       body: 'var(--tinyrack-font-body)',
       heading: 'var(--tinyrack-font-heading)',
       mono: 'var(--tinyrack-font-mono)',
-      korean: 'var(--tinyrack-font-korean)',
-      japanese: 'var(--tinyrack-font-japanese)',
     });
     expect(JSON.stringify(tinyrackTypography)).not.toContain('Noto Sans');
     expect(JSON.stringify(tinyrackTypography)).not.toContain('system-ui');

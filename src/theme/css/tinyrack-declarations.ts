@@ -1,4 +1,3 @@
-import { tinyrackPalettes } from '../colors.js';
 import {
   tinyrackAvatarContract,
   tinyrackBadgeContract,
@@ -346,7 +345,6 @@ export function createSemanticDeclarations(mode: SemanticMode): CssDeclaration[]
   const colors = tinyrackSemanticColors[mode];
 
   return [
-    ['--tinyrack-background', colors.background],
     ['--tinyrack-canvas', colors.canvas],
     ['--tinyrack-surface', colors.surface],
     ['--tinyrack-surface-raised', colors.surfaceRaised],
@@ -383,14 +381,6 @@ export function createBaseDeclarations(): CssDeclaration[] {
       createWrappedFontStack(tinyrackTypography.fontStack.heading),
     ],
     ['--tinyrack-font-mono', createWrappedFontStack(tinyrackTypography.fontStack.mono)],
-    [
-      '--tinyrack-font-korean',
-      createWrappedFontStack(tinyrackTypography.fontStack.korean),
-    ],
-    [
-      '--tinyrack-font-japanese',
-      createWrappedFontStack(tinyrackTypography.fontStack.japanese),
-    ],
     ...createTinyrackTokenDeclarations('text', tinyrackTypography.fontSize),
     ...createTinyrackTokenDeclarations('leading', tinyrackTypography.lineHeight),
     ...createTinyrackTokenDeclarations('tracking', tinyrackTypography.letterSpacing),
@@ -407,8 +397,6 @@ export function createBaseDeclarations(): CssDeclaration[] {
     ...createTinyrackRadialProgressDeclarations(),
     ...createTinyrackNavigationDataDeclarations(),
     ...createTinyrackOverlayDeclarations(),
-    ['--tinyrack-black', tinyrackPalettes.brand[950]],
-    ['--tinyrack-primary-solid', tinyrackSemanticColors.light.primary],
     ['--tinyrack-radius-selector', tinyrackRadii.md],
     ['--tinyrack-radius-field', tinyrackRadii.sm],
     ['--tinyrack-radius-box', tinyrackRadii.lg],

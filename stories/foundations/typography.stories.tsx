@@ -191,7 +191,7 @@ function TypographyPage() {
               IBM Plex Sans
             </strong>
             <code className="text-tinyrack-xs leading-tinyrack-md text-primary [overflow-wrap:anywhere]">
-              font-tinyrack-body / heading / mono / korean / japanese
+              font-tinyrack-body / heading / mono
             </code>
           </div>
         </div>

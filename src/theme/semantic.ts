@@ -1,7 +1,6 @@
 export const tinyrackSemanticColors = {
   light: {
     canvas: '#ffffff',
-    background: '#ffffff',
     surface: '#ffffff',
     surfaceRaised: '#ffffff',
     surfaceMuted: '#f5f5f5',
@@ -29,7 +28,6 @@ export const tinyrackSemanticColors = {
   },
   dark: {
     canvas: '#030303',
-    background: '#030303',
     surface: '#0a0a0a',
     surfaceRaised: '#171717',
     surfaceMuted: '#262626',
@@ -56,6 +54,3 @@ export const tinyrackSemanticColors = {
     infoContent: '#0a0a0a',
   },
 } as const;
-
-export type TinyrackColorMode = keyof typeof tinyrackSemanticColors;
-export type TinyrackSemanticColorName = keyof typeof tinyrackSemanticColors.light;

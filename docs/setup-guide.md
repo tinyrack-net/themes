@@ -302,7 +302,7 @@ Astro/Starlight 버전에 따라 package subpath CSS를 `customCss`에서 직접
 테스트, 문서 생성, design tooling에서는 JS token export를 직접 사용할 수 있습니다.
 
 ```ts
-import { tinyrackPalettes, tinyrackTokens } from '@tinyrack/themes/tokens';
+import { tinyrackPalettes, tinyrackSemanticColors } from '@tinyrack/themes/tokens';
 import { tinyrackDaisyUiThemes } from '@tinyrack/themes/daisyui';
 import { tinyrackMantineTheme } from '@tinyrack/themes/mantine';
 ```

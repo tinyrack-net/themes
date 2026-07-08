@@ -13,7 +13,7 @@ const repoRoot = process.cwd();
 describe('Tinyrack black-tone brand identity', () => {
   it('uses a near-black dark canvas with achromatic primary identity', () => {
     expect(tinyrackSemanticColors.dark).toMatchObject({
-      background: '#030303',
+      canvas: '#030303',
       surface: '#0a0a0a',
       surfaceMuted: '#262626',
       text: '#fafafa',
@@ -30,7 +30,6 @@ describe('Tinyrack black-tone brand identity', () => {
   it('keeps the palette achromatic with restrained rack signal colors', () => {
     expect(tinyrackPalettes.neutral[950]).toBe('#0a0a0a');
     expect(tinyrackPalettes.brand[500]).toBe('#737373');
-    expect(tinyrackPalettes.accent[500]).toBe('#737373');
     expect(tinyrackShadows.md).toContain('rgb(0 0 0 / 0.22)');
   });
 

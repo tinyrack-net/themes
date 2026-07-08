@@ -55,7 +55,7 @@ function DaisyUiPage() {
 @plugin "daisyui" {
   themes:
     tinyrack-light,
-    tinyrack-dark --default --prefersdark;
+    tinyrack-dark;
 }`}</CodeSnippet>
         </DocsCard>
       </DocsGrid>
@@ -75,6 +75,7 @@ function DaisyUiPage() {
             items={[
               'Confirm btn btn-primary uses the achromatic Tinyrack primary on tinyrack-dark.',
               'Confirm data-theme switches between tinyrack-dark and tinyrack-light.',
+              'Confirm importing the preset does not change the host daisyUI default without data-theme.',
               'Confirm app CSS does not register @plugin "daisyui" twice when using the combined preset.',
             ]}
           />

@@ -19,7 +19,12 @@ describe('Tailwind CSS theme exports', () => {
       '--color-tinyrack-surface-raised: var(--tinyrack-surface-raised);',
     );
     expect(css).toContain('--color-tinyrack-border: var(--tinyrack-border);');
+    expect(css).not.toContain(':root {');
+    expect(css).toContain(
+      ':where([data-theme="tinyrack-light"], [data-theme="tinyrack-dark"])',
+    );
     expect(css).toContain('[data-theme="tinyrack-light"]');
+    expect(css).toContain('[data-theme="tinyrack-dark"]');
     expect(css).toContain('--tinyrack-primary: #fafafa;');
     expect(css).toContain('--font-tinyrack-body:');
     expect(css).toContain('--font-tinyrack-korean: var(--tinyrack-font-korean);');
@@ -30,7 +35,7 @@ describe('Tailwind CSS theme exports', () => {
     );
     expect(css).toContain('--leading-tinyrack-lg: var(--tinyrack-leading-lg);');
     expect(css).toContain('--tracking-tinyrack-xl: var(--tinyrack-tracking-xl);');
-    expect(css).toContain(':where(:lang(ko))');
+    expect(css).toContain('[data-theme="tinyrack-dark"] :lang(ko)');
     expect(css).toContain('font-family: var(--tinyrack-font-japanese);');
     expect(css).toContain('--radius-tinyrack-box: var(--tinyrack-radius-box);');
   });
@@ -42,7 +47,9 @@ describe('Tailwind CSS theme exports', () => {
     expect(daisyCss).toContain('@import "./theme.css"');
     expect(daisyCss).toContain('@import "../daisyui/theme.css"');
     expect(daisyCss).toContain('@plugin "daisyui"');
-    expect(daisyCss).toContain('tinyrack-dark --default --prefersdark');
+    expect(daisyCss).toContain('tinyrack-dark;');
+    expect(daisyCss).not.toContain('--default');
+    expect(daisyCss).not.toContain('--prefersdark');
 
     expect(mantineCss).toContain('@import "./theme.css"');
     expect(mantineCss).toContain('@import "../mantine/styles.css"');

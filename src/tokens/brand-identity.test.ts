@@ -30,14 +30,15 @@ describe('Tinyrack black-tone brand identity', () => {
     expect(tinyrackShadows.md).toContain('rgb(0 0 0 / 0.22)');
   });
 
-  it('makes the dark theme the default daisyUI and Storybook preview mode', () => {
+  it('keeps Storybook dark by default without making packaged daisyUI themes default', () => {
     const daisyThemeCss = createTinyrackThemeCssFiles()['daisyui/theme.css'];
     const storybookPreview = readFileSync(
       join(repoRoot, '.storybook/preview.tsx'),
       'utf8',
     );
 
-    expect(daisyThemeCss).toMatch(/name: "tinyrack-dark";\s+default: true;/);
+    expect(daisyThemeCss).toMatch(/name: "tinyrack-dark";\s+default: false;/);
+    expect(daisyThemeCss).not.toContain('--default');
     expect(storybookPreview).toContain("defaultValue: 'tinyrack-dark'");
   });
 });

@@ -2,9 +2,7 @@
 @import "../src/tailwind/theme.css";
 @import "../src/daisyui/theme.css";
 @plugin "daisyui" {
-  themes:
-    tinyrack-light --default,
-    tinyrack-dark --prefersdark;
+  themes: tinyrack-light, tinyrack-dark;
 }
 
 :root,

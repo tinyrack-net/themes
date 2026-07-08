@@ -29,14 +29,14 @@ describe('tinyrack daisyUI themes', () => {
     expect(tinyrackDaisyUiThemes.dark.name).toBe('tinyrack-dark');
   });
 
-  it('keeps dark mode as the default generated daisyUI theme', () => {
+  it('registers both daisyUI themes without taking over the host default', () => {
     expect(tinyrackDaisyUiThemes.light).toMatchObject({
       isDefault: false,
       prefersDark: false,
     });
     expect(tinyrackDaisyUiThemes.dark).toMatchObject({
-      isDefault: true,
-      prefersDark: true,
+      isDefault: false,
+      prefersDark: false,
     });
   });
 

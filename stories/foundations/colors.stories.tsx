@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
-import { tinyrackPalettes, tinyrackSemanticColors } from '../../src/tokens/index.js';
+import {
+  tinyrackPalettes,
+  tinyrackSemanticColors,
+} from '../../src/entrypoints/tokens.js';
 import {
   CodeSnippet,
   DocsCallout,

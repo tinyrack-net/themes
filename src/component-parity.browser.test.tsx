@@ -39,8 +39,11 @@ import {
 import type { CSSProperties } from 'react';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { TinyrackMantineProvider } from './mantine/index.js';
-import { type TinyrackControlSize, tinyrackControlSizeNames } from './tokens/index.js';
+import { TinyrackMantineProvider } from './entrypoints/mantine.js';
+import {
+  type TinyrackControlSize,
+  tinyrackControlSizeNames,
+} from './entrypoints/tokens.js';
 
 const themeDatasetKey = 'theme';
 

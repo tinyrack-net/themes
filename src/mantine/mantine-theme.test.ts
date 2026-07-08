@@ -1,6 +1,9 @@
 import { DEFAULT_THEME, mergeMantineTheme } from '@mantine/core';
 import { describe, expect, it } from 'vitest';
-import { createTinyrackMantineTheme, tinyrackMantineTheme } from './index.js';
+import {
+  createTinyrackMantineTheme,
+  tinyrackMantineTheme,
+} from '../entrypoints/mantine.js';
 
 const tinyrackColorKey = 'tinyrack';
 const darkColorKey = 'dark';

@@ -13,7 +13,7 @@ import {
 } from '@mantine/core';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { TinyrackMantineProvider } from './index.js';
+import { TinyrackMantineProvider } from '../entrypoints/mantine.js';
 
 type RgbaColor = {
   a: number;

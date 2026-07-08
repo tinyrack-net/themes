@@ -3,8 +3,8 @@ import '../src/mantine/styles.css';
 import './preview.css';
 import type { Preview } from '@storybook/react-vite';
 import { themes } from 'storybook/theming';
-import { TinyrackMantineProvider } from '../src/mantine/index.js';
-import { tinyrackSemanticColors } from '../src/tokens/index.js';
+import { TinyrackMantineProvider } from '../src/entrypoints/mantine.js';
+import { tinyrackSemanticColors } from '../src/entrypoints/tokens.js';
 
 const themeDatasetKey = 'theme';
 const themedBodyClasses = ['bg-base-100', 'p-4', 'text-base-content'] as const;

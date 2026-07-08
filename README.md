@@ -17,13 +17,13 @@
 
 Tinyrack Themes is the shared design system package for Tinyrack product interfaces, documentation sites, and review surfaces.
 
-It packages organization-wide design tokens and thin adapters for Tailwind CSS, daisyUI, Mantine, and Astro Starlight so Tinyrack apps use the same colors, typography, spacing, radii, shadows, motion, and semantic surfaces.
+It packages organization-wide design tokens and thin adapters for Tailwind CSS, daisyUI, Mantine, and Astro Starlight so Tinyrack apps use the same colors, typography, spacing, radii, shadows, and semantic surfaces.
 
 This package is theme-first. It aligns existing UI libraries; it is not a general component library.
 
 ## Features
 
-- **Shared design tokens** for colors, typography, spacing, radii, shadows, motion, and semantic surfaces
+- **Shared design tokens** for colors, typography, spacing, radii, shadows, and semantic surfaces
 - **Tailwind CSS 4 presets** for Tinyrack utility tokens and adapter composition
 - **daisyUI 5 themes** with Tinyrack light and dark themes plus JS metadata for tests and tooling
 - **Mantine 9 theme adapter** with a scoped provider for embedded roots and extension surfaces
@@ -61,7 +61,7 @@ pnpm add astro @astrojs/starlight
 ### Shared tokens
 
 ```ts
-import { tinyrackTokens, tinyrackSemanticColors } from '@tinyrack/themes/tokens';
+import { tinyrackSemanticColors } from '@tinyrack/themes/tokens';
 ```
 
 ### Tailwind CSS and daisyUI

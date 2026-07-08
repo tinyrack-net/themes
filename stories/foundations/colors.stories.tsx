@@ -32,7 +32,6 @@ type SemanticToken = {
 
 const semanticTokenCssVariables: Record<SemanticTokenName, string> = {
   canvas: '--tinyrack-canvas',
-  background: '--tinyrack-background',
   surface: '--tinyrack-surface',
   surfaceRaised: '--tinyrack-surface-raised',
   surfaceMuted: '--tinyrack-surface-muted',
@@ -193,16 +192,12 @@ function PaletteStrip({
 }) {
   return (
     <div
-      className={`grid min-w-[46rem] overflow-hidden rounded-md border border-base-300 ${
-        large ? '[grid-template-columns:repeat(12,minmax(3.5rem,1fr))]' : ''
-      }`}
-      style={
-        large
-          ? undefined
-          : {
-              gridTemplateColumns: `repeat(${Object.keys(scale).length}, minmax(3rem, 1fr))`,
-            }
-      }
+      className="grid min-w-[46rem] overflow-hidden rounded-md border border-base-300"
+      style={{
+        gridTemplateColumns: `repeat(${Object.keys(scale).length}, minmax(${
+          large ? '3.5rem' : '3rem'
+        }, 1fr))`,
+      }}
     >
       {Object.entries(scale).map(([step, value]) => (
         <PaletteCell key={step} large={large} step={step} value={value} />
@@ -225,7 +220,7 @@ function PaletteOverview() {
         {[
           {
             term: 'Light UI',
-            detail: 'Use the 0-300 range for surfaces and structure.',
+            detail: 'Use the 50-300 range for surfaces and structure.',
           },
           {
             term: 'Dark UI',
@@ -467,7 +462,7 @@ function ExportedSemanticVariables() {
       </summary>
       <p className="mt-3 mb-3 leading-tinyrack-md text-base-content/70">
         This is the generated CSS/API surface. It includes core roles, adapter pairs,
-        surface helpers, and a background alias.
+        and surface helpers.
       </p>
       <div className="overflow-auto rounded-lg border border-base-300">
         <table className="w-full min-w-[48rem] border-collapse">

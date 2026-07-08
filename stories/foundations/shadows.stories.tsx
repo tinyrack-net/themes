@@ -30,13 +30,6 @@ const shadowScale = [
     role: 'Overlay layer',
     use: 'Modals, drawers, blocking panels, dragged surfaces.',
   },
-  {
-    name: 'focus',
-    value: tinyrackShadows.focus,
-    className: 'shadow-[0_0_0_2px_rgb(163_163_163_/_0.42)]',
-    role: 'Keyboard focus',
-    use: 'Visible focus ring for custom interactive elements.',
-  },
 ] as const;
 
 function ShadowsPage() {
@@ -169,7 +162,7 @@ function ShadowsPage() {
               },
               {
                 name: 'Focus',
-                value: 'focus',
+                value: '--tinyrack-focus',
                 note: 'Use for keyboard state, not visual elevation.',
               },
             ]}

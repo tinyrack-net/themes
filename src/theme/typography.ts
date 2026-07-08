@@ -4,8 +4,6 @@ const tinyrackFontStacks = {
   body: tinyrackFontStack,
   heading: tinyrackFontStack,
   mono: tinyrackFontStack,
-  korean: tinyrackFontStack,
-  japanese: tinyrackFontStack,
 } as const;
 
 const tinyrackFontSizes = {
@@ -43,8 +41,6 @@ export const tinyrackTypography = {
     body: 'var(--tinyrack-font-body)',
     heading: 'var(--tinyrack-font-heading)',
     mono: 'var(--tinyrack-font-mono)',
-    korean: 'var(--tinyrack-font-korean)',
-    japanese: 'var(--tinyrack-font-japanese)',
   },
   fontSize: tinyrackFontSizes,
   lineHeight: tinyrackLineHeights,

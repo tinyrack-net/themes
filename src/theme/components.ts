@@ -564,27 +564,3 @@ export const tinyrackSwitchContract = {
   radius: '9999px',
   sizes: tinyrackCompactComponentSizes,
 } as const;
-
-export const tinyrackComponentTokens = {
-  avatar: tinyrackAvatarContract,
-  badge: tinyrackBadgeContract,
-  breadcrumbs: tinyrackBreadcrumbsContract,
-  control: tinyrackControlContract,
-  indicator: tinyrackIndicatorContract,
-  kbd: tinyrackKbdContract,
-  list: tinyrackListContract,
-  loader: tinyrackLoaderContract,
-  menu: tinyrackMenuContract,
-  overlay: tinyrackOverlayContract,
-  progress: tinyrackProgressContract,
-  radialProgress: tinyrackRadialProgressContract,
-  range: tinyrackRangeContract,
-  rating: tinyrackRatingContract,
-  selectionControl: tinyrackSelectionControlContract,
-  stepper: tinyrackStepperContract,
-  switch: tinyrackSwitchContract,
-  table: tinyrackTableContract,
-  tabs: tinyrackTabsContract,
-  timeline: tinyrackTimelineContract,
-  tooltip: tinyrackTooltipContract,
-} as const;

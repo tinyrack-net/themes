@@ -1,6 +1,5 @@
 export const tinyrackPalettes = {
   neutral: {
-    0: '#ffffff',
     50: '#fafafa',
     100: '#f5f5f5',
     200: '#e5e5e5',
@@ -24,50 +23,5 @@ export const tinyrackPalettes = {
     700: '#262626',
     800: '#171717',
     900: '#0a0a0a',
-    950: '#030303',
-  },
-  accent: {
-    50: '#fafafa',
-    100: '#f5f5f5',
-    200: '#e5e5e5',
-    300: '#d4d4d4',
-    400: '#a3a3a3',
-    500: '#737373',
-    600: '#525252',
-    700: '#404040',
-    800: '#262626',
-    900: '#171717',
-    950: '#0a0a0a',
-  },
-  violet: {
-    50: '#fafafa',
-    100: '#f4f4f5',
-    200: '#e4e4e7',
-    300: '#d4d4d8',
-    400: '#a1a1aa',
-    500: '#71717a',
-    600: '#52525b',
-    700: '#3f3f46',
-    800: '#27272a',
-    900: '#18181b',
-    950: '#09090b',
-  },
-  success: {
-    500: '#22c55e',
-    600: '#15803d',
-  },
-  warning: {
-    500: '#eab308',
-    600: '#a16207',
-  },
-  error: {
-    500: '#f87171',
-    600: '#dc2626',
-  },
-  info: {
-    500: '#d4d4d4',
-    600: '#404040',
   },
 } as const;
-
-export type TinyrackPaletteName = keyof typeof tinyrackPalettes;

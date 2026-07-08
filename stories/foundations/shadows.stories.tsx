@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { tinyrackShadows } from '../../src/tokens/index.js';
+import { tinyrackShadows } from '../../src/entrypoints/tokens.js';
 import { DocsCard, DocsGrid, DocsPage, TokenTable } from '../docs-components.js';
 
 const shadowPreviewClasses: Record<string, string> = {

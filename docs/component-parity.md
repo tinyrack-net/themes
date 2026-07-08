@@ -65,6 +65,7 @@ like a specific disclosure or overlapping-stack pattern.
 Parity is covered by:
 
 - `src/component-parity.ts`: source-of-truth contract manifest
+- `src/entrypoints/tokens.ts`: public token export surface
 - `src/tokens/components.ts`: shared component token contracts
 - `src/css/create-tinyrack-theme-css.ts`: generated Mantine and daisyUI CSS mappings
 - `src/component-parity.browser.test.tsx`: computed-style parity tests in Chromium

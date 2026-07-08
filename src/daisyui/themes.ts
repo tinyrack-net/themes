@@ -1,8 +1,6 @@
-import {
-  tinyrackPalettes,
-  tinyrackRadii,
-  tinyrackSemanticColors,
-} from '../tokens/index.js';
+import { tinyrackPalettes } from '../tokens/colors.js';
+import { tinyrackRadii } from '../tokens/radii.js';
+import { tinyrackSemanticColors } from '../tokens/semantic.js';
 
 export type TinyrackDaisyUiTheme = {
   name: string;

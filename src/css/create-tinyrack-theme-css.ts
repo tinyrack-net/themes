@@ -1,4 +1,5 @@
 import { tinyrackDaisyUiThemes } from '../daisyui/themes.js';
+import { tinyrackPalettes } from '../tokens/colors.js';
 import {
   tinyrackAvatarContract,
   tinyrackBadgeContract,
@@ -11,23 +12,22 @@ import {
   tinyrackLoaderContract,
   tinyrackMenuContract,
   tinyrackOverlayContract,
-  tinyrackPalettes,
   tinyrackProgressContract,
   tinyrackRadialProgressContract,
-  tinyrackRadii,
   tinyrackRangeContract,
   tinyrackRatingContract,
   tinyrackSelectionControlContract,
-  tinyrackSemanticColors,
-  tinyrackSpacing,
   tinyrackStepperContract,
   tinyrackSwitchContract,
   tinyrackTableContract,
   tinyrackTabsContract,
   tinyrackTimelineContract,
   tinyrackTooltipContract,
-  tinyrackTypography,
-} from '../tokens/index.js';
+} from '../tokens/components.js';
+import { tinyrackRadii } from '../tokens/radii.js';
+import { tinyrackSemanticColors } from '../tokens/semantic.js';
+import { tinyrackSpacing } from '../tokens/spacing.js';
+import { tinyrackTypography } from '../tokens/typography.js';
 
 export type TinyrackGeneratedCssPath =
   | 'tailwind/theme.css'

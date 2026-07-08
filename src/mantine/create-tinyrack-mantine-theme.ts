@@ -4,14 +4,12 @@ import {
   type MantineThemeOverride,
   type VariantColorsResolver,
 } from '@mantine/core';
-import {
-  tinyrackPalettes,
-  tinyrackRadii,
-  tinyrackSemanticColors,
-  tinyrackShadows,
-  tinyrackSpacing,
-  tinyrackTypography,
-} from '../tokens/index.js';
+import { tinyrackPalettes } from '../tokens/colors.js';
+import { tinyrackRadii } from '../tokens/radii.js';
+import { tinyrackSemanticColors } from '../tokens/semantic.js';
+import { tinyrackShadows } from '../tokens/shadows.js';
+import { tinyrackSpacing } from '../tokens/spacing.js';
+import { tinyrackTypography } from '../tokens/typography.js';
 
 export type TinyrackMantineThemeOptions = {
   fontFamily?: string;

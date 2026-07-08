@@ -109,29 +109,29 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/entrypoints/index.d.ts",
+      "import": "./dist/entrypoints/index.js"
     },
     "./tokens": {
-      "types": "./dist/tokens/index.d.ts",
-      "import": "./dist/tokens/index.js"
+      "types": "./dist/entrypoints/tokens.d.ts",
+      "import": "./dist/entrypoints/tokens.js"
     },
     "./tailwind.css": "./dist/tailwind/theme.css",
     "./tailwind/daisyui.css": "./dist/tailwind/daisyui.css",
     "./tailwind/mantine.css": "./dist/tailwind/mantine.css",
     "./mantine": {
-      "types": "./dist/mantine/index.d.ts",
-      "import": "./dist/mantine/index.js"
+      "types": "./dist/entrypoints/mantine.d.ts",
+      "import": "./dist/entrypoints/mantine.js"
     },
     "./mantine.css": "./dist/mantine/styles.css",
     "./daisyui": {
-      "types": "./dist/daisyui/index.d.ts",
-      "import": "./dist/daisyui/index.js"
+      "types": "./dist/entrypoints/daisyui.d.ts",
+      "import": "./dist/entrypoints/daisyui.js"
     },
     "./daisyui.css": "./dist/daisyui/theme.css",
     "./astro/starlight": {
-      "types": "./dist/astro/starlight/index.d.ts",
-      "import": "./dist/astro/starlight/index.js"
+      "types": "./dist/entrypoints/astro/starlight.d.ts",
+      "import": "./dist/entrypoints/astro/starlight.js"
     },
     "./astro/starlight.css": "./dist/astro/starlight/theme.css",
     "./package.json": "./package.json"

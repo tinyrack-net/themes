@@ -1,13 +1,26 @@
 import * as Mantine from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function BackgroundImageStory() {
+type ComponentStoryProps = {
+  radius?: (typeof Controls.mantineRadiusOptions)[number];
+  overlay?: boolean;
+};
+
+function BackgroundImageStory(controlValues: ComponentStoryProps) {
+  const overlay = controlValues.overlay ?? true;
+
   return (
     <Mantine.BackgroundImage
-      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 80'%3E%3Crect width='160' height='80' fill='%23d9edff'/%3E%3Ccircle cx='40' cy='40' r='24' fill='%233297f0'/%3E%3C/svg%3E"
-      radius="md"
+      className="grid h-40 w-80 place-content-center p-6 text-center"
+      radius={controlValues.radius ?? 'md'}
+      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 160'%3E%3Crect width='320' height='160' fill='%230a0a0a'/%3E%3Cpath d='M0 120h320' stroke='%231762ae' stroke-width='18'/%3E%3C/svg%3E"
     >
-      <Mantine.Center h={80}>Background</Mantine.Center>
+      <Mantine.Box
+        className={overlay ? 'rounded-md bg-black/50 p-4 text-white' : 'text-white'}
+      >
+        Rack telemetry
+      </Mantine.Box>
     </Mantine.BackgroundImage>
   );
 }
@@ -18,6 +31,17 @@ const meta = {
   title: 'Mantine/BackgroundImage',
   component: BackgroundImageStory,
   tags: ['autodocs'],
+  args: {
+    radius: 'md',
+    overlay: true,
+  },
+  argTypes: {
+    radius: Controls.selectControl(
+      Controls.mantineRadiusOptions,
+      'Mantine radius token.',
+    ),
+    overlay: Controls.booleanControl('Shows a dark text overlay surface.'),
+  },
   parameters: {
     layout: 'centered',
     docs: {

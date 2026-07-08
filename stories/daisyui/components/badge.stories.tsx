@@ -1,17 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
 type ComponentStoryProps = {
-  tone?:
-    | 'primary'
-    | 'secondary'
-    | 'accent'
-    | 'neutral'
-    | 'info'
-    | 'success'
-    | 'warning'
-    | 'error';
+  tone?: (typeof Controls.daisyToneOptions)[number];
   style?: 'default' | 'outline' | 'dash' | 'soft' | 'ghost';
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: (typeof Controls.daisySizeOptions)[number];
 };
 
 function BadgeStory(controlValues: ComponentStoryProps) {
@@ -21,14 +14,12 @@ function BadgeStory(controlValues: ComponentStoryProps) {
 
   return (
     <span
-      className={[
+      className={Controls.cx(
         'badge',
         `badge-${tone}`,
-        style === 'default' ? undefined : `badge-${style}`,
+        Controls.optionalModifier('badge', style),
         `badge-${size}`,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+      )}
     >
       Healthy
     </span>
@@ -47,30 +38,12 @@ const meta = {
     size: 'md',
   },
   argTypes: {
-    tone: {
-      control: 'select',
-      options: [
-        'primary',
-        'secondary',
-        'accent',
-        'neutral',
-        'info',
-        'success',
-        'warning',
-        'error',
-      ],
-      description: 'Color modifier class such as primary, success, or error.',
-    },
-    style: {
-      control: 'select',
-      options: ['default', 'outline', 'dash', 'soft', 'ghost'],
-      description: 'Badge treatment class such as badge-outline or badge-soft.',
-    },
-    size: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
-      description: 'Size modifier class from xs through xl.',
-    },
+    tone: Controls.selectControl(Controls.daisyToneOptions, 'Color modifier class.'),
+    style: Controls.selectControl(
+      ['default', 'outline', 'dash', 'soft', 'ghost'],
+      'Badge treatment class.',
+    ),
+    size: Controls.selectControl(Controls.daisySizeOptions, 'Size modifier class.'),
   },
   parameters: {
     layout: 'centered',

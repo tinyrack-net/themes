@@ -1,11 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function FooterStory() {
+type ComponentStoryProps = {
+  orientation?: (typeof Controls.daisyOrientationOptions)[number];
+};
+
+function FooterStory(controlValues: ComponentStoryProps) {
+  const orientation = controlValues.orientation ?? 'horizontal';
+
   return (
-    <footer className="footer bg-base-200 p-4">
+    <footer
+      className={Controls.cx(
+        'footer w-96 rounded-box bg-base-200 p-6 text-base-content',
+        `footer-${orientation}`,
+      )}
+    >
       <aside>
-        <p>Tinyrack Themes</p>
+        <span className="footer-title">Tinyrack</span>
+        <p>Homelab operations</p>
       </aside>
+      <nav>
+        <span className="footer-title">Links</span>
+        <a className="link link-hover" href="#top">
+          Status
+        </a>
+      </nav>
     </footer>
   );
 }
@@ -16,6 +35,15 @@ const meta = {
   title: 'daisyUI/Footer',
   component: FooterStory,
   tags: ['autodocs'],
+  args: {
+    orientation: 'horizontal',
+  },
+  argTypes: {
+    orientation: Controls.selectControl(
+      Controls.daisyOrientationOptions,
+      'Footer orientation class.',
+    ),
+  },
   parameters: {
     layout: 'centered',
     docs: {

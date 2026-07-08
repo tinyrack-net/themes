@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
 type ComponentStoryProps = {
-  tone?: 'info' | 'success' | 'warning' | 'error';
-  style?: 'default' | 'soft' | 'outline' | 'dash';
-  layout?: 'horizontal' | 'vertical';
+  tone?: (typeof Controls.daisyStateToneOptions)[number];
+  style?: (typeof Controls.daisyAlertStyleOptions)[number];
+  layout?: (typeof Controls.daisyOrientationOptions)[number];
 };
 
 function AlertStory(controlValues: ComponentStoryProps) {
@@ -14,14 +15,12 @@ function AlertStory(controlValues: ComponentStoryProps) {
   return (
     <div
       role="alert"
-      className={[
+      className={Controls.cx(
         'alert',
         `alert-${tone}`,
-        style === 'default' ? undefined : `alert-${style}`,
+        Controls.optionalModifier('alert', style),
         `alert-${layout}`,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+      )}
     >
       <span>{tone} rack alert: backup-sync needs review.</span>
     </div>
@@ -40,21 +39,18 @@ const meta = {
     layout: 'horizontal',
   },
   argTypes: {
-    tone: {
-      control: 'select',
-      options: ['info', 'success', 'warning', 'error'],
-      description: 'Status color modifier class.',
-    },
-    style: {
-      control: 'select',
-      options: ['default', 'soft', 'outline', 'dash'],
-      description: 'Alert treatment class such as alert-soft or alert-outline.',
-    },
-    layout: {
-      control: 'select',
-      options: ['horizontal', 'vertical'],
-      description: 'Alert layout class.',
-    },
+    tone: Controls.selectControl(
+      Controls.daisyStateToneOptions,
+      'Status color modifier class.',
+    ),
+    style: Controls.selectControl(
+      Controls.daisyAlertStyleOptions,
+      'Alert treatment class.',
+    ),
+    layout: Controls.selectControl(
+      Controls.daisyOrientationOptions,
+      'Alert layout class.',
+    ),
   },
   parameters: {
     layout: 'centered',

@@ -1,17 +1,30 @@
 import * as Mantine from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function ScrollAreaStory() {
+type ComponentStoryProps = {
+  type?: 'auto' | 'always' | 'scroll' | 'hover' | 'never';
+  scrollbarSize?: number;
+  offsetScrollbars?: boolean;
+};
+
+function ScrollAreaStory(controlValues: ComponentStoryProps) {
   return (
-    <Mantine.ScrollArea h={80}>
-      <Mantine.Text>
-        Scrollable content
-        <br />
-        Line 2<br />
-        Line 3<br />
-        Line 4<br />
-        Line 5
-      </Mantine.Text>
+    <Mantine.ScrollArea
+      className="h-40 w-80 rounded-md border border-neutral-700"
+      offsetScrollbars={controlValues.offsetScrollbars ?? true}
+      scrollbarSize={controlValues.scrollbarSize ?? 8}
+      type={controlValues.type ?? 'hover'}
+    >
+      <Mantine.Stack p="sm">
+        {Array.from({ length: 8 }, (_, index) => `Log entry ${index + 1}`).map(
+          (entry) => (
+            <Mantine.Paper key={entry} p="xs" withBorder>
+              {entry}
+            </Mantine.Paper>
+          ),
+        )}
+      </Mantine.Stack>
     </Mantine.ScrollArea>
   );
 }
@@ -22,6 +35,23 @@ const meta = {
   title: 'Mantine/ScrollArea',
   component: ScrollAreaStory,
   tags: ['autodocs'],
+  args: {
+    type: 'hover',
+    scrollbarSize: 8,
+    offsetScrollbars: true,
+  },
+  argTypes: {
+    type: Controls.selectControl(
+      ['auto', 'always', 'scroll', 'hover', 'never'],
+      'ScrollArea scrollbar behavior.',
+    ),
+    scrollbarSize: Controls.rangeControl('Scrollbar size.', {
+      min: 4,
+      max: 16,
+      step: 1,
+    }),
+    offsetScrollbars: Controls.booleanControl('Offsets content for scrollbars.'),
+  },
   parameters: {
     layout: 'centered',
     docs: {

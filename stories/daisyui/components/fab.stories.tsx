@@ -1,14 +1,39 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function FabStory() {
+type ComponentStoryProps = {
+  tone?: (typeof Controls.daisyToneOptions)[number];
+  expanded?: boolean;
+};
+
+function FabStory(controlValues: ComponentStoryProps) {
+  const tone = controlValues.tone ?? 'primary';
+
   return (
-    <button
-      className="btn btn-circle btn-primary"
-      type="button"
-      aria-label="Floating action"
+    <div
+      className={Controls.cx(
+        'fab static',
+        (controlValues.expanded ?? true) ? 'fab-flower' : undefined,
+      )}
     >
-      +
-    </button>
+      <button
+        className={Controls.cx('btn btn-circle fab-main-action', `btn-${tone}`)}
+        type="button"
+        aria-label="Floating action"
+      >
+        +
+      </button>
+      {(controlValues.expanded ?? true) ? (
+        <>
+          <button className="btn btn-circle btn-sm" type="button">
+            L
+          </button>
+          <button className="btn btn-circle btn-sm" type="button">
+            S
+          </button>
+        </>
+      ) : null}
+    </div>
   );
 }
 
@@ -18,6 +43,14 @@ const meta = {
   title: 'daisyUI/Fab',
   component: FabStory,
   tags: ['autodocs'],
+  args: {
+    tone: 'primary',
+    expanded: true,
+  },
+  argTypes: {
+    tone: Controls.selectControl(Controls.daisyToneOptions, 'Color modifier class.'),
+    expanded: Controls.booleanControl('Shows secondary FAB actions.'),
+  },
   parameters: {
     layout: 'centered',
     docs: {

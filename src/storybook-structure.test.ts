@@ -275,6 +275,23 @@ describe('manual Storybook component stories', () => {
     }
   });
 
+  it('requires every component story to expose Storybook controls', () => {
+    for (const [library, file, source] of readAllComponentStories()) {
+      expect(source, `${library}/${file} should type its control props`).toContain(
+        'ComponentStoryProps',
+      );
+      expect(source, `${library}/${file} should read Storybook args`).toContain(
+        'controlValues',
+      );
+      expect(source, `${library}/${file} should define default args`).toContain(
+        'args:',
+      );
+      expect(source, `${library}/${file} should define Storybook controls`).toContain(
+        'argTypes:',
+      );
+    }
+  });
+
   it('documents manual component stories instead of generated story output', () => {
     const docs = readText('docs/storybook-component-pages.md');
     const readme = readText('README.md');

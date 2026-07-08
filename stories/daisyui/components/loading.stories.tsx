@@ -1,23 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
 type ComponentStoryProps = {
-  indicator?: 'spinner' | 'dots' | 'ring' | 'ball' | 'bars' | 'infinity';
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  style?: (typeof Controls.daisyLoadingStyleOptions)[number];
+  size?: (typeof Controls.daisySizeOptions)[number];
 };
 
 function LoadingStory(controlValues: ComponentStoryProps) {
+  const style = controlValues.style ?? 'spinner';
+  const size = controlValues.size ?? 'md';
+
   return (
-    <span
-      aria-label="Loading"
-      className={[
-        'loading',
-        `loading-${controlValues.indicator ?? 'spinner'}`,
-        `loading-${controlValues.size ?? 'md'}`,
-      ]
-        .filter(Boolean)
-        .join(' ')}
-      role="status"
-    />
+    <span className={Controls.cx('loading', `loading-${style}`, `loading-${size}`)} />
   );
 }
 
@@ -28,20 +22,15 @@ const meta = {
   component: LoadingStory,
   tags: ['autodocs'],
   args: {
-    indicator: 'spinner',
+    style: 'spinner',
     size: 'md',
   },
   argTypes: {
-    indicator: {
-      control: 'select',
-      options: ['spinner', 'dots', 'ring', 'ball', 'bars', 'infinity'],
-      description: 'Loading indicator class.',
-    },
-    size: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
-      description: 'Size modifier class from xs through xl.',
-    },
+    style: Controls.selectControl(
+      Controls.daisyLoadingStyleOptions,
+      'Loading animation class.',
+    ),
+    size: Controls.selectControl(Controls.daisySizeOptions, 'Size modifier class.'),
   },
   parameters: {
     layout: 'centered',

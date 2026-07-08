@@ -1,12 +1,20 @@
 import * as Mantine from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function ImageStory() {
+type ComponentStoryProps = {
+  radius?: (typeof Controls.mantineRadiusOptions)[number];
+  fit?: 'cover' | 'contain';
+};
+
+function ImageStory(controlValues: ComponentStoryProps) {
   return (
     <Mantine.Image
-      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 90'%3E%3Crect width='160' height='90' fill='%23d9edff'/%3E%3Ctext x='80' y='50' text-anchor='middle' font-size='16'%3EImage%3C/text%3E%3C/svg%3E"
-      alt="Theme placeholder"
-      radius="md"
+      alt="Tinyrack preview"
+      className="h-40 w-80 bg-neutral-900"
+      fit={controlValues.fit ?? 'cover'}
+      radius={controlValues.radius ?? 'md'}
+      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 160'%3E%3Crect width='320' height='160' fill='%23171717'/%3E%3Ccircle cx='80' cy='80' r='36' fill='%231762ae'/%3E%3Crect x='140' y='56' width='120' height='48' rx='8' fill='%23f5f5f5'/%3E%3C/svg%3E"
     />
   );
 }
@@ -17,6 +25,17 @@ const meta = {
   title: 'Mantine/Image',
   component: ImageStory,
   tags: ['autodocs'],
+  args: {
+    radius: 'md',
+    fit: 'cover',
+  },
+  argTypes: {
+    radius: Controls.selectControl(
+      Controls.mantineRadiusOptions,
+      'Mantine radius token.',
+    ),
+    fit: Controls.selectControl(['cover', 'contain'], 'Image object-fit value.'),
+  },
   parameters: {
     layout: 'centered',
     docs: {

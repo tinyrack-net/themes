@@ -1,16 +1,28 @@
 import * as Mantine from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function AffixStory() {
+type ComponentStoryProps = {
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  color?: (typeof Controls.mantineColorOptions)[number];
+};
+
+function AffixStory(controlValues: ComponentStoryProps) {
+  const position = controlValues.position ?? 'bottom-right';
+  const [vertical, horizontal] = position.split('-') as [
+    'top' | 'bottom',
+    'left' | 'right',
+  ];
+
   return (
-    <Mantine.Box pos="relative" h={80}>
+    <Mantine.Box className="relative h-40 w-80 rounded-md border border-neutral-700">
       <Mantine.Affix
-        className="!absolute"
-        position={{ bottom: 8, right: 8 }}
-        style={{ position: 'absolute' }}
+        position={{ [vertical]: 16, [horizontal]: 16 }}
         withinPortal={false}
       >
-        <Mantine.Button size="xs">Tail logs</Mantine.Button>
+        <Mantine.Button color={controlValues.color ?? 'tinyrack'} size="xs">
+          Affix
+        </Mantine.Button>
       </Mantine.Affix>
     </Mantine.Box>
   );
@@ -22,6 +34,20 @@ const meta = {
   title: 'Mantine/Affix',
   component: AffixStory,
   tags: ['autodocs'],
+  args: {
+    position: 'bottom-right',
+    color: 'tinyrack',
+  },
+  argTypes: {
+    position: Controls.selectControl(
+      ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+      'Affix corner position.',
+    ),
+    color: Controls.selectControl(
+      Controls.mantineColorOptions,
+      'Mantine theme color token.',
+    ),
+  },
   parameters: {
     layout: 'centered',
     docs: {

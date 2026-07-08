@@ -1,13 +1,19 @@
 import * as Mantine from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function SpaceStory() {
+type ComponentStoryProps = {
+  height?: number;
+  width?: number;
+};
+
+function SpaceStory(controlValues: ComponentStoryProps) {
   return (
-    <Mantine.Box>
-      <Mantine.Text>Before</Mantine.Text>
-      <Mantine.Space h="sm" />
-      <Mantine.Text>After</Mantine.Text>
-    </Mantine.Box>
+    <Mantine.Group gap="sm">
+      <Mantine.Badge>Before</Mantine.Badge>
+      <Mantine.Space h={controlValues.height ?? 24} w={controlValues.width ?? 32} />
+      <Mantine.Badge color="tinyrack">After</Mantine.Badge>
+    </Mantine.Group>
   );
 }
 
@@ -17,6 +23,14 @@ const meta = {
   title: 'Mantine/Space',
   component: SpaceStory,
   tags: ['autodocs'],
+  args: {
+    height: 24,
+    width: 32,
+  },
+  argTypes: {
+    height: Controls.rangeControl('Space height.', { min: 0, max: 80, step: 4 }),
+    width: Controls.rangeControl('Space width.', { min: 0, max: 120, step: 4 }),
+  },
   parameters: {
     layout: 'centered',
     docs: {

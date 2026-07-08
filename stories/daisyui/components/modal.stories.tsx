@@ -1,35 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
 type ComponentStoryProps = {
   placement?: 'top' | 'middle' | 'bottom' | 'start' | 'end';
   open?: boolean;
-  actions?: boolean;
 };
 
 function ModalStory(controlValues: ComponentStoryProps) {
   const placement = controlValues.placement ?? 'middle';
-  const open = controlValues.open ?? true;
-  const actions = controlValues.actions ?? true;
 
   return (
     <div
-      className={['modal relative', open && 'modal-open', `modal-${placement}`]
-        .filter(Boolean)
-        .join(' ')}
+      className={Controls.cx(
+        'modal relative h-56 w-96 rounded-box bg-base-200',
+        `modal-${placement}`,
+        (controlValues.open ?? true) ? 'modal-open' : undefined,
+      )}
     >
       <div className="modal-box">
-        <h3 className="font-bold">Restart service</h3>
-        <p>Restarting reverse-proxy will briefly interrupt local routing.</p>
-        {actions ? (
-          <div className="modal-action">
-            <button className="btn btn-ghost btn-sm" type="button">
-              Cancel
-            </button>
-            <button className="btn btn-primary btn-sm" type="button">
-              Restart
-            </button>
-          </div>
-        ) : null}
+        <h3 className="font-bold">Restart service?</h3>
+        <p className="py-2">This will restart the selected container.</p>
+        <div className="modal-action">
+          <button className="btn btn-primary btn-sm" type="button">
+            Confirm
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -44,16 +39,13 @@ const meta = {
   args: {
     placement: 'middle',
     open: true,
-    actions: true,
   },
   argTypes: {
-    placement: {
-      control: 'select',
-      options: ['top', 'middle', 'bottom', 'start', 'end'],
-      description: 'Modal placement class.',
-    },
-    open: { control: 'boolean', description: 'Applies the modal-open state class.' },
-    actions: { control: 'boolean', description: 'Shows modal-action buttons.' },
+    placement: Controls.selectControl(
+      ['top', 'middle', 'bottom', 'start', 'end'],
+      'Modal placement class.',
+    ),
+    open: Controls.booleanControl('Applies modal-open state.'),
   },
   parameters: {
     layout: 'centered',

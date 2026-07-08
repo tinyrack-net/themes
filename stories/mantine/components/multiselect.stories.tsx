@@ -1,12 +1,27 @@
 import * as Mantine from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function MultiSelectStory() {
+type ComponentStoryProps = {
+  variant?: (typeof Controls.mantineInputVariantOptions)[number];
+  size?: (typeof Controls.mantineSizeOptions)[number];
+  radius?: (typeof Controls.mantineRadiusOptions)[number];
+  disabled?: boolean;
+  withCheckIcon?: boolean;
+};
+
+function MultiSelectStory(controlValues: ComponentStoryProps) {
   return (
     <Mantine.MultiSelect
-      label="Watched services"
-      data={['home-assistant', 'reverse-proxy', 'backup-sync']}
-      defaultValue={['home-assistant']}
+      data={['backup', 'network', 'storage']}
+      defaultValue={['backup']}
+      disabled={controlValues.disabled ?? false}
+      label="Tags"
+      radius={controlValues.radius ?? 'md'}
+      size={controlValues.size ?? 'sm'}
+      variant={controlValues.variant ?? 'default'}
+      withCheckIcon={controlValues.withCheckIcon ?? true}
+      className="w-80"
     />
   );
 }
@@ -17,6 +32,26 @@ const meta = {
   title: 'Mantine/MultiSelect',
   component: MultiSelectStory,
   tags: ['autodocs'],
+  args: {
+    variant: 'default',
+    size: 'sm',
+    radius: 'md',
+    disabled: false,
+    withCheckIcon: true,
+  },
+  argTypes: {
+    variant: Controls.selectControl(
+      Controls.mantineInputVariantOptions,
+      'Mantine input variant.',
+    ),
+    size: Controls.selectControl(Controls.mantineSizeOptions, 'Mantine size token.'),
+    radius: Controls.selectControl(
+      Controls.mantineRadiusOptions,
+      'Mantine radius token.',
+    ),
+    disabled: Controls.booleanControl('Disabled state.'),
+    withCheckIcon: Controls.booleanControl('Shows check icons in options.'),
+  },
   parameters: {
     layout: 'centered',
     docs: {

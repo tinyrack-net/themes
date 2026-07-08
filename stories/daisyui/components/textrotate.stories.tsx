@@ -1,9 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function TextrotateStory() {
+type ComponentStoryProps = {
+  tone?: (typeof Controls.daisyToneOptions)[number];
+  word?: 'secure' | 'quiet' | 'local';
+};
+
+function TextrotateStory(controlValues: ComponentStoryProps) {
+  const tone = controlValues.tone ?? 'primary';
+
   return (
-    <span className="text-rotate">
-      <span>Rotate</span>
+    <span className={Controls.cx('text-rotate text-2xl font-semibold', `text-${tone}`)}>
+      {controlValues.word ?? 'secure'}
     </span>
   );
 }
@@ -14,6 +22,17 @@ const meta = {
   title: 'daisyUI/Textrotate',
   component: TextrotateStory,
   tags: ['autodocs'],
+  args: {
+    tone: 'primary',
+    word: 'secure',
+  },
+  argTypes: {
+    tone: Controls.selectControl(Controls.daisyToneOptions, 'Color modifier class.'),
+    word: Controls.selectControl(
+      ['secure', 'quiet', 'local'],
+      'Visible rotating word state.',
+    ),
+  },
   parameters: {
     layout: 'centered',
     docs: {

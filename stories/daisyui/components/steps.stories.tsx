@@ -1,39 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
 type ComponentStoryProps = {
-  orientation?: 'horizontal' | 'vertical';
-  tone?:
-    | 'primary'
-    | 'secondary'
-    | 'accent'
-    | 'neutral'
-    | 'info'
-    | 'success'
-    | 'warning'
-    | 'error';
-  currentStep?: number;
+  orientation?: (typeof Controls.daisyOrientationOptions)[number];
+  tone?: (typeof Controls.daisyToneOptions)[number];
+  activeStep?: number;
 };
 
 function StepsStory(controlValues: ComponentStoryProps) {
-  const orientation = controlValues.orientation ?? 'horizontal';
+  const activeStep = controlValues.activeStep ?? 2;
   const tone = controlValues.tone ?? 'primary';
-  const currentStep = controlValues.currentStep ?? 2;
-  const stepLabels = ['Discover', 'Configure', 'Verify'];
+  const orientation = controlValues.orientation ?? 'horizontal';
 
   return (
-    <ul
-      className={['steps w-[min(100%,40rem)]', `steps-${orientation}`]
-        .filter(Boolean)
-        .join(' ')}
-    >
-      {stepLabels.map((label, index) => (
+    <ul className={Controls.cx('steps', `steps-${orientation}`)}>
+      {[1, 2, 3].map((step) => (
         <li
-          className={['step', index < currentStep && `step-${tone}`]
-            .filter(Boolean)
-            .join(' ')}
-          key={label}
+          className={Controls.cx(
+            'step',
+            step <= activeStep ? `step-${tone}` : undefined,
+          )}
+          key={step}
         >
-          {label}
+          Step {step}
         </li>
       ))}
     </ul>
@@ -49,32 +38,15 @@ const meta = {
   args: {
     orientation: 'horizontal',
     tone: 'primary',
-    currentStep: 2,
+    activeStep: 2,
   },
   argTypes: {
-    orientation: {
-      control: 'select',
-      options: ['horizontal', 'vertical'],
-      description: 'Steps orientation class.',
-    },
-    tone: {
-      control: 'select',
-      options: [
-        'primary',
-        'secondary',
-        'accent',
-        'neutral',
-        'info',
-        'success',
-        'warning',
-        'error',
-      ],
-      description: 'Color modifier class such as primary, success, or error.',
-    },
-    currentStep: {
-      control: { type: 'number', min: 1, max: 3, step: 1 },
-      description: 'Number of active steps.',
-    },
+    orientation: Controls.selectControl(
+      Controls.daisyOrientationOptions,
+      'Steps orientation class.',
+    ),
+    tone: Controls.selectControl(Controls.daisyToneOptions, 'Color modifier class.'),
+    activeStep: Controls.numberControl('Last active step.', { min: 1, max: 3 }),
   },
   parameters: {
     layout: 'centered',

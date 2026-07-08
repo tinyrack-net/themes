@@ -1,16 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
 type ComponentStoryProps = {
-  tone?:
-    | 'primary'
-    | 'secondary'
-    | 'accent'
-    | 'neutral'
-    | 'info'
-    | 'success'
-    | 'warning'
-    | 'error';
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  tone?: (typeof Controls.daisyToneOptions)[number];
+  size?: (typeof Controls.daisySizeOptions)[number];
   checked?: boolean;
   disabled?: boolean;
 };
@@ -19,18 +12,15 @@ function RadioStory(controlValues: ComponentStoryProps) {
   return (
     <input
       aria-label="Radio"
-      type="radio"
-      name="radio-preview"
       checked={controlValues.checked ?? true}
-      className={[
+      className={Controls.cx(
         'radio',
         `radio-${controlValues.tone ?? 'primary'}`,
         `radio-${controlValues.size ?? 'md'}`,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+      )}
       disabled={controlValues.disabled ?? false}
       readOnly
+      type="radio"
     />
   );
 }
@@ -48,27 +38,10 @@ const meta = {
     disabled: false,
   },
   argTypes: {
-    tone: {
-      control: 'select',
-      options: [
-        'primary',
-        'secondary',
-        'accent',
-        'neutral',
-        'info',
-        'success',
-        'warning',
-        'error',
-      ],
-      description: 'Color modifier class such as primary, success, or error.',
-    },
-    size: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
-      description: 'Size modifier class from xs through xl.',
-    },
-    checked: { control: 'boolean', description: 'Checked state.' },
-    disabled: { control: 'boolean', description: 'Disabled state.' },
+    tone: Controls.selectControl(Controls.daisyToneOptions, 'Color modifier class.'),
+    size: Controls.selectControl(Controls.daisySizeOptions, 'Size modifier class.'),
+    checked: Controls.booleanControl('Checked state.'),
+    disabled: Controls.booleanControl('Disabled state.'),
   },
   parameters: {
     layout: 'centered',

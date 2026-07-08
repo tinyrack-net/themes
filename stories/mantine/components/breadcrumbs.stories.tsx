@@ -1,11 +1,18 @@
 import * as Mantine from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function BreadcrumbsStory() {
+type ComponentStoryProps = {
+  size?: (typeof Controls.mantineSizeOptions)[number];
+  separator?: '/' | '>' | '-';
+};
+
+function BreadcrumbsStory(controlValues: ComponentStoryProps) {
   return (
-    <Mantine.Breadcrumbs>
-      <Mantine.Anchor href="#">Home</Mantine.Anchor>
-      <Mantine.Anchor href="#">Themes</Mantine.Anchor>
+    <Mantine.Breadcrumbs separator={controlValues.separator ?? '/'}>
+      <Mantine.Anchor size={controlValues.size ?? 'sm'}>Rack</Mantine.Anchor>
+      <Mantine.Anchor size={controlValues.size ?? 'sm'}>Services</Mantine.Anchor>
+      <Mantine.Text size={controlValues.size ?? 'sm'}>nas-01</Mantine.Text>
     </Mantine.Breadcrumbs>
   );
 }
@@ -16,6 +23,14 @@ const meta = {
   title: 'Mantine/Breadcrumbs',
   component: BreadcrumbsStory,
   tags: ['autodocs'],
+  args: {
+    size: 'sm',
+    separator: '/',
+  },
+  argTypes: {
+    size: Controls.selectControl(Controls.mantineSizeOptions, 'Mantine size token.'),
+    separator: Controls.selectControl(['/', '>', '-'], 'Breadcrumb separator.'),
+  },
   parameters: {
     layout: 'centered',
     docs: {

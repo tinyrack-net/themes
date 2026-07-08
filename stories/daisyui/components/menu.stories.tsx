@@ -1,14 +1,33 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function MenuStory() {
+type ComponentStoryProps = {
+  orientation?: (typeof Controls.daisyOrientationOptions)[number];
+  size?: (typeof Controls.daisySizeOptions)[number];
+  selected?: 'status' | 'logs' | 'settings';
+};
+
+function MenuStory(controlValues: ComponentStoryProps) {
+  const orientation = controlValues.orientation ?? 'vertical';
+  const selected = controlValues.selected ?? 'status';
+  const size = controlValues.size ?? 'md';
+
   return (
-    <ul className="menu bg-base-200 rounded-box w-48">
-      <li>
-        <a href="#daisyui-menu-item">Menu item</a>
-      </li>
-      <li>
-        <a href="#daisyui-menu-second-item">Second item</a>
-      </li>
+    <ul
+      className={Controls.cx(
+        'menu rounded-box bg-base-200',
+        `menu-${orientation}`,
+        `menu-${size}`,
+        orientation === 'vertical' ? 'w-56' : undefined,
+      )}
+    >
+      {['status', 'logs', 'settings'].map((item) => (
+        <li key={item}>
+          <a className={selected === item ? 'menu-active' : undefined} href="#top">
+            {item}
+          </a>
+        </li>
+      ))}
     </ul>
   );
 }
@@ -19,6 +38,22 @@ const meta = {
   title: 'daisyUI/Menu',
   component: MenuStory,
   tags: ['autodocs'],
+  args: {
+    orientation: 'vertical',
+    size: 'md',
+    selected: 'status',
+  },
+  argTypes: {
+    orientation: Controls.selectControl(
+      Controls.daisyOrientationOptions,
+      'Menu orientation class.',
+    ),
+    size: Controls.selectControl(Controls.daisySizeOptions, 'Size modifier class.'),
+    selected: Controls.selectControl(
+      ['status', 'logs', 'settings'],
+      'Active menu item.',
+    ),
+  },
   parameters: {
     layout: 'centered',
     docs: {

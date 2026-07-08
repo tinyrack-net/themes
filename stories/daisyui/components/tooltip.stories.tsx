@@ -1,38 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
 type ComponentStoryProps = {
-  tone?:
-    | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'accent'
-    | 'info'
-    | 'success'
-    | 'warning'
-    | 'error';
-  placement?: 'top' | 'bottom' | 'left' | 'right';
+  tone?: (typeof Controls.daisyToneOptions)[number];
+  placement?: (typeof Controls.daisyPlacementOptions)[number];
   open?: boolean;
 };
 
 function TooltipStory(controlValues: ComponentStoryProps) {
-  const tone = controlValues.tone ?? 'default';
+  const tone = controlValues.tone ?? 'primary';
   const placement = controlValues.placement ?? 'top';
-  const open = controlValues.open ?? true;
 
   return (
     <div
-      className={[
+      className={Controls.cx(
         'tooltip',
-        open && 'tooltip-open',
-        tone === 'default' ? undefined : `tooltip-${tone}`,
+        `tooltip-${tone}`,
         `tooltip-${placement}`,
-      ]
-        .filter(Boolean)
-        .join(' ')}
-      data-tip="Open service logs"
+        (controlValues.open ?? true) ? 'tooltip-open' : undefined,
+      )}
+      data-tip="Node logs"
     >
-      <button className="btn" type="button">
-        Logs
+      <button className="btn btn-primary" type="button">
+        Hover
       </button>
     </div>
   );
@@ -45,31 +35,17 @@ const meta = {
   component: TooltipStory,
   tags: ['autodocs'],
   args: {
-    tone: 'default',
+    tone: 'primary',
     placement: 'top',
     open: true,
   },
   argTypes: {
-    tone: {
-      control: 'select',
-      options: [
-        'default',
-        'primary',
-        'secondary',
-        'accent',
-        'info',
-        'success',
-        'warning',
-        'error',
-      ],
-      description: 'Tooltip color modifier class.',
-    },
-    placement: {
-      control: 'select',
-      options: ['top', 'bottom', 'left', 'right'],
-      description: 'Tooltip placement class.',
-    },
-    open: { control: 'boolean', description: 'Applies the tooltip-open state class.' },
+    tone: Controls.selectControl(Controls.daisyToneOptions, 'Color modifier class.'),
+    placement: Controls.selectControl(
+      Controls.daisyPlacementOptions,
+      'Tooltip placement class.',
+    ),
+    open: Controls.booleanControl('Applies tooltip-open state.'),
   },
   parameters: {
     layout: 'centered',

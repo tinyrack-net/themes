@@ -1,47 +1,38 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
 type ComponentStoryProps = {
-  layout?: 'brand-action' | 'centered' | 'menu';
-  action?: boolean;
+  tone?: (typeof Controls.daisyToneOptions)[number];
+  active?: 'status' | 'logs';
 };
 
 function NavbarStory(controlValues: ComponentStoryProps) {
-  const layout = controlValues.layout ?? 'brand-action';
-  const action = controlValues.action ?? true;
+  const tone = controlValues.tone ?? 'primary';
+  const active = controlValues.active ?? 'status';
 
   return (
-    <div className="navbar bg-base-200 rounded-box">
-      <div className={layout === 'centered' ? 'navbar-start' : 'flex-1'}>
-        <a className="btn btn-ghost text-tinyrack-xl" href="#daisyui-navbar-home">
-          Tinyrack
-        </a>
+    <div className="navbar w-96 rounded-box bg-base-200">
+      <div className="navbar-start font-semibold">Tinyrack</div>
+      <div className="navbar-center">
+        <div className="join">
+          {['status', 'logs'].map((item) => (
+            <button
+              className={Controls.cx(
+                'btn join-item btn-sm',
+                active === item ? `btn-${tone}` : 'btn-ghost',
+              )}
+              key={item}
+              type="button"
+            >
+              {item}
+            </button>
+          ))}
+        </div>
       </div>
-      {layout === 'centered' ? (
-        <div className="navbar-center">
-          <a className="btn btn-ghost btn-sm" href="#daisyui-navbar-docs">
-            Docs
-          </a>
-        </div>
-      ) : null}
-      {layout === 'menu' ? (
-        <div className="flex-none">
-          <ul className="menu menu-horizontal px-1">
-            <li>
-              <a href="#daisyui-navbar-dashboard">Dashboard</a>
-            </li>
-          </ul>
-        </div>
-      ) : null}
-      <div className={layout === 'centered' ? 'navbar-end' : 'flex-none'}>
-        {action ? (
-          <button className="btn btn-primary btn-sm" type="button">
-            Apply config
-          </button>
-        ) : (
-          <button className="btn btn-square btn-ghost" type="button">
-            Menu
-          </button>
-        )}
+      <div className="navbar-end">
+        <button className="btn btn-square btn-ghost btn-sm" type="button">
+          TR
+        </button>
       </div>
     </div>
   );
@@ -54,16 +45,12 @@ const meta = {
   component: NavbarStory,
   tags: ['autodocs'],
   args: {
-    layout: 'brand-action',
-    action: true,
+    tone: 'primary',
+    active: 'status',
   },
   argTypes: {
-    layout: {
-      control: 'select',
-      options: ['brand-action', 'centered', 'menu'],
-      description: 'Navbar content arrangement.',
-    },
-    action: { control: 'boolean', description: 'Shows the primary navbar action.' },
+    tone: Controls.selectControl(Controls.daisyToneOptions, 'Color modifier class.'),
+    active: Controls.selectControl(['status', 'logs'], 'Active navbar action.'),
   },
   parameters: {
     layout: 'centered',

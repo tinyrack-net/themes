@@ -1,47 +1,36 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
 type ComponentStoryProps = {
-  style?: 'default' | 'border' | 'dash';
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  layout?: 'default' | 'side';
-  actions?: boolean;
+  size?: (typeof Controls.daisySizeOptions)[number];
+  bordered?: boolean;
+  imageSide?: boolean;
 };
 
 function CardStory(controlValues: ComponentStoryProps) {
-  const style = controlValues.style ?? 'default';
   const size = controlValues.size ?? 'md';
-  const layout = controlValues.layout ?? 'default';
-  const actions = controlValues.actions ?? true;
+  const imageSide = controlValues.imageSide ?? false;
 
   return (
-    <div
-      className={[
-        'card bg-base-100 border border-base-300 shadow-md w-80 max-w-full',
-        style === 'default' ? undefined : `card-${style}`,
+    <article
+      className={Controls.cx(
+        'card w-80 bg-base-200 shadow-sm',
         `card-${size}`,
-        layout === 'default' ? undefined : `card-${layout}`,
-        layout === 'side' && 'max-w-md',
-      ]
-        .filter(Boolean)
-        .join(' ')}
+        (controlValues.bordered ?? true) ? 'card-border' : undefined,
+        imageSide ? 'card-side' : undefined,
+      )}
     >
-      {layout === 'side' ? (
-        <figure className="bg-base-200 min-w-24">
-          <div className="text-primary text-tinyrack-2xl font-bold">TR</div>
-        </figure>
-      ) : null}
+      {imageSide ? <div className="w-20 bg-primary" /> : null}
       <div className="card-body">
-        <h3 className="card-title">node-01</h3>
-        <p>CPU 34%, memory 61%, last backup 18 minutes ago.</p>
-        {actions ? (
-          <div className="card-actions justify-end">
-            <button className="btn btn-primary btn-sm" type="button">
-              Open node
-            </button>
-          </div>
-        ) : null}
+        <h2 className="card-title">nas-01</h2>
+        <p>Backup window is healthy.</p>
+        <div className="card-actions justify-end">
+          <button className="btn btn-primary btn-sm" type="button">
+            Open
+          </button>
+        </div>
       </div>
-    </div>
+    </article>
   );
 }
 
@@ -52,28 +41,14 @@ const meta = {
   component: CardStory,
   tags: ['autodocs'],
   args: {
-    style: 'default',
     size: 'md',
-    layout: 'default',
-    actions: true,
+    bordered: true,
+    imageSide: false,
   },
   argTypes: {
-    style: {
-      control: 'select',
-      options: ['default', 'border', 'dash'],
-      description: 'Card border treatment class.',
-    },
-    size: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
-      description: 'Size modifier class from xs through xl.',
-    },
-    layout: {
-      control: 'select',
-      options: ['default', 'side'],
-      description: 'Card layout class.',
-    },
-    actions: { control: 'boolean', description: 'Shows a card-actions footer.' },
+    size: Controls.selectControl(Controls.daisySizeOptions, 'Size modifier class.'),
+    bordered: Controls.booleanControl('Applies card-border.'),
+    imageSide: Controls.booleanControl('Applies card-side layout.'),
   },
   parameters: {
     layout: 'centered',

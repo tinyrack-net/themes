@@ -1,10 +1,20 @@
 import * as Mantine from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function CenterStory() {
+type ComponentStoryProps = {
+  inline?: boolean;
+  height?: number;
+};
+
+function CenterStory(controlValues: ComponentStoryProps) {
   return (
-    <Mantine.Center h={64} bg="tinyrack.0" c="dark.9">
-      Centered
+    <Mantine.Center
+      className="w-80 rounded-md border border-neutral-700"
+      h={controlValues.height ?? 120}
+      inline={controlValues.inline ?? false}
+    >
+      <Mantine.Badge color="tinyrack">Centered</Mantine.Badge>
     </Mantine.Center>
   );
 }
@@ -15,6 +25,18 @@ const meta = {
   title: 'Mantine/Center',
   component: CenterStory,
   tags: ['autodocs'],
+  args: {
+    inline: false,
+    height: 120,
+  },
+  argTypes: {
+    inline: Controls.booleanControl('Uses inline center display.'),
+    height: Controls.rangeControl('Container height in pixels.', {
+      min: 64,
+      max: 200,
+      step: 8,
+    }),
+  },
   parameters: {
     layout: 'centered',
     docs: {

@@ -1,10 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as Controls from '../../story-control-options.js';
 
-function StackStory() {
+type ComponentStoryProps = {
+  count?: number;
+};
+
+function StackStory(controlValues: ComponentStoryProps) {
+  const count = controlValues.count ?? 3;
+
   return (
     <div className="stack">
-      <div className="card bg-primary text-primary-content p-4">1</div>
-      <div className="card bg-secondary text-secondary-content p-4">2</div>
+      {Array.from({ length: count }, (_, index) => `layer-${index + 1}`).map(
+        (layer) => (
+          <div
+            className="grid h-24 w-36 place-content-center rounded-box bg-base-200 shadow"
+            key={layer}
+          >
+            {layer}
+          </div>
+        ),
+      )}
     </div>
   );
 }
@@ -15,6 +30,12 @@ const meta = {
   title: 'daisyUI/Stack',
   component: StackStory,
   tags: ['autodocs'],
+  args: {
+    count: 3,
+  },
+  argTypes: {
+    count: Controls.numberControl('Number of stacked cards.', { min: 2, max: 5 }),
+  },
   parameters: {
     layout: 'centered',
     docs: {

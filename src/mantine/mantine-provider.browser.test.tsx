@@ -241,3 +241,16 @@ test.each([
   expectReadableContrast('.mantine-ThemeIcon-root', `${colorScheme} ThemeIcon`);
   expectReadableContrast('.mantine-Indicator-indicator', `${colorScheme} Indicator`);
 });
+
+test('preserves readable Mantine filled states for non-Tinyrack colors in dark mode', async () => {
+  await render(
+    <TinyrackMantineProvider forceColorScheme="dark">
+      <Button color="blue" data-testid="blue-button" variant="filled">
+        Blue action
+      </Button>
+    </TinyrackMantineProvider>,
+  );
+
+  await waitForMantineColorScheme('dark');
+  expectReadableContrast('[data-testid="blue-button"]', 'dark blue Button');
+});

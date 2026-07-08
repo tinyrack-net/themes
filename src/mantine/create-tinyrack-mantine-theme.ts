@@ -115,6 +115,8 @@ const tinyrackVariantColorResolver: VariantColorsResolver = (input) => {
   if (input.color === 'tinyrack' && input.variant === 'filled') {
     return {
       ...colors,
+      background: 'var(--tinyrack-primary)',
+      hover: 'var(--tinyrack-accent)',
       color: 'var(--tinyrack-mantine-filled-color)',
     };
   }
@@ -160,37 +162,86 @@ function createTinyrackActiveTextVars(cssVariable: string) {
 }
 
 const tinyrackMantineComponentOverrides = {
+  Button: {
+    defaultProps: {
+      color: 'tinyrack',
+    },
+  },
   Badge: {
+    defaultProps: {
+      color: 'tinyrack',
+    },
     vars: createTinyrackFilledTextVars('--badge-color'),
   },
   Chip: {
+    defaultProps: {
+      color: 'tinyrack',
+    },
     vars: createTinyrackFilledTextVars('--chip-color'),
   },
   Indicator: {
-    vars: createTinyrackActiveTextVars('--indicator-text-color'),
-  },
-  Pagination: {
-    vars: createTinyrackActiveTextVars('--pagination-active-color'),
-  },
-  SegmentedControl: {
+    defaultProps: {
+      color: 'tinyrack',
+    },
     vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
       usesTinyrackColor(props)
         ? createRootVars({
-            '--sc-color': 'var(--mantine-primary-color-filled)',
+            '--indicator-color': 'var(--tinyrack-primary)',
+            '--indicator-text-color': tinyrackMantineFilledColorVariable,
+          })
+        : {},
+  },
+  Pagination: {
+    defaultProps: {
+      color: 'tinyrack',
+    },
+    vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
+      usesTinyrackColor(props)
+        ? createRootVars({
+            '--pagination-active-bg': 'var(--tinyrack-primary)',
+            '--pagination-active-color': tinyrackMantineFilledColorVariable,
+          })
+        : {},
+  },
+  PaginationRoot: {
+    defaultProps: {
+      color: 'tinyrack',
+    },
+  },
+  SegmentedControl: {
+    defaultProps: {
+      color: 'tinyrack',
+    },
+    vars: (_theme: unknown, props: ComponentVarsProps): ComponentVars =>
+      usesTinyrackColor(props)
+        ? createRootVars({
+            '--sc-color': 'var(--tinyrack-primary)',
             '--sc-label-color': tinyrackMantineFilledColorVariable,
           })
         : {},
   },
   Stepper: {
+    defaultProps: {
+      color: 'tinyrack',
+    },
     vars: createTinyrackActiveTextVars('--stepper-icon-color'),
   },
   Tabs: {
+    defaultProps: {
+      color: 'tinyrack',
+    },
     vars: createTinyrackActiveTextVars('--tabs-text-color'),
   },
   ThemeIcon: {
+    defaultProps: {
+      color: 'tinyrack',
+    },
     vars: createTinyrackFilledTextVars('--ti-color'),
   },
   Timeline: {
+    defaultProps: {
+      color: 'tinyrack',
+    },
     vars: createTinyrackActiveTextVars('--tl-icon-color'),
   },
 };
@@ -200,7 +251,6 @@ export function createTinyrackMantineTheme(
 ): MantineThemeOverride {
   return createTheme({
     primaryColor: options.primaryColor ?? 'tinyrack',
-    primaryShade: { light: 8, dark: 0 },
     colors: {
       dark: [...darkScale],
       error: [...errorScale],

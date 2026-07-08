@@ -24,6 +24,16 @@ function componentRootVar(
   return vars?.root?.[cssVariable];
 }
 
+function componentDefaultProp(
+  theme: ReturnType<typeof createTinyrackMantineTheme>,
+  componentName: string,
+  propName: string,
+) {
+  return (theme.components?.[componentName]?.defaultProps as Record<string, unknown>)?.[
+    propName
+  ];
+}
+
 describe('tinyrack mantine theme', () => {
   it('maps shared tokens to a Mantine theme override', () => {
     const theme = createTinyrackMantineTheme();
@@ -31,7 +41,6 @@ describe('tinyrack mantine theme', () => {
       theme.colors?.[colorKey];
 
     expect(theme.primaryColor).toBe('tinyrack');
-    expect(theme.primaryShade).toEqual({ light: 8, dark: 0 });
     expect(theme.colors?.[tinyrackColorKey]).toHaveLength(10);
     for (const colorKey of semanticColorKeys) {
       expect(semanticColorScale(colorKey)).toHaveLength(10);
@@ -63,6 +72,13 @@ describe('tinyrack mantine theme', () => {
     expect(theme.autoContrast).toBe(true);
   });
 
+  it('keeps Mantine default shade selection for non-Tinyrack colors', () => {
+    const theme = createTinyrackMantineTheme();
+    const resolvedTheme = mergeMantineTheme(DEFAULT_THEME, theme);
+
+    expect(resolvedTheme.primaryShade).toEqual(DEFAULT_THEME.primaryShade);
+  });
+
   it('exports a reusable singleton theme', () => {
     expect(tinyrackMantineTheme).toEqual(createTinyrackMantineTheme());
   });
@@ -71,11 +87,24 @@ describe('tinyrack mantine theme', () => {
     const theme = createTinyrackMantineTheme();
     const resolvedTheme = mergeMantineTheme(DEFAULT_THEME, theme);
 
+    const filledVariant = theme.variantColorResolver?.({
+      autoContrast: theme.autoContrast ?? false,
+      color: 'tinyrack',
+      theme: resolvedTheme,
+      variant: 'filled',
+    });
+
     const whiteVariant = theme.variantColorResolver?.({
       autoContrast: theme.autoContrast ?? false,
       color: 'tinyrack',
       theme: resolvedTheme,
       variant: 'white',
+    });
+
+    expect(filledVariant).toMatchObject({
+      background: 'var(--tinyrack-primary)',
+      color: tinyrackFilledTextVariable,
+      hover: 'var(--tinyrack-accent)',
     });
 
     expect(whiteVariant).toMatchObject({
@@ -87,11 +116,26 @@ describe('tinyrack mantine theme', () => {
   it('keeps Mantine primary filled fallback components on scheme-aware text', () => {
     const theme = createTinyrackMantineTheme();
 
+    expect(componentDefaultProp(theme, 'Button', 'color')).toBe('tinyrack');
+    expect(componentDefaultProp(theme, 'Badge', 'color')).toBe('tinyrack');
+    expect(componentDefaultProp(theme, 'Chip', 'color')).toBe('tinyrack');
+    expect(componentDefaultProp(theme, 'Pagination', 'color')).toBe('tinyrack');
+    expect(componentDefaultProp(theme, 'PaginationRoot', 'color')).toBe('tinyrack');
+    expect(componentDefaultProp(theme, 'ThemeIcon', 'color')).toBe('tinyrack');
     expect(componentRootVar(theme, 'Badge', '--badge-color')).toBe(
       tinyrackFilledTextVariable,
     );
     expect(componentRootVar(theme, 'Chip', '--chip-color')).toBe(
       tinyrackFilledTextVariable,
+    );
+    expect(componentRootVar(theme, 'Indicator', '--indicator-color')).toBe(
+      'var(--tinyrack-primary)',
+    );
+    expect(componentRootVar(theme, 'Indicator', '--indicator-text-color')).toBe(
+      tinyrackFilledTextVariable,
+    );
+    expect(componentRootVar(theme, 'Pagination', '--pagination-active-bg')).toBe(
+      'var(--tinyrack-primary)',
     );
     expect(componentRootVar(theme, 'Pagination', '--pagination-active-color')).toBe(
       tinyrackFilledTextVariable,
@@ -100,7 +144,7 @@ describe('tinyrack mantine theme', () => {
       tinyrackFilledTextVariable,
     );
     expect(componentRootVar(theme, 'SegmentedControl', '--sc-color')).toBe(
-      'var(--mantine-primary-color-filled)',
+      'var(--tinyrack-primary)',
     );
     expect(componentRootVar(theme, 'SegmentedControl', '--sc-label-color')).toBe(
       tinyrackFilledTextVariable,
@@ -118,6 +162,16 @@ describe('tinyrack mantine theme', () => {
     ).toBeUndefined();
     expect(
       componentRootVar(theme, 'Pagination', '--pagination-active-color', {
+        color: 'blue',
+      }),
+    ).toBeUndefined();
+    expect(
+      componentRootVar(theme, 'Indicator', '--indicator-color', {
+        color: 'blue',
+      }),
+    ).toBeUndefined();
+    expect(
+      componentRootVar(theme, 'Pagination', '--pagination-active-bg', {
         color: 'blue',
       }),
     ).toBeUndefined();

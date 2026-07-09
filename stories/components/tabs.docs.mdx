@@ -1,5 +1,11 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  tabsActivationModes,
+  tabsOrientations,
+  tabsSizes,
+} from '../../src/components/tabs/contract.js';
 import { Tabs, TabsList, TabsPanel, TabsTrigger } from '../../src/components/tabs/react.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as TabsStories from './tabs.stories';
 
 <Meta of={TabsStories} />
@@ -10,86 +16,48 @@ Accessible tabbed navigation for compact operational panels.
 
 ## Contract
 
-| Area | Values | Rule |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| Root class | `tr-tabs` | `data-size`, `data-orientation` | `md`, `horizontal` | Provides context for list, triggers, and panels. |
+| List class | `tr-tabs-list` | `role="tablist"` | required | Receives `aria-orientation` for vertical tabs. |
+| Trigger class | `tr-tabs-trigger` | `role="tab"`, `data-active` | required | Renders native buttons. |
+| Panel class | `tr-tabs-panel` | `role="tabpanel"`, `data-active` | required | Hidden when inactive. |
+| Activation | `activationMode` | `automatic`, `manual` | `automatic` | Use manual when panels are expensive to show. |
+| Selection | `value`, `defaultValue` | `string` | none | Use exactly one selected-value mode. |
+
+## Install
+
+| Surface | Install | Import |
 | --- | --- | --- |
-| Size | `sm`, `md`, `lg` | Use `md` for normal application panels. |
-| Orientation | `horizontal`, `vertical` | Match the tab list edge, not the panel layout. |
-| Activation | `automatic`, `manual` | Use automatic when panel content is already mounted. |
-| Selection | `value`, `defaultValue` | Use exactly one selected-value mode. |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/tabs/tabs.css` |
+| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/tabs/react` |
 
-## Preview
-
-<div className="mt-4">
-  <Tabs defaultValue="overview">
-    <TabsList aria-label="Rack sections">
-      <TabsTrigger value="overview">Overview</TabsTrigger>
-      <TabsTrigger value="metrics">Metrics</TabsTrigger>
-      <TabsTrigger value="logs">Logs</TabsTrigger>
-    </TabsList>
-    <TabsPanel value="overview">
-      <div className="grid border-t border-tinyrack-border">
-        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
-          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">Status</span>
-          <span>Healthy</span>
-          <span>Deployments enabled and rack checks passing.</span>
-        </div>
-        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
-          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">Backup</span>
-          <span>Ready</span>
-          <span>Last snapshot completed at 03:18 KST.</span>
-        </div>
-        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
-          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">Region</span>
-          <span>Seoul</span>
-          <span>Primary node accepting traffic.</span>
-        </div>
-      </div>
-    </TabsPanel>
-    <TabsPanel value="metrics">
-      <div className="grid border-t border-tinyrack-border">
-        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
-          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">CPU</span>
-          <span>41%</span>
-          <span>Sustained load across the last 15 minutes.</span>
-        </div>
-        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
-          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">Memory</span>
-          <span>62%</span>
-          <span>No pressure warnings in the current window.</span>
-        </div>
-        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
-          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">Latency</span>
-          <span>48 ms</span>
-          <span>p95 API latency from edge probes.</span>
-        </div>
-      </div>
-    </TabsPanel>
-    <TabsPanel value="logs">
-      <div className="grid border-t border-tinyrack-border">
-        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
-          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">03:18</span>
-          <span>Backup</span>
-          <span>Snapshot completed for rack-a-01.</span>
-        </div>
-        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
-          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">03:22</span>
-          <span>Health</span>
-          <span>Probe passed with no degraded services.</span>
-        </div>
-        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
-          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">03:30</span>
-          <span>Deploy</span>
-          <span>Release candidate queued for review.</span>
-        </div>
-      </div>
-    </TabsPanel>
-  </Tabs>
-</div>
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/tabs/tabs.css";
+```
 
 ## Usage
 
-```tsx
-import '@tinyrack/ui/core/core.css';
+<ComponentExampleTabs
+  title="Basic tabs"
+  description="Use Tabs for compact panels that switch between related operational views."
+  preview={(
+    <Tabs defaultValue="overview" activationMode="automatic">
+      <TabsList aria-label="Rack sections">
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="logs">Logs</TabsTrigger>
+      </TabsList>
+      <TabsPanel value="overview">Rack A is healthy.</TabsPanel>
+      <TabsPanel value="logs">03:18 backup completed.</TabsPanel>
+    </Tabs>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/tabs/tabs.css';
 import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/tabs/react';
 
@@ -100,19 +68,162 @@ import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/
   </TabsList>
   <TabsPanel value="overview">Rack A is healthy.</TabsPanel>
   <TabsPanel value="logs">03:18 backup completed.</TabsPanel>
-</Tabs>;
-```
-
-```html
-<div class="tr-tabs" data-size="md" data-orientation="horizontal">
+</Tabs>;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-tabs" data-size="md" data-orientation="horizontal">
   <div class="tr-tabs-list" role="tablist" aria-label="Rack sections">
-    <button class="tr-tabs-trigger" role="tab" aria-selected="true" data-active="true">
+    <button
+      class="tr-tabs-trigger"
+      role="tab"
+      aria-selected="true"
+      data-active="true"
+    >
       Overview
     </button>
   </div>
-  <div class="tr-tabs-panel" role="tabpanel" data-active="true">Rack A is healthy.</div>
-</div>
-```
+  <div class="tr-tabs-panel" role="tabpanel" data-active="true">
+    Rack A is healthy.
+  </div>
+</div>`,
+    },
+  ]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  title="Size"
+  description="Size changes trigger height and panel padding without changing ARIA semantics."
+  preview={(
+    <div className="grid gap-4">
+      {tabsSizes.map((size) => (
+        <Tabs key={size} defaultValue="overview" size={size}>
+          <TabsList aria-label={`Rack sections ${size}`}>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="logs">Logs</TabsTrigger>
+          </TabsList>
+          <TabsPanel value="overview">Tabs size {size} keeps trigger and panel rhythm aligned.</TabsPanel>
+          <TabsPanel value="logs">03:18 backup completed.</TabsPanel>
+        </Tabs>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{tabsSizes.map((size) => (
+  <Tabs key={size} defaultValue="overview" size={size}>
+    <TabsList aria-label={'Rack sections ' + size}>
+      <TabsTrigger value="overview">Overview</TabsTrigger>
+      <TabsTrigger value="logs">Logs</TabsTrigger>
+    </TabsList>
+    <TabsPanel value="overview">Tabs size {size} keeps trigger and panel rhythm aligned.</TabsPanel>
+    <TabsPanel value="logs">03:18 backup completed.</TabsPanel>
+  </Tabs>
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-tabs" data-size="sm" data-orientation="horizontal">...</div>
+<div class="tr-tabs" data-size="md" data-orientation="horizontal">...</div>
+<div class="tr-tabs" data-size="lg" data-orientation="horizontal">...</div>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="Orientation"
+  description="Horizontal tabs use left/right keys; vertical tabs use up/down keys."
+  preview={(
+    <div className="grid gap-4">
+      {tabsOrientations.map((orientation) => (
+        <Tabs key={orientation} defaultValue="overview" orientation={orientation}>
+          <TabsList aria-label={`Rack sections ${orientation}`}>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="metrics">Metrics</TabsTrigger>
+            <TabsTrigger value="logs">Logs</TabsTrigger>
+          </TabsList>
+          <TabsPanel value="overview">Orientation: {orientation}</TabsPanel>
+          <TabsPanel value="metrics">CPU 41%, memory 62%, latency 48 ms.</TabsPanel>
+          <TabsPanel value="logs">03:18 backup completed.</TabsPanel>
+        </Tabs>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{tabsOrientations.map((orientation) => (
+  <Tabs key={orientation} defaultValue="overview" orientation={orientation}>
+    <TabsList aria-label={'Rack sections ' + orientation}>
+      <TabsTrigger value="overview">Overview</TabsTrigger>
+      <TabsTrigger value="metrics">Metrics</TabsTrigger>
+      <TabsTrigger value="logs">Logs</TabsTrigger>
+    </TabsList>
+    <TabsPanel value="overview">Orientation: {orientation}</TabsPanel>
+    <TabsPanel value="metrics">CPU 41%, memory 62%, latency 48 ms.</TabsPanel>
+    <TabsPanel value="logs">03:18 backup completed.</TabsPanel>
+  </Tabs>
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-tabs" data-orientation="horizontal">...</div>
+<div class="tr-tabs" data-orientation="vertical">
+  <div class="tr-tabs-list" role="tablist" aria-orientation="vertical">...</div>
+  <div class="tr-tabs-panel" role="tabpanel">...</div>
+</div>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="Activation Mode"
+  description="Automatic activates on focus movement; manual waits for Enter or Space."
+  preview={(
+    <div className="grid gap-4">
+      {tabsActivationModes.map((activationMode) => (
+        <Tabs key={activationMode} activationMode={activationMode} defaultValue="overview">
+          <TabsList aria-label={`Rack sections ${activationMode}`}>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="logs">Logs</TabsTrigger>
+          </TabsList>
+          <TabsPanel value="overview">Activation mode: {activationMode}</TabsPanel>
+          <TabsPanel value="logs">Manual activation waits for Enter or Space after focus movement.</TabsPanel>
+        </Tabs>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{tabsActivationModes.map((activationMode) => (
+  <Tabs key={activationMode} activationMode={activationMode} defaultValue="overview">
+    <TabsList aria-label={'Rack sections ' + activationMode}>
+      <TabsTrigger value="overview">Overview</TabsTrigger>
+      <TabsTrigger value="logs">Logs</TabsTrigger>
+    </TabsList>
+    <TabsPanel value="overview">Activation mode: {activationMode}</TabsPanel>
+    <TabsPanel value="logs">Manual activation waits for Enter or Space after focus movement.</TabsPanel>
+  </Tabs>
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<!-- Activation behavior is controlled by the React component. -->
+<div class="tr-tabs" data-size="md" data-orientation="horizontal">...</div>`,
+    },
+  ]}
+/>
 
 ## API
 
@@ -121,6 +232,7 @@ import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/
 | `value` | `string` | Controlled selected tab. |
 | `defaultValue` | `string` | Initial selected tab for uncontrolled usage. |
 | `onValueChange` | `(value) => void` | Called after click or keyboard activation. |
-| `size` | `sm`, `md`, `lg` | Default `md`. |
-| `orientation` | `horizontal`, `vertical` | Default `horizontal`. |
+| `size` | `sm`, `md`, `lg` | Default `md`; sets `data-size`. |
+| `orientation` | `horizontal`, `vertical` | Default `horizontal`; sets `data-orientation`. |
 | `activationMode` | `automatic`, `manual` | Default `automatic`. |
+| native props | div and button attributes | Passed through to root, list, trigger, and panel primitives. |

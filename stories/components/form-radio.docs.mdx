@@ -1,55 +1,202 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Radio, RadioGroup } from '../../src/components/form/react.js';
+import {
+  formControlSizes,
+  radioGroupOrientations,
+} from '../../src/components/form/contract.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as RadioStories from './form-radio.stories';
 
 <Meta of={RadioStories} />
 
-
 # Radio
-
 
 Mutually exclusive native choices with vertical or horizontal group layout.
 
 ## Contract
 
-| Area | Values | Rule |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| Group class | `tr-radio-group` | fieldset element | required for groups | Use fieldset semantics for related choices. |
+| Group orientation | `data-orientation` | `vertical`, `horizontal` | `vertical` | Match the space where the choices appear. |
+| Wrapper class | `tr-radio` | label element | required | Wraps the native input and visible label. |
+| Input class | `tr-radio-input` | native radio | required | Radios share a native `name`. |
+| Control class | `tr-radio-control` | decorative span | required | Mark with `aria-hidden="true"`. |
+| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Shared with `Checkbox` and `Switch`. |
+
+## Install
+
+| Surface | Install | Import |
 | --- | --- | --- |
-| Size | `sm`, `md`, `lg` | Shares choice spacing with `Checkbox` and `Switch`. |
-| Orientation | `vertical`, `horizontal` | Applied by `RadioGroup`. |
-| Input | native radio | Keep radios grouped by shared `name`. |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
+| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
 
-## Preview
-
-<fieldset className="tr-radio-group" data-orientation="vertical" aria-label="Rack role">
-  <label className="tr-radio" data-size="md">
-    <input className="tr-radio-input" type="radio" name="docs-radio-role" defaultChecked />
-    <span aria-hidden="true" className="tr-radio-control" />
-    <span className="tr-radio-label">Primary</span>
-  </label>
-  <label className="tr-radio" data-size="md">
-    <input className="tr-radio-input" type="radio" name="docs-radio-role" />
-    <span aria-hidden="true" className="tr-radio-control" />
-    <span className="tr-radio-label">Replica</span>
-  </label>
-</fieldset>
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/form/form.css";
+```
 
 ## Usage
 
-```tsx
+<ComponentExampleTabs
+  title="Basic radio group"
+  description="Group related radio choices with fieldset semantics and a shared native name."
+  preview={(
+    <RadioGroup aria-label="Rack role" orientation="vertical">
+      <Radio defaultChecked name="rack-role" value="primary">Primary</Radio>
+      <Radio name="rack-role" value="replica">Replica</Radio>
+    </RadioGroup>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/form/form.css';
 import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';
 
 <RadioGroup aria-label="Rack role" orientation="vertical">
   <Radio defaultChecked name="rack-role" value="primary">Primary</Radio>
   <Radio name="rack-role" value="replica">Replica</Radio>
-</RadioGroup>;
-```
-
-```html
-<fieldset class="tr-radio-group" data-orientation="vertical">
+</RadioGroup>;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<fieldset class="tr-radio-group" data-orientation="vertical">
   <label class="tr-radio" data-size="md">
     <input class="tr-radio-input" type="radio" name="rack-role" checked />
     <span aria-hidden="true" class="tr-radio-control"></span>
     <span class="tr-radio-label">Primary</span>
   </label>
-</fieldset>
-```
+  <label class="tr-radio" data-size="md">
+    <input class="tr-radio-input" type="radio" name="rack-role" />
+    <span aria-hidden="true" class="tr-radio-control"></span>
+    <span class="tr-radio-label">Replica</span>
+  </label>
+</fieldset>`,
+    },
+  ]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  title="Orientation"
+  description="Use horizontal groups only when the choices can fit without wrapping awkwardly."
+  preview={(
+    <div className="grid gap-4">
+      {radioGroupOrientations.map((orientation) => (
+        <RadioGroup
+          key={orientation}
+          aria-label={`Rack role ${orientation}`}
+          orientation={orientation}
+        >
+          <Radio defaultChecked name={`docs-radio-${orientation}`} value="primary">Primary</Radio>
+          <Radio name={`docs-radio-${orientation}`} value="replica">Replica</Radio>
+          <Radio name={`docs-radio-${orientation}`} value="standby">Standby</Radio>
+        </RadioGroup>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{radioGroupOrientations.map((orientation) => (
+  <RadioGroup key={orientation} aria-label={'Rack role ' + orientation} orientation={orientation}>
+    <Radio defaultChecked name={'rack-role-' + orientation} value="primary">Primary</Radio>
+    <Radio name={'rack-role-' + orientation} value="replica">Replica</Radio>
+    <Radio name={'rack-role-' + orientation} value="standby">Standby</Radio>
+  </RadioGroup>
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<fieldset class="tr-radio-group" data-orientation="vertical">...</fieldset>
+<fieldset class="tr-radio-group" data-orientation="horizontal">...</fieldset>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="Size"
+  description="Radio size follows the shared choice-control scale."
+  preview={(
+    <div className="grid gap-3">
+      {formControlSizes.map((size) => (
+        <Radio key={size} size={size} name="docs-radio-size" value={size}>
+          size: {size}
+        </Radio>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{formControlSizes.map((size) => (
+  <Radio key={size} size={size} name="docs-radio-size" value={size}>
+    size: {size}
+  </Radio>
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<label class="tr-radio" data-size="sm">...</label>
+<label class="tr-radio" data-size="md">...</label>
+<label class="tr-radio" data-size="lg">...</label>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="State"
+  description="Disabled and invalid states stay on the native radio input."
+  preview={(
+    <div className="grid gap-3 lg:grid-cols-3">
+      <Radio name="docs-radio-state" value="unchecked">Unchecked</Radio>
+      <Radio defaultChecked name="docs-radio-state" value="checked">Checked</Radio>
+      <Radio disabled name="docs-radio-disabled" value="disabled">Disabled</Radio>
+      <Radio invalid name="docs-radio-invalid" value="invalid">Invalid</Radio>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<Radio name="docs-radio-state" value="unchecked">Unchecked</Radio>
+<Radio defaultChecked name="docs-radio-state" value="checked">Checked</Radio>
+<Radio disabled name="docs-radio-disabled" value="disabled">Disabled</Radio>
+<Radio invalid name="docs-radio-invalid" value="invalid">Invalid</Radio>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<label class="tr-radio">
+  <input class="tr-radio-input" type="radio" name="state" />
+  <span aria-hidden="true" class="tr-radio-control"></span>
+  <span class="tr-radio-label">Unchecked</span>
+</label>
+<label class="tr-radio" data-invalid="true">
+  <input class="tr-radio-input" type="radio" name="state-invalid" aria-invalid="true" />
+  <span aria-hidden="true" class="tr-radio-control"></span>
+  <span class="tr-radio-label">Invalid</span>
+</label>`,
+    },
+  ]}
+/>
+
+## API
+
+| Prop | Values | Note |
+| --- | --- | --- |
+| `RadioGroup.orientation` | `vertical`, `horizontal` | Default `vertical`; sets `data-orientation`. |
+| `Radio.size` | `sm`, `md`, `lg` | Default `md`; sets `data-size`. |
+| `Radio.invalid` | `boolean` | Sets `aria-invalid` on input and `data-invalid` on wrapper. |
+| `children` | `ReactNode` | Renders `tr-radio-label` when present. |
+| native radio props | `InputHTMLAttributes<HTMLInputElement>` except `children`, `size`, `type` | Passed through to the native radio input. |
+| native fieldset props | `FieldsetHTMLAttributes<HTMLFieldSetElement>` | Passed through to `RadioGroup`. |

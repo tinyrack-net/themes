@@ -31,6 +31,9 @@ describe('MDX CSS contract', () => {
     expect(css).toContain('.tr-mdx-code-block');
     expect(css).toContain('.tr-mdx-table-container');
     expect(css).toContain('.tr-mdx-table');
+    expect(css).toContain('overflow-x: auto;');
+    expect(css).toContain('width: max-content;');
+    expect(css).toContain('min-width: 100%;');
     expect(css).toContain('.tr-mdx-rule');
     expect(css).toContain('.tr-mdx-blockquote');
     expect(css).toContain('.tr-mdx-footnotes');

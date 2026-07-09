@@ -1,40 +1,137 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Textarea } from '../../src/components/form/react.js';
+import { formControlSizes } from '../../src/components/form/contract.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as TextareaStories from './form-textarea.stories';
 
 <Meta of={TextareaStories} />
 
-
 # Textarea
-
 
 Native multiline input with the shared Tinyrack text control contract.
 
 ## Contract
 
-| Area | Values | Rule |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| CSS class | `tr-textarea` | textarea element | required | Use on native textarea elements. |
+| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Shared with `Input` and `Select`. |
+| Invalid attribute | `data-invalid` | `true` | unset | Mirrors `aria-invalid` when `invalid` is set. |
+| React prop | `rows` | native number | browser default | Keep native textarea behavior. |
+| React prop | `invalid` | `boolean` | false | Sets `aria-invalid` and `data-invalid`. |
+
+## Install
+
+| Surface | Install | Import |
 | --- | --- | --- |
-| Size | `sm`, `md`, `lg` | Shares sizing tokens with `Input` and `Select`. |
-| Invalid | `boolean` | Sets `aria-invalid` and `data-invalid`. |
-| Rows | native number | Keep the native textarea behavior. |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
+| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
 
-## Preview
-
-<textarea
-  className="tr-textarea"
-  data-size="md"
-  placeholder="Maintenance window, owner, or alert routing."
-  rows={4}
-/>
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/form/form.css";
+```
 
 ## Usage
 
-```tsx
+<ComponentExampleTabs
+  title="Basic textarea"
+  description="Use the native textarea element when multiline input is required."
+  preview={<Textarea rows={4} placeholder="Maintenance window, owner, or alert routing." />}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/form/form.css';
 import { Textarea } from '@tinyrack/ui/components/form/react';
 
-<Textarea rows={4} placeholder="Maintenance window, owner, or alert routing." />;
-```
+<Textarea rows={4} placeholder="Maintenance window, owner, or alert routing." />;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<textarea
+  class="tr-textarea"
+  data-size="md"
+  rows="4"
+  placeholder="Maintenance window, owner, or alert routing."
+></textarea>`,
+    },
+  ]}
+/>
 
-```html
-<textarea class="tr-textarea" data-size="md" rows="4"></textarea>
-```
+## Examples
+
+<ComponentExampleTabs
+  title="Size"
+  description="Textarea sizes align with the rest of the text-control family."
+  preview={(
+    <div className="grid gap-3">
+      {formControlSizes.map((size) => (
+        <Textarea
+          key={size}
+          size={size}
+          rows={3}
+          placeholder={`size: ${size}`}
+        />
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{formControlSizes.map((size) => (
+  <Textarea key={size} size={size} rows={3} placeholder={'size: ' + size} />
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<textarea class="tr-textarea" data-size="sm" rows="3" placeholder="size: sm"></textarea>
+<textarea class="tr-textarea" data-size="md" rows="3" placeholder="size: md"></textarea>
+<textarea class="tr-textarea" data-size="lg" rows="3" placeholder="size: lg"></textarea>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="Rows and State"
+  description="Rows remain native; invalid styling is opt-in through the wrapper prop or data attribute."
+  preview={(
+    <div className="grid gap-3 lg:grid-cols-3">
+      <Textarea rows={2} placeholder="Two rows" />
+      <Textarea rows={4} placeholder="Four rows" />
+      <Textarea invalid rows={4} defaultValue="Missing owner and maintenance window." />
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<Textarea rows={2} placeholder="Two rows" />
+<Textarea rows={4} placeholder="Four rows" />
+<Textarea invalid rows={4} defaultValue="Missing owner and maintenance window." />`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<textarea class="tr-textarea" rows="2" placeholder="Two rows"></textarea>
+<textarea class="tr-textarea" rows="4" placeholder="Four rows"></textarea>
+<textarea class="tr-textarea" data-invalid="true" aria-invalid="true" rows="4">
+Missing owner and maintenance window.
+</textarea>`,
+    },
+  ]}
+/>
+
+## API
+
+| Prop | Values | Note |
+| --- | --- | --- |
+| `size` | `sm`, `md`, `lg` | Default `md`; sets `data-size`. |
+| `invalid` | `boolean` | Sets `aria-invalid` and `data-invalid`. |
+| `rows` | native number | Passed through to `<textarea>`. |
+| native textarea props | `TextareaHTMLAttributes<HTMLTextAreaElement>` except native `size` | Passed through to `<textarea>`. |

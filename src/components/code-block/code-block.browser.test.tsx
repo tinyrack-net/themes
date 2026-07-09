@@ -72,6 +72,8 @@ test('ShikiCodeBlock progressively replaces plain code with token spans', async 
   await expect
     .poll(() => pre.querySelectorAll('span[style*="color"]').length)
     .toBeGreaterThan(0);
+  expect(pre.getAttribute('data-highlighted')).toBe('true');
+  expect(computedStyleFor(pre).backgroundColor).toBe('rgb(36, 41, 46)');
 });
 
 test('ShikiCodeBlock leaves readable plain code when highlighting fails', async () => {

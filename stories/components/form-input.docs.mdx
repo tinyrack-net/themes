@@ -1,40 +1,168 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Input } from '../../src/components/form/react.js';
+import { formControlSizes } from '../../src/components/form/contract.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as InputStories from './form-input.stories';
 
 <Meta of={InputStories} />
 
-
 # Input
-
 
 Native input wrapper for text-like, numeric, date, and time controls.
 
 ## Contract
 
-| Area | Values | Rule |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| CSS class | `tr-input` | input element | required | Use on native input elements. |
+| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Shared with `Textarea` and `Select`. |
+| Invalid attribute | `data-invalid` | `true` | unset | Mirrors `aria-invalid` when `invalid` is set. |
+| React prop | `type` | native input type | browser default | Use native browser behavior. |
+| React prop | `invalid` | `boolean` | false | Sets `aria-invalid` and `data-invalid`. |
+
+## Install
+
+| Surface | Install | Import |
 | --- | --- | --- |
-| Type | `text`, `email`, `password`, `search`, `url`, `tel`, `number`, `date`, `time` | Use the native `type` prop. |
-| Size | `sm`, `md`, `lg` | Shared with `Textarea` and `Select`. |
-| Invalid | `boolean` | Sets `aria-invalid` and `data-invalid`. |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
+| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
 
-## Preview
-
-<div className="grid gap-4">
-  <input className="tr-input" data-size="md" placeholder="rack-a-01" />
-  <input className="tr-input" data-size="md" type="email" defaultValue="ops@example.com" />
-  <input className="tr-input" data-size="md" type="date" defaultValue="2026-07-09" />
-</div>
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/form/form.css";
+```
 
 ## Usage
 
-```tsx
+<ComponentExampleTabs
+  title="Text-like inputs"
+  description="Use native input types with the shared `tr-input` visual contract."
+  preview={(
+    <div className="grid gap-3 lg:grid-cols-2">
+      <Input type="email" placeholder="ops@example.com" />
+      <Input type="date" defaultValue="2026-07-09" />
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/form/form.css';
 import { Input } from '@tinyrack/ui/components/form/react';
 
 <Input type="email" placeholder="ops@example.com" />;
-<Input type="date" defaultValue="2026-07-09" />;
-```
+<Input type="date" defaultValue="2026-07-09" />;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<input class="tr-input" data-size="md" type="email" placeholder="ops@example.com" />
+<input class="tr-input" data-size="md" type="date" value="2026-07-09" />`,
+    },
+  ]}
+/>
 
-```html
-<input class="tr-input" data-size="md" type="email" />
-```
+## Examples
+
+<ComponentExampleTabs
+  title="Type Gallery"
+  description="The wrapper preserves native browser behavior for supported input types."
+  preview={(
+    <div className="grid gap-3 lg:grid-cols-3">
+      {['text', 'email', 'password', 'search', 'url', 'tel', 'number', 'date', 'time'].map((type) => (
+        <Input
+          key={type}
+          aria-label={`Input type ${type}`}
+          defaultValue={type === 'date' ? '2026-07-09' : type === 'time' ? '03:18' : undefined}
+          placeholder={type}
+          type={type}
+        />
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{['text', 'email', 'password', 'search', 'url', 'tel', 'number', 'date', 'time'].map((type) => (
+  <Input key={type} placeholder={type} type={type} />
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<input class="tr-input" type="text" placeholder="text" />
+<input class="tr-input" type="email" placeholder="email" />
+<input class="tr-input" type="password" placeholder="password" />
+<input class="tr-input" type="date" value="2026-07-09" />
+<input class="tr-input" type="time" value="03:18" />`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="Size"
+  description="Sizes align with Field, Textarea, Select, and choice controls."
+  preview={(
+    <div className="grid gap-3">
+      {formControlSizes.map((size) => (
+        <Input key={size} size={size} placeholder={`size: ${size}`} />
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{formControlSizes.map((size) => (
+  <Input key={size} size={size} placeholder={'size: ' + size} />
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<input class="tr-input" data-size="sm" placeholder="size: sm" />
+<input class="tr-input" data-size="md" placeholder="size: md" />
+<input class="tr-input" data-size="lg" placeholder="size: lg" />`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="State"
+  description="Invalid state mirrors `aria-invalid`; disabled remains the native disabled state."
+  preview={(
+    <div className="grid gap-3 lg:grid-cols-3">
+      <Input placeholder="Normal" />
+      <Input invalid defaultValue="invalid-route" />
+      <Input disabled defaultValue="disabled" />
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<Input placeholder="Normal" />
+<Input invalid defaultValue="invalid-route" />
+<Input disabled defaultValue="disabled" />`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<input class="tr-input" placeholder="Normal" />
+<input class="tr-input" data-invalid="true" aria-invalid="true" value="invalid-route" />
+<input class="tr-input" disabled value="disabled" />`,
+    },
+  ]}
+/>
+
+## API
+
+| Prop | Values | Note |
+| --- | --- | --- |
+| `size` | `sm`, `md`, `lg` | Default `md`; sets `data-size`. |
+| `invalid` | `boolean` | Sets `aria-invalid` and `data-invalid`. |
+| `type` | native input type | Passed through to `<input>`. |
+| native input props | `InputHTMLAttributes<HTMLInputElement>` except native `size` | Passed through to `<input>`. |

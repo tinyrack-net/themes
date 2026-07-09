@@ -1,5 +1,7 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Table, TableContainer } from '../../src/components/table/react.js';
+import { tableDensities } from '../../src/components/table/contract.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as TableStories from './table.stories';
 
 <Meta of={TableStories} />
@@ -10,38 +12,58 @@ Native table structure with a compact Tinyrack visual contract.
 
 ## Contract
 
-| Area | Values | Rule |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| Container class | `tr-table-container` | div element | required for overflow | Wrap wide tables for horizontal scrolling. |
+| Table class | `tr-table` | table element | required | Keep native table semantics. |
+| Density attribute | `data-density` | `compact`, `normal`, `comfortable` | `normal` | Use `normal` for operational tables. |
+| Striped attribute | `data-striped` | `true` | unset | Opt in for dense row scanning. |
+| React prop | `striped` | `boolean` | false | Adds `data-striped="true"`. |
+| Native props | table and div attributes | native values | pass-through | Use real `thead`, `tbody`, `th`, and `td`. |
+
+## Install
+
+| Surface | Install | Import |
 | --- | --- | --- |
-| Density | `compact`, `normal`, `comfortable` | Use `normal` for operational tables. |
-| Striped | `boolean` | Disabled by default; opt in for dense row scanning. |
-| Markup | native table elements | Keep `thead`, `tbody`, `tr`, `th`, `td`, and `tfoot` semantic. |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/table/table.css` |
+| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/table/react` |
+| React MDX | `pnpm add @tinyrack/ui @mdx-js/react` | `@tinyrack/ui/mdx/react` maps markdown tables. |
+| Astro MDX | `pnpm add @tinyrack/ui astro @astrojs/mdx` | `@tinyrack/ui/mdx/astro` maps markdown tables. |
 
-## Preview
-
-<div className="mt-4">
-  <TableContainer>
-    <Table density="normal">
-      <thead>
-        <tr>
-          <th scope="col">Node</th>
-          <th scope="col">Region</th>
-          <th scope="col">Load</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>rack-a-01</td><td>Seoul</td><td>41%</td><td>Healthy</td></tr>
-        <tr><td>rack-b-03</td><td>Tokyo</td><td>58%</td><td>Review</td></tr>
-        <tr><td>rack-c-02</td><td>Singapore</td><td>29%</td><td>Healthy</td></tr>
-      </tbody>
-    </Table>
-  </TableContainer>
-</div>
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/table/table.css";
+```
 
 ## Usage
 
-```tsx
-import '@tinyrack/ui/core/core.css';
+<ComponentExampleTabs
+  title="Basic table"
+  description="Wrap native tables in `TableContainer` when columns may overflow."
+  preview={(
+    <TableContainer>
+      <Table density="normal">
+        <thead>
+          <tr>
+            <th scope="col">Node</th>
+            <th scope="col">Load</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>rack-a-01</td>
+            <td>41%</td>
+          </tr>
+        </tbody>
+      </Table>
+    </TableContainer>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/table/table.css';
 import { Table, TableContainer } from '@tinyrack/ui/components/table/react';
 
@@ -60,11 +82,12 @@ import { Table, TableContainer } from '@tinyrack/ui/components/table/react';
       </tr>
     </tbody>
   </Table>
-</TableContainer>;
-```
-
-```html
-<div class="tr-table-container">
+</TableContainer>;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-table-container">
   <table class="tr-table" data-density="normal">
     <thead>
       <tr>
@@ -79,14 +102,155 @@ import { Table, TableContainer } from '@tinyrack/ui/components/table/react';
       </tr>
     </tbody>
   </table>
-</div>
-```
+</div>`,
+    },
+  ]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  title="Density"
+  description="Density changes vertical rhythm without changing native table structure."
+  preview={(
+    <div className="grid gap-4">
+      {tableDensities.map((density) => (
+        <TableContainer key={density}>
+          <Table density={density}>
+            <thead>
+              <tr>
+                <th scope="col">Density</th>
+                <th scope="col">Node</th>
+                <th scope="col">Load</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{density}</td>
+                <td>rack-a-01</td>
+                <td>41%</td>
+              </tr>
+            </tbody>
+          </Table>
+        </TableContainer>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{tableDensities.map((density) => (
+  <TableContainer key={density}>
+    <Table density={density}>
+      <thead>
+        <tr>
+          <th scope="col">Density</th>
+          <th scope="col">Node</th>
+          <th scope="col">Load</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{density}</td>
+          <td>rack-a-01</td>
+          <td>41%</td>
+        </tr>
+      </tbody>
+    </Table>
+  </TableContainer>
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<table class="tr-table" data-density="compact">...</table>
+<table class="tr-table" data-density="normal">...</table>
+<table class="tr-table" data-density="comfortable">...</table>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="Striped Operational Table"
+  description="Use striping for dense row scanning, especially with repeated operational records."
+  preview={(
+    <TableContainer>
+      <Table density="normal" striped>
+        <thead>
+          <tr>
+            <th scope="col">Node</th>
+            <th scope="col">Region</th>
+            <th scope="col">Load</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            ['rack-a-01', 'Seoul', '41%', 'Healthy'],
+            ['rack-b-03', 'Tokyo', '58%', 'Review'],
+            ['rack-c-02', 'Singapore', '29%', 'Healthy'],
+          ].map(([node, region, load, status]) => (
+            <tr key={node}>
+              <td>{node}</td>
+              <td>{region}</td>
+              <td>{load}</td>
+              <td>{status}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </TableContainer>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<TableContainer>
+  <Table density="normal" striped>
+    <thead>
+      <tr>
+        <th scope="col">Node</th>
+        <th scope="col">Region</th>
+        <th scope="col">Load</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>rack-a-01</td><td>Seoul</td><td>41%</td><td>Healthy</td></tr>
+      <tr><td>rack-b-03</td><td>Tokyo</td><td>58%</td><td>Review</td></tr>
+    </tbody>
+  </Table>
+</TableContainer>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-table-container">
+  <table class="tr-table" data-density="normal" data-striped="true">
+    <thead>
+      <tr>
+        <th scope="col">Node</th>
+        <th scope="col">Region</th>
+        <th scope="col">Load</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>rack-a-01</td><td>Seoul</td><td>41%</td><td>Healthy</td></tr>
+      <tr><td>rack-b-03</td><td>Tokyo</td><td>58%</td><td>Review</td></tr>
+    </tbody>
+  </table>
+</div>`,
+    },
+  ]}
+/>
 
 ## API
 
 | Prop | Values | Note |
 | --- | --- | --- |
-| `density` | `compact`, `normal`, `comfortable` | Default `normal`. |
+| `density` | `compact`, `normal`, `comfortable` | Default `normal`; sets `data-density`. |
 | `striped` | `boolean` | Default `false`; adds `data-striped="true"` when enabled. |
 | `className` | `string` | Merged with `tr-table` or `tr-table-container`. |
 | native table props | `TableHTMLAttributes<HTMLTableElement>` | Passed through to `<table>`. |

@@ -1,33 +1,63 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Field,
+  FormMessage,
+  Input,
+  Label,
+} from '../../src/components/form/react.js';
+import {
+  formControlSizes,
+  formMessageVariants,
+} from '../../src/components/form/contract.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as FieldStories from './form-field.stories';
 
 <Meta of={FieldStories} />
 
-
 # Field
-
 
 Composition primitives for labels, native controls, and supporting messages.
 
 ## Contract
 
-| Component | Rule |
-| --- | --- |
-| `Field` | Sets vertical rhythm and shared `size` context for a field group. |
-| `Label` | Renders a native `label`; callers provide `htmlFor` or wrap the control. |
-| `FormMessage` | Renders neutral or error supporting text. |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| Field class | `tr-field` | `data-size` | `md` | Sets vertical rhythm for a field group. |
+| Label class | `tr-label` | native label props | none | Callers provide `htmlFor` or wrap the control. |
+| Message class | `tr-form-message` | `data-variant` | `neutral` | Use `error` for validation support text. |
+| React props | `Field.size` | `sm`, `md`, `lg` | `md` | Match the nested control size. |
+| React props | `FormMessage.variant` | `neutral`, `error` | `neutral` | Mirrors `data-variant`. |
 
-## Preview
+## Install
 
-<div className="tr-field" data-size="md">
-  <label className="tr-label" htmlFor="docs-field-rack">Rack name</label>
-  <input className="tr-input" data-size="md" id="docs-field-rack" placeholder="rack-a-01" />
-  <p className="tr-form-message" data-variant="neutral">Use a stable rack identifier.</p>
-</div>
+| Surface | Install | Import |
+| --- | --- | --- |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
+| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
+
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/form/form.css";
+```
 
 ## Usage
 
-```tsx
+<ComponentExampleTabs
+  title="Basic field"
+  description="A field groups the label, native control, and supporting message rhythm."
+  preview={(
+    <Field size="md">
+      <Label htmlFor="rack-name">Rack name</Label>
+      <Input id="rack-name" placeholder="rack-a-01" />
+      <FormMessage>Use a stable rack identifier.</FormMessage>
+    </Field>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/form/form.css';
 import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/react';
 
@@ -35,13 +65,104 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
   <Label htmlFor="rack-name">Rack name</Label>
   <Input id="rack-name" placeholder="rack-a-01" />
   <FormMessage>Use a stable rack identifier.</FormMessage>
-</Field>;
-```
+</Field>;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-field" data-size="md">
+  <label class="tr-label" for="rack-name">Rack name</label>
+  <input class="tr-input" data-size="md" id="rack-name" />
+  <p class="tr-form-message" data-variant="neutral">
+    Use a stable rack identifier.
+  </p>
+</div>`,
+    },
+  ]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  title="Size"
+  description="Field size should match the control size inside it."
+  preview={(
+    <div className="grid gap-4">
+      {formControlSizes.map((size) => (
+        <Field key={size} size={size}>
+          <Label htmlFor={`docs-field-${size}`}>Field size {size}</Label>
+          <Input id={`docs-field-${size}`} size={size} placeholder="rack-a-01" />
+          <FormMessage>Label, input, and message share {size} rhythm.</FormMessage>
+        </Field>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{formControlSizes.map((size) => (
+  <Field key={size} size={size}>
+    <Label>Field size {size}</Label>
+    <Input size={size} placeholder="rack-a-01" />
+    <FormMessage>Label, input, and message share {size} rhythm.</FormMessage>
+  </Field>
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-field" data-size="sm">...</div>
+<div class="tr-field" data-size="md">...</div>
+<div class="tr-field" data-size="lg">...</div>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="Message Variant"
+  description="Use neutral support copy until the field has an actual validation error."
+  preview={(
+    <div className="grid gap-4 lg:grid-cols-2">
+      {formMessageVariants.map((variant) => (
+        <Field key={variant}>
+          <Label htmlFor={`docs-message-${variant}`}>Message: {variant}</Label>
+          <Input id={`docs-message-${variant}`} invalid={variant === 'error'} defaultValue="rack-a-01" />
+          <FormMessage variant={variant}>
+            {variant === 'error' ? 'Rack name is already in use.' : 'Use a stable rack identifier.'}
+          </FormMessage>
+        </Field>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{formMessageVariants.map((variant) => (
+  <Field key={variant}>
+    <Label>Message: {variant}</Label>
+    <Input invalid={variant === 'error'} defaultValue="rack-a-01" />
+    <FormMessage variant={variant}>
+      {variant === 'error' ? 'Rack name is already in use.' : 'Use a stable rack identifier.'}
+    </FormMessage>
+  </Field>
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<p class="tr-form-message" data-variant="neutral">Use a stable rack identifier.</p>
+<p class="tr-form-message" data-variant="error">Rack name is already in use.</p>`,
+    },
+  ]}
+/>
 
 ## API
 
 | Prop | Values | Note |
 | --- | --- | --- |
-| `size` | `sm`, `md`, `lg` | Available on `Field`; default `md`. |
-| `variant` | `neutral`, `error` | Available on `FormMessage`; default `neutral`. |
-| `htmlFor` | `string` | Available on `Label`. |
+| `Field.size` | `sm`, `md`, `lg` | Default `md`; sets `data-size`. |
+| `Label.htmlFor` | `string` | Native label association. |
+| `FormMessage.variant` | `neutral`, `error` | Default `neutral`; sets `data-variant`. |
+| native props | div, label, paragraph attributes | Passed through to each primitive. |

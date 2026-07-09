@@ -1,53 +1,170 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Badge } from '../../src/components/badge/react.js';
+import { badgeSizes, badgeVariants } from '../../src/components/badge/contract.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as BadgeStories from './badge.stories';
 
 <Meta of={BadgeStories} />
 
 # Badge
 
-Compact status text with a small Tinyrack visual contract.
+Compact status text for operational metadata, health states, and dense labels.
 
 ## Contract
 
-| Area | Values | Rule |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| CSS class | `tr-badge` | span element | required | Use on inline status text only. |
+| Size attribute | `data-size` | `sm`, `md` | `sm` | Use `sm` for table metadata and `md` near controls. |
+| Variant attribute | `data-variant` | `neutral`, `primary`, `danger` | `neutral` | Variants describe state, not decoration. |
+| React prop | `size` | `sm`, `md` | `sm` | Mirrors `data-size`. |
+| React prop | `variant` | `neutral`, `primary`, `danger` | `neutral` | Mirrors `data-variant`. |
+| Native props | `HTMLAttributes<HTMLSpanElement>` | span props | pass-through | Preserve inline semantics. |
+
+## Install
+
+| Surface | Install | Import |
 | --- | --- | --- |
-| Size | `sm`, `md` | Use `sm` for dense status metadata. |
-| Variant | `neutral`, `primary`, `danger` | Use semantic variants for state, not decoration. |
-| Markup | `<span>` | Keep badges inline with surrounding text and controls. |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/badge/badge.css` |
+| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/badge/react` |
 
-## Preview
-
-<div className="mt-4 flex flex-wrap items-center gap-2">
-  <Badge>neutral</Badge>
-  <Badge variant="primary">healthy</Badge>
-  <Badge variant="danger">blocked</Badge>
-  <Badge size="md" variant="primary">md</Badge>
-</div>
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/badge/badge.css";
+```
 
 ## Usage
 
-```tsx
-import '@tinyrack/ui/core/core.css';
+<ComponentExampleTabs
+  title="Basic badge"
+  description="Use the React wrapper or the CSS-first class contract for compact status metadata."
+  preview={<Badge size="sm" variant="primary">Healthy</Badge>}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/badge/badge.css';
 import { Badge } from '@tinyrack/ui/components/badge/react';
 
 <Badge size="sm" variant="primary">
   Healthy
-</Badge>;
-```
-
-```html
-<span class="tr-badge" data-size="sm" data-variant="primary">
+</Badge>;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<span class="tr-badge" data-size="sm" data-variant="primary">
   Healthy
-</span>
-```
+</span>`,
+    },
+  ]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  title="Size x Variant Matrix"
+  description="Scan every supported size and variant combination in one place."
+  preview={(
+    <div className="grid gap-4">
+      {badgeSizes.map((size) => (
+        <section key={size} className="grid gap-2">
+          <h3 className="text-tinyrack-sm font-semibold leading-tinyrack-sm">
+            size: {size}
+          </h3>
+          <div className="flex flex-wrap items-center gap-2">
+            {badgeVariants.map((variant) => (
+              <Badge key={variant} size={size} variant={variant}>
+                {variant}
+              </Badge>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<div className="grid gap-4">
+  {badgeSizes.map((size) => (
+    <section key={size} className="grid gap-2">
+      <h3>size: {size}</h3>
+      <div className="flex flex-wrap items-center gap-2">
+        {badgeVariants.map((variant) => (
+          <Badge key={variant} size={size} variant={variant}>
+            {variant}
+          </Badge>
+        ))}
+      </div>
+    </section>
+  ))}
+</div>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<span class="tr-badge" data-size="sm" data-variant="neutral">neutral</span>
+<span class="tr-badge" data-size="sm" data-variant="primary">primary</span>
+<span class="tr-badge" data-size="sm" data-variant="danger">danger</span>
+<span class="tr-badge" data-size="md" data-variant="neutral">neutral</span>
+<span class="tr-badge" data-size="md" data-variant="primary">primary</span>
+<span class="tr-badge" data-size="md" data-variant="danger">danger</span>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="Operational States"
+  description="Use variants for operational state, not decoration."
+  preview={(
+    <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-2 border border-tinyrack-border p-3">
+        <span className="text-tinyrack-xs font-semibold leading-tinyrack-xs text-tinyrack-text-muted uppercase">
+          Normal
+        </span>
+        <Badge variant="neutral">queued</Badge>
+      </div>
+      <div className="grid gap-2 border border-tinyrack-border p-3">
+        <span className="text-tinyrack-xs font-semibold leading-tinyrack-xs text-tinyrack-text-muted uppercase">
+          Good
+        </span>
+        <Badge variant="primary">healthy</Badge>
+      </div>
+      <div className="grid gap-2 border border-tinyrack-border p-3">
+        <span className="text-tinyrack-xs font-semibold leading-tinyrack-xs text-tinyrack-text-muted uppercase">
+          Action
+        </span>
+        <Badge variant="danger">blocked</Badge>
+      </div>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<Badge variant="neutral">queued</Badge>
+<Badge variant="primary">healthy</Badge>
+<Badge variant="danger">blocked</Badge>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<span class="tr-badge" data-variant="neutral">queued</span>
+<span class="tr-badge" data-variant="primary">healthy</span>
+<span class="tr-badge" data-variant="danger">blocked</span>`,
+    },
+  ]}
+/>
 
 ## API
 
 | Prop | Values | Note |
 | --- | --- | --- |
-| `size` | `sm`, `md` | Default `sm`. |
-| `variant` | `neutral`, `primary`, `danger` | Default `neutral`. |
+| `size` | `sm`, `md` | Default `sm`; sets `data-size`. |
+| `variant` | `neutral`, `primary`, `danger` | Default `neutral`; sets `data-variant`. |
 | `className` | `string` | Merged with `tr-badge`. |
 | native span props | `HTMLAttributes<HTMLSpanElement>` | Passed through to `<span>`. |

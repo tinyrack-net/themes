@@ -13,6 +13,11 @@ import { CodeBlock, type CodeBlockProps } from './react.js';
 const defaultShikiTheme = 'github-dark' satisfies BundledTheme;
 
 type HighlightedLines = ThemedToken[][];
+type HighlightedCode = {
+  backgroundColor: string;
+  color: string;
+  lines: HighlightedLines;
+};
 
 export type ShikiCodeBlockProps = Omit<CodeBlockProps, 'children' | 'language'> & {
   code: string;
@@ -78,12 +83,11 @@ function renderHighlightedLines(lines: HighlightedLines) {
 export function ShikiCodeBlock({
   code,
   language,
+  style,
   theme = defaultShikiTheme,
   ...codeBlockProps
 }: ShikiCodeBlockProps) {
-  const [highlightedLines, setHighlightedLines] = useState<HighlightedLines | null>(
-    null,
-  );
+  const [highlightedCode, setHighlightedCode] = useState<HighlightedCode | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -97,11 +101,15 @@ export function ShikiCodeBlock({
         });
 
         if (!cancelled) {
-          setHighlightedLines(result.tokens);
+          setHighlightedCode({
+            backgroundColor: result.bg ?? '#24292e',
+            color: result.fg ?? '#e1e4e8',
+            lines: result.tokens,
+          });
         }
       } catch {
         if (!cancelled) {
-          setHighlightedLines(null);
+          setHighlightedCode(null);
         }
       }
     }
@@ -114,12 +122,31 @@ export function ShikiCodeBlock({
   }, [code, language, theme]);
 
   const renderedCode: ReactNode =
-    highlightedLines === null ? code : renderHighlightedLines(highlightedLines);
+    highlightedCode === null ? code : renderHighlightedLines(highlightedCode.lines);
+  const highlightedStyle =
+    highlightedCode === null
+      ? style
+      : {
+          backgroundColor: highlightedCode.backgroundColor,
+          color: highlightedCode.color,
+          ...style,
+        };
 
   return language === undefined ? (
-    <CodeBlock {...codeBlockProps}>{renderedCode}</CodeBlock>
+    <CodeBlock
+      {...codeBlockProps}
+      data-highlighted={highlightedCode === null ? undefined : 'true'}
+      style={highlightedStyle}
+    >
+      {renderedCode}
+    </CodeBlock>
   ) : (
-    <CodeBlock {...codeBlockProps} language={language}>
+    <CodeBlock
+      {...codeBlockProps}
+      data-highlighted={highlightedCode === null ? undefined : 'true'}
+      language={language}
+      style={highlightedStyle}
+    >
       {renderedCode}
     </CodeBlock>
   );

@@ -17,11 +17,16 @@ const expectedJsExports = {
     types: './dist/components/table/react.d.ts',
     import: './dist/components/table/react.js',
   },
+  './components/tabs/react': {
+    types: './dist/components/tabs/react.d.ts',
+    import: './dist/components/tabs/react.js',
+  },
 } as const;
 
 const expectedCssExports = {
   './components/button/button.css': './dist/components/button/button.css',
   './components/table/table.css': './dist/components/table/table.css',
+  './components/tabs/tabs.css': './dist/components/tabs/tabs.css',
   './core/core.css': './dist/core/core.css',
 } as const;
 
@@ -44,6 +49,9 @@ describe('package exports', () => {
       './tailwind.css',
       './react/button',
       './react/table',
+      './react/tabs',
+      './components/table/contract',
+      './components/tabs/contract',
       './mantine',
       './mantine.css',
       './daisyui',
@@ -78,8 +86,11 @@ describe('package exports', () => {
     expect(existsSync(join(repoRoot, 'src/components/button/button.css'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/table/react.tsx'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/table/table.css'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/tabs/react.tsx'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/tabs/tabs.css'))).toBe(true);
     expect(packageJson.exports).not.toHaveProperty('./components/button/contract');
     expect(packageJson.exports).not.toHaveProperty('./components/table/contract');
+    expect(packageJson.exports).not.toHaveProperty('./components/tabs/contract');
 
     expect(
       readdirSync(join(repoRoot, 'src/components/button'))
@@ -91,6 +102,14 @@ describe('package exports', () => {
     ).toEqual(['contract.ts', 'react.tsx']);
     expect(
       readdirSync(join(repoRoot, 'src/components/table'))
+        .filter(
+          (file) =>
+            !file.includes('.test.') && (file.endsWith('.ts') || file.endsWith('.tsx')),
+        )
+        .sort(),
+    ).toEqual(['contract.ts', 'react.tsx']);
+    expect(
+      readdirSync(join(repoRoot, 'src/components/tabs'))
         .filter(
           (file) =>
             !file.includes('.test.') && (file.endsWith('.ts') || file.endsWith('.tsx')),

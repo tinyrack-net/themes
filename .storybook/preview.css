@@ -2,6 +2,7 @@
 @import "../src/core/core.css";
 @import "../src/components/button/button.css";
 @import "../src/components/table/table.css";
+@import "../src/components/tabs/tabs.css";
 
 @font-face {
   font-family: "IBM Plex Sans";

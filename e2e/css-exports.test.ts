@@ -60,12 +60,24 @@ describe('CSS exports', () => {
     expect(css).not.toContain('[data-theme="tinyrack-light"]');
   });
 
+  it('provides standalone Tabs CSS without core theme CSS', () => {
+    const css = readSourceCss('components/tabs/tabs.css');
+
+    expect(css).toContain('.tr-tabs');
+    expect(css).toContain('.tr-tabs-list');
+    expect(css).toContain('.tr-tabs-trigger[aria-selected="true"]');
+    expect(css).toContain('.tr-tabs-panel[hidden]');
+    expect(css).not.toContain('@theme static');
+    expect(css).not.toContain('[data-theme="tinyrack-light"]');
+  });
+
   it('keeps source CSS tracked and split by domain', () => {
     const gitignore = readFileSync(join(process.cwd(), '.gitignore'), 'utf8');
 
     expect(gitignore).not.toContain('src/core/core.css');
     expect(gitignore).not.toContain('src/components/button/button.css');
     expect(gitignore).not.toContain('src/components/table/table.css');
+    expect(gitignore).not.toContain('src/components/tabs/tabs.css');
   });
 
   it('maps CSS package exports to copied dist css', () => {
@@ -75,6 +87,9 @@ describe('CSS exports', () => {
     );
     expect(packageJson.exports['./components/table/table.css']).toBe(
       './dist/components/table/table.css',
+    );
+    expect(packageJson.exports['./components/tabs/tabs.css']).toBe(
+      './dist/components/tabs/tabs.css',
     );
     expect(packageJson.exports).not.toHaveProperty('./tailwind.css');
     expect(packageJson.exports).not.toHaveProperty('./styles.css');

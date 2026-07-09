@@ -136,6 +136,27 @@ export function RackTable() {
 }
 ```
 
+### React Tabs
+
+```tsx
+import '@tinyrack/ui/core/core.css';
+import '@tinyrack/ui/components/tabs/tabs.css';
+import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/tabs/react';
+
+export function RackSections() {
+  return (
+    <Tabs defaultValue="overview">
+      <TabsList aria-label="Rack sections">
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="logs">Logs</TabsTrigger>
+      </TabsList>
+      <TabsPanel value="overview">Rack A is healthy.</TabsPanel>
+      <TabsPanel value="logs">03:18 backup completed.</TabsPanel>
+    </Tabs>
+  );
+}
+```
+
 ## Operational Example
 
 <div className="tr-doc-rows" data-storybook-welcome="true">
@@ -180,3 +201,5 @@ export function RackTable() {
 | Button CSS | `@tinyrack/ui/components/button/button.css` |
 | React Table | `@tinyrack/ui/components/table/react` | Owned React wrapper for the Table contract. |
 | Table CSS | `@tinyrack/ui/components/table/table.css` |
+| React Tabs | `@tinyrack/ui/components/tabs/react` | Owned React wrapper for the Tabs contract. |
+| Tabs CSS | `@tinyrack/ui/components/tabs/tabs.css` |

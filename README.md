@@ -31,6 +31,8 @@ subpaths.
 - **Independent React Button export** through `@tinyrack/ui/components/button/react`
 - **Framework-neutral Table CSS** through `@tinyrack/ui/components/table/table.css`
 - **Independent React Table export** through `@tinyrack/ui/components/table/react`
+- **Framework-neutral Tabs CSS** through `@tinyrack/ui/components/tabs/tabs.css`
+- **Independent React Tabs export** through `@tinyrack/ui/components/tabs/react`
 - **Storybook review surface** with foundations and owned component contracts
 
 ## Installation
@@ -149,6 +151,27 @@ export function RackTable() {
         </tbody>
       </Table>
     </TableContainer>
+  );
+}
+```
+
+### React Tabs
+
+```tsx
+import '@tinyrack/ui/core/core.css';
+import '@tinyrack/ui/components/tabs/tabs.css';
+import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/tabs/react';
+
+export function RackSections() {
+  return (
+    <Tabs defaultValue="overview">
+      <TabsList aria-label="Rack sections">
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="logs">Logs</TabsTrigger>
+      </TabsList>
+      <TabsPanel value="overview">Rack A is healthy.</TabsPanel>
+      <TabsPanel value="logs">03:18 backup completed.</TabsPanel>
+    </Tabs>
   );
 }
 ```

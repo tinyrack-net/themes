@@ -18,6 +18,13 @@ type DistTableModule = Record<string, unknown> & {
   TableContainer: unknown;
 };
 
+type DistTabsModule = Record<string, unknown> & {
+  Tabs: unknown;
+  TabsList: unknown;
+  TabsPanel: unknown;
+  TabsTrigger: unknown;
+};
+
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
     throw new Error(message);
@@ -106,6 +113,12 @@ const tableModule = await assertJsExport<DistTableModule>('/components/table/rea
   'Table',
   'TableContainer',
 ]);
+const tabsModule = await assertJsExport<DistTabsModule>('/components/tabs/react', [
+  'Tabs',
+  'TabsList',
+  'TabsPanel',
+  'TabsTrigger',
+]);
 
 await assertMissingExport('');
 await assertMissingExport('/tokens');
@@ -114,6 +127,7 @@ await assertMissingExport('/react/table');
 assertMissingResolvedExport('/tailwind.css');
 assert(!('Button' in coreModule), '/core export should not include React Button');
 assert(!('Table' in coreModule), '/core export should not include React Table');
+assert(!('Tabs' in coreModule), '/core export should not include React Tabs');
 assert(!('tinyrackShadows' in coreModule), '/core export should not include shadows');
 assert(
   coreModule.tinyrackSemanticColors.dark.primary === '#fafafa',
@@ -132,6 +146,14 @@ assert(
     typeof tableModule.TableContainer === 'function',
   'TableContainer export should be a React component',
 );
+assert(
+  typeof tabsModule.Tabs === 'object' || typeof tabsModule.Tabs === 'function',
+  'Tabs export should be a React component',
+);
+assert(
+  typeof tabsModule.TabsList === 'object' || typeof tabsModule.TabsList === 'function',
+  'TabsList export should be a React component',
+);
 
 assertCssExport('/core/core.css', ['@theme', '--color-tinyrack-primary']);
 assertCssExport('/components/button/button.css', [
@@ -139,5 +161,6 @@ assertCssExport('/components/button/button.css', [
   'data-appearance="solid"',
 ]);
 assertCssExport('/components/table/table.css', ['.tr-table', 'data-density="normal"']);
+assertCssExport('/components/tabs/tabs.css', ['.tr-tabs', 'aria-selected="true"']);
 
 console.log('dist package smoke test passed');

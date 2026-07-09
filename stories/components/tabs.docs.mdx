@@ -27,57 +27,57 @@ Accessible tabbed navigation for compact operational panels.
       <TabsTrigger value="logs">Logs</TabsTrigger>
     </TabsList>
     <TabsPanel value="overview">
-      <div className="tr-doc-rows">
-        <div className="tr-doc-row">
-          <span className="tr-doc-label">Status</span>
+      <div className="grid border-t border-tinyrack-border">
+        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
+          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">Status</span>
           <span>Healthy</span>
           <span>Deployments enabled and rack checks passing.</span>
         </div>
-        <div className="tr-doc-row">
-          <span className="tr-doc-label">Backup</span>
+        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
+          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">Backup</span>
           <span>Ready</span>
           <span>Last snapshot completed at 03:18 KST.</span>
         </div>
-        <div className="tr-doc-row">
-          <span className="tr-doc-label">Region</span>
+        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
+          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">Region</span>
           <span>Seoul</span>
           <span>Primary node accepting traffic.</span>
         </div>
       </div>
     </TabsPanel>
     <TabsPanel value="metrics">
-      <div className="tr-doc-rows">
-        <div className="tr-doc-row">
-          <span className="tr-doc-label">CPU</span>
+      <div className="grid border-t border-tinyrack-border">
+        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
+          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">CPU</span>
           <span>41%</span>
           <span>Sustained load across the last 15 minutes.</span>
         </div>
-        <div className="tr-doc-row">
-          <span className="tr-doc-label">Memory</span>
+        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
+          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">Memory</span>
           <span>62%</span>
           <span>No pressure warnings in the current window.</span>
         </div>
-        <div className="tr-doc-row">
-          <span className="tr-doc-label">Latency</span>
+        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
+          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">Latency</span>
           <span>48 ms</span>
           <span>p95 API latency from edge probes.</span>
         </div>
       </div>
     </TabsPanel>
     <TabsPanel value="logs">
-      <div className="tr-doc-rows">
-        <div className="tr-doc-row">
-          <span className="tr-doc-label">03:18</span>
+      <div className="grid border-t border-tinyrack-border">
+        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
+          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">03:18</span>
           <span>Backup</span>
           <span>Snapshot completed for rack-a-01.</span>
         </div>
-        <div className="tr-doc-row">
-          <span className="tr-doc-label">03:22</span>
+        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
+          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">03:22</span>
           <span>Health</span>
           <span>Probe passed with no degraded services.</span>
         </div>
-        <div className="tr-doc-row">
-          <span className="tr-doc-label">03:30</span>
+        <div className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3">
+          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">03:30</span>
           <span>Deploy</span>
           <span>Release candidate queued for review.</span>
         </div>

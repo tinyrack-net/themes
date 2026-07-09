@@ -46,10 +46,15 @@ type PanelRowsProps = {
 
 function PanelRows({ rows }: PanelRowsProps) {
   return (
-    <div className="tr-doc-rows">
+    <div className="grid border-t border-tinyrack-border">
       {rows.map(([label, value, detail]) => (
-        <div className="tr-doc-row" key={label}>
-          <span className="tr-doc-label">{label}</span>
+        <div
+          className="grid gap-1 border-b border-tinyrack-border py-2 md:grid-cols-[7rem_8rem_1fr] md:gap-3"
+          key={label}
+        >
+          <span className="text-tinyrack-xs font-extrabold leading-tinyrack-xs tracking-tinyrack-md text-tinyrack-text-muted uppercase">
+            {label}
+          </span>
           <span>{value}</span>
           <span>{detail}</span>
         </div>

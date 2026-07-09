@@ -10,6 +10,7 @@ const publicCssSourcePaths = {
   'core/core.css': 'core/core.css',
   'components/button/button.css': 'components/button/button.css',
   'components/table/table.css': 'components/table/table.css',
+  'components/tabs/tabs.css': 'components/tabs/tabs.css',
 } as const;
 
 await Promise.all(

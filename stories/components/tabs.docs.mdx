@@ -1,0 +1,79 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as TabsStories from './tabs.stories';
+
+<Meta of={TabsStories} />
+
+<div className="tr-doc-kicker">Components</div>
+
+# Tabs
+
+<div className="tr-doc-lead">
+  Accessible tabbed navigation for compact operational panels.
+</div>
+
+## Contract
+
+| Area | Values | Rule |
+| --- | --- | --- |
+| Size | `sm`, `md`, `lg` | Use `md` for normal application panels. |
+| Orientation | `horizontal`, `vertical` | Match the tab list edge, not the panel layout. |
+| Activation | `automatic`, `manual` | Use automatic when panel content is already mounted. |
+| Selection | `value`, `defaultValue` | Use exactly one selected-value mode. |
+
+## Preview
+
+<div className="tr-tabs" data-orientation="horizontal" data-size="md">
+  <div className="tr-tabs-list" role="tablist" aria-label="Rack sections">
+    <button className="tr-tabs-trigger" data-active="true" data-value="overview" aria-controls="docs-overview-panel" aria-selected="true" id="docs-overview-tab" role="tab" tabIndex={0} type="button">Overview</button>
+    <button className="tr-tabs-trigger" data-value="metrics" aria-controls="docs-metrics-panel" aria-selected="false" id="docs-metrics-tab" role="tab" tabIndex={-1} type="button">Metrics</button>
+    <button className="tr-tabs-trigger" data-value="logs" aria-controls="docs-logs-panel" aria-selected="false" id="docs-logs-tab" role="tab" tabIndex={-1} type="button">Logs</button>
+  </div>
+  <div className="tr-tabs-panel" data-active="true" id="docs-overview-panel" role="tabpanel" aria-labelledby="docs-overview-tab" tabIndex={0}>
+    Rack A is healthy with deployments enabled and backup checks passing.
+  </div>
+  <div className="tr-tabs-panel" hidden id="docs-metrics-panel" role="tabpanel" aria-labelledby="docs-metrics-tab" tabIndex={0}>
+    CPU 41%, memory 62%, and request latency holding at 48 ms p95.
+  </div>
+  <div className="tr-tabs-panel" hidden id="docs-logs-panel" role="tabpanel" aria-labelledby="docs-logs-tab" tabIndex={0}>
+    03:18 backup completed, 03:22 health probe passed, 03:30 deploy queued.
+  </div>
+</div>
+
+## Usage
+
+```tsx
+import '@tinyrack/ui/core/core.css';
+import '@tinyrack/ui/components/tabs/tabs.css';
+import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/tabs/react';
+
+<Tabs defaultValue="overview" activationMode="automatic">
+  <TabsList aria-label="Rack sections">
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="logs">Logs</TabsTrigger>
+  </TabsList>
+  <TabsPanel value="overview">Rack A is healthy.</TabsPanel>
+  <TabsPanel value="logs">03:18 backup completed.</TabsPanel>
+</Tabs>;
+```
+
+```html
+<div class="tr-tabs" data-size="md" data-orientation="horizontal">
+  <div class="tr-tabs-list" role="tablist" aria-label="Rack sections">
+    <button class="tr-tabs-trigger" role="tab" aria-selected="true" data-active="true">
+      Overview
+    </button>
+  </div>
+  <div class="tr-tabs-panel" role="tabpanel" data-active="true">Rack A is healthy.</div>
+</div>
+```
+
+## API
+
+| Prop | Values | Note |
+| --- | --- | --- |
+| `value` | `string` | Controlled selected tab. |
+| `defaultValue` | `string` | Initial selected tab for uncontrolled usage. |
+| `onValueChange` | `(value) => void` | Called after click or keyboard activation. |
+| `size` | `sm`, `md`, `lg` | Default `md`. |
+| `orientation` | `horizontal`, `vertical` | Default `horizontal`. |
+| `activationMode` | `automatic`, `manual` | Default `automatic`. |

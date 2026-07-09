@@ -1,44 +1,159 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Select } from '../../src/components/form/react.js';
+import { formControlSizes } from '../../src/components/form/contract.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as SelectStories from './form-select.stories';
 
 <Meta of={SelectStories} />
 
-
 # Select
-
 
 Native select for compact option sets, sharing text control size and state styling.
 
 ## Contract
 
-| Area | Values | Rule |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| CSS class | `tr-select` | select element | required | Use native `option` elements. |
+| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Shared with `Input` and `Textarea`. |
+| Invalid attribute | `data-invalid` | `true` | unset | Mirrors `aria-invalid` when `invalid` is set. |
+| React prop | `invalid` | `boolean` | false | Sets `aria-invalid` and `data-invalid`. |
+| Native props | select attributes | native values | pass-through | Keep browser select semantics. |
+
+## Install
+
+| Surface | Install | Import |
 | --- | --- | --- |
-| Size | `sm`, `md`, `lg` | Shares sizing tokens with `Input` and `Textarea`. |
-| Invalid | `boolean` | Sets `aria-invalid` and `data-invalid`. |
-| Options | native `option` | Keep the browser select semantics. |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
+| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
 
-## Preview
-
-<select className="tr-select" data-size="md" defaultValue="seoul" aria-label="Region">
-  <option value="seoul">Seoul</option>
-  <option value="tokyo">Tokyo</option>
-  <option value="singapore">Singapore</option>
-</select>
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/form/form.css";
+```
 
 ## Usage
 
-```tsx
+<ComponentExampleTabs
+  title="Basic select"
+  description="Use native `option` elements so browser select semantics remain intact."
+  preview={(
+    <Select defaultValue="seoul">
+      <option value="seoul">Seoul</option>
+      <option value="tokyo">Tokyo</option>
+    </Select>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/form/form.css';
 import { Select } from '@tinyrack/ui/components/form/react';
 
 <Select defaultValue="seoul">
   <option value="seoul">Seoul</option>
   <option value="tokyo">Tokyo</option>
-</Select>;
-```
-
-```html
-<select class="tr-select" data-size="md">
+</Select>;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<select class="tr-select" data-size="md">
   <option value="seoul">Seoul</option>
-</select>
-```
+  <option value="tokyo">Tokyo</option>
+</select>`,
+    },
+  ]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  title="Size"
+  description="Select shares the same control sizes as Input and Textarea."
+  preview={(
+    <div className="grid gap-3">
+      {formControlSizes.map((size) => (
+        <Select key={size} size={size} defaultValue="seoul" aria-label={`Region size ${size}`}>
+          <option value="seoul">Seoul</option>
+          <option value="tokyo">Tokyo</option>
+          <option value="singapore">Singapore</option>
+        </Select>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{formControlSizes.map((size) => (
+  <Select key={size} size={size} defaultValue="seoul" aria-label={'Region size ' + size}>
+    <option value="seoul">Seoul</option>
+    <option value="tokyo">Tokyo</option>
+  </Select>
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<select class="tr-select" data-size="sm"><option>Seoul</option></select>
+<select class="tr-select" data-size="md"><option>Seoul</option></select>
+<select class="tr-select" data-size="lg"><option>Seoul</option></select>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="State"
+  description="Invalid and disabled states should match native form behavior."
+  preview={(
+    <div className="grid gap-3 lg:grid-cols-3">
+      <Select defaultValue="seoul" aria-label="Normal region">
+        <option value="seoul">Seoul</option>
+        <option value="tokyo">Tokyo</option>
+      </Select>
+      <Select invalid defaultValue="missing" aria-label="Invalid region">
+        <option value="missing">Missing region</option>
+        <option value="seoul">Seoul</option>
+      </Select>
+      <Select disabled defaultValue="locked" aria-label="Disabled region">
+        <option value="locked">Locked</option>
+      </Select>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<Select defaultValue="seoul" aria-label="Normal region">
+  <option value="seoul">Seoul</option>
+  <option value="tokyo">Tokyo</option>
+</Select>
+<Select invalid defaultValue="missing" aria-label="Invalid region">
+  <option value="missing">Missing region</option>
+  <option value="seoul">Seoul</option>
+</Select>
+<Select disabled defaultValue="locked" aria-label="Disabled region">
+  <option value="locked">Locked</option>
+</Select>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<select class="tr-select"><option>Seoul</option></select>
+<select class="tr-select" data-invalid="true" aria-invalid="true"><option>Missing region</option></select>
+<select class="tr-select" disabled><option>Locked</option></select>`,
+    },
+  ]}
+/>
+
+## API
+
+| Prop | Values | Note |
+| --- | --- | --- |
+| `size` | `sm`, `md`, `lg` | Default `md`; sets `data-size`. |
+| `invalid` | `boolean` | Sets `aria-invalid` and `data-invalid`. |
+| `children` | native `option` elements | Keep browser select semantics. |
+| native select props | `SelectHTMLAttributes<HTMLSelectElement>` except native `size` | Passed through to `<select>`. |

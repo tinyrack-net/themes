@@ -1,43 +1,154 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Checkbox } from '../../src/components/form/react.js';
+import { formControlSizes } from '../../src/components/form/contract.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as CheckboxStories from './form-checkbox.stories';
 
 <Meta of={CheckboxStories} />
 
-
 # Checkbox
-
 
 Boolean native input with a custom visual control and preserved input semantics.
 
 ## Contract
 
-| Area | Values | Rule |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| Wrapper class | `tr-checkbox` | label element | required | Wraps the native input and visible label. |
+| Input class | `tr-checkbox-input` | native checkbox | required | The native input remains focusable. |
+| Control class | `tr-checkbox-control` | decorative span | required | Mark with `aria-hidden="true"`. |
+| Label class | `tr-checkbox-label` | span text | optional | Omitted when children are undefined. |
+| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Shared with `Radio` and `Switch`. |
+| Invalid attribute | `data-invalid` | `true` | unset | Mirrors `aria-invalid` when `invalid` is set. |
+
+## Install
+
+| Surface | Install | Import |
 | --- | --- | --- |
-| Size | `sm`, `md`, `lg` | Shares choice spacing with `Radio` and `Switch`. |
-| Invalid | `boolean` | Sets `aria-invalid` and `data-invalid`. |
-| Input | native checkbox | The native input remains focusable. |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
+| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
+| React MDX | `pnpm add @tinyrack/ui @mdx-js/react` | `@tinyrack/ui/mdx/react` maps task-list checkboxes. |
+| Astro MDX | `pnpm add @tinyrack/ui astro @astrojs/mdx` | `@tinyrack/ui/mdx/astro` maps task-list checkboxes. |
 
-## Preview
-
-<label className="tr-checkbox" data-size="md">
-  <input className="tr-checkbox-input" type="checkbox" defaultChecked />
-  <span aria-hidden="true" className="tr-checkbox-control" />
-  <span className="tr-checkbox-label">Monitoring enabled</span>
-</label>
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/form/form.css";
+```
 
 ## Usage
 
-```tsx
+<ComponentExampleTabs
+  title="Basic checkbox"
+  description="The wrapper styles a native checkbox input and keeps it focusable."
+  preview={<Checkbox defaultChecked>Monitoring enabled</Checkbox>}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/form/form.css';
 import { Checkbox } from '@tinyrack/ui/components/form/react';
 
-<Checkbox defaultChecked>Monitoring enabled</Checkbox>;
-```
-
-```html
-<label class="tr-checkbox" data-size="md">
+<Checkbox defaultChecked>Monitoring enabled</Checkbox>;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<label class="tr-checkbox" data-size="md">
   <input class="tr-checkbox-input" type="checkbox" checked />
   <span aria-hidden="true" class="tr-checkbox-control"></span>
   <span class="tr-checkbox-label">Monitoring enabled</span>
+</label>`,
+    },
+  ]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  title="Size"
+  description="Checkbox size follows the shared form control size scale."
+  preview={(
+    <div className="grid gap-3">
+      {formControlSizes.map((size) => (
+        <Checkbox key={size} size={size} defaultChecked>
+          size: {size}
+        </Checkbox>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{formControlSizes.map((size) => (
+  <Checkbox key={size} size={size} defaultChecked>
+    size: {size}
+  </Checkbox>
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<label class="tr-checkbox" data-size="sm">...</label>
+<label class="tr-checkbox" data-size="md">...</label>
+<label class="tr-checkbox" data-size="lg">...</label>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="State"
+  description="Checked, disabled, and invalid states are driven by the native input."
+  preview={(
+    <div className="grid gap-3 lg:grid-cols-3">
+      <Checkbox>Unchecked</Checkbox>
+      <Checkbox defaultChecked>Checked</Checkbox>
+      <Checkbox disabled>Disabled</Checkbox>
+      <Checkbox invalid>Invalid</Checkbox>
+      <Checkbox defaultChecked invalid>Checked invalid</Checkbox>
+      <Checkbox defaultChecked disabled>Checked disabled</Checkbox>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<Checkbox>Unchecked</Checkbox>
+<Checkbox defaultChecked>Checked</Checkbox>
+<Checkbox disabled>Disabled</Checkbox>
+<Checkbox invalid>Invalid</Checkbox>
+<Checkbox defaultChecked invalid>Checked invalid</Checkbox>
+<Checkbox defaultChecked disabled>Checked disabled</Checkbox>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<label class="tr-checkbox">
+  <input class="tr-checkbox-input" type="checkbox" />
+  <span aria-hidden="true" class="tr-checkbox-control"></span>
+  <span class="tr-checkbox-label">Unchecked</span>
 </label>
-```
+<label class="tr-checkbox" data-invalid="true">
+  <input class="tr-checkbox-input" type="checkbox" aria-invalid="true" />
+  <span aria-hidden="true" class="tr-checkbox-control"></span>
+  <span class="tr-checkbox-label">Invalid</span>
+</label>
+<label class="tr-checkbox">
+  <input class="tr-checkbox-input" type="checkbox" disabled />
+  <span aria-hidden="true" class="tr-checkbox-control"></span>
+  <span class="tr-checkbox-label">Disabled</span>
+</label>`,
+    },
+  ]}
+/>
+
+## API
+
+| Prop | Values | Note |
+| --- | --- | --- |
+| `size` | `sm`, `md`, `lg` | Default `md`; sets `data-size`. |
+| `invalid` | `boolean` | Sets `aria-invalid` on input and `data-invalid` on wrapper. |
+| `children` | `ReactNode` | Renders `tr-checkbox-label` when present. |
+| native checkbox props | `InputHTMLAttributes<HTMLInputElement>` except `children`, `size`, `type` | Passed through to the native checkbox input. |

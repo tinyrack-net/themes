@@ -1,43 +1,143 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Code } from '../../src/components/code/react.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as CodeStories from './code.stories';
 
 <Meta of={CodeStories} />
 
 # Code
 
-Inline code styled with Tinyrack tokens.
+Inline code styling for commands, paths, environment variables, and compact API names.
 
 ## Contract
 
-| Area | Element | Rule |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| CSS class | `tr-code` | code element | required | Use only for inline code, not block examples. |
+| React wrapper | `Code` | `<code>` | required for React | Merges `tr-code` with native props. |
+| Native props | `HTMLAttributes<HTMLElement>` | code props | pass-through | Keep short inline content readable. |
+
+## Install
+
+| Surface | Install | Import |
 | --- | --- | --- |
-| Inline | `<code>` | Use for tokens, props, and short commands in text. |
-| Syntax | plain text | Use `CodeBlock` for block code and syntax highlighting. |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/code/code.css` |
+| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/code/react` |
+| React MDX | `pnpm add @tinyrack/ui @mdx-js/react` | `@tinyrack/ui/mdx/react` maps markdown inline code. |
+| Astro MDX | `pnpm add @tinyrack/ui astro @astrojs/mdx` | `@tinyrack/ui/mdx/astro` maps markdown inline code. |
 
-## Preview
-
-Run `pnpm verify` before publishing.
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/code/code.css";
+```
 
 ## Usage
 
-```tsx
-import '@tinyrack/ui/core/core.css';
+<ComponentExampleTabs
+  title="Inline command"
+  description="Use inline code for commands, paths, environment variables, and compact API names."
+  preview={(
+    <p>
+      Run <Code>pnpm verify</Code> before publishing.
+    </p>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/code/code.css';
 import { Code } from '@tinyrack/ui/components/code/react';
 
 <p>
   Run <Code>pnpm verify</Code> before publishing.
-</p>;
-```
+</p>;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<p>Run <code class="tr-code">pnpm verify</code> before publishing.</p>`,
+    },
+  ]}
+/>
 
-```html
-<code class="tr-code">pnpm verify</code>
-```
+## Examples
+
+<ComponentExampleTabs
+  title="Inline Contexts"
+  description="Keep inline code short enough to scan inside prose."
+  preview={(
+    <div className="grid gap-3">
+      <p>
+        Run <Code>pnpm verify</Code> before publishing.
+      </p>
+      <p>
+        Import <Code>@tinyrack/ui/core/core.css</Code> once near the app root.
+      </p>
+      <p>
+        Set <Code>data-theme="tinyrack-dark"</Code> on a scoped container.
+      </p>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<p>
+  Run <Code>pnpm verify</Code> before publishing.
+</p>
+<p>
+  Import <Code>@tinyrack/ui/core/core.css</Code> once near the app root.
+</p>
+<p>
+  Set <Code>data-theme="tinyrack-dark"</Code> on a scoped container.
+</p>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<p>Run <code class="tr-code">pnpm verify</code> before publishing.</p>
+<p>Import <code class="tr-code">@tinyrack/ui/core/core.css</code> once near the app root.</p>
+<p>Set <code class="tr-code">data-theme="tinyrack-dark"</code> on a scoped container.</p>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="Command, Path, and Token Names"
+  description="Use the same inline treatment for commands, package paths, tokens, and class names."
+  preview={(
+    <div className="flex flex-wrap items-center gap-2">
+      <Code>pnpm test:storybook</Code>
+      <Code>stories/components</Code>
+      <Code>--tinyrack-primary</Code>
+      <Code>tr-btn</Code>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<Code>pnpm test:storybook</Code>
+<Code>stories/components</Code>
+<Code>--tinyrack-primary</Code>
+<Code>tr-btn</Code>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<code class="tr-code">pnpm test:storybook</code>
+<code class="tr-code">stories/components</code>
+<code class="tr-code">--tinyrack-primary</code>
+<code class="tr-code">tr-btn</code>`,
+    },
+  ]}
+/>
 
 ## API
 
 | Prop | Values | Note |
 | --- | --- | --- |
-| `children` | `ReactNode` | Passed through without parsing or highlighting. |
 | `className` | `string` | Merged with `tr-code`. |
 | native code props | `HTMLAttributes<HTMLElement>` | Passed through to `<code>`. |

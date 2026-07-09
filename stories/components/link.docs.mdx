@@ -1,51 +1,159 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Link } from '../../src/components/link/react.js';
+import { linkUnderlines, linkVariants } from '../../src/components/link/contract.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as LinkStories from './link.stories';
 
 <Meta of={LinkStories} />
 
-
 # Link
-
 
 Native anchor behavior with Tinyrack text-link styling.
 
 ## Contract
 
-| Area | Values | Rule |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| CSS class | `tr-link` | anchor element | required | Use on native anchor links. |
+| Variant attribute | `data-variant` | `neutral`, `primary`, `danger` | `primary` | Use `primary` for normal navigation. |
+| Underline attribute | `data-underline` | `none`, `hover`, `always` | `hover` | Preserve recognizable link affordance. |
+| React prop | `href` | native anchor href | required for navigation | Use buttons for actions. |
+| Native props | `AnchorHTMLAttributes<HTMLAnchorElement>` | anchor props | pass-through | Keep browser link behavior. |
+
+## Install
+
+| Surface | Install | Import |
 | --- | --- | --- |
-| Variant | `neutral`, `primary`, `danger` | Use `primary` for normal navigation. |
-| Underline | `none`, `hover`, `always` | Preserve recognizable link affordance. |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/link/link.css` |
+| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/link/react` |
+| React MDX | `pnpm add @tinyrack/ui @mdx-js/react` | `@tinyrack/ui/mdx/react` maps markdown links. |
+| Astro MDX | `pnpm add @tinyrack/ui astro @astrojs/mdx` | `@tinyrack/ui/mdx/astro` maps markdown links. |
 
-## Preview
-
-<div className="mt-4 flex flex-wrap items-center gap-3">
-  <a className="tr-link" data-underline="hover" data-variant="primary" href="#">Rack inventory</a>
-  <a className="tr-link" data-underline="always" data-variant="neutral" href="#">Audit log</a>
-  <a className="tr-link" data-underline="hover" data-variant="danger" href="#">Delete route</a>
-</div>
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/link/link.css";
+```
 
 ## Usage
 
-```tsx
-import '@tinyrack/ui/core/core.css';
+<ComponentExampleTabs
+  title="Basic link"
+  description="Use native anchors for navigation and keep buttons for actions."
+  preview={(
+    <Link href="/racks" variant="primary" underline="hover">
+      Rack inventory
+    </Link>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/link/link.css';
 import { Link } from '@tinyrack/ui/components/link/react';
 
 <Link href="/racks" variant="primary" underline="hover">
   Rack inventory
-</Link>;
-```
-
-```html
-<a class="tr-link" data-variant="primary" data-underline="hover" href="/racks">
+</Link>;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<a class="tr-link" data-variant="primary" data-underline="hover" href="/racks">
   Rack inventory
-</a>
-```
+</a>`,
+    },
+  ]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  title="Underline x Variant Matrix"
+  description="Underline behavior and state variant should be visible together."
+  preview={(
+    <div className="grid gap-4">
+      {linkUnderlines.map((underline) => (
+        <section key={underline} className="grid gap-2">
+          <h3 className="text-tinyrack-sm font-semibold leading-tinyrack-sm">
+            underline: {underline}
+          </h3>
+          <div className="flex flex-wrap items-center gap-4">
+            {linkVariants.map((variant) => (
+              <Link key={variant} href="#" underline={underline} variant={variant}>
+                {variant}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`{linkUnderlines.map((underline) => (
+  <section key={underline}>
+    {linkVariants.map((variant) => (
+      <Link key={variant} href="#" underline={underline} variant={variant}>
+        {variant}
+      </Link>
+    ))}
+  </section>
+))}`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<a class="tr-link" data-underline="none" data-variant="primary" href="#">primary</a>
+<a class="tr-link" data-underline="hover" data-variant="primary" href="#">primary</a>
+<a class="tr-link" data-underline="always" data-variant="primary" href="#">primary</a>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="Navigation Context"
+  description="Use variants sparingly inside operational prose."
+  preview={(
+    <div className="grid gap-2 border border-tinyrack-border p-3">
+      <p>
+        Review <Link href="#" variant="primary">rack inventory</Link>, inspect the{' '}
+        <Link href="#" variant="neutral" underline="always">audit log</Link>, or open the{' '}
+        <Link href="#" variant="danger">delete route</Link>.
+      </p>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<p>
+  Review <Link href="#" variant="primary">rack inventory</Link>, inspect the{' '}
+  <Link href="#" variant="neutral" underline="always">audit log</Link>, or open the{' '}
+  <Link href="#" variant="danger">delete route</Link>.
+</p>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<p>
+  Review <a class="tr-link" data-variant="primary" href="#">rack inventory</a>,
+  inspect the <a class="tr-link" data-variant="neutral" data-underline="always" href="#">audit log</a>,
+  or open the <a class="tr-link" data-variant="danger" href="#">delete route</a>.
+</p>`,
+    },
+  ]}
+/>
 
 ## API
 
 | Prop | Values | Note |
 | --- | --- | --- |
-| `variant` | `neutral`, `primary`, `danger` | Default `primary`. |
-| `underline` | `none`, `hover`, `always` | Default `hover`. |
+| `variant` | `neutral`, `primary`, `danger` | Default `primary`; sets `data-variant`. |
+| `underline` | `none`, `hover`, `always` | Default `hover`; sets `data-underline`. |
 | `href` | `string` | Native anchor href. |
+| `className` | `string` | Merged with `tr-link`. |
+| native anchor props | `AnchorHTMLAttributes<HTMLAnchorElement>` | Passed through to `<a>`. |

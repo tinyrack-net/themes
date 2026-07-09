@@ -1,7 +1,8 @@
 .tr-code-block {
   background-color: var(--tinyrack-surface-muted);
   border: solid var(--tinyrack-border);
-  border-width: 1px 0;
+  border-width: 1px;
+  border-radius: 0.5rem;
   box-sizing: border-box;
   color: var(--tinyrack-text);
   display: block;
@@ -11,7 +12,7 @@
   margin: 0;
   max-width: 100%;
   overflow-x: auto;
-  padding: 0.75rem 0;
+  padding: 0.75rem 1rem;
   white-space: pre;
 }
 

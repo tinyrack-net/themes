@@ -70,6 +70,47 @@ function stripMarkdownCodeFences(source: string) {
   return source.replace(/```[\s\S]*?```/g, '');
 }
 
+function stripMdxExampleSourceStrings(source: string) {
+  return source.replace(/String\.raw`[\s\S]*?`/g, '');
+}
+
+function expectSnippetsInOrder(source: string, snippets: string[]) {
+  let previousIndex = -1;
+
+  for (const snippet of snippets) {
+    const index = source.indexOf(snippet);
+
+    expect(index, `Expected to find ${snippet}`).toBeGreaterThan(previousIndex);
+    previousIndex = index;
+  }
+}
+
+const componentDocsFiles = [
+  'stories/components/badge.docs.mdx',
+  'stories/components/button.docs.mdx',
+  'stories/components/code-block.docs.mdx',
+  'stories/components/code.docs.mdx',
+  'stories/components/form-checkbox.docs.mdx',
+  'stories/components/form-field.docs.mdx',
+  'stories/components/form-input.docs.mdx',
+  'stories/components/form-radio.docs.mdx',
+  'stories/components/form-select.docs.mdx',
+  'stories/components/form-switch.docs.mdx',
+  'stories/components/form-textarea.docs.mdx',
+  'stories/components/form.docs.mdx',
+  'stories/components/link.docs.mdx',
+  'stories/components/table.docs.mdx',
+  'stories/components/tabs.docs.mdx',
+] as const;
+
+const standardComponentDocSections = [
+  '## Contract',
+  '## Install',
+  '## Usage',
+  '## Examples',
+  '## API',
+] as const;
+
 const storybookFontWeights = ['400', '500', '600', '700'] as const;
 const remoteFontUrlPattern = /fonts\.(gstatic|googleapis)\.com|https:\/\/fonts/;
 
@@ -380,7 +421,9 @@ describe('Storybook structure', () => {
       expect(source).not.toContain('tr-doc-');
 
       if (file.endsWith('.mdx')) {
-        const proseAndJsxSource = stripMarkdownCodeFences(source);
+        const proseAndJsxSource = stripMdxExampleSourceStrings(
+          stripMarkdownCodeFences(source),
+        );
 
         expect(proseAndJsxSource).not.toContain(
           "from '../../src/components/code-block/shiki-react.js'",
@@ -391,14 +434,38 @@ describe('Storybook structure', () => {
 
     const codeBlockDocs = readText('stories/components/code-block.docs.mdx');
     const codeDocs = readText('stories/components/code.docs.mdx');
+    const componentExampleTabsSource = readText(
+      'stories/shared/component-example-tabs.tsx',
+    );
     const mdxRendererDocs = readText('stories/integrations/mdx-renderer.docs.mdx');
     const radiusDocs = readText('stories/foundations/radius.mdx');
     const welcomeDocs = readText('stories/welcome.mdx');
 
-    expect(codeBlockDocs).toContain('```typescript');
-    expect(codeBlockDocs).toContain('```tsx');
-    expect(codeBlockDocs).toContain('```html');
-    expect(codeDocs).toContain('Run `pnpm verify` before publishing.');
+    expect(codeBlockDocs).toContain('<ComponentExampleTabs');
+    expect(codeBlockDocs).toContain("label: 'React Shiki block'");
+    expect(codeDocs).toContain('title="Inline Contexts"');
+    expect(componentExampleTabsSource).toContain(
+      "from '../../src/components/tabs/react.js'",
+    );
+    expect(componentExampleTabsSource).toContain(
+      "from '../../src/components/code-block/shiki-react.js'",
+    );
+    expect(componentExampleTabsSource).toContain('<ShikiCodeBlock');
+    expect(componentExampleTabsSource).toContain('function formatNestedMarkupSource');
+    expect(componentExampleTabsSource).toContain(
+      'normalizeCode(source.code, source.language)',
+    );
+    expect(componentExampleTabsSource).toContain('data-component-example=""');
+    expect(componentExampleTabsSource).toContain('data-component-example-tabs=""');
+    expect(componentExampleTabsSource).toContain('<TabsTrigger value="preview">');
+    expect(componentExampleTabsSource).toContain('Preview');
+    expect(componentExampleTabsSource).toContain("['React', 0]");
+    expect(componentExampleTabsSource).toContain("['HTML', 1]");
+    expect(componentExampleTabsSource).not.toContain('@storybook/addon-docs');
+    expect(componentExampleTabsSource).not.toContain('Canvas');
+    expect(componentExampleTabsSource).not.toContain('<Source');
+    expect(componentExampleTabsSource).not.toContain('daisyui');
+    expect(componentExampleTabsSource).not.toContain('navigator.clipboard');
     expect(mdxRendererDocs).toContain('@tinyrack/ui/mdx/react');
     expect(mdxRendererDocs).toContain('<Meta title="Integrations/MDX Renderer" />');
     expect(mdxRendererDocs).toContain('@tinyrack/ui/mdx/astro');
@@ -420,12 +487,136 @@ describe('Storybook structure', () => {
     expect(welcomeDocs).toContain('```tsx');
   });
 
+  it('keeps component docs in a daisyUI-style reference and example structure', () => {
+    const qualitySnippets: Record<(typeof componentDocsFiles)[number], string[]> = {
+      'stories/components/badge.docs.mdx': [
+        'Size x Variant Matrix',
+        'badgeSizes.map',
+        'badgeVariants.map',
+        'class="tr-badge"',
+      ],
+      'stories/components/button.docs.mdx': [
+        'Appearance x Variant Matrix',
+        'buttonAppearances.map',
+        'buttonVariants.map',
+        'States and Icon Actions',
+        'IconButton',
+      ],
+      'stories/components/code-block.docs.mdx': [
+        'React Shiki block',
+        '@tinyrack/ui/components/code-block/shiki-react',
+        'Languages',
+        'Wrapped and Unwrapped',
+      ],
+      'stories/components/code.docs.mdx': [
+        'React MDX',
+        'Astro MDX',
+        'Inline Contexts',
+        'Command, Path, and Token Names',
+      ],
+      'stories/components/form-checkbox.docs.mdx': [
+        'React MDX',
+        'Astro MDX',
+        'title="Size"',
+        'title="State"',
+        'class="tr-checkbox"',
+      ],
+      'stories/components/form-field.docs.mdx': [
+        'formMessageVariants.map',
+        'title="Size"',
+        'title="Message Variant"',
+        'class="tr-field"',
+      ],
+      'stories/components/form-input.docs.mdx': [
+        'Type Gallery',
+        "['text', 'email'",
+        'title="Size"',
+        'title="State"',
+        'class="tr-input"',
+      ],
+      'stories/components/form-radio.docs.mdx': [
+        'radioGroupOrientations.map',
+        'title="Orientation"',
+        'title="Size"',
+        'title="State"',
+        'class="tr-radio-group"',
+      ],
+      'stories/components/form-select.docs.mdx': [
+        'title="Size"',
+        'title="State"',
+        'class="tr-select"',
+      ],
+      'stories/components/form-switch.docs.mdx': [
+        'title="Size"',
+        'title="State"',
+        'class="tr-switch"',
+      ],
+      'stories/components/form-textarea.docs.mdx': [
+        'title="Size"',
+        'title="Rows and State"',
+        'class="tr-textarea"',
+      ],
+      'stories/components/form.docs.mdx': [
+        'Primitive Gallery',
+        'Size Matrix',
+        'State Matrix',
+        'React MDX',
+        'Astro MDX',
+      ],
+      'stories/components/link.docs.mdx': [
+        'Underline x Variant Matrix',
+        'linkUnderlines.map',
+        'linkVariants.map',
+        'React MDX',
+        'Astro MDX',
+      ],
+      'stories/components/table.docs.mdx': [
+        'title="Density"',
+        'tableDensities.map',
+        'Striped Operational Table',
+        'React MDX',
+        'Astro MDX',
+      ],
+      'stories/components/tabs.docs.mdx': [
+        'tabsSizes.map',
+        'tabsOrientations.map',
+        'tabsActivationModes.map',
+        'Activation Mode',
+      ],
+    };
+
+    for (const docsFile of componentDocsFiles) {
+      const docsSource = readText(docsFile);
+
+      expectSnippetsInOrder(docsSource, [...standardComponentDocSections]);
+      expect(docsSource).toContain('| Surface | API | Values | Default | Rule |');
+      expect(docsSource).toContain('CSS / HTML');
+      expect(docsSource).toContain('React');
+      expect(docsSource).toContain('@tinyrack/ui/core/core.css');
+      expect(docsSource).toContain(
+        "import { ComponentExampleTabs } from '../shared/component-example-tabs.js';",
+      );
+      expect(docsSource).toContain('<ComponentExampleTabs');
+      expect(docsSource).toContain("label: 'React'");
+      expect(docsSource).toContain("label: 'HTML'");
+
+      for (const snippet of qualitySnippets[docsFile]) {
+        expect(docsSource).toContain(snippet);
+      }
+    }
+  });
+
   it('keeps Welcome as the installation and usage entry point', () => {
     const welcomeSource = readText('stories/welcome.mdx');
     const previewSource = readText('.storybook/preview.tsx');
 
     expect(welcomeSource).toContain('Installation');
     expect(welcomeSource).toContain('Usage');
+    expect(welcomeSource).toContain('Supported Surfaces');
+    expect(welcomeSource).toContain('CSS / HTML');
+    expect(welcomeSource).toContain('React MDX renderer');
+    expect(welcomeSource).toContain('Astro MDX renderer');
+    expect(welcomeSource).toContain('Component Docs');
     expect(welcomeSource).toContain('pnpm add @tinyrack/ui');
     expect(welcomeSource).toContain('pnpm add tailwindcss');
     expect(welcomeSource).toContain('pnpm add react react-dom');
@@ -672,8 +863,11 @@ describe('Storybook structure', () => {
     expect(overviewDocsSource).toContain('<Meta title="Components/Form/Overview" />');
     expect(overviewDocsSource).toContain('@tinyrack/ui/components/form/react');
     expect(overviewDocsSource).toContain('@tinyrack/ui/components/form/form.css');
-    expect(overviewDocsSource).toContain('className="tr-input"');
-    expect(overviewDocsSource).toContain('className="tr-checkbox"');
+    expect(overviewDocsSource).toContain('Primitive Gallery');
+    expect(overviewDocsSource).toContain('Size Matrix');
+    expect(overviewDocsSource).toContain('State Matrix');
+    expect(overviewDocsSource).toContain('class="tr-input"');
+    expect(overviewDocsSource).toContain('class="tr-checkbox"');
     expect(fieldStorySource).toContain("title: 'Components/Form/Field'");
     expect(inputStorySource).toContain("title: 'Components/Form/Input'");
     expect(inputStorySource).toContain('inputTypes');

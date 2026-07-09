@@ -1,51 +1,70 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { CodeBlock } from '../../src/components/code-block/react.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import * as CodeBlockStories from './code-block.stories';
 
 <Meta of={CodeBlockStories} />
 
 # CodeBlock
 
-SSR-safe block code with optional Shiki client syntax highlighting.
+SSR-safe block code with optional client-side Shiki highlighting.
 
 ## Contract
 
-| Area | Element | Rule |
+| Surface | API | Values | Default | Rule |
+| --- | --- | --- | --- | --- |
+| CSS class | `tr-code-block` | `<pre><code>` | required | Always readable without JavaScript. |
+| Language attribute | `data-language` | `string` | unset | Shows the language label when provided. |
+| Wrap attribute | `data-wrap` | `true` | unset | Opt in only for prose-friendly snippets. |
+| React wrapper | `CodeBlock` | `children`, `language`, `wrap` | SSR-safe | Does not import Shiki. |
+| Client wrapper | `ShikiCodeBlock` | `code`, `language`, `theme`, `wrap` | `github-dark` | Requires optional `shiki` peer. |
+
+## Install
+
+| Surface | Install | Import |
 | --- | --- | --- |
-| Plain block | `<pre><code>` | Always SSR-safe and readable without JavaScript. |
-| Client highlight | `ShikiCodeBlock` | Starts as plain code, then applies Shiki tokens after hydration. |
-| Dependency | `shiki` | Optional peer required only for `shiki-react`. |
+| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/code-block/code-block.css` |
+| React plain block | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/code-block/react` |
+| React Shiki block | `pnpm add shiki` | `@tinyrack/ui/components/code-block/shiki-react` |
+| React MDX | `pnpm add @tinyrack/ui @mdx-js/react shiki` | `@tinyrack/ui/mdx/react` maps fenced code. |
+| Astro MDX | `pnpm add @tinyrack/ui astro @astrojs/mdx shiki` | `@tinyrack/ui/mdx/astro` maps fenced code. |
 
-## Preview
-
-```sh
-pnpm install
-pnpm verify
-```
-
-```typescript
-const answer = 1;
-console.log(answer);
+```css
+@import "tailwindcss";
+@import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/code-block/code-block.css";
 ```
 
 ## Usage
 
-```tsx
-import '@tinyrack/ui/core/core.css';
+<ComponentExampleTabs
+  title="Plain and highlighted blocks"
+  description="The plain block is SSR-safe; the Shiki wrapper progressively highlights on the client."
+  preview={(
+    <CodeBlock language="sh">{'pnpm install\npnpm verify'}</CodeBlock>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/code-block/code-block.css';
 import { CodeBlock } from '@tinyrack/ui/components/code-block/react';
 
-<CodeBlock language="sh">
-  pnpm install
-  pnpm verify
-</CodeBlock>;
-```
-
-```sh
-pnpm add shiki
-```
-
-```tsx
-import '@tinyrack/ui/core/core.css';
+<CodeBlock language="sh">{'pnpm install\\npnpm verify'}</CodeBlock>;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<pre class="tr-code-block" data-language="sh">
+  <code>pnpm install
+pnpm verify</code>
+</pre>`,
+    },
+    {
+      label: 'React Shiki block',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/code-block/code-block.css';
 import { ShikiCodeBlock } from '@tinyrack/ui/components/code-block/shiki-react';
 
@@ -53,14 +72,83 @@ import { ShikiCodeBlock } from '@tinyrack/ui/components/code-block/shiki-react';
   code={'const answer = 1;'}
   language="ts"
   theme="github-dark"
-/>;
+/>;`,
+    },
+  ]}
+/>
+
+```typescript
+const answer = 1;
+console.log(answer);
 ```
 
-```html
-<pre class="tr-code-block" data-language="sh">
-  <code>pnpm verify</code>
+## Examples
+
+<ComponentExampleTabs
+  title="Languages"
+  description="Set `language` when the block should expose a language label or Shiki should tokenize it."
+  preview={(
+    <div className="grid gap-4 lg:grid-cols-2">
+      <CodeBlock language="sh">{'pnpm install\npnpm verify'}</CodeBlock>
+      <CodeBlock language="typescript">{'const answer = 1;\nconsole.log(answer);'}</CodeBlock>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<CodeBlock language="sh">{'pnpm install\\npnpm verify'}</CodeBlock>
+
+<CodeBlock language="typescript">{'const answer = 1;\\nconsole.log(answer);'}</CodeBlock>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<pre class="tr-code-block" data-language="sh"><code>pnpm install
+pnpm verify</code></pre>
+
+<pre class="tr-code-block" data-language="typescript"><code>const answer = 1;
+console.log(answer);</code></pre>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  title="Wrapped and Unwrapped"
+  description="Leave long technical strings scrollable by default; opt into wrapping for prose-heavy snippets."
+  preview={(
+    <div className="grid gap-4">
+      <CodeBlock language="txt">C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx</CodeBlock>
+      <CodeBlock language="txt" wrap>
+        C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx
+      </CodeBlock>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<CodeBlock language="txt">
+  C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx
+</CodeBlock>
+
+<CodeBlock language="txt" wrap>
+  C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx
+</CodeBlock>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<pre class="tr-code-block" data-language="txt">
+  <code>C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx</code>
 </pre>
-```
+
+<pre class="tr-code-block" data-language="txt" data-wrap="true">
+  <code>C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx</code>
+</pre>`,
+    },
+  ]}
+/>
 
 ## API
 

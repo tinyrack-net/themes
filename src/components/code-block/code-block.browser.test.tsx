@@ -4,7 +4,6 @@ import type { BundledLanguage } from 'shiki/bundle/web';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { CodeBlock } from './react.js';
-import { ShikiCodeBlock } from './shiki-react.js';
 
 const themeDatasetKey = 'theme';
 
@@ -15,9 +14,7 @@ function computedStyleFor(element: Element) {
 test('CodeBlock renders a pre/code pair with scroll-safe block styling', async () => {
   document.documentElement.dataset[themeDatasetKey] = 'tinyrack-light';
   await render(
-    <CodeBlock className="custom-block" language="sh">
-      {'pnpm add @tinyrack/ui && pnpm verify'}
-    </CodeBlock>,
+    <CodeBlock className="custom-block" code="pnpm add @tinyrack/ui && pnpm verify" />,
   );
   const pre = document.querySelector<HTMLElement>('.tr-code-block');
   const nestedCode = pre?.querySelector('code');
@@ -28,7 +25,7 @@ test('CodeBlock renders a pre/code pair with scroll-safe block styling', async (
 
   await expect.element(pre).toBeVisible();
   expect(pre.tagName).toBe('PRE');
-  expect(pre.getAttribute('data-language')).toBe('sh');
+  expect(pre.getAttribute('data-language')).toBeNull();
   expect(nestedCode.tagName).toBe('CODE');
   expect(pre.className).toContain('custom-block');
 
@@ -42,7 +39,7 @@ test('CodeBlock renders a pre/code pair with scroll-safe block styling', async (
 
 test('CodeBlock supports opt-in wrapping for long text', async () => {
   document.documentElement.dataset[themeDatasetKey] = 'tinyrack-dark';
-  await render(<CodeBlock wrap>{'a'.repeat(120)}</CodeBlock>);
+  await render(<CodeBlock code={'a'.repeat(120)} wrap />);
   const pre = document.querySelector<HTMLElement>('.tr-code-block');
 
   if (pre === null) {
@@ -57,15 +54,15 @@ test('CodeBlock supports opt-in wrapping for long text', async () => {
   expect(styles.overflowWrap).toBe('anywhere');
 });
 
-test('ShikiCodeBlock progressively replaces plain code with token spans', async () => {
+test('CodeBlock progressively replaces plain code with token spans', async () => {
   document.documentElement.dataset[themeDatasetKey] = 'tinyrack-dark';
   await render(
-    <ShikiCodeBlock code="const answer = 1;" language="ts" theme="github-dark" />,
+    <CodeBlock code="const answer = 1;" language="ts" theme="github-dark" />,
   );
   const pre = document.querySelector<HTMLElement>('.tr-code-block');
 
   if (pre === null) {
-    throw new Error('Unable to find ShikiCodeBlock.');
+    throw new Error('Unable to find highlighted CodeBlock.');
   }
 
   expect(pre.textContent).toBe('const answer = 1;');
@@ -76,18 +73,15 @@ test('ShikiCodeBlock progressively replaces plain code with token spans', async 
   expect(computedStyleFor(pre).backgroundColor).toBe('rgb(36, 41, 46)');
 });
 
-test('ShikiCodeBlock leaves readable plain code when highlighting fails', async () => {
+test('CodeBlock leaves readable plain code when highlighting fails', async () => {
   document.documentElement.dataset[themeDatasetKey] = 'tinyrack-dark';
   await render(
-    <ShikiCodeBlock
-      code="still readable"
-      language={'not-a-language' as BundledLanguage}
-    />,
+    <CodeBlock code="still readable" language={'not-a-language' as BundledLanguage} />,
   );
   const pre = document.querySelector<HTMLElement>('.tr-code-block');
 
   if (pre === null) {
-    throw new Error('Unable to find fallback ShikiCodeBlock.');
+    throw new Error('Unable to find fallback CodeBlock.');
   }
 
   expect(pre.textContent).toBe('still readable');

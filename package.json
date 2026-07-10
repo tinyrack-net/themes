@@ -45,7 +45,6 @@
     "dist/components/code-block/code-block.css",
     "dist/components/code-block/contract.*",
     "dist/components/code-block/react.*",
-    "dist/components/code-block/shiki-react.*",
     "dist/components/code/code.css",
     "dist/components/code/contract.*",
     "dist/components/code/react.*",
@@ -125,7 +124,6 @@
     "astro": "^7.0.0",
     "react": ">=19.0.0",
     "react-dom": ">=19.0.0",
-    "shiki": "^4.3.1",
     "tailwindcss": ">=4.0.0"
   },
   "peerDependenciesMeta": {
@@ -139,9 +137,6 @@
       "optional": true
     },
     "react-dom": {
-      "optional": true
-    },
-    "shiki": {
       "optional": true
     }
   },
@@ -172,7 +167,6 @@
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "remark-gfm": "^4.0.1",
-    "shiki": "4.3.1",
     "storybook": "latest",
     "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3",
@@ -212,10 +206,6 @@
     "./components/code-block/react": {
       "types": "./dist/components/code-block/react.d.ts",
       "import": "./dist/components/code-block/react.js"
-    },
-    "./components/code-block/shiki-react": {
-      "types": "./dist/components/code-block/shiki-react.d.ts",
-      "import": "./dist/components/code-block/shiki-react.js"
     },
     "./components/code/react": {
       "types": "./dist/components/code/react.d.ts",
@@ -288,6 +278,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@floating-ui/dom": "1.7.6"
+    "@floating-ui/dom": "1.7.6",
+    "shiki": "4.3.1"
   }
 }

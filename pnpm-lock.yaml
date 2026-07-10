@@ -14,6 +14,9 @@ importers:
       '@floating-ui/dom':
         specifier: 1.7.6
         version: 1.7.6
+      shiki:
+        specifier: 4.3.1
+        version: 4.3.1
     devDependencies:
       '@astrojs/check':
         specifier: 0.9.9
@@ -93,9 +96,6 @@ importers:
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
-      shiki:
-        specifier: 4.3.1
-        version: 4.3.1
       storybook:
         specifier: latest
         version: 10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)

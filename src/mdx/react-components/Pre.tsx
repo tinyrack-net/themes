@@ -1,10 +1,10 @@
 import {
   type ComponentPropsWithoutRef,
-  cloneElement,
   isValidElement,
   type ReactElement,
   type ReactNode,
 } from 'react';
+import type { BundledLanguage } from 'shiki/bundle/web';
 import { CodeBlock } from '../../components/code-block/react.js';
 import { languageFromClassName, mergeClassNames } from '../shared.js';
 import { type MdxCodeElementProps, TinyrackMdxCode } from './Code.js';
@@ -30,10 +30,19 @@ export function TinyrackMdxPre({ children }: ComponentPropsWithoutRef<'pre'>) {
   const language = languageFromClassName(children.props.className);
 
   if (language === undefined) {
-    return <CodeBlock className="tr-mdx-code-block">{code}</CodeBlock>;
+    return (
+      <CodeBlock
+        className={mergeClassNames(children.props.className, 'tr-mdx-code-block')}
+        code={code}
+      />
+    );
   }
 
-  return cloneElement(children, {
-    className: mergeClassNames(children.props.className, 'tr-mdx-code-block'),
-  });
+  return (
+    <CodeBlock
+      className={mergeClassNames(children.props.className, 'tr-mdx-code-block')}
+      code={code}
+      language={language as BundledLanguage}
+    />
+  );
 }

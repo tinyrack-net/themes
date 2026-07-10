@@ -72,10 +72,6 @@ type DistDividerModule = Record<string, unknown> & {
   Divider: unknown;
 };
 
-type DistShikiCodeBlockModule = Record<string, unknown> & {
-  ShikiCodeBlock: unknown;
-};
-
 type DistTableModule = Record<string, unknown> & {
   Table: unknown;
   TableContainer: unknown;
@@ -227,10 +223,6 @@ const codeBlockModule = await assertJsExport<DistCodeBlockModule>(
 const dividerModule = await assertJsExport<DistDividerModule>(
   '/components/divider/react',
   ['Divider'],
-);
-const shikiCodeBlockModule = await assertJsExport<DistShikiCodeBlockModule>(
-  '/components/code-block/shiki-react',
-  ['ShikiCodeBlock'],
 );
 const linkModule = await assertJsExport<DistLinkModule>('/components/link/react', [
   'Link',
@@ -464,10 +456,6 @@ assert(
   typeof dividerModule.Divider === 'object' ||
     typeof dividerModule.Divider === 'function',
   'Divider export should be a React component',
-);
-assert(
-  typeof shikiCodeBlockModule.ShikiCodeBlock === 'function',
-  'ShikiCodeBlock export should be a React component',
 );
 assert(
   typeof linkModule.Link === 'object' || typeof linkModule.Link === 'function',

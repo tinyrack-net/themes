@@ -4,7 +4,7 @@ import { LinkIcon } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
 import type { BundledLanguage } from 'shiki/bundle/web';
 import { Button } from '../../src/components/button/react.js';
-import { ShikiCodeBlock } from '../../src/components/code-block/shiki-react.js';
+import { CodeBlock } from '../../src/components/code-block/react.js';
 import {
   Tabs,
   TabsList,
@@ -193,7 +193,7 @@ function ComponentExampleSourcePanel({
       >
         {copyLabel}
       </Button>
-      <ShikiCodeBlock
+      <CodeBlock
         className="m-0 max-w-full overflow-x-auto pr-32"
         code={normalizedCode}
         language={language}

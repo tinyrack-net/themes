@@ -849,7 +849,7 @@ describe('built Storybook component docs', () => {
       });
       const reactTab = install.getByRole('tab', {
         exact: true,
-        name: 'React plain block',
+        name: 'React CodeBlock',
       });
       const cssPanel = install.locator('[role="tabpanel"]:not([hidden])');
       const cssCodeBlocks = cssPanel.locator('pre code');
@@ -877,7 +877,7 @@ describe('built Storybook component docs', () => {
       }
 
       await activePanel
-        .locator('[data-install-copy="React plain block usage code"]')
+        .locator('[data-install-copy="React CodeBlock usage code"]')
         .click();
 
       const status = activePanel.locator('[data-install-copy-status="copied"]');

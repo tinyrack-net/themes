@@ -33,10 +33,6 @@ const expectedJsExports = {
     types: './dist/components/code-block/react.d.ts',
     import: './dist/components/code-block/react.js',
   },
-  './components/code-block/shiki-react': {
-    types: './dist/components/code-block/shiki-react.d.ts',
-    import: './dist/components/code-block/shiki-react.js',
-  },
   './components/code/react': {
     types: './dist/components/code/react.d.ts',
     import: './dist/components/code/react.js',
@@ -183,10 +179,11 @@ describe('package exports', () => {
     expect(packageJson.sideEffects).toContain('**/*.css');
   });
 
-  it('keeps Shiki optional for the client syntax highlighter', () => {
-    expect(packageJson.peerDependencies.shiki).toBe('^4.3.1');
-    expect(packageJson.peerDependenciesMeta?.shiki?.optional).toBe(true);
-    expect(packageJson.devDependencies.shiki).toBe('4.3.1');
+  it('ships Shiki as the CodeBlock runtime dependency', () => {
+    expect(packageJson.dependencies.shiki).toBe('4.3.1');
+    expect(packageJson.peerDependencies).not.toHaveProperty('shiki');
+    expect(packageJson.peerDependenciesMeta).not.toHaveProperty('shiki');
+    expect(packageJson.devDependencies).not.toHaveProperty('shiki');
   });
 
   it('keeps the DOM Overlay runtime independent from optional React peers', () => {
@@ -245,7 +242,7 @@ describe('package exports', () => {
     );
     expect(
       existsSync(join(repoRoot, 'src/components/code-block/shiki-react.tsx')),
-    ).toBe(true);
+    ).toBe(false);
     expect(existsSync(join(repoRoot, 'src/components/code-block/code-block.css'))).toBe(
       true,
     );
@@ -332,7 +329,7 @@ describe('package exports', () => {
             !file.includes('.test.') && (file.endsWith('.ts') || file.endsWith('.tsx')),
         )
         .sort(),
-    ).toEqual(['contract.ts', 'react.tsx', 'shiki-react.tsx']);
+    ).toEqual(['contract.ts', 'react.tsx']);
     expect(
       readdirSync(join(repoRoot, 'src/components/code'))
         .filter(

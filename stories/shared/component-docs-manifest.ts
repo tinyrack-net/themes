@@ -161,6 +161,14 @@ export const componentDocsManifest = [
     title: 'Link',
   },
   {
+    capabilities: ['responsive', 'keyboard', 'overflow'],
+    file: 'stories/components/overlay.docs.mdx',
+    id: 'overlay',
+    requiredExamples: ['overlay-modal-basic', 'overlay-placement', 'overlay-layer'],
+    storyId: 'components-overlay--docs',
+    title: 'Overlay',
+  },
+  {
     capabilities: ['responsive', 'overflow'],
     file: 'stories/components/table.docs.mdx',
     id: 'table',

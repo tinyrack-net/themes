@@ -319,34 +319,39 @@ describe('built Storybook component docs', () => {
               scenario.theme,
             );
             expect(await docs.locator('h1').allTextContents()).toEqual([entry.title]);
-            expect(await docs.locator('h2').allTextContents()).toEqual([
-              'Contract',
-              'Install',
-              'Usage',
-              'Examples',
-              'Guidance',
-              'API',
-            ]);
+            expect(
+              await docs
+                .locator('h2')
+                .evaluateAll((headings) =>
+                  headings
+                    .filter(
+                      (heading) => heading.closest('[data-component-example]') === null,
+                    )
+                    .map((heading) => heading.textContent ?? ''),
+                ),
+            ).toEqual(['Contract', 'Install', 'Usage', 'Examples', 'Guidance', 'API']);
 
             const sectionGaps = await page.evaluate(() =>
-              Array.from(
-                document.querySelectorAll<HTMLElement>('.sbdocs-content h2'),
-              ).flatMap((heading) => {
-                const nextElement = heading.nextElementSibling;
+              Array.from(document.querySelectorAll<HTMLElement>('.sbdocs-content h2'))
+                .filter(
+                  (heading) => heading.closest('[data-component-example]') === null,
+                )
+                .flatMap((heading) => {
+                  const nextElement = heading.nextElementSibling;
 
-                if (!(nextElement instanceof HTMLElement)) {
-                  return [];
-                }
+                  if (!(nextElement instanceof HTMLElement)) {
+                    return [];
+                  }
 
-                return [
-                  {
-                    gap:
-                      nextElement.getBoundingClientRect().top -
-                      heading.getBoundingClientRect().bottom,
-                    heading: heading.textContent?.trim() ?? '',
-                  },
-                ];
-              }),
+                  return [
+                    {
+                      gap:
+                        nextElement.getBoundingClientRect().top -
+                        heading.getBoundingClientRect().bottom,
+                      heading: heading.textContent?.trim() ?? '',
+                    },
+                  ];
+                }),
             );
 
             expect(sectionGaps).toHaveLength(6);
@@ -838,6 +843,50 @@ describe('built Storybook component docs', () => {
         .toBe(expectedCode);
     } catch (error) {
       await captureFailure(page, ['code-block', 'install-interaction']);
+      throw error;
+    } finally {
+      await context.close();
+    }
+  });
+
+  it('opens and dismisses native Overlay examples in built docs', async () => {
+    if (browser === undefined) {
+      throw new Error('Chromium did not start.');
+    }
+
+    const context = await browser.newContext({
+      viewport: { height: 900, width: 1440 },
+    });
+    const page = await context.newPage();
+
+    try {
+      await page.goto(docsUrl(origin, 'components-overlay--docs', 'tinyrack-dark'), {
+        waitUntil: 'domcontentloaded',
+      });
+
+      const modalPreview = page.locator(
+        '#overlay-modal-basic [data-component-example-tabs] > [role="tabpanel"]:not([hidden])',
+      );
+      await modalPreview.getByRole('button', { name: 'Open settings' }).click();
+      const modal = page.locator('dialog.tr-modal:modal');
+
+      await modal.waitFor();
+      await expect(modal.getAttribute('data-topmost')).resolves.toBe('true');
+      await page.keyboard.press('Escape');
+      await expect.poll(() => modal.count()).toBe(0);
+
+      const layerPreview = page.locator(
+        '#overlay-layer [data-component-example-tabs] > [role="tabpanel"]:not([hidden])',
+      );
+      await layerPreview.getByRole('button', { name: 'Open actions' }).click();
+      const layer = page.locator('.tr-layer:popover-open');
+
+      await layer.waitFor();
+      await expect(layer.getAttribute('data-positioned')).resolves.toBe('true');
+      await page.keyboard.press('Escape');
+      await expect.poll(() => layer.count()).toBe(0);
+    } catch (error) {
+      await captureFailure(page, ['overlay', 'native-interaction']);
       throw error;
     } finally {
       await context.close();

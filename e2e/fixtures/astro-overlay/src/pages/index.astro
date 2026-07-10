@@ -1,0 +1,108 @@
+---
+import '../styles.css';
+---
+
+<!doctype html>
+<html lang="en" data-theme="tinyrack-dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Tinyrack Astro overlay fixture</title>
+  </head>
+  <body>
+    <main>
+      <h1>Astro overlay fixture</h1>
+      <button
+        id="open-settings"
+        class="tr-btn"
+        commandfor="rack-settings"
+        command="show-modal"
+      >
+        Open settings
+      </button>
+      <button
+        id="open-actions"
+        class="tr-btn"
+        popovertarget="rack-actions"
+      >
+        Open actions
+      </button>
+      <button id="swap-fixture" class="tr-btn">Swap body</button>
+
+      <div
+        id="rack-actions"
+        class="tr-layer"
+        data-tr-overlay="layer"
+        data-placement="bottom-start"
+        popover="manual"
+      >
+        Layer content
+        <button data-tr-overlay-close>Close actions</button>
+      </div>
+
+      <dialog
+        id="rack-settings"
+        class="tr-modal"
+        data-tr-overlay="modal"
+        data-placement="middle"
+        data-close-on-escape="true"
+        data-close-on-backdrop="true"
+        closedby="any"
+        aria-labelledby="rack-settings-title"
+      >
+        <div class="tr-modal-box" data-size="md">
+          <header class="tr-modal-header">
+            <h2 id="rack-settings-title" class="tr-modal-title">Rack settings</h2>
+            <button commandfor="rack-settings" command="close">Close</button>
+          </header>
+          <p class="tr-modal-description">Astro renders this without React.</p>
+          <div class="tr-modal-body">Modal content</div>
+          <footer class="tr-modal-action">Native dialog actions</footer>
+        </div>
+        <form method="dialog" class="tr-modal-backdrop">
+          <button aria-label="Close settings">close</button>
+        </form>
+      </dialog>
+    </main>
+  </body>
+</html>
+
+<script>
+  import { createOverlayManager } from '@tinyrack/ui/components/overlay/dom';
+
+  createOverlayManager(document);
+
+  document.querySelector('#swap-fixture')?.addEventListener('click', () => {
+    const nextBody = document.createElement('body');
+    nextBody.innerHTML = `
+      <main>
+        <h1>Swapped Astro body</h1>
+        <button
+          id="open-swapped"
+          class="tr-btn"
+          commandfor="swapped-modal"
+          command="show-modal"
+        >
+          Open swapped modal
+        </button>
+        <dialog
+          id="swapped-modal"
+          class="tr-modal"
+          data-tr-overlay="modal"
+          data-placement="end"
+          data-close-on-escape="true"
+          data-close-on-backdrop="true"
+          closedby="any"
+          aria-labelledby="swapped-modal-title"
+        >
+          <div class="tr-modal-box" data-size="sm">
+            <h2 id="swapped-modal-title" class="tr-modal-title">Swapped modal</h2>
+          </div>
+          <form method="dialog" class="tr-modal-backdrop">
+            <button aria-label="Close swapped modal">close</button>
+          </form>
+        </dialog>
+      </main>`;
+    document.body.replaceWith(nextBody);
+  });
+</script>

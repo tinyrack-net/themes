@@ -37,6 +37,9 @@ subpaths.
 - **Independent React Table export** through `@tinyrack/ui/components/table/react`
 - **Framework-neutral Tabs CSS** through `@tinyrack/ui/components/tabs/tabs.css`
 - **Independent React Tabs export** through `@tinyrack/ui/components/tabs/react`
+- **Native dialog and popover CSS** through `@tinyrack/ui/components/overlay/overlay.css`
+- **Framework-neutral Overlay manager** through `@tinyrack/ui/components/overlay/dom`
+- **Optional React Modal and Layer compounds** through `@tinyrack/ui/components/overlay/react`
 - **Storybook review surface** with foundations and owned component contracts
 
 ## Installation
@@ -217,6 +220,43 @@ export function RackSections() {
   );
 }
 ```
+
+### Astro / HTML Overlay
+
+```astro
+---
+import '@tinyrack/ui/core/core.css';
+import '@tinyrack/ui/components/overlay/overlay.css';
+---
+
+<button commandfor="rack-settings" command="show-modal">Open settings</button>
+<dialog
+  id="rack-settings"
+  class="tr-modal"
+  data-tr-overlay="modal"
+  data-placement="middle"
+  data-close-on-escape="true"
+  data-close-on-backdrop="true"
+  closedby="any"
+  aria-labelledby="rack-settings-title"
+>
+  <div class="tr-modal-box" data-size="md">
+    <h2 id="rack-settings-title" class="tr-modal-title">Rack settings</h2>
+  </div>
+  <form method="dialog" class="tr-modal-backdrop">
+    <button aria-label="Close settings">close</button>
+  </form>
+</dialog>
+
+<script>
+  import { createOverlayManager } from '@tinyrack/ui/components/overlay/dom';
+
+  createOverlayManager(document);
+</script>
+```
+
+The DOM export does not import React. React and React DOM are optional peers and
+are only required when importing `@tinyrack/ui/components/overlay/react`.
 
 ## Storybook
 

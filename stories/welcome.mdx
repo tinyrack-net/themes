@@ -55,18 +55,18 @@ Choose the surface your app actually renders. Every path starts with `@tinyrack/
     },
     {
       label: 'React MDX',
-      install: 'pnpm add @tinyrack/ui react react-dom @mdx-js/react shiki',
+      install: 'pnpm add @tinyrack/ui react react-dom @mdx-js/react',
       imports: [
         "import '@tinyrack/ui/core/core.css';",
         "import '@tinyrack/ui/mdx/mdx.css';",
         "import { MDXProvider } from '@mdx-js/react';",
         "import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';",
       ],
-      note: 'Use the React component map for Markdown content and add Shiki only when highlighted code is required.',
+      note: 'Use the React component map for Markdown content; CodeBlock includes Shiki highlighting with a plain fallback.',
     },
     {
       label: 'Astro MDX',
-      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx shiki',
+      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx',
       language: 'astro',
       imports: [
         '---',
@@ -219,7 +219,6 @@ Tinyrack CSS and React entry points for the components rendered by the page.
 | Card | `@tinyrack/ui/components/card/react` | `@tinyrack/ui/components/card/card.css` |
 | Code | `@tinyrack/ui/components/code/react` | `@tinyrack/ui/components/code/code.css` |
 | CodeBlock | `@tinyrack/ui/components/code-block/react` | `@tinyrack/ui/components/code-block/code-block.css` |
-| Shiki CodeBlock | `@tinyrack/ui/components/code-block/shiki-react` | `@tinyrack/ui/components/code-block/code-block.css` |
 | Divider | `@tinyrack/ui/components/divider/react` | `@tinyrack/ui/components/divider/divider.css` |
 | Progress | `@tinyrack/ui/components/progress/react` | `@tinyrack/ui/components/progress/progress.css` |
 | Skeleton | `@tinyrack/ui/components/skeleton/react` | `@tinyrack/ui/components/skeleton/skeleton.css` |

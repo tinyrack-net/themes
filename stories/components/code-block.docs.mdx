@@ -10,15 +10,16 @@ import * as CodeBlockStories from './code-block.stories';
 
 # CodeBlock
 
-SSR-safe block code with optional client-side Shiki highlighting.
+SSR-safe block code with client-side Shiki highlighting and a readable plain-text fallback.
 
 ## Contract
 
 | Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| Component | `tr-code-block` on `<pre><code>` | `<CodeBlock>` | Required base surface; SSR-safe | Keep code readable without JavaScript or syntax highlighting. |
-| Component | Base class plus generated token spans | `<ShikiCodeBlock>` | Client-highlighted; theme defaults to `github-dark` | Add the optional `shiki` peer only when token highlighting is valuable. |
-| Behavior | `data-language` | `language` | Any string for CodeBlock; bundled language for ShikiCodeBlock; default unset | Provide a language when the label or tokenization helps readers. |
+| Component | `tr-code-block` on `<pre><code>` | `<CodeBlock>` | Shiki-backed block surface; SSR-safe | Keep code readable before hydration and when highlighting is unavailable. |
+| Behavior | Generated token spans | `code` | `string` source text | Pass the exact copyable source string. |
+| Behavior | `data-language` | `language` | Shiki bundled language; default unset | Provide a language when syntax coloring is useful. |
+| Behavior | `data-highlighted="true"` | `theme` | Bundled Shiki theme; default `github-dark` | Use a theme that matches the surrounding product surface. |
 | Behavior | `data-wrap="true"` | `wrap` | `boolean`; default `false` | Leave commands and source scrollable; wrap prose-like output deliberately. |
 | Native | Native `<pre>` attributes | `HTMLAttributes<HTMLPreElement>` | Passed through | Preserve whitespace and copyable source text. |
 
@@ -36,34 +37,28 @@ SSR-safe block code with optional client-side Shiki highlighting.
       ],
     },
     {
-      label: 'React plain block',
+      label: 'React CodeBlock',
       install: 'pnpm add @tinyrack/ui react react-dom',
       imports: [
         "import { CodeBlock } from '@tinyrack/ui/components/code-block/react';",
       ],
-    },
-    {
-      label: 'React Shiki block',
-      install: 'pnpm add shiki',
-      imports: [
-        "import { ShikiCodeBlock } from '@tinyrack/ui/components/code-block/shiki-react';",
-      ],
+      note: 'Shiki is installed transitively by @tinyrack/ui.',
     },
     {
       label: 'React MDX',
-      install: 'pnpm add @tinyrack/ui @mdx-js/react shiki',
+      install: 'pnpm add @tinyrack/ui @mdx-js/react',
       imports: [
         "import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';",
       ],
-      note: 'Maps fenced code.',
+      note: 'Maps fenced code to the same CodeBlock contract.',
     },
     {
       label: 'Astro MDX',
-      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx shiki',
+      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx',
       imports: [
         "import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';",
       ],
-      note: 'Maps fenced code.',
+      note: 'Maps fenced code and highlights it server-side.',
     },
   ]}
 />
@@ -72,11 +67,11 @@ SSR-safe block code with optional client-side Shiki highlighting.
 
 <ComponentExampleTabs
   id="code-block-basic"
-  title="Plain block and Shiki upgrade"
-  description="The preview is the SSR-safe base rendering; open the React Shiki tab for the optional client-highlighted equivalent."
+  title="Highlighted block with plain fallback"
+  description="CodeBlock renders readable source during SSR, then applies Shiki tokens in the browser when the language is supported."
   previewLayout="stretch"
   preview={(
-    <CodeBlock language="sh">{'pnpm install\npnpm verify'}</CodeBlock>
+    <CodeBlock code={'pnpm install\npnpm verify'} language="sh" />
   )}
   sources={[
     {
@@ -86,7 +81,11 @@ SSR-safe block code with optional client-side Shiki highlighting.
 import '@tinyrack/ui/components/code-block/code-block.css';
 import { CodeBlock } from '@tinyrack/ui/components/code-block/react';
 
-<CodeBlock language="sh">{'pnpm install\\npnpm verify'}</CodeBlock>;`,
+<CodeBlock
+  code={'pnpm install\npnpm verify'}
+  language="sh"
+  theme="github-dark"
+/>;`,
     },
     {
       label: 'HTML',
@@ -96,19 +95,6 @@ import { CodeBlock } from '@tinyrack/ui/components/code-block/react';
 pnpm verify</code>
 </pre>`,
     },
-    {
-      label: 'React Shiki block',
-      language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/code-block/code-block.css';
-import { ShikiCodeBlock } from '@tinyrack/ui/components/code-block/shiki-react';
-
-<ShikiCodeBlock
-  code={'pnpm install\npnpm verify'}
-  language="sh"
-  theme="github-dark"
-/>;`,
-    },
   ]}
 />
 
@@ -117,21 +103,27 @@ import { ShikiCodeBlock } from '@tinyrack/ui/components/code-block/shiki-react';
 <ComponentExampleTabs
   id="code-block-languages"
   title="Languages"
-  description="Set `language` when the block should expose a language label or Shiki should tokenize it."
+  description="Set `language` to let Shiki tokenize the source. Missing or unsupported languages keep the same block readable as plain text."
   previewLayout="stretch"
   preview={(
     <div className="grid gap-4 lg:grid-cols-2">
-      <CodeBlock language="sh">{'pnpm install\npnpm verify'}</CodeBlock>
-      <CodeBlock language="typescript">{'const answer = 1;\nconsole.log(answer);'}</CodeBlock>
+      <CodeBlock code={'pnpm install\npnpm verify'} language="sh" />
+      <CodeBlock code={'const answer = 1;\nconsole.log(answer);'} language="typescript" />
     </div>
   )}
   sources={[
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<CodeBlock language="sh">{'pnpm install\\npnpm verify'}</CodeBlock>
+      code: String.raw`<CodeBlock
+  code={'pnpm install\npnpm verify'}
+  language="sh"
+/>;
 
-<CodeBlock language="typescript">{'const answer = 1;\\nconsole.log(answer);'}</CodeBlock>`,
+<CodeBlock
+  code={'const answer = 1;\nconsole.log(answer);'}
+  language="typescript"
+/>;`,
     },
     {
       label: 'HTML',
@@ -152,23 +144,31 @@ console.log(answer);</code></pre>`,
   previewLayout="stretch"
   preview={(
     <div className="grid gap-4">
-      <CodeBlock language="txt">/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</CodeBlock>
-      <CodeBlock language="txt" wrap>
-        /srv/tinyrack/config/inventory/garage-switch-02.production.yaml
-      </CodeBlock>
+      <CodeBlock
+        code="/srv/tinyrack/config/inventory/garage-switch-02.production.yaml"
+        language="txt"
+      />
+      <CodeBlock
+        code="/srv/tinyrack/config/inventory/garage-switch-02.production.yaml"
+        language="txt"
+        wrap
+      />
     </div>
   )}
   sources={[
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<CodeBlock language="txt">
-  /srv/tinyrack/config/inventory/garage-switch-02.production.yaml
-</CodeBlock>
+      code: String.raw`<CodeBlock
+  code="/srv/tinyrack/config/inventory/garage-switch-02.production.yaml"
+  language="txt"
+/>;
 
-<CodeBlock language="txt" wrap>
-  /srv/tinyrack/config/inventory/garage-switch-02.production.yaml
-</CodeBlock>`,
+<CodeBlock
+  code="/srv/tinyrack/config/inventory/garage-switch-02.production.yaml"
+  language="txt"
+  wrap
+/>;`,
     },
     {
       label: 'HTML',
@@ -189,7 +189,7 @@ console.log(answer);</code></pre>`,
 <ComponentGuidance
   whenToUse={[
     'Present multiline commands, configuration, logs, or source that readers may copy.',
-    'Use ShikiCodeBlock when language-aware highlighting materially improves a longer example.',
+    'Pass a supported language when syntax highlighting improves comprehension.',
   ]}
   avoid={[
     'Do not use a block for a short literal embedded in prose; use Code instead.',
@@ -205,9 +205,8 @@ console.log(answer);</code></pre>`,
 
 | Prop | Values | Note |
 | --- | --- | --- |
-| `children` | `ReactNode` | Plain `CodeBlock` content. |
-| `code` | `string` | `ShikiCodeBlock` source string. |
-| `language` | `string` or Shiki bundled language | Sets `data-language`; Shiki uses it for tokenization. |
+| `code` | `string` | Source text to render and highlight. |
+| `language` | Shiki bundled language | Sets `data-language`; omitted languages remain plain text. |
 | `theme` | Shiki bundled theme | Default `github-dark`. |
 | `wrap` | `boolean` | Adds `data-wrap="true"`. |
 | `className` | `string` | Merged with `tr-code-block`. |

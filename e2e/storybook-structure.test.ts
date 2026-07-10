@@ -203,7 +203,7 @@ describe('Storybook structure', () => {
     expect(mdxComponentsSource).toContain('./react-components/Code.js');
     expect(mdxComponentsSource).toContain('./react-components/Input.js');
     expect(mdxComponentsSource).toContain('./react-components/Table.js');
-    expect(reactMdxComponentsSource).toContain('ShikiCodeBlock');
+    expect(reactMdxComponentsSource).toContain('CodeBlock');
     expect(reactMdxComponentsSource).toContain('Code');
     expect(reactMdxComponentsSource).toContain('CodeBlock');
     expect(reactMdxComponentsSource).toContain('Link');
@@ -430,15 +430,15 @@ describe('Storybook structure', () => {
     const welcomeDocs = readText('stories/welcome.mdx');
 
     expect(codeBlockDocs).toContain('<ComponentExampleTabs');
-    expect(codeBlockDocs).toContain("label: 'React Shiki block'");
+    expect(codeBlockDocs).toContain('title="Highlighted block with plain fallback"');
     expect(codeDocs).toContain('title="Inline Contexts"');
     expect(componentExampleTabsSource).toContain(
       "from '../../src/components/tabs/react.js'",
     );
     expect(componentExampleTabsSource).toContain(
-      "from '../../src/components/code-block/shiki-react.js'",
+      "from '../../src/components/code-block/react.js'",
     );
-    expect(componentExampleTabsSource).toContain('<ShikiCodeBlock');
+    expect(componentExampleTabsSource).toContain('<CodeBlock');
     expect(componentExampleTabsSource).toContain('function formatNestedMarkupSource');
     expect(componentExampleTabsSource).toContain(
       'normalizeCode(source.code, source.language)',
@@ -464,7 +464,7 @@ describe('Storybook structure', () => {
     expect(componentInstallSource).toContain('data-component-install=""');
     expect(componentInstallSource).toContain('Installation options');
     expect(componentInstallSource).toContain('Installation target');
-    expect(componentInstallSource).toContain('ShikiCodeBlock');
+    expect(componentInstallSource).toContain('CodeBlock');
     expect(componentInstallSource).toContain('language="shellscript"');
     expect(componentInstallSource).toContain('language?: BundledLanguage;');
     expect(componentInstallSource).toContain('surface.language');
@@ -538,8 +538,8 @@ describe('Storybook structure', () => {
         'class="tr-card"',
       ],
       'stories/components/code-block.docs.mdx': [
-        'React Shiki block',
-        '@tinyrack/ui/components/code-block/shiki-react',
+        'Highlighted block with plain fallback',
+        '@tinyrack/ui/components/code-block/react',
         'Languages',
         'Wrapped and Unwrapped',
       ],
@@ -760,7 +760,7 @@ describe('Storybook structure', () => {
     expect(welcomeSource).toContain(
       'pnpm add @tinyrack/ui tailwindcss react react-dom',
     );
-    expect(welcomeSource).toContain('pnpm add @tinyrack/ui astro @astrojs/mdx shiki');
+    expect(welcomeSource).toContain('pnpm add @tinyrack/ui astro @astrojs/mdx');
     expect(welcomeSource).toContain('@tinyrack/ui/components/badge/react');
     expect(welcomeSource).toContain('@tinyrack/ui/components/badge/badge.css');
     expect(welcomeSource).toContain('@tinyrack/ui/components/alert/react');
@@ -768,7 +768,6 @@ describe('Storybook structure', () => {
     expect(welcomeSource).toContain('@tinyrack/ui/components/avatar/react');
     expect(welcomeSource).toContain('@tinyrack/ui/components/avatar/avatar.css');
     expect(welcomeSource).toContain('@tinyrack/ui/components/code-block/react');
-    expect(welcomeSource).toContain('@tinyrack/ui/components/code-block/shiki-react');
     expect(welcomeSource).toContain(
       '@tinyrack/ui/components/code-block/code-block.css',
     );
@@ -1086,19 +1085,18 @@ describe('Storybook structure', () => {
     expect(storySource).toContain('ComponentStoryProps');
     expect(storySource).toContain('codeBlockLanguages');
     expect(storySource).toContain('codeBlockThemes');
-    expect(storySource).toContain('highlighted');
     expect(storySource).toContain('wrap');
     expect(storySource).toContain('args:');
     expect(storySource).toContain('argTypes:');
-    expect(storySource).toContain('ShikiCodeBlock');
+    expect(storySource).not.toContain('ShikiCodeBlock');
     expect(storySource).not.toContain('function CodeBlockDocsPage');
     expect(storySource).not.toContain('page: CodeBlockDocsPage');
     expect(storySource).not.toContain('@mantine/core');
     expect(storySource).not.toContain('daisyui');
     expect(docsSource).toContain('@tinyrack/ui/components/code-block/react');
-    expect(docsSource).toContain('@tinyrack/ui/components/code-block/shiki-react');
     expect(docsSource).toContain('@tinyrack/ui/components/code-block/code-block.css');
-    expect(docsSource).toContain('pnpm add shiki');
+    expect(docsSource).not.toContain('@tinyrack/ui/components/code-block/shiki-react');
+    expect(docsSource).not.toContain('pnpm add shiki');
     expect(docsSource).toContain('class="tr-code-block"');
   });
 

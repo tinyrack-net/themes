@@ -14,11 +14,6 @@ describe('CodeBlock contract source boundaries', () => {
       join(repoRoot, 'src/components/code-block/react.tsx'),
       'utf8',
     );
-    const shikiSource = readFileSync(
-      join(repoRoot, 'src/components/code-block/shiki-react.tsx'),
-      'utf8',
-    );
-
     expect(contractSource).toContain(
       "export const codeBlockClassName = 'tr-code-block'",
     );
@@ -26,12 +21,11 @@ describe('CodeBlock contract source boundaries', () => {
     expect(contractSource).not.toContain('var(--');
     expect(contractSource).not.toContain('--tinyrack-');
     expect(reactSource).toContain("from './contract.js';");
-    expect(reactSource).not.toContain('shiki');
+    expect(reactSource).toContain("from 'shiki/bundle/web';");
     expect(reactSource).not.toContain('window');
     expect(reactSource).not.toContain('document');
-    expect(reactSource).not.toContain('useEffect');
-    expect(shikiSource).toContain("'use client';");
-    expect(shikiSource).toContain("await import('shiki/bundle/web')");
-    expect(shikiSource).not.toContain('dangerouslySetInnerHTML');
+    expect(reactSource).toContain('useEffect');
+    expect(reactSource).toContain("await import('shiki/bundle/web')");
+    expect(reactSource).not.toContain('dangerouslySetInnerHTML');
   });
 });

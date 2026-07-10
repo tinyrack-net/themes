@@ -75,6 +75,17 @@ type DistTabsModule = Record<string, unknown> & {
   TabsTrigger: unknown;
 };
 
+type DistOverlayDomModule = Record<string, unknown> & {
+  createOverlayManager: unknown;
+};
+
+type DistOverlayReactModule = Record<string, unknown> & {
+  Layer: unknown;
+  LayerContent: unknown;
+  Modal: unknown;
+  ModalContent: unknown;
+};
+
 type DistMdxReactModule = Record<string, unknown> & {
   createTinyrackMdxComponents: unknown;
   tinyrackMdxComponents: unknown;
@@ -233,6 +244,14 @@ const tabsModule = await assertJsExport<DistTabsModule>('/components/tabs/react'
   'TabsPanel',
   'TabsTrigger',
 ]);
+const overlayDomModule = await assertJsExport<DistOverlayDomModule>(
+  '/components/overlay/dom',
+  ['createOverlayManager'],
+);
+const overlayReactModule = await assertJsExport<DistOverlayReactModule>(
+  '/components/overlay/react',
+  ['Layer', 'LayerContent', 'Modal', 'ModalContent'],
+);
 const mdxReactModule = await assertJsExport<DistMdxReactModule>('/mdx/react', [
   'createTinyrackMdxComponents',
   'tinyrackMdxComponents',
@@ -454,6 +473,14 @@ assert(
   'TabsList export should be a React component',
 );
 assert(
+  typeof overlayDomModule.createOverlayManager === 'function',
+  'Overlay DOM export should include createOverlayManager',
+);
+assert(
+  typeof overlayReactModule.Modal === 'function',
+  'Overlay React export should include Modal',
+);
+assert(
   typeof mdxReactModule.createTinyrackMdxComponents === 'function',
   'MDX React export should include a component map factory',
 );
@@ -484,6 +511,11 @@ assertCssExport('/components/link/link.css', ['.tr-link', 'data-underline="hover
 assertCssExport('/components/progress/progress.css', [
   '.tr-progress',
   'data-size="lg"',
+]);
+assertCssExport('/components/overlay/overlay.css', [
+  '.tr-modal',
+  '.tr-modal-box',
+  '.tr-layer:popover-open',
 ]);
 assertCssExport('/components/form/form.css', ['.tr-field', '.tr-switch']);
 assertCssExport('/components/skeleton/skeleton.css', [

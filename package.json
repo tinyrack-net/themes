@@ -67,6 +67,10 @@
     "dist/components/skeleton/contract.*",
     "dist/components/skeleton/react.*",
     "dist/components/skeleton/skeleton.css",
+    "dist/components/overlay/contract.*",
+    "dist/components/overlay/dom.*",
+    "dist/components/overlay/overlay.css",
+    "dist/components/overlay/react.*",
     "dist/components/table/table.css",
     "dist/components/table/contract.*",
     "dist/components/table/react.*",
@@ -96,13 +100,14 @@
     "check:types": "tsc -p tsconfig.json --noEmit && pnpm check:astro && pnpm check:tests",
     "check:tests": "tsc -p tsconfig.test.json --noEmit",
     "check:scripts": "tsc -p tsconfig.scripts.json",
-    "verify": "pnpm biome && pnpm check:types && pnpm check:scripts && pnpm check:css && pnpm test && pnpm check:e2e && pnpm build && pnpm test:dist",
+    "verify": "pnpm biome && pnpm check:types && pnpm check:scripts && pnpm check:css && pnpm test && pnpm check:e2e && pnpm build && pnpm test:astro-overlay && pnpm test:dist",
     "verify:release": "pnpm verify && pnpm test:storybook",
     "test": "pnpm test:unit && pnpm test:component",
     "test:unit": "vitest run --project unit",
     "test:component": "vitest run --project browser",
     "test:coverage": "vitest run --project unit --project browser --coverage",
     "test:dist": "node e2e/dist-package-smoke.ts",
+    "test:astro-overlay": "astro build --root . --config astro.overlay.config.mjs && node e2e/astro-overlay-smoke.ts",
     "storybook": "storybook dev -p 6006 --host 127.0.0.1 --no-open",
     "storybook:build": "storybook build",
     "storybook:audit": "vitest run --project storybook-docs",
@@ -128,6 +133,12 @@
       "optional": true
     },
     "astro": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
       "optional": true
     },
     "shiki": {
@@ -230,6 +241,14 @@
       "types": "./dist/components/skeleton/react.d.ts",
       "import": "./dist/components/skeleton/react.js"
     },
+    "./components/overlay/dom": {
+      "types": "./dist/components/overlay/dom.d.ts",
+      "import": "./dist/components/overlay/dom.js"
+    },
+    "./components/overlay/react": {
+      "types": "./dist/components/overlay/react.d.ts",
+      "import": "./dist/components/overlay/react.js"
+    },
     "./components/table/react": {
       "types": "./dist/components/table/react.d.ts",
       "import": "./dist/components/table/react.js"
@@ -254,6 +273,7 @@
     "./components/link/link.css": "./dist/components/link/link.css",
     "./components/progress/progress.css": "./dist/components/progress/progress.css",
     "./components/skeleton/skeleton.css": "./dist/components/skeleton/skeleton.css",
+    "./components/overlay/overlay.css": "./dist/components/overlay/overlay.css",
     "./mdx/mdx.css": "./dist/mdx/mdx.css",
     "./components/table/table.css": "./dist/components/table/table.css",
     "./components/tabs/react": {
@@ -266,5 +286,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "1.7.6"
   }
 }

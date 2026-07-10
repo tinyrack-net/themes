@@ -20,6 +20,7 @@ const publicAssetSourcePaths = {
   'components/link/link.css': 'components/link/link.css',
   'components/progress/progress.css': 'components/progress/progress.css',
   'components/skeleton/skeleton.css': 'components/skeleton/skeleton.css',
+  'components/overlay/overlay.css': 'components/overlay/overlay.css',
   'components/table/table.css': 'components/table/table.css',
   'components/tabs/tabs.css': 'components/tabs/tabs.css',
   'mdx/astro-components/Anchor.astro': 'mdx/astro-components/Anchor.astro',

@@ -21,6 +21,7 @@ const allowedPreviewImports = [
   '@import "../src/components/divider/divider.css";',
   '@import "../src/components/form/form.css";',
   '@import "../src/components/link/link.css";',
+  '@import "../src/components/overlay/overlay.css";',
   '@import "../src/mdx/mdx.css";',
   '@import "../src/components/progress/progress.css";',
   '@import "../src/components/skeleton/skeleton.css";',
@@ -365,6 +366,7 @@ describe('Storybook structure', () => {
     const files = collectFiles('stories');
     const docsFiles = [
       'stories/welcome.mdx',
+      'stories/foundations/overview.mdx',
       'stories/foundations/colors.mdx',
       'stories/foundations/typography.mdx',
       'stories/foundations/spacing.mdx',
@@ -464,6 +466,8 @@ describe('Storybook structure', () => {
     expect(componentInstallSource).toContain('Installation target');
     expect(componentInstallSource).toContain('ShikiCodeBlock');
     expect(componentInstallSource).toContain('language="shellscript"');
+    expect(componentInstallSource).toContain('language?: BundledLanguage;');
+    expect(componentInstallSource).toContain('surface.language');
     expect(componentInstallSource).toContain("surface.imports.join('\\n')");
     expect(componentInstallSource).toContain('data-install-copy-status');
     expect(componentInstallSource).not.toContain('md:grid-cols-2');
@@ -493,11 +497,10 @@ describe('Storybook structure', () => {
     expect(mdxRendererDocs).toContain('#### Fourth level heading');
     expect(mdxRendererDocs).toContain('- [x] Task lists reuse the checkbox contract.');
     expect(mdxRendererDocs).toContain('Footnote reference[^tinyrack-mdx].');
-    expect(radiusDocs).toContain('| Token | Value | Use |');
-    expect(welcomeDocs).toContain('```sh');
-    expect(welcomeDocs).toContain('```css');
-    expect(welcomeDocs).toContain('```html');
-    expect(welcomeDocs).toContain('```tsx');
+    expect(radiusDocs).toContain('data-foundation-reference="radius"');
+    expect(welcomeDocs).toContain('<ComponentInstall');
+    expect(welcomeDocs).toContain('<ComponentExampleTabs');
+    expect(welcomeDocs).toContain("language: 'astro'");
   });
 
   it('keeps component docs in a daisyUI-style reference and example structure', () => {
@@ -621,6 +624,12 @@ describe('Storybook structure', () => {
         'prefers-reduced-motion',
         'class="tr-skeleton"',
       ],
+      'stories/components/overlay.docs.mdx': [
+        'title="Modal"',
+        'title="Placement"',
+        'title="Anchored Layer"',
+        'createOverlayManager(document)',
+      ],
       'stories/components/table.docs.mdx': [
         'title="Density"',
         'tableDensities.map',
@@ -655,9 +664,9 @@ describe('Storybook structure', () => {
       'Native',
     ];
 
-    expect(componentDocsManifest).toHaveLength(21);
-    expect(new Set(componentDocsManifest.map(({ id }) => id)).size).toBe(21);
-    expect(new Set(componentDocsManifest.map(({ storyId }) => storyId)).size).toBe(21);
+    expect(componentDocsManifest).toHaveLength(22);
+    expect(new Set(componentDocsManifest.map(({ id }) => id)).size).toBe(22);
+    expect(new Set(componentDocsManifest.map(({ storyId }) => storyId)).size).toBe(22);
     expect(manifestFiles).toEqual(actualComponentDocs);
 
     for (const entry of componentDocsManifest) {
@@ -731,25 +740,27 @@ describe('Storybook structure', () => {
     }
   });
 
-  it('keeps Welcome as the installation and usage entry point', () => {
+  it('keeps Welcome as a guided implementation entry point', () => {
     const welcomeSource = readText('stories/welcome.mdx');
     const previewSource = readText('.storybook/preview.tsx');
 
-    expect(welcomeSource).toContain('Installation');
-    expect(welcomeSource).toContain('Usage');
-    expect(welcomeSource).toContain('Supported Surfaces');
-    expect(welcomeSource).toContain('CSS / HTML');
-    expect(welcomeSource).toContain('React MDX renderer');
-    expect(welcomeSource).toContain('Astro MDX renderer');
-    expect(welcomeSource).toContain('Component Docs');
+    expectSnippetsInOrder(welcomeSource, [
+      '## Principles',
+      '## Start in 5 minutes',
+      '## Build one operational surface',
+      '## Where next',
+      '## Package map',
+      '## Use boundary',
+    ]);
+    expect(welcomeSource).toContain("label: 'CSS / HTML'");
+    expect(welcomeSource).toContain("label: 'React'");
+    expect(welcomeSource).toContain("label: 'React MDX'");
+    expect(welcomeSource).toContain("label: 'Astro MDX'");
     expect(welcomeSource).toContain('pnpm add @tinyrack/ui');
-    expect(welcomeSource).toContain('pnpm add tailwindcss');
-    expect(welcomeSource).toContain('pnpm add react react-dom');
-    expect(welcomeSource).toContain('pnpm add shiki');
-    expect(welcomeSource).toContain('pnpm add lucide-react');
-    expect(welcomeSource).toContain('pnpm add @lucide/astro');
-    expect(welcomeSource).toContain('pnpm add lucide-static');
-    expect(welcomeSource).toContain('Tinyrack UI recommends Lucide');
+    expect(welcomeSource).toContain(
+      'pnpm add @tinyrack/ui tailwindcss react react-dom',
+    );
+    expect(welcomeSource).toContain('pnpm add @tinyrack/ui astro @astrojs/mdx shiki');
     expect(welcomeSource).toContain('@tinyrack/ui/components/badge/react');
     expect(welcomeSource).toContain('@tinyrack/ui/components/badge/badge.css');
     expect(welcomeSource).toContain('@tinyrack/ui/components/alert/react');
@@ -786,8 +797,75 @@ describe('Storybook structure', () => {
     expect(welcomeSource).toContain('@tinyrack/ui/components/table/react');
     expect(welcomeSource).toContain('@tinyrack/ui/components/tabs/tabs.css');
     expect(welcomeSource).toContain('@tinyrack/ui/components/tabs/react');
+    expect(welcomeSource).toContain('data-docs-route="foundations"');
+    expect(welcomeSource).toContain('/?path=/docs/foundations-overview--docs');
+    expect(welcomeSource).toContain('/?path=/docs/components-button--docs');
+    expect(welcomeSource).toContain('/?path=/docs/components-form-overview--docs');
+    expect(welcomeSource).toContain('/?path=/docs/integrations-mdx-renderer--docs');
+    expect(welcomeSource).not.toContain('Supported Surfaces');
+    expect(welcomeSource).not.toContain('Component Docs');
+    expect(welcomeSource).not.toContain('pnpm add lucide-react');
     expect(previewSource).not.toContain("'CSS'");
     expect(previewSource).not.toContain("'Tailwind'");
+  });
+
+  it('keeps Foundations source-backed and ordered as a learning path', () => {
+    const previewSource = readText('.storybook/preview.tsx');
+    const overviewSource = readText('stories/foundations/overview.mdx');
+    const foundationDocs = [
+      {
+        source: readText('stories/foundations/colors.mdx'),
+        token: 'tinyrackSemanticColors',
+        reference: 'colors',
+      },
+      {
+        source: readText('stories/foundations/typography.mdx'),
+        token: 'tinyrackTypography',
+        reference: 'typography',
+      },
+      {
+        source: readText('stories/foundations/spacing.mdx'),
+        token: 'tinyrackSpacing',
+        reference: 'spacing',
+      },
+      {
+        source: readText('stories/foundations/radius.mdx'),
+        token: 'tinyrackRadii',
+        reference: 'radius',
+      },
+    ];
+
+    expect(previewSource).toContain(
+      "['Overview', 'Colors', 'Typography', 'Spacing', 'Radius']",
+    );
+    expect(overviewSource).toContain('<Meta title="Foundations/Overview" />');
+    expect(overviewSource).toContain('## Model');
+    expect(overviewSource).toContain('## System in one surface');
+    expect(overviewSource).toContain('## Consumption');
+    expect(overviewSource).toContain('## Next');
+    expect(overviewSource).toContain('Runtime CSS foundations');
+    expect(overviewSource).toContain('Metadata and guidance foundations');
+
+    for (const { source, token, reference } of foundationDocs) {
+      expectSnippetsInOrder(source, [
+        '## Principle',
+        '## Visual scale',
+        '## Applied pattern',
+        '## Implementation',
+        '## Reference',
+      ]);
+      expect(source).toContain(`data-foundation-reference="${reference}"`);
+      expect(source).toContain(token);
+      expect(source).toContain("from '../../src/core/index.js'");
+    }
+
+    expect(foundationDocs[0]?.source).not.toMatch(/#[0-9a-f]{6}/i);
+    expect(foundationDocs[2]?.source).toContain(
+      'those runtime contracts are not exported',
+    );
+    expect(foundationDocs[3]?.source).toContain(
+      'those runtime contracts are not exported',
+    );
   });
 
   it('keeps owned component stories in the component gallery', () => {
@@ -850,6 +928,7 @@ describe('Storybook structure', () => {
       'form-switch.stories.tsx',
       'form-textarea.stories.tsx',
       'link.stories.tsx',
+      'overlay.stories.tsx',
       'progress.stories.tsx',
       'skeleton.stories.tsx',
       'table.stories.tsx',
@@ -1216,6 +1295,7 @@ describe('Storybook structure', () => {
     expect(vitestConfig).toContain("name: 'storybook-docs'");
     expect(vitestConfig).toContain("include: ['e2e/storybook-docs-browser.test.ts']");
     expect(browserAudit).toContain('componentDocsManifest');
+    expect(browserAudit).toContain('guidedDocsManifest');
     expect(browserAudit).toContain(
       "permissions: ['clipboard-read', 'clipboard-write']",
     );

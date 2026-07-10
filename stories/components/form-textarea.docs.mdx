@@ -1,7 +1,14 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Textarea } from '../../src/components/form/react.js';
+import {
+  Field,
+  FormMessage,
+  Label,
+  Textarea,
+} from '../../src/components/form/react.js';
 import { formControlSizes } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as TextareaStories from './form-textarea.stories';
 
 <Meta of={TextareaStories} />
@@ -12,52 +19,91 @@ Native multiline input with the shared Tinyrack text control contract.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| CSS class | `tr-textarea` | textarea element | required | Use on native textarea elements. |
-| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Shared with `Input` and `Select`. |
-| Invalid attribute | `data-invalid` | `true` | unset | Mirrors `aria-invalid` when `invalid` is set. |
-| React prop | `rows` | native number | browser default | Keep native textarea behavior. |
-| React prop | `invalid` | `boolean` | false | Sets `aria-invalid` and `data-invalid`. |
+| Component | `textarea.tr-textarea` | `Textarea` | native textarea element | Use for multiline free-form input. |
+| Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Shares the control scale with Input and Select. |
+| State | `data-invalid`, `aria-invalid` | `invalid` | `true` or unset; default unset | Pair invalid state with an associated error message. |
+| Native | `rows` | `rows` | positive number; browser default | Set an initial height without removing native resize behavior. |
+| Native | `required`, `disabled`, `aria-describedby` | native textarea props | pass-through | Put semantics on the native textarea. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/form/form.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/form/form.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        "import { Field, FormMessage, Label, Textarea } from '@tinyrack/ui/components/form/react';",
+      ],
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
-  title="Basic textarea"
-  description="Use the native textarea element when multiline input is required."
-  preview={<Textarea rows={4} placeholder="Maintenance window, owner, or alert routing." />}
+  id="form-textarea-basic"
+  title="Basic textarea field"
+  description="Compose multiline input with a visible label and associated format guidance."
+  previewLayout="stretch"
+  preview={(
+    <Field>
+      <Label htmlFor="maintenance-note">Maintenance note</Label>
+      <Textarea
+        aria-describedby="maintenance-note-help"
+        id="maintenance-note"
+        rows={4}
+        placeholder="Window, owner, or alert routing."
+      />
+      <FormMessage id="maintenance-note-help">Include the window, owner, and rollback route.</FormMessage>
+    </Field>
+  )}
   sources={[
     {
       label: 'React',
       language: 'tsx',
       code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/form/form.css';
-import { Textarea } from '@tinyrack/ui/components/form/react';
+import { Field, FormMessage, Label, Textarea } from '@tinyrack/ui/components/form/react';
 
-<Textarea rows={4} placeholder="Maintenance window, owner, or alert routing." />;`,
+<Field>
+  <Label htmlFor="maintenance-note">Maintenance note</Label>
+  <Textarea
+    aria-describedby="maintenance-note-help"
+    id="maintenance-note"
+    rows={4}
+    placeholder="Window, owner, or alert routing."
+  />
+  <FormMessage id="maintenance-note-help">Include the window, owner, and rollback route.</FormMessage>
+</Field>;`,
     },
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<textarea
-  class="tr-textarea"
-  data-size="md"
-  rows="4"
-  placeholder="Maintenance window, owner, or alert routing."
-></textarea>`,
+      code: String.raw`<div class="tr-field" data-size="md">
+  <label class="tr-label" for="maintenance-note">Maintenance note</label>
+  <textarea
+    aria-describedby="maintenance-note-help"
+    class="tr-textarea"
+    data-size="md"
+    id="maintenance-note"
+    rows="4"
+    placeholder="Window, owner, or alert routing."
+  ></textarea>
+  <p class="tr-form-message" id="maintenance-note-help">
+    Include the window, owner, and rollback route.
+  </p>
+</div>`,
     },
   ]}
 />
@@ -65,8 +111,10 @@ import { Textarea } from '@tinyrack/ui/components/form/react';
 ## Examples
 
 <ComponentExampleTabs
+  id="form-textarea-size"
   title="Size"
   description="Textarea sizes align with the rest of the text-control family."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3">
       {formControlSizes.map((size) => (
@@ -98,32 +146,54 @@ import { Textarea } from '@tinyrack/ui/components/form/react';
 />
 
 <ComponentExampleTabs
+  id="form-textarea-rows-state"
   title="Rows and State"
-  description="Rows remain native; invalid styling is opt-in through the wrapper prop or data attribute."
+  description="Rows remain native, while invalid and disabled states stay on the textarea element."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3 lg:grid-cols-3">
-      <Textarea rows={2} placeholder="Two rows" />
-      <Textarea rows={4} placeholder="Four rows" />
-      <Textarea invalid rows={4} defaultValue="Missing owner and maintenance window." />
+      <Textarea aria-label="Short note" rows={2} placeholder="Two rows" />
+      <Textarea aria-label="Invalid note" invalid rows={4} defaultValue="Missing owner and maintenance window." />
+      <Textarea aria-label="Disabled note" disabled rows={4} defaultValue="Maintenance complete." />
     </div>
   )}
   sources={[
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<Textarea rows={2} placeholder="Two rows" />
-<Textarea rows={4} placeholder="Four rows" />
-<Textarea invalid rows={4} defaultValue="Missing owner and maintenance window." />`,
+      code: String.raw`<Textarea aria-label="Short note" rows={2} placeholder="Two rows" />
+<Textarea aria-label="Invalid note" invalid rows={4} defaultValue="Missing owner and maintenance window." />
+<Textarea aria-label="Disabled note" disabled rows={4} defaultValue="Maintenance complete." />`,
     },
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<textarea class="tr-textarea" rows="2" placeholder="Two rows"></textarea>
-<textarea class="tr-textarea" rows="4" placeholder="Four rows"></textarea>
-<textarea class="tr-textarea" data-invalid="true" aria-invalid="true" rows="4">
+      code: String.raw`<textarea aria-label="Short note" class="tr-textarea" rows="2" placeholder="Two rows"></textarea>
+<textarea aria-label="Invalid note" class="tr-textarea" data-invalid="true" aria-invalid="true" rows="4">
 Missing owner and maintenance window.
+</textarea>
+<textarea aria-label="Disabled note" class="tr-textarea" disabled rows="4">
+Maintenance complete.
 </textarea>`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Use Textarea for free-form multiline content such as notes, descriptions, and operational instructions.',
+    'Choose rows for a useful initial height while allowing content and responsive layouts to grow.',
+  ]}
+  avoid={[
+    'Do not use Textarea for a short single-line value or make placeholder text the only label.',
+    'Do not signal an invalid value only with border color or remove native scrolling and resizing without a task-specific reason.',
+  ]}
+  accessibility={[
+    'Associate a visible label with htmlFor/id and help or error text with aria-describedby.',
+    'Set required, disabled, and invalid/aria-invalid on the native textarea so assistive technology receives the state.',
+    'Preserve native focus, selection, scrolling, and keyboard editing behavior.',
   ]}
 />
 

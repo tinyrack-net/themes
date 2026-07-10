@@ -2,6 +2,8 @@ import { Meta } from '@storybook/addon-docs/blocks';
 import { Switch } from '../../src/components/form/react.js';
 import { formControlSizes } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as SwitchStories from './form-switch.stories';
 
 <Meta of={SwitchStories} />
@@ -12,33 +14,45 @@ Boolean native input rendered with switch semantics and shared choice spacing.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| Wrapper class | `tr-switch` | label element | required | Wraps the native checkbox and visible label. |
-| Input class | `tr-switch-input` | checkbox with `role="switch"` | required | Native input remains focusable. |
-| Track class | `tr-switch-track` | decorative span | required | Mark with `aria-hidden="true"`. |
-| Thumb class | `tr-switch-thumb` | decorative span | required | Render inside the track. |
-| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Shared with `Checkbox` and `Radio`. |
-| Invalid attribute | `data-invalid` | `true` | unset | Mirrors `aria-invalid` when `invalid` is set. |
+| Component | `label.tr-switch` | `Switch` | native checkbox with `role="switch"` | Use for an immediate on/off setting. |
+| Part | `tr-switch-input` | native input props | `type="checkbox"`, `role="switch"`; required part | The native input remains focusable and operable. |
+| Part | `tr-switch-track`, `tr-switch-thumb` | generated track and thumb | decorative spans; required parts | Mark the visual track `aria-hidden="true"`. |
+| Part | `tr-switch-label` | `children` | `ReactNode`; omitted by default | Label the setting, not the action. |
+| Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Shares the choice-control scale with Checkbox and Radio. |
+| State | `data-invalid`, `aria-invalid` | `invalid` | `true` or unset; default unset | Pair invalid state with an associated error message. |
+| Native | `checked`, `defaultChecked`, `disabled` | native checkbox props | controlled or uncontrolled; unchecked by default | Preserve native focus and Space-key behavior. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/form/form.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/form/form.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        "import { Switch } from '@tinyrack/ui/components/form/react';",
+      ],
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
+  id="form-switch-basic"
   title="Basic switch"
   description="Switch uses a native checkbox input with switch semantics."
+  previewLayout="start"
   preview={<Switch defaultChecked>Auto deploy</Switch>}
   sources={[
     {
@@ -67,8 +81,10 @@ import { Switch } from '@tinyrack/ui/components/form/react';
 ## Examples
 
 <ComponentExampleTabs
+  id="form-switch-size"
   title="Size"
   description="Switch size uses the same choice-control scale as Checkbox and Radio."
+  previewLayout="start"
   preview={(
     <div className="grid gap-3">
       {formControlSizes.map((size) => (
@@ -99,8 +115,10 @@ import { Switch } from '@tinyrack/ui/components/form/react';
 />
 
 <ComponentExampleTabs
+  id="form-switch-state"
   title="State"
   description="Checked, disabled, and invalid states are forwarded to the native input."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3 lg:grid-cols-3">
       <Switch>Off</Switch>
@@ -136,6 +154,24 @@ import { Switch } from '@tinyrack/ui/components/form/react';
   <span class="tr-switch-label">Invalid</span>
 </label>`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Use Switch for a binary setting that takes effect immediately, such as enabling automatic deployment.',
+    'Write the visible label as the setting name so on and off remain understandable without changing copy.',
+  ]}
+  avoid={[
+    'Do not use Switch for selecting an item, accepting terms, or submitting a choice that takes effect later.',
+    'Do not make the decorative track focusable or rely on track color as the only state indicator.',
+  ]}
+  accessibility={[
+    'Keep the native checkbox with role="switch" in the tab order and preserve Space-key toggling.',
+    'Expose checked, disabled, and aria-invalid on the native input and associate help or error text with aria-describedby.',
+    'Use a fieldset with a legend when several switches share one group question.',
   ]}
 />
 

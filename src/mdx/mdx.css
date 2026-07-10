@@ -33,7 +33,7 @@
 .tr-mdx-h2,
 .tr-mdx .tr-mdx-h2.tr-mdx-h2 {
   max-width: 64rem;
-  margin: 3rem 0 0;
+  margin: 3rem 0 1.25rem;
   padding: 1.5rem 0 0;
   border: 0;
   border-top: 1px solid var(--tinyrack-border);
@@ -311,7 +311,7 @@
 
   .tr-mdx-h2,
   .tr-mdx .tr-mdx-h2.tr-mdx-h2 {
-    margin-top: 2.25rem;
+    margin: 2.25rem 0 1rem;
     padding-top: 1.25rem;
     font-size: var(--tinyrack-text-xl);
   }

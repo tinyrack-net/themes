@@ -1,7 +1,14 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Input } from '../../src/components/form/react.js';
+import {
+  Field,
+  FormMessage,
+  Input,
+  Label,
+} from '../../src/components/form/react.js';
 import { formControlSizes } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as InputStories from './form-input.stories';
 
 <Meta of={InputStories} />
@@ -12,37 +19,55 @@ Native input wrapper for text-like, numeric, date, and time controls.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| CSS class | `tr-input` | input element | required | Use on native input elements. |
-| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Shared with `Textarea` and `Select`. |
-| Invalid attribute | `data-invalid` | `true` | unset | Mirrors `aria-invalid` when `invalid` is set. |
-| React prop | `type` | native input type | browser default | Use native browser behavior. |
-| React prop | `invalid` | `boolean` | false | Sets `aria-invalid` and `data-invalid`. |
+| Component | `input.tr-input` | `Input` | native input element | Use the native input type that matches the data. |
+| Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Shares the control scale with Textarea and Select. |
+| State | `data-invalid`, `aria-invalid` | `invalid` | `true` or unset; default unset | Pair invalid state with an associated error message. |
+| Native | `type` | `type` | native input types; browser default | Preserves browser keyboards, validation, and value behavior. |
+| Native | `required`, `disabled`, `aria-describedby` | native input props | pass-through | Put semantics on the native input, not its wrapper. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/form/form.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/form/form.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        "import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/react';",
+      ],
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
-  title="Text-like inputs"
-  description="Use native input types with the shared `tr-input` visual contract."
+  id="form-input-basic"
+  title="Basic input field"
+  description="Pair the native input with a visible label and associated help text."
+  previewLayout="stretch"
   preview={(
-    <div className="grid gap-3 lg:grid-cols-2">
-      <Input type="email" placeholder="ops@example.com" />
-      <Input type="date" defaultValue="2026-07-09" />
-    </div>
+    <Field>
+      <Label htmlFor="ops-email">Notification email</Label>
+      <Input
+        aria-describedby="ops-email-help"
+        id="ops-email"
+        placeholder="ops@example.com"
+        required
+        type="email"
+      />
+      <FormMessage id="ops-email-help">Used for deployment and maintenance alerts.</FormMessage>
+    </Field>
   )}
   sources={[
     {
@@ -50,16 +75,38 @@ Native input wrapper for text-like, numeric, date, and time controls.
       language: 'tsx',
       code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/form/form.css';
-import { Input } from '@tinyrack/ui/components/form/react';
+import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/react';
 
-<Input type="email" placeholder="ops@example.com" />;
-<Input type="date" defaultValue="2026-07-09" />;`,
+<Field>
+  <Label htmlFor="ops-email">Notification email</Label>
+  <Input
+    aria-describedby="ops-email-help"
+    id="ops-email"
+    placeholder="ops@example.com"
+    required
+    type="email"
+  />
+  <FormMessage id="ops-email-help">Used for deployment and maintenance alerts.</FormMessage>
+</Field>;`,
     },
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<input class="tr-input" data-size="md" type="email" placeholder="ops@example.com" />
-<input class="tr-input" data-size="md" type="date" value="2026-07-09" />`,
+      code: String.raw`<div class="tr-field" data-size="md">
+  <label class="tr-label" for="ops-email">Notification email</label>
+  <input
+    aria-describedby="ops-email-help"
+    class="tr-input"
+    data-size="md"
+    id="ops-email"
+    placeholder="ops@example.com"
+    required
+    type="email"
+  />
+  <p class="tr-form-message" id="ops-email-help">
+    Used for deployment and maintenance alerts.
+  </p>
+</div>`,
     },
   ]}
 />
@@ -67,8 +114,10 @@ import { Input } from '@tinyrack/ui/components/form/react';
 ## Examples
 
 <ComponentExampleTabs
+  id="form-input-type-gallery"
   title="Type Gallery"
   description="The wrapper preserves native browser behavior for supported input types."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3 lg:grid-cols-3">
       {['text', 'email', 'password', 'search', 'url', 'tel', 'number', 'date', 'time'].map((type) => (
@@ -103,8 +152,10 @@ import { Input } from '@tinyrack/ui/components/form/react';
 />
 
 <ComponentExampleTabs
+  id="form-input-size"
   title="Size"
   description="Sizes align with Field, Textarea, Select, and choice controls."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3">
       {formControlSizes.map((size) => (
@@ -131,30 +182,50 @@ import { Input } from '@tinyrack/ui/components/form/react';
 />
 
 <ComponentExampleTabs
+  id="form-input-state"
   title="State"
   description="Invalid state mirrors `aria-invalid`; disabled remains the native disabled state."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3 lg:grid-cols-3">
-      <Input placeholder="Normal" />
-      <Input invalid defaultValue="invalid-route" />
-      <Input disabled defaultValue="disabled" />
+      <Input aria-label="Normal route" placeholder="Normal" />
+      <Input aria-label="Invalid route" invalid defaultValue="invalid-route" />
+      <Input aria-label="Disabled route" disabled defaultValue="disabled" />
     </div>
   )}
   sources={[
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<Input placeholder="Normal" />
-<Input invalid defaultValue="invalid-route" />
-<Input disabled defaultValue="disabled" />`,
+      code: String.raw`<Input aria-label="Normal route" placeholder="Normal" />
+<Input aria-label="Invalid route" invalid defaultValue="invalid-route" />
+<Input aria-label="Disabled route" disabled defaultValue="disabled" />`,
     },
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<input class="tr-input" placeholder="Normal" />
-<input class="tr-input" data-invalid="true" aria-invalid="true" value="invalid-route" />
-<input class="tr-input" disabled value="disabled" />`,
+      code: String.raw`<input aria-label="Normal route" class="tr-input" placeholder="Normal" />
+<input aria-label="Invalid route" class="tr-input" data-invalid="true" aria-invalid="true" value="invalid-route" />
+<input aria-label="Disabled route" class="tr-input" disabled value="disabled" />`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Use Input for single-line values and choose a native type such as email, number, date, or time that matches the data.',
+    'Compose production inputs with Field, Label, and FormMessage so help and validation remain close to the control.',
+  ]}
+  avoid={[
+    'Do not use placeholder text as the only accessible name or use a text input when Select or Textarea better matches the task.',
+    'Do not set invalid styling without a specific error message and an opportunity to correct the value.',
+  ]}
+  accessibility={[
+    'Associate the visible label with htmlFor/id and help or error text with aria-describedby.',
+    'Use native required and disabled attributes, and set invalid/aria-invalid only when validation has failed.',
+    'Preserve native keyboard, browser validation, autofill, and input-mode behavior by selecting the correct type.',
   ]}
 />
 

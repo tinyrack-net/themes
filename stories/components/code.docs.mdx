@@ -1,6 +1,8 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Code } from '../../src/components/code/react.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as CodeStories from './code.stories';
 
 <Meta of={CodeStories} />
@@ -11,32 +13,56 @@ Inline code styling for commands, paths, environment variables, and compact API 
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| CSS class | `tr-code` | code element | required | Use only for inline code, not block examples. |
-| React wrapper | `Code` | `<code>` | required for React | Merges `tr-code` with native props. |
-| Native props | `HTMLAttributes<HTMLElement>` | code props | pass-through | Keep short inline content readable. |
+| Component | `tr-code` on `<code>` | `<Code>` | Required component surface | Use for inline commands, paths, tokens, and API names. |
+| Behavior | Native inline text flow | `children` | Inline content; wraps at long strings | Move multiline examples to CodeBlock. |
+| Native | Native `<code>` attributes | `HTMLAttributes<HTMLElement>` | Passed through | Keep native code semantics within the surrounding sentence. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/code/code.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/code/react` |
-| React MDX | `pnpm add @tinyrack/ui @mdx-js/react` | `@tinyrack/ui/mdx/react` maps markdown inline code. |
-| Astro MDX | `pnpm add @tinyrack/ui astro @astrojs/mdx` | `@tinyrack/ui/mdx/astro` maps markdown inline code. |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/code/code.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "tailwindcss";',
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/code/code.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: ["import { Code } from '@tinyrack/ui/components/code/react';"],
+    },
+    {
+      label: 'React MDX',
+      install: 'pnpm add @tinyrack/ui @mdx-js/react',
+      imports: [
+        "import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';",
+      ],
+      note: 'Maps markdown inline code.',
+    },
+    {
+      label: 'Astro MDX',
+      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx',
+      imports: [
+        "import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';",
+      ],
+      note: 'Maps markdown inline code.',
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
+  id="code-basic"
   title="Inline command"
   description="Use inline code for commands, paths, environment variables, and compact API names."
+  previewLayout="start"
   preview={(
     <p>
       Run <Code>pnpm verify</Code> before publishing.
@@ -65,8 +91,10 @@ import { Code } from '@tinyrack/ui/components/code/react';
 ## Examples
 
 <ComponentExampleTabs
+  id="code-inline-contexts"
   title="Inline Contexts"
-  description="Keep inline code short enough to scan inside prose."
+  description="Inline code follows the surrounding sentence and allows long technical tokens to wrap inside narrow content."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3">
       <p>
@@ -105,12 +133,14 @@ import { Code } from '@tinyrack/ui/components/code/react';
 />
 
 <ComponentExampleTabs
+  id="code-command-path-token"
   title="Command, Path, and Token Names"
-  description="Use the same inline treatment for commands, package paths, tokens, and class names."
+  description="Use the same inline treatment for homelab commands, long configuration paths, tokens, and class names."
+  previewLayout="start"
   preview={(
     <div className="flex flex-wrap items-center gap-2">
-      <Code>pnpm test:storybook</Code>
-      <Code>stories/components</Code>
+      <Code>pnpm verify:release</Code>
+      <Code>/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</Code>
       <Code>--tinyrack-primary</Code>
       <Code>tr-btn</Code>
     </div>
@@ -119,19 +149,36 @@ import { Code } from '@tinyrack/ui/components/code/react';
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<Code>pnpm test:storybook</Code>
-<Code>stories/components</Code>
+      code: String.raw`<Code>pnpm verify:release</Code>
+<Code>/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</Code>
 <Code>--tinyrack-primary</Code>
 <Code>tr-btn</Code>`,
     },
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<code class="tr-code">pnpm test:storybook</code>
-<code class="tr-code">stories/components</code>
+      code: String.raw`<code class="tr-code">pnpm verify:release</code>
+<code class="tr-code">/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</code>
 <code class="tr-code">--tinyrack-primary</code>
 <code class="tr-code">tr-btn</code>`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Identify a short command, file path, environment variable, token, or API name within prose.',
+    'Distinguish literal values from the sentence that explains how to use them.',
+  ]}
+  avoid={[
+    'Do not use inline code for multiline commands, logs, or source examples; use CodeBlock instead.',
+    'Do not apply code styling only for visual emphasis when the text is not a literal technical value.',
+  ]}
+  accessibility={[
+    'Keep the native code element so assistive technology and copy-and-paste preserve the literal value.',
+    'Write punctuation and instructions outside the Code component, and verify long paths wrap without obscuring nearby prose.',
   ]}
 />
 

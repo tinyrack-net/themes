@@ -2,6 +2,8 @@ import { Meta } from '@storybook/addon-docs/blocks';
 import { Link } from '../../src/components/link/react.js';
 import { linkUnderlines, linkVariants } from '../../src/components/link/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as LinkStories from './link.stories';
 
 <Meta of={LinkStories} />
@@ -12,32 +14,54 @@ Native anchor behavior with Tinyrack text-link styling.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| CSS class | `tr-link` | anchor element | required | Use on native anchor links. |
-| Variant attribute | `data-variant` | `neutral`, `primary`, `danger` | `primary` | Use `primary` for normal navigation. |
-| Underline attribute | `data-underline` | `none`, `hover`, `always` | `hover` | Preserve recognizable link affordance. |
-| React prop | `href` | native anchor href | required for navigation | Use buttons for actions. |
-| Native props | `AnchorHTMLAttributes<HTMLAnchorElement>` | anchor props | pass-through | Keep browser link behavior. |
+| Component | `tr-link` on `<a>` | `<Link>` | Required component surface | Use native anchors for navigation. |
+| Variant | `data-variant` | `variant` | `neutral`, `primary`, `danger`; default `primary` | Use `primary` for routine navigation and `danger` only for risky destinations. |
+| Behavior | `data-underline` | `underline` | `none`, `hover`, `always`; default `hover` | Preserve a recognizable link affordance in prose. |
+| Native | `href` and native `<a>` attributes | `AnchorHTMLAttributes<HTMLAnchorElement>` | Passed through; `href` is required for navigation | Keep browser open, copy, and new-tab behavior. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/link/link.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/link/react` |
-| React MDX | `pnpm add @tinyrack/ui @mdx-js/react` | `@tinyrack/ui/mdx/react` maps markdown links. |
-| Astro MDX | `pnpm add @tinyrack/ui astro @astrojs/mdx` | `@tinyrack/ui/mdx/astro` maps markdown links. |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/link/link.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "tailwindcss";',
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/link/link.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: ["import { Link } from '@tinyrack/ui/components/link/react';"],
+    },
+    {
+      label: 'React MDX',
+      install: 'pnpm add @tinyrack/ui @mdx-js/react',
+      imports: [
+        "import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';",
+      ],
+      note: 'Maps markdown links.',
+    },
+    {
+      label: 'Astro MDX',
+      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx',
+      imports: [
+        "import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';",
+      ],
+      note: 'Maps markdown links.',
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
+  id="link-basic"
   title="Basic link"
   description="Use native anchors for navigation and keep buttons for actions."
   preview={(
@@ -70,8 +94,10 @@ import { Link } from '@tinyrack/ui/components/link/react';
 ## Examples
 
 <ComponentExampleTabs
+  id="link-underline-variant"
   title="Underline x Variant Matrix"
   description="Underline behavior and state variant should be visible together."
+  previewLayout="start"
   preview={(
     <div className="grid gap-4">
       {linkUnderlines.map((underline) => (
@@ -81,7 +107,7 @@ import { Link } from '@tinyrack/ui/components/link/react';
           </h3>
           <div className="flex flex-wrap items-center gap-4">
             {linkVariants.map((variant) => (
-              <Link key={variant} href="#" underline={underline} variant={variant}>
+              <Link key={variant} href="/racks" underline={underline} variant={variant}>
                 {variant}
               </Link>
             ))}
@@ -94,35 +120,67 @@ import { Link } from '@tinyrack/ui/components/link/react';
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`{linkUnderlines.map((underline) => (
-  <section key={underline}>
-    {linkVariants.map((variant) => (
-      <Link key={variant} href="#" underline={underline} variant={variant}>
-        {variant}
-      </Link>
-    ))}
-  </section>
-))}`,
+      code: String.raw`<div className="grid gap-4">
+  {linkUnderlines.map((underline) => (
+    <section key={underline} className="grid gap-2">
+      <h3 className="text-tinyrack-sm font-semibold leading-tinyrack-sm">
+        underline: {underline}
+      </h3>
+      <div className="flex flex-wrap items-center gap-4">
+        {linkVariants.map((variant) => (
+          <Link key={variant} href="/racks" underline={underline} variant={variant}>
+            {variant}
+          </Link>
+        ))}
+      </div>
+    </section>
+  ))}
+</div>`,
     },
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<a class="tr-link" data-underline="none" data-variant="primary" href="#">primary</a>
-<a class="tr-link" data-underline="hover" data-variant="primary" href="#">primary</a>
-<a class="tr-link" data-underline="always" data-variant="primary" href="#">primary</a>`,
+      code: String.raw`<div class="grid gap-4">
+  <section class="grid gap-2">
+    <h3 class="text-tinyrack-sm font-semibold leading-tinyrack-sm">underline: none</h3>
+    <div class="flex flex-wrap items-center gap-4">
+      <a class="tr-link" data-underline="none" data-variant="neutral" href="/racks">neutral</a>
+      <a class="tr-link" data-underline="none" data-variant="primary" href="/racks">primary</a>
+      <a class="tr-link" data-underline="none" data-variant="danger" href="/racks">danger</a>
+    </div>
+  </section>
+  <section class="grid gap-2">
+    <h3 class="text-tinyrack-sm font-semibold leading-tinyrack-sm">underline: hover</h3>
+    <div class="flex flex-wrap items-center gap-4">
+      <a class="tr-link" data-underline="hover" data-variant="neutral" href="/racks">neutral</a>
+      <a class="tr-link" data-underline="hover" data-variant="primary" href="/racks">primary</a>
+      <a class="tr-link" data-underline="hover" data-variant="danger" href="/racks">danger</a>
+    </div>
+  </section>
+  <section class="grid gap-2">
+    <h3 class="text-tinyrack-sm font-semibold leading-tinyrack-sm">underline: always</h3>
+    <div class="flex flex-wrap items-center gap-4">
+      <a class="tr-link" data-underline="always" data-variant="neutral" href="/racks">neutral</a>
+      <a class="tr-link" data-underline="always" data-variant="primary" href="/racks">primary</a>
+      <a class="tr-link" data-underline="always" data-variant="danger" href="/racks">danger</a>
+    </div>
+  </section>
+</div>`,
     },
   ]}
 />
 
 <ComponentExampleTabs
-  title="Navigation Context"
-  description="Use variants sparingly inside operational prose."
+  id="link-mdx"
+  title="Links in MDX Prose"
+  description="MDX mappings preserve native navigation while Tinyrack variants distinguish routine, secondary, and risky destinations."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-2 border border-tinyrack-border p-3">
       <p>
-        Review <Link href="#" variant="primary">rack inventory</Link>, inspect the{' '}
-        <Link href="#" variant="neutral" underline="always">audit log</Link>, or open the{' '}
-        <Link href="#" variant="danger">delete route</Link>.
+        Review <Link href="/racks" variant="primary">rack inventory</Link>, inspect the{' '}
+        <Link href="/audit" variant="neutral" underline="always">audit log</Link>, or open the{' '}
+        <Link href="/racks/remove" variant="danger">remove-node guide</Link>.
       </p>
     </div>
   )}
@@ -131,20 +189,37 @@ import { Link } from '@tinyrack/ui/components/link/react';
       label: 'React',
       language: 'tsx',
       code: String.raw`<p>
-  Review <Link href="#" variant="primary">rack inventory</Link>, inspect the{' '}
-  <Link href="#" variant="neutral" underline="always">audit log</Link>, or open the{' '}
-  <Link href="#" variant="danger">delete route</Link>.
+  Review <Link href="/racks" variant="primary">rack inventory</Link>, inspect the{' '}
+  <Link href="/audit" variant="neutral" underline="always">audit log</Link>, or open the{' '}
+  <Link href="/racks/remove" variant="danger">remove-node guide</Link>.
 </p>`,
     },
     {
       label: 'HTML',
       language: 'html',
       code: String.raw`<p>
-  Review <a class="tr-link" data-variant="primary" href="#">rack inventory</a>,
-  inspect the <a class="tr-link" data-variant="neutral" data-underline="always" href="#">audit log</a>,
-  or open the <a class="tr-link" data-variant="danger" href="#">delete route</a>.
+  Review <a class="tr-link" data-variant="primary" href="/racks">rack inventory</a>,
+  inspect the <a class="tr-link" data-variant="neutral" data-underline="always" href="/audit">audit log</a>,
+  or open the <a class="tr-link" data-variant="danger" href="/racks/remove">remove-node guide</a>.
 </p>`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Navigate to another page, route, file, or external resource while preserving browser link behavior.',
+    'Map markdown links in React or Astro MDX so authored prose uses the same link treatment.',
+  ]}
+  avoid={[
+    'Do not use Link for commands that change state; use Button instead.',
+    'Do not remove the underline in dense prose unless surrounding context makes every link unmistakable.',
+  ]}
+  accessibility={[
+    'Use destination-specific link text such as "rack inventory" instead of generic text such as "click here".',
+    'Keep a real href and a visible keyboard focus indicator; if a link opens a new context, communicate that in its text or nearby copy.',
   ]}
 />
 

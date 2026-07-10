@@ -10,6 +10,8 @@ import {
   formMessageVariants,
 } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as FieldStories from './form-field.stories';
 
 <Meta of={FieldStories} />
@@ -20,37 +22,49 @@ Composition primitives for labels, native controls, and supporting messages.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| Field class | `tr-field` | `data-size` | `md` | Sets vertical rhythm for a field group. |
-| Label class | `tr-label` | native label props | none | Callers provide `htmlFor` or wrap the control. |
-| Message class | `tr-form-message` | `data-variant` | `neutral` | Use `error` for validation support text. |
-| React props | `Field.size` | `sm`, `md`, `lg` | `md` | Match the nested control size. |
-| React props | `FormMessage.variant` | `neutral`, `error` | `neutral` | Mirrors `data-variant`. |
+| Component | `tr-field` | `Field` | `data-size`; default `md` | Sets vertical rhythm for one complete field. |
+| Part | `tr-label` | `Label` | native label attributes; no implicit association | Provide `for`/`htmlFor`, or wrap the control. |
+| Part | `tr-form-message` | `FormMessage` | paragraph attributes; variant default `neutral` | Give the message an ID when it describes a control. |
+| Size | `tr-field[data-size]` | `Field.size` | `sm`, `md`, `lg`; default `md` | Match the nested control size. |
+| Variant | `tr-form-message[data-variant]` | `FormMessage.variant` | `neutral`, `error`; default `neutral` | Use `error` only for an actual validation error. |
+| Native | `for`, `id`, `aria-describedby` | native props | pass-through | Build label and description relationships explicitly. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/form/form.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/form/form.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        "import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/react';",
+      ],
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
+  id="form-field-basic"
   title="Basic field"
-  description="A field groups the label, native control, and supporting message rhythm."
+  description="A complete field groups an explicit label, native control, and associated supporting message."
+  previewLayout="stretch"
   preview={(
     <Field size="md">
       <Label htmlFor="rack-name">Rack name</Label>
-      <Input id="rack-name" placeholder="rack-a-01" />
-      <FormMessage>Use a stable rack identifier.</FormMessage>
+      <Input aria-describedby="rack-name-help" id="rack-name" placeholder="rack-a-01" />
+      <FormMessage id="rack-name-help">Use a stable rack identifier.</FormMessage>
     </Field>
   )}
   sources={[
@@ -63,8 +77,8 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
 
 <Field size="md">
   <Label htmlFor="rack-name">Rack name</Label>
-  <Input id="rack-name" placeholder="rack-a-01" />
-  <FormMessage>Use a stable rack identifier.</FormMessage>
+  <Input aria-describedby="rack-name-help" id="rack-name" placeholder="rack-a-01" />
+  <FormMessage id="rack-name-help">Use a stable rack identifier.</FormMessage>
 </Field>;`,
     },
     {
@@ -72,8 +86,8 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
       language: 'html',
       code: String.raw`<div class="tr-field" data-size="md">
   <label class="tr-label" for="rack-name">Rack name</label>
-  <input class="tr-input" data-size="md" id="rack-name" />
-  <p class="tr-form-message" data-variant="neutral">
+  <input class="tr-input" data-size="md" id="rack-name" aria-describedby="rack-name-help" />
+  <p class="tr-form-message" data-variant="neutral" id="rack-name-help">
     Use a stable rack identifier.
   </p>
 </div>`,
@@ -84,8 +98,10 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
 ## Examples
 
 <ComponentExampleTabs
+  id="form-field-size"
   title="Size"
   description="Field size should match the control size inside it."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-4">
       {formControlSizes.map((size) => (
@@ -103,8 +119,8 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
       language: 'tsx',
       code: String.raw`{formControlSizes.map((size) => (
   <Field key={size} size={size}>
-    <Label>Field size {size}</Label>
-    <Input size={size} placeholder="rack-a-01" />
+    <Label htmlFor={'docs-field-' + size}>Field size {size}</Label>
+    <Input id={'docs-field-' + size} size={size} placeholder="rack-a-01" />
     <FormMessage>Label, input, and message share {size} rhythm.</FormMessage>
   </Field>
 ))}`,
@@ -120,15 +136,22 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
 />
 
 <ComponentExampleTabs
+  id="form-field-message-variant"
   title="Message Variant"
   description="Use neutral support copy until the field has an actual validation error."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-4 lg:grid-cols-2">
       {formMessageVariants.map((variant) => (
         <Field key={variant}>
           <Label htmlFor={`docs-message-${variant}`}>Message: {variant}</Label>
-          <Input id={`docs-message-${variant}`} invalid={variant === 'error'} defaultValue="rack-a-01" />
-          <FormMessage variant={variant}>
+          <Input
+            aria-describedby={`docs-message-${variant}-text`}
+            id={`docs-message-${variant}`}
+            invalid={variant === 'error'}
+            defaultValue="rack-a-01"
+          />
+          <FormMessage id={`docs-message-${variant}-text`} variant={variant}>
             {variant === 'error' ? 'Rack name is already in use.' : 'Use a stable rack identifier.'}
           </FormMessage>
         </Field>
@@ -141,9 +164,14 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
       language: 'tsx',
       code: String.raw`{formMessageVariants.map((variant) => (
   <Field key={variant}>
-    <Label>Message: {variant}</Label>
-    <Input invalid={variant === 'error'} defaultValue="rack-a-01" />
-    <FormMessage variant={variant}>
+    <Label htmlFor={'docs-message-' + variant}>Message: {variant}</Label>
+    <Input
+      aria-describedby={'docs-message-' + variant + '-text'}
+      id={'docs-message-' + variant}
+      invalid={variant === 'error'}
+      defaultValue="rack-a-01"
+    />
+    <FormMessage id={'docs-message-' + variant + '-text'} variant={variant}>
       {variant === 'error' ? 'Rack name is already in use.' : 'Use a stable rack identifier.'}
     </FormMessage>
   </Field>
@@ -155,6 +183,24 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
       code: String.raw`<p class="tr-form-message" data-variant="neutral">Use a stable rack identifier.</p>
 <p class="tr-form-message" data-variant="error">Rack name is already in use.</p>`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Use Field to keep one label, one control, and its help or error message in a consistent vertical rhythm.',
+    'Use a neutral message for durable help text and the error variant only after validation identifies a problem.',
+  ]}
+  avoid={[
+    'Do not use Field as a semantic replacement for fieldset when several related controls form one group.',
+    'Do not show an error message without also marking the associated native control invalid.',
+  ]}
+  accessibility={[
+    'Connect Label to the control with htmlFor/id and FormMessage with aria-describedby.',
+    'For required or invalid fields, set required and aria-invalid on the native control and keep the message visible.',
+    'Use fieldset and legend for checkbox or radio groups; disabled must remain a native control attribute.',
   ]}
 />
 

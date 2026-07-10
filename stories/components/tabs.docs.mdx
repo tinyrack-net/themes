@@ -6,6 +6,8 @@ import {
 } from '../../src/components/tabs/contract.js';
 import { Tabs, TabsList, TabsPanel, TabsTrigger } from '../../src/components/tabs/react.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as TabsStories from './tabs.stories';
 
 <Meta of={TabsStories} />
@@ -16,33 +18,49 @@ Accessible tabbed navigation for compact operational panels.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| Root class | `tr-tabs` | `data-size`, `data-orientation` | `md`, `horizontal` | Provides context for list, triggers, and panels. |
-| List class | `tr-tabs-list` | `role="tablist"` | required | Receives `aria-orientation` for vertical tabs. |
-| Trigger class | `tr-tabs-trigger` | `role="tab"`, `data-active` | required | Renders native buttons. |
-| Panel class | `tr-tabs-panel` | `role="tabpanel"`, `data-active` | required | Hidden when inactive. |
-| Activation | `activationMode` | `automatic`, `manual` | `automatic` | Use manual when panels are expensive to show. |
-| Selection | `value`, `defaultValue` | `string` | none | Use exactly one selected-value mode. |
+| Component | `tr-tabs` | `Tabs` | Required | Owns selection, size, orientation, and activation context. |
+| Part | `tr-tabs-list`, `role="tablist"` | `TabsList` | Required | Give every list an accessible label. |
+| Part | `tr-tabs-trigger`, `role="tab"` | `TabsTrigger` | Required | Uses native buttons with roving tab focus. |
+| Part | `tr-tabs-panel`, `role="tabpanel"` | `TabsPanel` | Required | Inactive panels are hidden. |
+| Size | `data-size` | `size` | `sm`, `md` (default), `lg` | Changes trigger height and panel padding. |
+| Behavior | `data-orientation` and app keyboard logic | `orientation` | `horizontal` (default), `vertical` | Orientation changes layout and arrow-key mapping. |
+| Behavior | App-controlled | `activationMode` | `automatic` (default), `manual` | Use manual activation when switching panels is expensive. |
+| State | `aria-selected`, `data-active` | `value` or `defaultValue` | One selected value | Use exactly one controlled or uncontrolled selection mode. |
+| Native | Div and button attributes | Native root, list, trigger, and panel props | Pass-through | Preserve generated IDs and ARIA relationships. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/tabs/tabs.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/tabs/react` |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/tabs/tabs.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "tailwindcss";',
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/tabs/tabs.css";',
+      ],
+      note: 'Provide application JavaScript for selection and keyboard behavior when using the CSS classes directly.',
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        "import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/tabs/react';",
+      ],
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
+  id="tabs-basic"
   title="Basic tabs"
   description="Use Tabs for compact panels that switch between related operational views."
+  previewLayout="stretch"
   preview={(
     <Tabs defaultValue="overview" activationMode="automatic">
       <TabsList aria-label="Rack sections">
@@ -95,8 +113,10 @@ import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/
 ## Examples
 
 <ComponentExampleTabs
+  id="tabs-size"
   title="Size"
   description="Size changes trigger height and panel padding without changing ARIA semantics."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-4">
       {tabsSizes.map((size) => (
@@ -137,8 +157,10 @@ import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/
 />
 
 <ComponentExampleTabs
+  id="tabs-orientation"
   title="Orientation"
   description="Horizontal tabs use left/right keys; vertical tabs use up/down keys."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-4">
       {tabsOrientations.map((orientation) => (
@@ -185,8 +207,10 @@ import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/
 />
 
 <ComponentExampleTabs
+  id="tabs-activation"
   title="Activation Mode"
   description="Automatic activates on focus movement; manual waits for Enter or Space."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-4">
       {tabsActivationModes.map((activationMode) => (
@@ -222,6 +246,86 @@ import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/
       code: String.raw`<!-- Activation behavior is controlled by the React component. -->
 <div class="tr-tabs" data-size="md" data-orientation="horizontal">...</div>`,
     },
+  ]}
+/>
+
+<ComponentExampleTabs
+  id="tabs-responsive-overflow"
+  title="Scrollable Tab List"
+  description="Long horizontal tab lists stay on one line and scroll locally on narrow screens without widening the document."
+  previewClassName="!overflow-x-hidden"
+  previewLayout="stretch"
+  preview={(
+    <div className="max-w-sm">
+      <Tabs defaultValue="overview">
+        <TabsList aria-label="Rack detail sections">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="metrics">Metrics</TabsTrigger>
+          <TabsTrigger value="logs">Logs</TabsTrigger>
+          <TabsTrigger value="backups">Backups</TabsTrigger>
+          <TabsTrigger value="deployments">Deployments</TabsTrigger>
+        </TabsList>
+        <TabsPanel value="overview">Rack A is healthy.</TabsPanel>
+        <TabsPanel value="metrics">CPU 41%, memory 62%, latency 48 ms.</TabsPanel>
+        <TabsPanel value="logs">03:18 backup completed.</TabsPanel>
+        <TabsPanel value="backups">The latest snapshot is ready.</TabsPanel>
+        <TabsPanel value="deployments">Release candidate 3 is queued.</TabsPanel>
+      </Tabs>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<Tabs defaultValue="overview">
+  <TabsList aria-label="Rack detail sections">
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="metrics">Metrics</TabsTrigger>
+    <TabsTrigger value="logs">Logs</TabsTrigger>
+    <TabsTrigger value="backups">Backups</TabsTrigger>
+    <TabsTrigger value="deployments">Deployments</TabsTrigger>
+  </TabsList>
+  <TabsPanel value="overview">Rack A is healthy.</TabsPanel>
+  <TabsPanel value="metrics">CPU 41%, memory 62%, latency 48 ms.</TabsPanel>
+  <TabsPanel value="logs">03:18 backup completed.</TabsPanel>
+  <TabsPanel value="backups">The latest snapshot is ready.</TabsPanel>
+  <TabsPanel value="deployments">Release candidate 3 is queued.</TabsPanel>
+</Tabs>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-tabs" data-size="md" data-orientation="horizontal">
+  <div class="tr-tabs-list" role="tablist" aria-label="Rack detail sections">
+    <button class="tr-tabs-trigger" role="tab" aria-selected="true">Overview</button>
+    <button class="tr-tabs-trigger" role="tab" aria-selected="false">Metrics</button>
+    <button class="tr-tabs-trigger" role="tab" aria-selected="false">Logs</button>
+    <button class="tr-tabs-trigger" role="tab" aria-selected="false">Backups</button>
+    <button class="tr-tabs-trigger" role="tab" aria-selected="false">Deployments</button>
+  </div>
+  <div class="tr-tabs-panel" role="tabpanel" data-active="true">
+    Rack A is healthy.
+  </div>
+</div>`,
+    },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Use tabs for a small set of peer views that belong to the same object or task.',
+    'Use manual activation when changing panels performs expensive rendering or network work.',
+  ]}
+  avoid={[
+    'Do not use tabs for primary site navigation, ordered steps, or content users need to compare simultaneously.',
+    'Do not hide validation errors or required actions in an inactive panel without surfacing their state.',
+  ]}
+  accessibility={[
+    'Give every TabsList an accessible label that describes the group rather than repeating the selected tab.',
+    'Horizontal lists use Left and Right Arrow; vertical lists use Up and Down Arrow; Home and End move to the edges.',
+    'Keep trigger labels concise and preserve the generated tab-to-panel ID relationships.',
   ]}
 />
 

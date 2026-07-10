@@ -33,6 +33,17 @@ export default defineConfig({
           environment: 'node',
           setupFiles: ['./vitest.setup.ts'],
           include: ['e2e/**/*.test.ts'],
+          exclude: ['e2e/storybook-docs-browser.test.ts'],
+        },
+      },
+      {
+        test: {
+          name: 'storybook-docs',
+          environment: 'node',
+          setupFiles: ['./vitest.setup.ts'],
+          include: ['e2e/storybook-docs-browser.test.ts'],
+          hookTimeout: 30_000,
+          testTimeout: 180_000,
         },
       },
       {

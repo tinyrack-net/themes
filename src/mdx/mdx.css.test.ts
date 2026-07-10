@@ -13,6 +13,8 @@ describe('MDX CSS contract', () => {
     expect(css).toContain('.tr-mdx');
     expect(css).toContain('.tr-mdx-h1');
     expect(css).toContain('.tr-mdx-h2');
+    expect(css).toContain('margin: 3rem 0 1.25rem;');
+    expect(css).toContain('margin: 2.25rem 0 1rem;');
     expect(css).toContain('.tr-mdx-h3');
     expect(css).toContain('.tr-mdx-h4');
     expect(css).toContain('.tr-mdx-h5');

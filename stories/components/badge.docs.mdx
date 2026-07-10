@@ -2,6 +2,8 @@ import { Meta } from '@storybook/addon-docs/blocks';
 import { Badge } from '../../src/components/badge/react.js';
 import { badgeSizes, badgeVariants } from '../../src/components/badge/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as BadgeStories from './badge.stories';
 
 <Meta of={BadgeStories} />
@@ -12,31 +14,38 @@ Compact status text for operational metadata, health states, and dense labels.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| CSS class | `tr-badge` | span element | required | Use on inline status text only. |
-| Size attribute | `data-size` | `sm`, `md` | `sm` | Use `sm` for table metadata and `md` near controls. |
-| Variant attribute | `data-variant` | `neutral`, `primary`, `danger` | `neutral` | Variants describe state, not decoration. |
-| React prop | `size` | `sm`, `md` | `sm` | Mirrors `data-size`. |
-| React prop | `variant` | `neutral`, `primary`, `danger` | `neutral` | Mirrors `data-variant`. |
-| Native props | `HTMLAttributes<HTMLSpanElement>` | span props | pass-through | Preserve inline semantics. |
+| Component | `tr-badge` on `<span>` | `<Badge>` | Required component surface | Use for compact, inline status metadata. |
+| Size | `data-size` | `size` | `sm`, `md`; default `sm` | Use `sm` in dense tables and `md` near controls. |
+| Variant | `data-variant` | `variant` | `neutral`, `primary`, `danger`; default `neutral` | Communicate operational state rather than decoration. |
+| Native | Native `<span>` attributes | `HTMLAttributes<HTMLSpanElement>` | Passed through | Preserve inline semantics and add an accessible name only when surrounding text does not explain the status. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/badge/badge.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/badge/react` |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/badge/badge.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "tailwindcss";',
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/badge/badge.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: ["import { Badge } from '@tinyrack/ui/components/badge/react';"],
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
+  id="badge-basic"
   title="Basic badge"
   description="Use the React wrapper or the CSS-first class contract for compact status metadata."
   preview={<Badge size="sm" variant="primary">Healthy</Badge>}
@@ -65,8 +74,10 @@ import { Badge } from '@tinyrack/ui/components/badge/react';
 ## Examples
 
 <ComponentExampleTabs
+  id="badge-size-variant"
   title="Size x Variant Matrix"
   description="Scan every supported size and variant combination in one place."
+  previewLayout="start"
   preview={(
     <div className="grid gap-4">
       {badgeSizes.map((size) => (
@@ -92,7 +103,9 @@ import { Badge } from '@tinyrack/ui/components/badge/react';
       code: String.raw`<div className="grid gap-4">
   {badgeSizes.map((size) => (
     <section key={size} className="grid gap-2">
-      <h3>size: {size}</h3>
+      <h3 className="text-tinyrack-sm font-semibold leading-tinyrack-sm">
+        size: {size}
+      </h3>
       <div className="flex flex-wrap items-center gap-2">
         {badgeVariants.map((variant) => (
           <Badge key={variant} size={size} variant={variant}>
@@ -107,36 +120,50 @@ import { Badge } from '@tinyrack/ui/components/badge/react';
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<span class="tr-badge" data-size="sm" data-variant="neutral">neutral</span>
-<span class="tr-badge" data-size="sm" data-variant="primary">primary</span>
-<span class="tr-badge" data-size="sm" data-variant="danger">danger</span>
-<span class="tr-badge" data-size="md" data-variant="neutral">neutral</span>
-<span class="tr-badge" data-size="md" data-variant="primary">primary</span>
-<span class="tr-badge" data-size="md" data-variant="danger">danger</span>`,
+      code: String.raw`<div class="grid gap-4">
+  <section class="grid gap-2">
+    <h3 class="text-tinyrack-sm font-semibold leading-tinyrack-sm">size: sm</h3>
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="tr-badge" data-size="sm" data-variant="neutral">neutral</span>
+      <span class="tr-badge" data-size="sm" data-variant="primary">primary</span>
+      <span class="tr-badge" data-size="sm" data-variant="danger">danger</span>
+    </div>
+  </section>
+  <section class="grid gap-2">
+    <h3 class="text-tinyrack-sm font-semibold leading-tinyrack-sm">size: md</h3>
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="tr-badge" data-size="md" data-variant="neutral">neutral</span>
+      <span class="tr-badge" data-size="md" data-variant="primary">primary</span>
+      <span class="tr-badge" data-size="md" data-variant="danger">danger</span>
+    </div>
+  </section>
+</div>`,
     },
   ]}
 />
 
 <ComponentExampleTabs
-  title="Operational States"
-  description="Use variants for operational state, not decoration."
+  id="badge-content"
+  title="Rack Health Content"
+  description="Pair short state labels with nearby context; longer rack names belong in the surrounding layout."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3 sm:grid-cols-3">
       <div className="grid gap-2 border border-tinyrack-border p-3">
         <span className="text-tinyrack-xs font-semibold leading-tinyrack-xs text-tinyrack-text-muted uppercase">
-          Normal
+          backup-node-03
         </span>
         <Badge variant="neutral">queued</Badge>
       </div>
       <div className="grid gap-2 border border-tinyrack-border p-3">
         <span className="text-tinyrack-xs font-semibold leading-tinyrack-xs text-tinyrack-text-muted uppercase">
-          Good
+          media-server-01
         </span>
         <Badge variant="primary">healthy</Badge>
       </div>
       <div className="grid gap-2 border border-tinyrack-border p-3">
         <span className="text-tinyrack-xs font-semibold leading-tinyrack-xs text-tinyrack-text-muted uppercase">
-          Action
+          garage-switch-02
         </span>
         <Badge variant="danger">blocked</Badge>
       </div>
@@ -146,17 +173,52 @@ import { Badge } from '@tinyrack/ui/components/badge/react';
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<Badge variant="neutral">queued</Badge>
-<Badge variant="primary">healthy</Badge>
-<Badge variant="danger">blocked</Badge>`,
+      code: String.raw`<div>
+  <span>backup-node-03</span>
+  <Badge variant="neutral">queued</Badge>
+</div>
+<div>
+  <span>media-server-01</span>
+  <Badge variant="primary">healthy</Badge>
+</div>
+<div>
+  <span>garage-switch-02</span>
+  <Badge variant="danger">blocked</Badge>
+</div>`,
     },
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<span class="tr-badge" data-variant="neutral">queued</span>
-<span class="tr-badge" data-variant="primary">healthy</span>
-<span class="tr-badge" data-variant="danger">blocked</span>`,
+      code: String.raw`<div>
+  <span>backup-node-03</span>
+  <span class="tr-badge" data-variant="neutral">queued</span>
+</div>
+<div>
+  <span>media-server-01</span>
+  <span class="tr-badge" data-variant="primary">healthy</span>
+</div>
+<div>
+  <span>garage-switch-02</span>
+  <span class="tr-badge" data-variant="danger">blocked</span>
+</div>`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Show compact rack health, queue, or deployment state beside a resource name.',
+    'Label dense metadata where a short word is easier to scan than explanatory prose.',
+  ]}
+  avoid={[
+    'Do not use a badge as a button, filter, or other interactive control.',
+    'Do not rely on color alone or place long resource names inside the badge.',
+  ]}
+  accessibility={[
+    'Use explicit state text such as "healthy" or "blocked" so meaning survives without color.',
+    'Keep the badge next to the resource or sentence it describes; add native span attributes only when extra context is required.',
   ]}
 />
 

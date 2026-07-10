@@ -65,10 +65,10 @@ function createRawModal(id: string) {
   const modal = document.createElement('dialog');
   modal.id = id;
   modal.className = 'tr-modal';
-  modal.dataset['trOverlay'] = 'modal';
-  modal.dataset['placement'] = 'middle';
-  modal.dataset['closeOnEscape'] = 'true';
-  modal.dataset['closeOnBackdrop'] = 'true';
+  modal.dataset.trOverlay = 'modal';
+  modal.dataset.placement = 'middle';
+  modal.dataset.closeOnEscape = 'true';
+  modal.dataset.closeOnBackdrop = 'true';
   modal.innerHTML = `
     <div class="tr-modal-box" data-size="md">
       <h2 class="tr-modal-title" tabindex="-1">${id}</h2>
@@ -85,8 +85,8 @@ function createRawLayer(id: string, mode: 'auto' | 'manual' | 'hint' = 'manual')
   layer.id = id;
   layer.className = 'tr-layer';
   layer.popover = mode;
-  layer.dataset['trOverlay'] = 'layer';
-  layer.dataset['placement'] = 'bottom-start';
+  layer.dataset.trOverlay = 'layer';
+  layer.dataset.placement = 'bottom-start';
   layer.textContent = `${mode} layer`;
   return layer;
 }
@@ -120,13 +120,13 @@ test('manager adopts overlays that entered the native top layer first', async ()
 
   await waitForBrowser();
 
-  expect(modal.dataset['trManaged']).toBe('true');
-  expect(modal.dataset['topmost']).toBe('true');
+  expect(modal.dataset.trManaged).toBe('true');
+  expect(modal.dataset.topmost).toBe('true');
   expect(document.documentElement.style.overflow).toBe('hidden');
 });
 
 test('DOM manager opens and closes the native HTML Modal contract', async () => {
-  document.documentElement.dataset['theme'] = 'tinyrack-dark';
+  document.documentElement.dataset.theme = 'tinyrack-dark';
   const originalOverflow = document.documentElement.style.overflow;
   const host = document.createElement('div');
   const trigger = document.createElement('button');
@@ -147,7 +147,7 @@ test('DOM manager opens and closes the native HTML Modal contract', async () => 
   await waitForBrowser();
 
   expect(modal.matches(':modal')).toBe(true);
-  expect(modal.dataset['topmost']).toBe('true');
+  expect(modal.dataset.topmost).toBe('true');
   expect(document.documentElement.style.overflow).toBe('hidden');
   expect(changes.at(-1)?.reason).toBe('trigger');
   expect(
@@ -164,7 +164,7 @@ test('DOM manager opens and closes the native HTML Modal contract', async () => 
 });
 
 test('DOM manager keeps stacked Modals LIFO with one active backdrop', async () => {
-  document.documentElement.dataset['theme'] = 'tinyrack-light';
+  document.documentElement.dataset.theme = 'tinyrack-light';
   const host = document.createElement('div');
   const first = createRawModal('first-modal');
   const second = createRawModal('second-modal');
@@ -186,7 +186,7 @@ test('DOM manager keeps stacked Modals LIFO with one active backdrop', async () 
   expect(first.matches(':modal')).toBe(true);
   expect(second.matches(':modal')).toBe(true);
   expect(first.hasAttribute('data-topmost')).toBe(false);
-  expect(second.dataset['topmost']).toBe('true');
+  expect(second.dataset.topmost).toBe('true');
   expect(
     getComputedStyle(first.querySelector('.tr-modal-backdrop') as Element)
       .backgroundColor,
@@ -201,7 +201,7 @@ test('DOM manager keeps stacked Modals LIFO with one active backdrop', async () 
 
   expect(second.matches(':modal')).toBe(false);
   expect(first.matches(':modal')).toBe(true);
-  expect(first.dataset['topmost']).toBe('true');
+  expect(first.dataset.topmost).toBe('true');
 
   manager.close(first);
 });
@@ -214,8 +214,8 @@ test('opening a Modal dismisses every existing Layer mode', async () => {
   layer.id = 'raw-layer';
   layer.className = 'tr-layer';
   layer.popover = 'manual';
-  layer.dataset['trOverlay'] = 'layer';
-  layer.dataset['placement'] = 'bottom-start';
+  layer.dataset.trOverlay = 'layer';
+  layer.dataset.placement = 'bottom-start';
   layer.textContent = 'Layer content';
   const modal = createRawModal('layer-modal');
   host.append(anchor, layer, modal);
@@ -227,7 +227,7 @@ test('opening a Modal dismisses every existing Layer mode', async () => {
   await waitForBrowser();
 
   expect(layer.matches(':popover-open')).toBe(true);
-  expect(layer.dataset['positioned']).toBe('true');
+  expect(layer.dataset.positioned).toBe('true');
 
   manager.open(modal, { reason: 'trigger', source: anchor });
   await waitForBrowser();
@@ -256,7 +256,7 @@ test('DOM manager supports auto, manual, and hint Layer modes', async () => {
     manager.open(layer, { reason: 'trigger', source: anchor });
     await waitForBrowser();
     expect(layer.matches(':popover-open')).toBe(true);
-    expect(layer.dataset['positioned']).toBe('true');
+    expect(layer.dataset.positioned).toBe('true');
     manager.close(layer);
   }
 });
@@ -317,7 +317,7 @@ test('Modal placements use viewport edges and logical RTL directions', async () 
   trackRaw(host, manager);
 
   for (const placement of ['middle', 'top', 'bottom', 'start', 'end'] as const) {
-    modal.dataset['placement'] = placement;
+    modal.dataset.placement = placement;
     manager.open(modal);
     await waitForBrowser();
     const modalRect = modal.getBoundingClientRect();
@@ -342,7 +342,7 @@ test('Modal placements use viewport edges and logical RTL directions', async () 
   }
 
   document.documentElement.dir = 'rtl';
-  modal.dataset['placement'] = 'start';
+  modal.dataset.placement = 'start';
   manager.open(modal);
   await waitForBrowser();
   expect(
@@ -354,7 +354,7 @@ test('Modal placements use viewport edges and logical RTL directions', async () 
 
 test('user sizing can override convenience size while long bodies scroll', async () => {
   const style = document.createElement('style');
-  style.dataset['overlayTestStyle'] = 'true';
+  style.dataset.overlayTestStyle = 'true';
   style.textContent = `@layer utilities {
     .overlay-test-width { width: 20rem; max-width: 20rem; }
   }`;
@@ -382,7 +382,7 @@ test('user sizing can override convenience size while long bodies scroll', async
 });
 
 test('React Modal exposes daisyUI-shaped parts and uncontrolled behavior', async () => {
-  document.documentElement.dataset['theme'] = 'tinyrack-dark';
+  document.documentElement.dataset.theme = 'tinyrack-dark';
   await render(
     <Modal>
       <ModalTrigger asChild>
@@ -414,7 +414,7 @@ test('React Modal exposes daisyUI-shaped parts and uncontrolled behavior', async
   }
 
   expect(modal.matches(':modal')).toBe(true);
-  expect(modal.dataset['placement']).toBe('bottom');
+  expect(modal.dataset.placement).toBe('bottom');
   expect(modal.querySelector('.tr-modal-box')?.getAttribute('data-size')).toBe('lg');
   expect(modal.querySelector('.tr-modal-header')).not.toBeNull();
   expect(modal.querySelector('.tr-modal-description')).not.toBeNull();
@@ -529,7 +529,7 @@ test('React manual Layer positions from asChild anchor and closes before Modal',
 
   expect(modal.matches(':modal')).toBe(true);
   expect(layer.matches(':popover-open')).toBe(true);
-  expect(layer.dataset['positioned']).toBe('true');
+  expect(layer.dataset.positioned).toBe('true');
 
   document.dispatchEvent(
     new KeyboardEvent('keydown', {

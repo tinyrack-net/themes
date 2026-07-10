@@ -67,3 +67,23 @@ export const overlayContract = {
   defaultModalPlacement: ModalPlacement;
   defaultModalSize: ModalSize;
 };
+
+declare global {
+  interface DOMStringMap {
+    closeOnBackdrop?: string;
+    closeOnEscape?: string;
+    collisionPadding?: string;
+    matchAnchorWidth?: string;
+    offset?: string;
+    overlayTestStyle?: string;
+    placement?: string;
+    positioned?: string;
+    preventScroll?: string;
+    theme?: string;
+    topmost?: string;
+    trManaged?: string;
+    trModalOpen?: string;
+    trOverlay?: string;
+    trOverlayClose?: string;
+  }
+}

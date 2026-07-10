@@ -66,7 +66,7 @@ export function TinyrackDocsContainer(props: DocsContainerProps) {
     const handleGlobalsUpdated = ({
       globals,
     }: {
-      globals?: Record<string, unknown>;
+      globals?: Record<string, unknown> & { theme?: unknown };
     }) => {
       setTinyrackTheme(resolveTinyrackTheme(globals?.theme));
     };

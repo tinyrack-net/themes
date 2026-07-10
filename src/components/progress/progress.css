@@ -1,0 +1,77 @@
+.tr-progress {
+  --tr-progress-fill: var(--tinyrack-primary);
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 0.5rem;
+  overflow: hidden;
+  border: 0;
+  border-radius: 9999px;
+  background-color: var(--tinyrack-surface-muted);
+}
+
+.tr-progress[data-size="sm"] {
+  height: 0.25rem;
+}
+
+.tr-progress[data-size="md"] {
+  height: 0.5rem;
+}
+
+.tr-progress[data-size="lg"] {
+  height: 0.75rem;
+}
+
+.tr-progress[data-variant="neutral"] {
+  --tr-progress-fill: var(--tinyrack-text-muted);
+}
+
+.tr-progress[data-variant="primary"] {
+  --tr-progress-fill: var(--tinyrack-primary);
+}
+
+.tr-progress[data-variant="danger"] {
+  --tr-progress-fill: var(--tinyrack-error);
+}
+
+.tr-progress::-webkit-progress-bar {
+  border-radius: inherit;
+  background-color: var(--tinyrack-surface-muted);
+}
+
+.tr-progress::-webkit-progress-value {
+  border-radius: inherit;
+  background-color: var(--tr-progress-fill);
+}
+
+.tr-progress::-moz-progress-bar {
+  border-radius: inherit;
+  background-color: var(--tr-progress-fill);
+}
+
+.tr-progress:indeterminate::-webkit-progress-value {
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    var(--tr-progress-fill),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: tr-progress-indeterminate 1.2s linear infinite;
+}
+
+@keyframes tr-progress-indeterminate {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-progress:indeterminate::-webkit-progress-value {
+    animation: none;
+  }
+}

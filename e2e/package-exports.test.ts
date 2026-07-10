@@ -5,6 +5,14 @@ import packageJson from '../package.json' with { type: 'json' };
 
 const repoRoot = process.cwd();
 const expectedJsExports = {
+  './components/alert/react': {
+    types: './dist/components/alert/react.d.ts',
+    import: './dist/components/alert/react.js',
+  },
+  './components/avatar/react': {
+    types: './dist/components/avatar/react.d.ts',
+    import: './dist/components/avatar/react.js',
+  },
   './core': {
     types: './dist/core/index.d.ts',
     import: './dist/core/index.js',
@@ -16,6 +24,10 @@ const expectedJsExports = {
   './components/button/react': {
     types: './dist/components/button/react.d.ts',
     import: './dist/components/button/react.js',
+  },
+  './components/card/react': {
+    types: './dist/components/card/react.d.ts',
+    import: './dist/components/card/react.js',
   },
   './components/code-block/react': {
     types: './dist/components/code-block/react.d.ts',
@@ -29,6 +41,10 @@ const expectedJsExports = {
     types: './dist/components/code/react.d.ts',
     import: './dist/components/code/react.js',
   },
+  './components/divider/react': {
+    types: './dist/components/divider/react.d.ts',
+    import: './dist/components/divider/react.js',
+  },
   './components/form/react': {
     types: './dist/components/form/react.d.ts',
     import: './dist/components/form/react.js',
@@ -36,6 +52,14 @@ const expectedJsExports = {
   './components/link/react': {
     types: './dist/components/link/react.d.ts',
     import: './dist/components/link/react.js',
+  },
+  './components/progress/react': {
+    types: './dist/components/progress/react.d.ts',
+    import: './dist/components/progress/react.js',
+  },
+  './components/skeleton/react': {
+    types: './dist/components/skeleton/react.d.ts',
+    import: './dist/components/skeleton/react.js',
   },
   './components/table/react': {
     types: './dist/components/table/react.d.ts',
@@ -56,13 +80,19 @@ const expectedJsExports = {
 } as const;
 
 const expectedCssExports = {
+  './components/alert/alert.css': './dist/components/alert/alert.css',
+  './components/avatar/avatar.css': './dist/components/avatar/avatar.css',
   './components/badge/badge.css': './dist/components/badge/badge.css',
   './components/button/button.css': './dist/components/button/button.css',
+  './components/card/card.css': './dist/components/card/card.css',
   './components/code-block/code-block.css':
     './dist/components/code-block/code-block.css',
   './components/code/code.css': './dist/components/code/code.css',
+  './components/divider/divider.css': './dist/components/divider/divider.css',
   './components/form/form.css': './dist/components/form/form.css',
   './components/link/link.css': './dist/components/link/link.css',
+  './components/progress/progress.css': './dist/components/progress/progress.css',
+  './components/skeleton/skeleton.css': './dist/components/skeleton/skeleton.css',
   './components/table/table.css': './dist/components/table/table.css',
   './components/tabs/tabs.css': './dist/components/tabs/tabs.css',
   './mdx/mdx.css': './dist/mdx/mdx.css',
@@ -93,10 +123,14 @@ describe('package exports', () => {
       './react/table',
       './react/tabs',
       './components/badge/contract',
+      './components/alert/contract',
+      './components/avatar/contract',
+      './components/card/contract',
       './components/table/contract',
       './components/tabs/contract',
       './components/code-block/contract',
       './components/code/contract',
+      './components/divider/contract',
       './components/feedback/contract',
       './components/feedback/react',
       './components/feedback/feedback.css',
@@ -109,6 +143,8 @@ describe('package exports', () => {
       './components/radio/react',
       './components/switch/react',
       './components/link/contract',
+      './components/progress/contract',
+      './components/skeleton/contract',
       './components/layout/react',
       './components/layout/layout.css',
       './components/layout/contract',
@@ -180,8 +216,14 @@ describe('package exports', () => {
     expect(existsSync(join(repoRoot, 'src/core/core.css'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/badge/react.tsx'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/badge/badge.css'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/alert/react.tsx'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/alert/alert.css'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/avatar/react.tsx'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/avatar/avatar.css'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/button/react.tsx'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/button/button.css'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/card/react.tsx'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/card/card.css'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/code-block/react.tsx'))).toBe(
       true,
     );
@@ -193,12 +235,22 @@ describe('package exports', () => {
     );
     expect(existsSync(join(repoRoot, 'src/components/code/react.tsx'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/code/code.css'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/divider/react.tsx'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/divider/divider.css'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/feedback'))).toBe(false);
     expect(existsSync(join(repoRoot, 'src/components/form/react.tsx'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/form/form.css'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/layout'))).toBe(false);
     expect(existsSync(join(repoRoot, 'src/components/link/react.tsx'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/link/link.css'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/progress/react.tsx'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/progress/progress.css'))).toBe(
+      true,
+    );
+    expect(existsSync(join(repoRoot, 'src/components/skeleton/react.tsx'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/skeleton/skeleton.css'))).toBe(
+      true,
+    );
     expect(existsSync(join(repoRoot, 'src/components/table/react.tsx'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/table/table.css'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/tabs/react.tsx'))).toBe(true);
@@ -210,9 +262,13 @@ describe('package exports', () => {
       true,
     );
     expect(packageJson.exports).not.toHaveProperty('./components/badge/contract');
+    expect(packageJson.exports).not.toHaveProperty('./components/alert/contract');
+    expect(packageJson.exports).not.toHaveProperty('./components/avatar/contract');
     expect(packageJson.exports).not.toHaveProperty('./components/button/contract');
     expect(packageJson.exports).not.toHaveProperty('./components/code-block/contract');
     expect(packageJson.exports).not.toHaveProperty('./components/code/contract');
+    expect(packageJson.exports).not.toHaveProperty('./components/card/contract');
+    expect(packageJson.exports).not.toHaveProperty('./components/divider/contract');
     expect(packageJson.exports).not.toHaveProperty('./components/feedback/react');
     expect(packageJson.exports).not.toHaveProperty(
       './components/feedback/feedback.css',
@@ -223,6 +279,8 @@ describe('package exports', () => {
     expect(packageJson.exports).not.toHaveProperty('./components/layout/layout.css');
     expect(packageJson.exports).not.toHaveProperty('./components/layout/contract');
     expect(packageJson.exports).not.toHaveProperty('./components/link/contract');
+    expect(packageJson.exports).not.toHaveProperty('./components/progress/contract');
+    expect(packageJson.exports).not.toHaveProperty('./components/skeleton/contract');
     expect(packageJson.exports).not.toHaveProperty('./components/table/contract');
     expect(packageJson.exports).not.toHaveProperty('./components/tabs/contract');
     expect(packageJson.exports).not.toHaveProperty('./mdx/shared');

@@ -27,16 +27,28 @@ subpaths.
 - **Shared design tokens** for colors, typography, spacing, radii, and semantic surfaces
 - **Core token metadata** through `@tinyrack/ui/core`
 - **Tailwind CSS 4 token base** with `text-tinyrack-*`, `leading-tinyrack-*`, `tracking-tinyrack-*`, and `bg-tinyrack-*` utilities
+- **Framework-neutral Alert CSS** through `@tinyrack/ui/components/alert/alert.css`
+- **Independent React Alert export** through `@tinyrack/ui/components/alert/react`
+- **Framework-neutral Avatar CSS** through `@tinyrack/ui/components/avatar/avatar.css`
+- **Independent React Avatar export** through `@tinyrack/ui/components/avatar/react`
 - **Framework-neutral Button CSS** through `@tinyrack/ui/components/button/button.css`
 - **Independent React Button and IconButton export** through `@tinyrack/ui/components/button/react`
+- **Framework-neutral Card CSS** through `@tinyrack/ui/components/card/card.css`
+- **Independent React Card export** through `@tinyrack/ui/components/card/react`
 - **Framework-neutral Link CSS** through `@tinyrack/ui/components/link/link.css`
 - **Independent React Link export** through `@tinyrack/ui/components/link/react`
 - **Framework-neutral Form CSS** through `@tinyrack/ui/components/form/form.css`
 - **Independent React Form primitives** through `@tinyrack/ui/components/form/react`
+- **Framework-neutral Divider CSS** through `@tinyrack/ui/components/divider/divider.css`
+- **Independent React Divider export** through `@tinyrack/ui/components/divider/react`
 - **Framework-neutral Table CSS** through `@tinyrack/ui/components/table/table.css`
 - **Independent React Table export** through `@tinyrack/ui/components/table/react`
 - **Framework-neutral Tabs CSS** through `@tinyrack/ui/components/tabs/tabs.css`
 - **Independent React Tabs export** through `@tinyrack/ui/components/tabs/react`
+- **Framework-neutral Progress CSS** through `@tinyrack/ui/components/progress/progress.css`
+- **Independent React Progress export** through `@tinyrack/ui/components/progress/react`
+- **Framework-neutral Skeleton CSS** through `@tinyrack/ui/components/skeleton/skeleton.css`
+- **Independent React Skeleton export** through `@tinyrack/ui/components/skeleton/react`
 - **Storybook review surface** with foundations and owned component contracts
 
 ## Installation
@@ -138,6 +150,36 @@ export function RackField() {
       <Input id="rack-name" placeholder="rack-a-01" />
       <FormMessage>Use a stable rack identifier.</FormMessage>
     </Field>
+  );
+}
+```
+
+### React Operational Primitives
+
+```tsx
+import '@tinyrack/ui/core/core.css';
+import '@tinyrack/ui/components/alert/alert.css';
+import '@tinyrack/ui/components/avatar/avatar.css';
+import '@tinyrack/ui/components/card/card.css';
+import '@tinyrack/ui/components/divider/divider.css';
+import '@tinyrack/ui/components/progress/progress.css';
+import '@tinyrack/ui/components/skeleton/skeleton.css';
+import { Alert } from '@tinyrack/ui/components/alert/react';
+import { Avatar } from '@tinyrack/ui/components/avatar/react';
+import { Card } from '@tinyrack/ui/components/card/react';
+import { Divider } from '@tinyrack/ui/components/divider/react';
+import { Progress } from '@tinyrack/ui/components/progress/react';
+import { Skeleton } from '@tinyrack/ui/components/skeleton/react';
+
+export function RackStatus() {
+  return (
+    <Card>
+      <Avatar aria-label="Rack A">RA</Avatar>
+      <Alert role="status" variant="primary">Deployment is queued.</Alert>
+      <Progress aria-label="Deployment progress" max={100} value={42} />
+      <Divider />
+      <Skeleton className="w-48" />
+    </Card>
   );
 }
 ```

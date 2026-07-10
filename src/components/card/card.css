@@ -1,0 +1,28 @@
+.tr-card {
+  box-sizing: border-box;
+  border: 1px solid var(--tinyrack-border);
+  border-radius: 0.5rem;
+  background-color: var(--tinyrack-surface);
+  color: var(--tinyrack-text);
+  font-family: var(--tinyrack-font-body);
+}
+
+.tr-card[data-padding="sm"] {
+  padding: 0.5rem;
+}
+
+.tr-card[data-padding="md"] {
+  padding: 0.75rem;
+}
+
+.tr-card[data-padding="lg"] {
+  padding: 1rem;
+}
+
+.tr-card[data-variant="default"] {
+  background-color: var(--tinyrack-surface);
+}
+
+.tr-card[data-variant="muted"] {
+  background-color: var(--tinyrack-surface-muted);
+}

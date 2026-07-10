@@ -27,12 +27,21 @@
     "url": "https://github.com/tinyrack-net/themes.git"
   },
   "files": [
+    "dist/components/alert/alert.css",
+    "dist/components/alert/contract.*",
+    "dist/components/alert/react.*",
+    "dist/components/avatar/avatar.css",
+    "dist/components/avatar/contract.*",
+    "dist/components/avatar/react.*",
     "dist/components/badge/badge.css",
     "dist/components/badge/contract.*",
     "dist/components/badge/react.*",
     "dist/components/button/button.css",
     "dist/components/button/contract.*",
     "dist/components/button/react.*",
+    "dist/components/card/card.css",
+    "dist/components/card/contract.*",
+    "dist/components/card/react.*",
     "dist/components/code-block/code-block.css",
     "dist/components/code-block/contract.*",
     "dist/components/code-block/react.*",
@@ -40,6 +49,9 @@
     "dist/components/code/code.css",
     "dist/components/code/contract.*",
     "dist/components/code/react.*",
+    "dist/components/divider/divider.css",
+    "dist/components/divider/contract.*",
+    "dist/components/divider/react.*",
     "dist/components/form/choice-controls.*",
     "dist/components/form/field.*",
     "dist/components/form/form.css",
@@ -49,6 +61,12 @@
     "dist/components/link/link.css",
     "dist/components/link/contract.*",
     "dist/components/link/react.*",
+    "dist/components/progress/contract.*",
+    "dist/components/progress/progress.css",
+    "dist/components/progress/react.*",
+    "dist/components/skeleton/contract.*",
+    "dist/components/skeleton/react.*",
+    "dist/components/skeleton/skeleton.css",
     "dist/components/table/table.css",
     "dist/components/table/contract.*",
     "dist/components/table/react.*",
@@ -160,6 +178,14 @@
       "types": "./dist/core/index.d.ts",
       "import": "./dist/core/index.js"
     },
+    "./components/alert/react": {
+      "types": "./dist/components/alert/react.d.ts",
+      "import": "./dist/components/alert/react.js"
+    },
+    "./components/avatar/react": {
+      "types": "./dist/components/avatar/react.d.ts",
+      "import": "./dist/components/avatar/react.js"
+    },
     "./components/badge/react": {
       "types": "./dist/components/badge/react.d.ts",
       "import": "./dist/components/badge/react.js"
@@ -167,6 +193,10 @@
     "./components/button/react": {
       "types": "./dist/components/button/react.d.ts",
       "import": "./dist/components/button/react.js"
+    },
+    "./components/card/react": {
+      "types": "./dist/components/card/react.d.ts",
+      "import": "./dist/components/card/react.js"
     },
     "./components/code-block/react": {
       "types": "./dist/components/code-block/react.d.ts",
@@ -180,6 +210,10 @@
       "types": "./dist/components/code/react.d.ts",
       "import": "./dist/components/code/react.js"
     },
+    "./components/divider/react": {
+      "types": "./dist/components/divider/react.d.ts",
+      "import": "./dist/components/divider/react.js"
+    },
     "./components/form/react": {
       "types": "./dist/components/form/react.d.ts",
       "import": "./dist/components/form/react.js"
@@ -187,6 +221,14 @@
     "./components/link/react": {
       "types": "./dist/components/link/react.d.ts",
       "import": "./dist/components/link/react.js"
+    },
+    "./components/progress/react": {
+      "types": "./dist/components/progress/react.d.ts",
+      "import": "./dist/components/progress/react.js"
+    },
+    "./components/skeleton/react": {
+      "types": "./dist/components/skeleton/react.d.ts",
+      "import": "./dist/components/skeleton/react.js"
     },
     "./components/table/react": {
       "types": "./dist/components/table/react.d.ts",
@@ -200,12 +242,18 @@
       "types": "./dist/mdx/astro.d.ts",
       "import": "./dist/mdx/astro.js"
     },
+    "./components/alert/alert.css": "./dist/components/alert/alert.css",
+    "./components/avatar/avatar.css": "./dist/components/avatar/avatar.css",
     "./components/badge/badge.css": "./dist/components/badge/badge.css",
     "./components/button/button.css": "./dist/components/button/button.css",
+    "./components/card/card.css": "./dist/components/card/card.css",
     "./components/code-block/code-block.css": "./dist/components/code-block/code-block.css",
     "./components/code/code.css": "./dist/components/code/code.css",
+    "./components/divider/divider.css": "./dist/components/divider/divider.css",
     "./components/form/form.css": "./dist/components/form/form.css",
     "./components/link/link.css": "./dist/components/link/link.css",
+    "./components/progress/progress.css": "./dist/components/progress/progress.css",
+    "./components/skeleton/skeleton.css": "./dist/components/skeleton/skeleton.css",
     "./mdx/mdx.css": "./dist/mdx/mdx.css",
     "./components/table/table.css": "./dist/components/table/table.css",
     "./components/tabs/react": {

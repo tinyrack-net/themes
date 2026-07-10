@@ -52,9 +52,15 @@ Import Tailwind first, then Tinyrack core CSS and the component CSS used by the 
 ```css
 @import "tailwindcss";
 @import "@tinyrack/ui/core/core.css";
+@import "@tinyrack/ui/components/alert/alert.css";
+@import "@tinyrack/ui/components/avatar/avatar.css";
 @import "@tinyrack/ui/components/button/button.css";
+@import "@tinyrack/ui/components/card/card.css";
+@import "@tinyrack/ui/components/divider/divider.css";
 @import "@tinyrack/ui/components/form/form.css";
 @import "@tinyrack/ui/components/link/link.css";
+@import "@tinyrack/ui/components/progress/progress.css";
+@import "@tinyrack/ui/components/skeleton/skeleton.css";
 @import "@tinyrack/ui/components/table/table.css";
 @import "@tinyrack/ui/components/tabs/tabs.css";
 ```
@@ -124,13 +130,19 @@ const { Content } = await entry.render();
 
 | Component | React entry | CSS entry | Storybook page |
 | --- | --- | --- | --- |
+| Alert | `@tinyrack/ui/components/alert/react` | `@tinyrack/ui/components/alert/alert.css` | `Components/Alert` |
+| Avatar | `@tinyrack/ui/components/avatar/react` | `@tinyrack/ui/components/avatar/avatar.css` | `Components/Avatar` |
 | Badge | `@tinyrack/ui/components/badge/react` | `@tinyrack/ui/components/badge/badge.css` | `Components/Badge` |
 | Button | `@tinyrack/ui/components/button/react` | `@tinyrack/ui/components/button/button.css` | `Components/Button` |
+| Card | `@tinyrack/ui/components/card/react` | `@tinyrack/ui/components/card/card.css` | `Components/Card` |
 | Code | `@tinyrack/ui/components/code/react` | `@tinyrack/ui/components/code/code.css` | `Components/Code` |
 | CodeBlock | `@tinyrack/ui/components/code-block/react` | `@tinyrack/ui/components/code-block/code-block.css` | `Components/CodeBlock` |
+| Divider | `@tinyrack/ui/components/divider/react` | `@tinyrack/ui/components/divider/divider.css` | `Components/Divider` |
 | Shiki CodeBlock | `@tinyrack/ui/components/code-block/shiki-react` | `@tinyrack/ui/components/code-block/code-block.css` | `Components/CodeBlock` |
 | Form | `@tinyrack/ui/components/form/react` | `@tinyrack/ui/components/form/form.css` | `Components/Form/Overview` |
 | Link | `@tinyrack/ui/components/link/react` | `@tinyrack/ui/components/link/link.css` | `Components/Link` |
+| Progress | `@tinyrack/ui/components/progress/react` | `@tinyrack/ui/components/progress/progress.css` | `Components/Progress` |
+| Skeleton | `@tinyrack/ui/components/skeleton/react` | `@tinyrack/ui/components/skeleton/skeleton.css` | `Components/Skeleton` |
 | Table | `@tinyrack/ui/components/table/react` | `@tinyrack/ui/components/table/table.css` | `Components/Table` |
 | Tabs | `@tinyrack/ui/components/tabs/react` | `@tinyrack/ui/components/tabs/tabs.css` | `Components/Tabs` |
 | MDX React | `@tinyrack/ui/mdx/react` | `@tinyrack/ui/mdx/mdx.css` | `Integrations/MDX Renderer` |

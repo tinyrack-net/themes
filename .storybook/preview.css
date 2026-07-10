@@ -1,12 +1,18 @@
 @import "tailwindcss";
 @import "../src/core/core.css";
+@import "../src/components/alert/alert.css";
+@import "../src/components/avatar/avatar.css";
 @import "../src/components/badge/badge.css";
 @import "../src/components/button/button.css";
+@import "../src/components/card/card.css";
 @import "../src/components/code-block/code-block.css";
 @import "../src/components/code/code.css";
+@import "../src/components/divider/divider.css";
 @import "../src/components/form/form.css";
 @import "../src/components/link/link.css";
 @import "../src/mdx/mdx.css";
+@import "../src/components/progress/progress.css";
+@import "../src/components/skeleton/skeleton.css";
 @import "../src/components/table/table.css";
 @import "../src/components/tabs/tabs.css";
 

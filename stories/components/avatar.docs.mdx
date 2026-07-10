@@ -1,0 +1,135 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { avatarShapes, avatarSizes } from '../../src/components/avatar/contract.js';
+import { Avatar } from '../../src/components/avatar/react.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import * as AvatarStories from './avatar.stories';
+
+<Meta of={AvatarStories} />
+
+# Avatar
+
+A compact identity surface for users, racks, nodes, and other operational resources.
+
+## Contract
+
+| Category | CSS / HTML | React | Values & default | Guidance |
+| --- | --- | --- | --- | --- |
+| Component | `tr-avatar` on `<span>` | `Avatar` | Child content is caller-owned | Use initials or an image with an appropriate accessible name. |
+| Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Match avatar size to the adjacent control or metadata density. |
+| Shape | `data-shape` | `shape` | `circle`, `square`; default `circle` | Use square for resource thumbnails and circle for people. |
+| Image | Child `<img>` | Native child content | `object-fit: cover` | Provide meaningful alt text for informative images. |
+
+## Install
+
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/avatar/avatar.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: ["import { Avatar } from '@tinyrack/ui/components/avatar/react';"],
+    },
+  ]}
+/>
+
+## Usage
+
+<ComponentExampleTabs
+  id="avatar-basic"
+  title="Initials and image content"
+  description="Avatar styles the child content without owning image loading or fallback state."
+  preview={(
+    <div className="flex items-center gap-3">
+      <Avatar aria-label="Rack A">RA</Avatar>
+      <Avatar aria-label="Rack B">
+        <img alt="Rack B" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
+      </Avatar>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
+import '@tinyrack/ui/components/avatar/avatar.css';
+import { Avatar } from '@tinyrack/ui/components/avatar/react';
+
+<Avatar aria-label="Rack A">RA</Avatar>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<span class="tr-avatar" data-size="md" data-shape="circle" aria-label="Rack A">RA</span>`,
+    },
+  ]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  id="avatar-size-shape"
+  title="Size x Shape Matrix"
+  description="Compare all supported identity surface sizes and shapes."
+  preview={(
+    <div className="grid gap-3">
+      {avatarSizes.map((size) => (
+        <div key={size} className="flex items-center gap-3">
+          <span className="w-12 text-tinyrack-xs uppercase">{size}</span>
+          {avatarShapes.map((shape) => (
+            <Avatar key={shape} aria-label={`${size} ${shape}`} shape={shape} size={size}>
+              RA
+            </Avatar>
+          ))}
+        </div>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<Avatar aria-label="Small circle" shape="circle" size="sm">RA</Avatar>
+<Avatar aria-label="Medium square" shape="square" size="md">RA</Avatar>
+<Avatar aria-label="Large circle" shape="circle" size="lg">RA</Avatar>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<span class="tr-avatar" data-size="sm" data-shape="circle">RA</span>
+<span class="tr-avatar" data-size="md" data-shape="square">RA</span>
+<span class="tr-avatar" data-size="lg" data-shape="circle">RA</span>`,
+    },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Use Avatar for compact identity or resource context beside a name, status, or action.',
+    'Use initials when no image is available and keep them short enough for the chosen size.',
+  ]}
+  avoid={[
+    'Do not add image loading or fallback behavior to this presentational primitive.',
+    'Do not use Avatar as the only label for a critical action.',
+  ]}
+  accessibility={[
+    'Give informative images meaningful alt text and give initials an aria-label when needed.',
+    'Mark decorative avatar content as hidden when nearby text already supplies the identity.',
+  ]}
+/>
+
+## API
+
+| Component | Main props | Note |
+| --- | --- | --- |
+| `Avatar` | `size`, `shape`, native span props | Child content and image fallback policy remain caller-owned. |

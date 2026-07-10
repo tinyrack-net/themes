@@ -45,17 +45,19 @@ describe('button.css source contract', () => {
     }
   });
 
-  it('keeps Tailwind scale-backed Button size values in CSS', () => {
+  it('uses the shared control metric scale for Button sizes', () => {
     const css = readButtonCss();
 
-    expect(css).toContain('--tr-btn-height: 2rem;');
-    expect(css).toContain('--tr-btn-padding-x: 0.75rem;');
-    expect(css).toContain('--tr-btn-gap: 0.375rem;');
-    expect(css).toContain('--tr-btn-font-size: 0.875rem;');
-    expect(css).toContain('--tr-btn-height: 3rem;');
-    expect(css).toContain('--tr-btn-padding-x: 1.25rem;');
-    expect(css).toContain('--tr-btn-gap: 0.625rem;');
-    expect(css).toContain('--tr-btn-font-size: 1rem;');
+    expect(css).toContain('--_tr-btn-height: var(--tinyrack-control-height-sm);');
+    expect(css).toContain(
+      '--_tr-btn-padding-x: var(--tinyrack-control-padding-inline-sm);',
+    );
+    expect(css).toContain('--_tr-btn-gap: var(--tinyrack-control-gap-sm);');
+    expect(css).toContain('--_tr-btn-font-size: var(--tinyrack-control-font-size-sm);');
+    expect(css).toContain('--_tr-btn-height: var(--tinyrack-control-height-lg);');
+    expect(css).toContain(
+      '--_tr-btn-padding-x: var(--tinyrack-control-padding-inline-lg);',
+    );
   });
 
   it('keeps semantic variable usage in CSS rather than the Button TS contract', () => {
@@ -65,8 +67,9 @@ describe('button.css source contract', () => {
       'utf8',
     );
 
-    expect(css).toContain('--tr-btn-variant-fill: var(--tinyrack-primary);');
-    expect(css).toContain('--tr-btn-variant-fill: var(--tinyrack-error);');
+    expect(css).toContain('--_tr-btn-variant-fill: var(--tinyrack-primary);');
+    expect(css).toContain('--_tr-btn-variant-fill: var(--tinyrack-error);');
+    expect(css).toContain('var(--tr-btn-height, var(--_tr-btn-height))');
     expect(css).toContain('.tr-btn:focus-visible');
     expect(css).toContain('.tr-icon-btn:focus-visible');
     expect(css).toContain('.tr-btn:disabled');

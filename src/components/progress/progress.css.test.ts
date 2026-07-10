@@ -16,6 +16,8 @@ describe('progress.css source contract', () => {
     expect(css).toContain('.tr-progress');
     expect(css).toContain('prefers-reduced-motion: reduce');
     expect(css).toContain('tr-progress-indeterminate');
+    expect(css).toContain('var(--tinyrack-duration-loading)');
+    expect(css).toContain('var(--tr-progress-height, var(--_tr-progress-height))');
     expect(css).not.toContain('Generated from');
     expect(css).not.toContain('@theme static');
     expect(css).not.toContain('[data-theme="tinyrack-light"]');

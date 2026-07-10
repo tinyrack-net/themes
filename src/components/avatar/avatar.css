@@ -1,46 +1,49 @@
 .tr-avatar {
+  --_tr-avatar-background: var(--tinyrack-surface-muted);
+  --_tr-avatar-color: var(--tinyrack-text);
+  --_tr-avatar-font-size: var(--tinyrack-text-sm);
+  --_tr-avatar-radius: var(--tinyrack-radius-full);
+  --_tr-avatar-size: var(--tinyrack-control-height-md);
   box-sizing: border-box;
   display: inline-grid;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--tr-avatar-size, var(--_tr-avatar-size));
+  height: var(--tr-avatar-size, var(--_tr-avatar-size));
   flex: none;
   place-items: center;
   overflow: hidden;
-  border: 1px solid var(--tinyrack-border);
-  border-radius: 9999px;
-  background-color: var(--tinyrack-surface-muted);
-  color: var(--tinyrack-text);
+  border: var(--tinyrack-border-width-default) solid
+    var(--tr-avatar-border, var(--tinyrack-border));
+  border-radius: var(--tr-avatar-radius, var(--_tr-avatar-radius));
+  background-color: var(--tr-avatar-background, var(--_tr-avatar-background));
+  color: var(--tr-avatar-color, var(--_tr-avatar-color));
   font-family: var(--tinyrack-font-body);
-  font-size: var(--tinyrack-text-sm);
-  font-weight: 600;
+  font-size: var(--tr-avatar-font-size, var(--_tr-avatar-font-size));
+  font-weight: var(--tr-avatar-font-weight, var(--tinyrack-weight-medium));
   line-height: 1;
   text-align: center;
 }
 
 .tr-avatar[data-size="sm"] {
-  width: 2rem;
-  height: 2rem;
-  font-size: var(--tinyrack-text-xs);
+  --_tr-avatar-size: var(--tinyrack-control-height-sm);
+  --_tr-avatar-font-size: var(--tinyrack-text-xs);
 }
 
 .tr-avatar[data-size="md"] {
-  width: 2.5rem;
-  height: 2.5rem;
-  font-size: var(--tinyrack-text-sm);
+  --_tr-avatar-size: var(--tinyrack-control-height-md);
+  --_tr-avatar-font-size: var(--tinyrack-text-sm);
 }
 
 .tr-avatar[data-size="lg"] {
-  width: 3rem;
-  height: 3rem;
-  font-size: var(--tinyrack-text-md);
+  --_tr-avatar-size: var(--tinyrack-control-height-lg);
+  --_tr-avatar-font-size: var(--tinyrack-text-md);
 }
 
 .tr-avatar[data-shape="circle"] {
-  border-radius: 9999px;
+  --_tr-avatar-radius: var(--tinyrack-radius-full);
 }
 
 .tr-avatar[data-shape="square"] {
-  border-radius: 0.375rem;
+  --_tr-avatar-radius: var(--tinyrack-radius-md);
 }
 
 .tr-avatar > img {

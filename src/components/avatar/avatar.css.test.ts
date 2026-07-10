@@ -15,6 +15,8 @@ describe('avatar.css source contract', () => {
 
     expect(css).toContain('.tr-avatar');
     expect(css).toContain('.tr-avatar > img');
+    expect(css).toContain('var(--tr-avatar-size, var(--_tr-avatar-size))');
+    expect(css).toContain('var(--tinyrack-weight-medium)');
     expect(css).not.toContain('Generated from');
     expect(css).not.toContain('@theme static');
     expect(css).not.toContain('[data-theme="tinyrack-light"]');

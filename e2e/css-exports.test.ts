@@ -15,10 +15,7 @@ describe('CSS exports', () => {
     expect(css).toContain('--color-tinyrack-primary: var(--tinyrack-primary);');
     expect(css).toContain('--color-tinyrack-surface: var(--tinyrack-surface);');
     expect(css).toContain('--color-tinyrack-border: var(--tinyrack-border);');
-    expect(css).not.toContain(':root {');
-    expect(css).toContain(
-      ':where([data-theme="tinyrack-light"], [data-theme="tinyrack-dark"])',
-    );
+    expect(css).toContain(':root {');
     expect(css).toContain('[data-theme="tinyrack-light"]');
     expect(css).toContain('[data-theme="tinyrack-dark"]');
     expect(css).toContain('--tinyrack-primary: #fafafa;');
@@ -34,8 +31,11 @@ describe('CSS exports', () => {
     expect(css).not.toContain('--color-tinyrack-success');
     expect(css).not.toContain('--color-tinyrack-warning');
     expect(css).not.toContain('--color-tinyrack-info');
-    expect(css).not.toContain('--color-tinyrack-surface-raised');
-    expect(css).not.toContain('--radius-tinyrack-');
+    expect(css).toContain('--color-tinyrack-surface-raised');
+    expect(css).toContain('--radius-tinyrack-md');
+    expect(css).toContain('--spacing-tinyrack-md');
+    expect(css).toContain('--shadow-tinyrack-overlay');
+    expect(css).toContain('--tinyrack-control-height-md: 2.5rem;');
     expect(css).not.toContain('.tr-badge');
     expect(css).not.toContain('.tr-btn');
     expect(css).not.toContain('.tr-code-block');

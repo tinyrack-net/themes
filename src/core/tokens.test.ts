@@ -1,8 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import {
+  tinyrackBorders,
+  tinyrackControlMetrics,
+  tinyrackMotion,
+  tinyrackOpacity,
   tinyrackPalettes,
   tinyrackRadii,
   tinyrackSemanticColors,
+  tinyrackShadows,
   tinyrackSpacing,
   tinyrackTypography,
 } from './index.js';
@@ -57,14 +62,21 @@ describe('tinyrack design tokens', () => {
       expect(tinyrackSemanticColors[mode]).toMatchObject({
         canvas: expect.any(String),
         surface: expect.any(String),
+        surfaceRaised: expect.any(String),
         surfaceMuted: expect.any(String),
+        surfaceInteractive: expect.any(String),
+        surfaceInteractiveHover: expect.any(String),
+        surfaceSelected: expect.any(String),
         text: expect.any(String),
         textMuted: expect.any(String),
         border: expect.any(String),
+        borderStrong: expect.any(String),
         focus: expect.any(String),
         primary: expect.any(String),
+        primaryHover: expect.any(String),
         primaryContrast: expect.any(String),
         error: expect.any(String),
+        errorHover: expect.any(String),
         errorContrast: expect.any(String),
       });
     }
@@ -92,6 +104,20 @@ describe('tinyrack design tokens', () => {
     expect(tinyrackPalettes.neutral[950]).toBe('#0a0a0a');
     expect(tinyrackSpacing).toMatchObject({ md: '0.75rem', xl: '1.5rem' });
     expect(tinyrackRadii).toMatchObject({ sm: '0.25rem', md: '0.375rem' });
+    expect(tinyrackBorders.focus).toEqual({ width: '2px', offset: '2px' });
+    expect(tinyrackShadows).toHaveProperty('overlay');
+    expect(tinyrackMotion.duration).toEqual({
+      fast: '120ms',
+      normal: '160ms',
+      slow: '180ms',
+      loading: '1.2s',
+    });
+    expect(tinyrackOpacity.disabled).toBe('0.5');
+    expect(tinyrackControlMetrics).toMatchObject({
+      sm: { height: '2rem', paddingInline: '0.75rem' },
+      md: { height: '2.5rem', paddingInline: '1rem' },
+      lg: { height: '3rem', paddingInline: '1.25rem' },
+    });
   });
 
   it('uses a single IBM Plex Sans font stack without explicit fallback families', () => {
@@ -106,6 +132,14 @@ describe('tinyrack design tokens', () => {
       heading: 'var(--tinyrack-font-heading)',
       mono: 'var(--tinyrack-font-mono)',
     });
+    expect(tinyrackTypography.fontWeight).toEqual({
+      regular: 400,
+      medium: 600,
+      heading: 650,
+      bold: 700,
+      strong: 800,
+    });
+    expect(tinyrackTypography.textStyle.headingLg.fontWeight).toBe('heading');
     expect(JSON.stringify(tinyrackTypography)).not.toContain('Noto Sans');
     expect(JSON.stringify(tinyrackTypography)).not.toContain('system-ui');
     expect(JSON.stringify(tinyrackTypography)).not.toContain('sans-serif');

@@ -30,9 +30,11 @@ describe('code.css source contract', () => {
       'utf8',
     );
 
-    expect(css).toContain('background-color: var(--tinyrack-surface-muted);');
-    expect(css).toContain('border: 1px solid var(--tinyrack-border);');
-    expect(css).toContain('color: var(--tinyrack-primary);');
+    expect(css).toContain(
+      'var(--tr-code-background, var(--tinyrack-surface-interactive))',
+    );
+    expect(css).toContain('var(--tr-code-border, var(--tinyrack-border))');
+    expect(css).toContain('var(--tr-code-color, var(--tinyrack-primary))');
     expect(css).toContain('font-family: var(--tinyrack-font-mono);');
     expect(css).toContain('overflow-wrap: anywhere;');
     expect(css).not.toContain('overflow-x: auto;');

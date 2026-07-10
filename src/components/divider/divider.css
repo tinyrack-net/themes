@@ -1,18 +1,19 @@
 .tr-divider {
+  --_tr-divider-thickness: var(--tinyrack-border-width-default);
   display: block;
   flex: none;
   margin: 0;
   border: 0;
-  background-color: var(--tinyrack-border);
+  background-color: var(--tr-divider-color, var(--tinyrack-border));
 }
 
 .tr-divider[data-orientation="horizontal"] {
   width: 100%;
-  height: 1px;
+  height: var(--tr-divider-thickness, var(--_tr-divider-thickness));
 }
 
 .tr-divider[data-orientation="vertical"] {
-  width: 1px;
-  min-height: 1rem;
+  width: var(--tr-divider-thickness, var(--_tr-divider-thickness));
+  min-height: var(--tr-divider-min-length, var(--tinyrack-space-lg));
   height: 100%;
 }

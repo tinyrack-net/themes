@@ -3,6 +3,7 @@ import { CodeBlock } from '../../src/components/code-block/react.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as CodeBlockStories from './code-block.stories';
 
 <Meta of={CodeBlockStories} />
@@ -210,3 +211,5 @@ console.log(answer);</code></pre>`,
 | `theme` | Shiki bundled theme | Default `github-dark`. |
 | `wrap` | `boolean` | Adds `data-wrap="true"`. |
 | `className` | `string` | Merged with `tr-code-block`. |
+
+<ComponentTokenTable component="code-block" />

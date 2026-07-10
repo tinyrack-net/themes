@@ -1,18 +1,22 @@
 .tr-code-block {
-  background-color: var(--tinyrack-surface-muted);
-  border: solid var(--tinyrack-border);
-  border-width: 1px;
-  border-radius: 0.5rem;
+  background-color: var(
+    --tr-code-block-background,
+    var(--tinyrack-surface-interactive)
+  );
+  border: solid var(--tr-code-block-border, var(--tinyrack-border));
+  border-width: var(--tinyrack-border-width-default);
+  border-radius: var(--tr-code-block-radius, var(--tinyrack-radius-lg));
   box-sizing: border-box;
   color: var(--tinyrack-text);
   display: block;
   font-family: var(--tinyrack-font-mono);
-  font-size: var(--tinyrack-text-sm);
-  line-height: var(--tinyrack-leading-lg);
+  font-size: var(--tr-code-block-font-size, var(--tinyrack-text-sm));
+  line-height: var(--tr-code-block-line-height, var(--tinyrack-leading-lg));
   margin: 0;
   max-width: 100%;
   overflow-x: auto;
-  padding: 0.75rem 1rem;
+  padding: var(--tr-code-block-padding-y, var(--tinyrack-space-md))
+    var(--tr-code-block-padding-x, var(--tinyrack-space-lg));
   white-space: pre;
 }
 

@@ -4,6 +4,7 @@ import { badgeSizes, badgeVariants } from '../../src/components/badge/contract.j
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as BadgeStories from './badge.stories';
 
 <Meta of={BadgeStories} />
@@ -231,3 +232,5 @@ import { Badge } from '@tinyrack/ui/components/badge/react';
 | `variant` | `neutral`, `primary`, `danger` | Default `neutral`; sets `data-variant`. |
 | `className` | `string` | Merged with `tr-badge`. |
 | native span props | `HTMLAttributes<HTMLSpanElement>` | Passed through to `<span>`. |
+
+<ComponentTokenTable component="badge" />

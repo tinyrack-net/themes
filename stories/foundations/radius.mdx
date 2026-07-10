@@ -71,10 +71,10 @@ Shape tokens keep controls crisp, make layered surfaces recognizable, and reserv
 
 ## Implementation
 
-Radius values are public TypeScript metadata. Owned component CSS applies its own literal radii, while application layout may use matching standard Tailwind `rounded-*` utilities.
+Radius values are public TypeScript metadata and runtime CSS tokens. Owned component CSS consumes semantic radius roles while application layout can use prefixed Tailwind utilities.
 
 ```html
-<section class="rounded-lg border border-tinyrack-border p-4">
+<section class="rounded-tinyrack-lg border border-tinyrack-border p-tinyrack-lg">
   <button class="tr-btn">Deploy</button>
   <span class="tr-badge">ready</span>
 </section>
@@ -87,7 +87,7 @@ const panelRadius = tinyrackRadii.lg;
 const statusRadius = tinyrackRadii.full;
 ```
 
-Do not write `rounded-tinyrack-md` or `--tinyrack-radius-md`; those runtime contracts are not exported.
+Use `--tinyrack-radius-*` in CSS and `rounded-tinyrack-*` utilities in Tailwind markup.
 
 ## Reference
 

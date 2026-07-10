@@ -9,6 +9,7 @@ import { formControlSizes } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as InputStories from './form-input.stories';
 
 <Meta of={InputStories} />
@@ -243,3 +244,5 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
 | `invalid` | `boolean` | Sets `aria-invalid` and `data-invalid`. |
 | `type` | native input type | Passed through to `<input>`. |
 | native input props | `InputHTMLAttributes<HTMLInputElement>` except native `size` | Passed through to `<input>`. |
+
+<ComponentTokenTable component="form" />

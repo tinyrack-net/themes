@@ -835,16 +835,34 @@ describe('Storybook structure', () => {
       },
     ];
 
-    expect(previewSource).toContain(
-      "['Overview', 'Colors', 'Typography', 'Spacing', 'Radius']",
-    );
+    expect(previewSource).toContain("'Controls'");
+    expect(previewSource).toContain("'Motion'");
+    expect(previewSource).toContain("'Elevation'");
     expect(overviewSource).toContain('<Meta title="Foundations/Overview" />');
     expect(overviewSource).toContain('## Model');
     expect(overviewSource).toContain('## System in one surface');
     expect(overviewSource).toContain('## Consumption');
     expect(overviewSource).toContain('## Next');
-    expect(overviewSource).toContain('Runtime CSS foundations');
-    expect(overviewSource).toContain('Metadata and guidance foundations');
+    expect(overviewSource).toContain('Runtime foundation tokens');
+    expect(overviewSource).toContain('Shared component decisions');
+
+    foundationDocs.push(
+      {
+        source: readText('stories/foundations/controls.mdx'),
+        token: 'tinyrackControlMetrics',
+        reference: 'controls',
+      },
+      {
+        source: readText('stories/foundations/motion.mdx'),
+        token: 'tinyrackMotion',
+        reference: 'motion',
+      },
+      {
+        source: readText('stories/foundations/elevation.mdx'),
+        token: 'tinyrackShadows',
+        reference: 'elevation',
+      },
+    );
 
     for (const { source, token, reference } of foundationDocs) {
       expectSnippetsInOrder(source, [
@@ -860,12 +878,25 @@ describe('Storybook structure', () => {
     }
 
     expect(foundationDocs[0]?.source).not.toMatch(/#[0-9a-f]{6}/i);
-    expect(foundationDocs[2]?.source).toContain(
-      'those runtime contracts are not exported',
-    );
-    expect(foundationDocs[3]?.source).toContain(
-      'those runtime contracts are not exported',
-    );
+    expect(foundationDocs[2]?.source).toContain('--tinyrack-space-*');
+    expect(foundationDocs[3]?.source).toContain('--tinyrack-radius-*');
+  });
+
+  it('documents component-level CSS token overrides on every component page', () => {
+    const helperSource = readText('stories/shared/component-token-table.tsx');
+
+    expect(helperSource).toContain('data-component-token-table');
+    expect(helperSource).toContain('--tinyrack-*');
+    expect(helperSource).toContain('--tr-*');
+
+    for (const docsFile of componentDocsFiles) {
+      const docsSource = readText(docsFile);
+
+      expect(docsSource, docsFile).toContain('ComponentTokenTable');
+      expect(docsSource, docsFile).toContain(
+        "from '../shared/component-token-table.js'",
+      );
+    }
   });
 
   it('keeps owned component stories in the component gallery', () => {

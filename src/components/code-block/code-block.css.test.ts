@@ -34,8 +34,8 @@ describe('code-block.css source contract', () => {
       'utf8',
     );
 
-    expect(css).toContain('background-color: var(--tinyrack-surface-muted);');
-    expect(css).toContain('border: solid var(--tinyrack-border);');
+    expect(css).toContain('var(--tinyrack-surface-interactive)');
+    expect(css).toContain('var(--tr-code-block-border, var(--tinyrack-border))');
     expect(css).toContain('color: var(--tinyrack-text);');
     expect(css).toContain('font-family: var(--tinyrack-font-mono);');
     expect(css).toContain('overflow-x: auto;');

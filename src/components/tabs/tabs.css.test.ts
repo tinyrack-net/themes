@@ -48,14 +48,22 @@ describe('tabs.css source contract', () => {
     expect(css).toContain('.tr-tabs-panel[hidden]');
   });
 
-  it('keeps Tailwind scale-backed Tabs size values in CSS', () => {
+  it('uses the shared control metric scale for Tabs sizes', () => {
     const css = readTabsCss();
 
-    expect(css).toContain('--tr-tabs-trigger-height: 2rem;');
-    expect(css).toContain('--tr-tabs-trigger-padding-x: 0.75rem;');
-    expect(css).toContain('--tr-tabs-trigger-height: 3rem;');
-    expect(css).toContain('--tr-tabs-trigger-padding-x: 1.25rem;');
-    expect(css).toContain('--tr-tabs-panel-padding: 1.25rem;');
+    expect(css).toContain(
+      '--_tr-tabs-trigger-height: var(--tinyrack-control-height-sm);',
+    );
+    expect(css).toContain(
+      '--_tr-tabs-trigger-padding-x: var(--tinyrack-control-padding-inline-sm);',
+    );
+    expect(css).toContain(
+      '--_tr-tabs-trigger-height: var(--tinyrack-control-height-lg);',
+    );
+    expect(css).toContain(
+      '--_tr-tabs-trigger-padding-x: var(--tinyrack-control-padding-inline-lg);',
+    );
+    expect(css).toContain('--_tr-tabs-panel-padding: 1.25rem;');
   });
 
   it('keeps Tabs connected to its panel across orientations', () => {
@@ -65,12 +73,11 @@ describe('tabs.css source contract', () => {
     expect(css).toContain('gap: 0;');
     expect(css).toContain('width: 100%;');
     expect(css).toContain('max-width: 100%;');
-    expect(css).toContain('--tr-tabs-list-gap: 0.25rem;');
-    expect(css).toContain('border-bottom-color: var(--tinyrack-surface);');
-    expect(css).toContain('border-right-color: var(--tinyrack-surface);');
-    expect(css).toContain('border-radius: 0 0 0.375rem 0.375rem;');
+    expect(css).toContain('--_tr-tabs-list-gap: var(--tinyrack-space-xs);');
+    expect(css).toContain('--tr-tabs-selected-background');
+    expect(css).toContain('var(--tinyrack-surface-selected)');
+    expect(css).toContain('var(--tr-tabs-radius, var(--tinyrack-radius-md))');
     expect(css).toContain('.tr-tabs[data-orientation="vertical"] .tr-tabs-panel');
-    expect(css).toContain('border-radius: 0 0.375rem 0.375rem 0;');
   });
 
   it('keeps semantic variable usage in CSS rather than the Tabs TS contract', () => {

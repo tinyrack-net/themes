@@ -24,9 +24,9 @@ subpaths.
 
 ## Features
 
-- **Shared design tokens** for colors, typography, spacing, radii, and semantic surfaces
+- **Shared design tokens** for colors, typography, spacing, radii, controls, motion, and elevation
 - **Core token metadata** through `@tinyrack/ui/core`
-- **Tailwind CSS 4 token base** with `text-tinyrack-*`, `leading-tinyrack-*`, `tracking-tinyrack-*`, and `bg-tinyrack-*` utilities
+- **Tailwind CSS 4 token base** with typography, color, spacing, radius, and shadow utilities
 - **Framework-neutral Alert CSS** through `@tinyrack/ui/components/alert/alert.css`
 - **Independent React Alert export** through `@tinyrack/ui/components/alert/react`
 - **Framework-neutral Avatar CSS** through `@tinyrack/ui/components/avatar/avatar.css`
@@ -103,6 +103,11 @@ import { tinyrackSemanticColors } from '@tinyrack/ui/core';
   <h1 class="font-tinyrack-heading text-tinyrack-primary">Tinyrack</h1>
 </section>
 ```
+
+Core CSS also exposes runtime variables such as `--tinyrack-space-md`,
+`--tinyrack-radius-md`, `--tinyrack-control-height-md`, and
+`--tinyrack-duration-fast`. Components provide scoped `--tr-*` recipe
+variables for deliberate local overrides without changing their HTML contract.
 
 ### CSS Button
 

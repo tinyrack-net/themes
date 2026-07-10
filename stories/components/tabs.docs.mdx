@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsPanel, TabsTrigger } from '../../src/components/tab
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as TabsStories from './tabs.stories';
 
 <Meta of={TabsStories} />
@@ -401,3 +402,5 @@ import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/
 | `orientation` | `horizontal`, `vertical` | Default `horizontal`; sets `data-orientation`. |
 | `activationMode` | `automatic`, `manual` | Default `automatic`. |
 | native props | div and button attributes | Passed through to root, list, trigger, and panel primitives. |
+
+<ComponentTokenTable component="tabs" />

@@ -1,0 +1,48 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Code } from '../../src/components/code/react.js';
+import { Table, TableContainer } from '../../src/components/table/react.js';
+import { tinyrackShadows } from '../../src/core/index.js';
+
+<Meta title="Foundations/Elevation" />
+
+# Elevation
+
+Elevation is reserved for content that enters the browser top layer or floats above its anchor.
+
+## Principle
+
+Use borders and surface color for normal hierarchy. Apply `raised` to anchored layers and `overlay` to blocking modal surfaces.
+
+## Visual scale
+
+<div className="grid gap-tinyrack-xl md:grid-cols-2" role="list">
+  {Object.entries(tinyrackShadows).map(([name, value]) => (
+    <section className="grid min-h-40 content-center gap-tinyrack-sm rounded-tinyrack-lg border border-tinyrack-border bg-tinyrack-surface-raised p-tinyrack-xl" key={name} role="listitem" style={{ boxShadow: value }}>
+      <strong>{name}</strong><Code>{value}</Code>
+    </section>
+  ))}
+</div>
+
+## Applied pattern
+
+<section className="grid gap-tinyrack-md border border-tinyrack-border p-tinyrack-xl">
+  <div className="rounded-tinyrack-lg border border-tinyrack-border bg-tinyrack-surface-raised p-tinyrack-lg shadow-tinyrack-raised">Anchored layer</div>
+  <div className="rounded-tinyrack-xl border border-tinyrack-border bg-tinyrack-surface-raised p-tinyrack-xl shadow-tinyrack-overlay">Modal surface</div>
+</section>
+
+## Implementation
+
+Use the CSS variables in component CSS or the prefixed Tailwind shadow utilities in product layouts.
+
+```html
+<section class="rounded-tinyrack-lg shadow-tinyrack-raised">...</section>
+```
+
+## Reference
+
+<TableContainer data-foundation-reference="elevation">
+  <Table>
+    <thead><tr><th scope="col">Token</th><th scope="col">CSS variable</th><th scope="col">Utility</th></tr></thead>
+    <tbody>{Object.keys(tinyrackShadows).map((name) => <tr key={name}><th scope="row"><Code>{name}</Code></th><td><Code>{`--tinyrack-shadow-${name}`}</Code></td><td><Code>{`shadow-tinyrack-${name}`}</Code></td></tr>)}</tbody>
+  </Table>
+</TableContainer>

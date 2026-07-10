@@ -1,5 +1,10 @@
+export { tinyrackBorders } from './tokens/borders.js';
 export { tinyrackPalettes } from './tokens/colors.js';
+export { tinyrackControlMetrics } from './tokens/control-metrics.js';
+export { tinyrackMotion } from './tokens/motion.js';
+export { tinyrackOpacity } from './tokens/opacity.js';
 export { tinyrackRadii } from './tokens/radii.js';
 export { tinyrackSemanticColors } from './tokens/semantic.js';
+export { tinyrackShadows } from './tokens/shadows.js';
 export { tinyrackSpacing } from './tokens/spacing.js';
 export { tinyrackTypography } from './tokens/typography.js';

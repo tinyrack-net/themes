@@ -35,6 +35,14 @@ const tinyrackLetterSpacing = {
   xl: '0.12em',
 } as const;
 
+const tinyrackFontWeights = {
+  regular: 400,
+  medium: 600,
+  heading: 650,
+  bold: 700,
+  strong: 800,
+} as const;
+
 export const tinyrackTypography = {
   fontStack: tinyrackFontStacks,
   fontFamily: {
@@ -45,51 +53,61 @@ export const tinyrackTypography = {
   fontSize: tinyrackFontSizes,
   lineHeight: tinyrackLineHeights,
   letterSpacing: tinyrackLetterSpacing,
+  fontWeight: tinyrackFontWeights,
   textStyle: {
     caption: {
       fontSize: 'xs',
       lineHeight: 'sm',
       letterSpacing: 'none',
+      fontWeight: 'regular',
     },
     label: {
       fontSize: 'xs',
       lineHeight: 'xs',
       letterSpacing: 'lg',
+      fontWeight: 'strong',
     },
     body: {
       fontSize: 'md',
       lineHeight: 'md',
       letterSpacing: 'none',
+      fontWeight: 'regular',
     },
     bodySm: {
       fontSize: 'sm',
       lineHeight: 'md',
       letterSpacing: 'none',
+      fontWeight: 'regular',
     },
     code: {
       fontSize: 'sm',
       lineHeight: 'lg',
       letterSpacing: 'none',
+      fontWeight: 'regular',
     },
     headingSm: {
       fontSize: 'lg',
       lineHeight: 'sm',
       letterSpacing: 'none',
+      fontWeight: 'heading',
     },
     headingMd: {
       fontSize: '2xl',
       lineHeight: 'sm',
       letterSpacing: 'none',
+      fontWeight: 'heading',
     },
     headingLg: {
       fontSize: '3xl',
       lineHeight: 'sm',
       letterSpacing: 'none',
+      fontWeight: 'heading',
     },
     display: {
       fontSize: '5xl',
       lineHeight: 'sm',
       letterSpacing: 'none',
+      fontWeight: 'heading',
     },
   },
 } as const;

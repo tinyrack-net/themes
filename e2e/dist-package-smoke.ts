@@ -2,10 +2,23 @@ import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 type DistTokenModule = Record<string, unknown> & {
+  tinyrackControlMetrics: {
+    md: {
+      height: string;
+    };
+  };
+  tinyrackMotion: {
+    duration: {
+      fast: string;
+    };
+  };
   tinyrackSemanticColors: {
     dark: {
       primary: string;
     };
+  };
+  tinyrackShadows: {
+    overlay: string;
   };
 };
 
@@ -176,8 +189,16 @@ function assertMissingResolvedExport(subpath: string) {
 }
 
 const coreModule = await assertJsExport<DistTokenModule>('/core', [
+  'tinyrackBorders',
+  'tinyrackControlMetrics',
+  'tinyrackMotion',
+  'tinyrackOpacity',
   'tinyrackPalettes',
+  'tinyrackRadii',
   'tinyrackSemanticColors',
+  'tinyrackShadows',
+  'tinyrackSpacing',
+  'tinyrackTypography',
 ]);
 const alertModule = await assertJsExport<DistAlertModule>('/components/alert/react', [
   'Alert',
@@ -389,10 +410,21 @@ assert(!('Link' in coreModule), '/core export should not include React Link');
 assert(!('Field' in coreModule), '/core export should not include React Form');
 assert(!('Table' in coreModule), '/core export should not include React Table');
 assert(!('Tabs' in coreModule), '/core export should not include React Tabs');
-assert(!('tinyrackShadows' in coreModule), '/core export should not include shadows');
 assert(
   coreModule.tinyrackSemanticColors.dark.primary === '#fafafa',
   'dark primary semantic color changed unexpectedly',
+);
+assert(
+  coreModule.tinyrackControlMetrics.md.height === '2.5rem',
+  'medium control height changed unexpectedly',
+);
+assert(
+  coreModule.tinyrackMotion.duration.fast === '120ms',
+  'fast motion duration changed unexpectedly',
+);
+assert(
+  coreModule.tinyrackShadows.overlay.includes('rgb('),
+  'overlay shadow token is missing',
 );
 assert(
   typeof alertModule.Alert === 'object' || typeof alertModule.Alert === 'function',

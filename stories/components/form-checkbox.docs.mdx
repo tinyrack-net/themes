@@ -4,6 +4,7 @@ import { formControlSizes } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as CheckboxStories from './form-checkbox.stories';
 
 <Meta of={CheckboxStories} />
@@ -210,3 +211,5 @@ import { Checkbox } from '@tinyrack/ui/components/form/react';
 | `invalid` | `boolean` | Sets `aria-invalid` on input and `data-invalid` on wrapper. |
 | `children` | `ReactNode` | Renders `tr-checkbox-label` when present. |
 | native checkbox props | `InputHTMLAttributes<HTMLInputElement>` except `children`, `size`, `type` | Passed through to the native checkbox input. |
+
+<ComponentTokenTable component="form" />

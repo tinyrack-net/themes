@@ -37,6 +37,14 @@ const expectedJsExports = {
     types: './dist/components/link/react.d.ts',
     import: './dist/components/link/react.js',
   },
+  './components/overlay/dom': {
+    types: './dist/components/overlay/dom.d.ts',
+    import: './dist/components/overlay/dom.js',
+  },
+  './components/overlay/react': {
+    types: './dist/components/overlay/react.d.ts',
+    import: './dist/components/overlay/react.js',
+  },
   './components/table/react': {
     types: './dist/components/table/react.d.ts',
     import: './dist/components/table/react.js',
@@ -63,6 +71,7 @@ const expectedCssExports = {
   './components/code/code.css': './dist/components/code/code.css',
   './components/form/form.css': './dist/components/form/form.css',
   './components/link/link.css': './dist/components/link/link.css',
+  './components/overlay/overlay.css': './dist/components/overlay/overlay.css',
   './components/table/table.css': './dist/components/table/table.css',
   './components/tabs/tabs.css': './dist/components/tabs/tabs.css',
   './mdx/mdx.css': './dist/mdx/mdx.css',
@@ -109,6 +118,7 @@ describe('package exports', () => {
       './components/radio/react',
       './components/switch/react',
       './components/link/contract',
+      './components/overlay/contract',
       './components/layout/react',
       './components/layout/layout.css',
       './components/layout/contract',
@@ -141,6 +151,12 @@ describe('package exports', () => {
     expect(packageJson.peerDependencies.shiki).toBe('^4.3.1');
     expect(packageJson.peerDependenciesMeta?.shiki?.optional).toBe(true);
     expect(packageJson.devDependencies.shiki).toBe('4.3.1');
+  });
+
+  it('keeps the DOM Overlay runtime independent from optional React peers', () => {
+    expect(packageJson.dependencies['@floating-ui/dom']).toBe('1.7.6');
+    expect(packageJson.peerDependenciesMeta?.react?.optional).toBe(true);
+    expect(packageJson.peerDependenciesMeta?.['react-dom']?.optional).toBe(true);
   });
 
   it('keeps Lucide as a Storybook-only documentation dependency', () => {
@@ -199,6 +215,9 @@ describe('package exports', () => {
     expect(existsSync(join(repoRoot, 'src/components/layout'))).toBe(false);
     expect(existsSync(join(repoRoot, 'src/components/link/react.tsx'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/link/link.css'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/overlay/dom.ts'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/overlay/react.tsx'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/overlay/overlay.css'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/table/react.tsx'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/table/table.css'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/tabs/react.tsx'))).toBe(true);
@@ -223,6 +242,7 @@ describe('package exports', () => {
     expect(packageJson.exports).not.toHaveProperty('./components/layout/layout.css');
     expect(packageJson.exports).not.toHaveProperty('./components/layout/contract');
     expect(packageJson.exports).not.toHaveProperty('./components/link/contract');
+    expect(packageJson.exports).not.toHaveProperty('./components/overlay/contract');
     expect(packageJson.exports).not.toHaveProperty('./components/table/contract');
     expect(packageJson.exports).not.toHaveProperty('./components/tabs/contract');
     expect(packageJson.exports).not.toHaveProperty('./mdx/shared');
@@ -293,6 +313,14 @@ describe('package exports', () => {
         )
         .sort(),
     ).toEqual(['contract.ts', 'react.tsx']);
+    expect(
+      readdirSync(join(repoRoot, 'src/components/overlay'))
+        .filter(
+          (file) =>
+            !file.includes('.test.') && (file.endsWith('.ts') || file.endsWith('.tsx')),
+        )
+        .sort(),
+    ).toEqual(['contract.ts', 'dom.ts', 'react.tsx']);
     expect(
       readdirSync(join(repoRoot, 'src/components/tabs'))
         .filter(

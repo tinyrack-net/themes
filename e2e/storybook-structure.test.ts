@@ -17,6 +17,7 @@ const allowedPreviewImports = [
   '@import "../src/components/code/code.css";',
   '@import "../src/components/form/form.css";',
   '@import "../src/components/link/link.css";',
+  '@import "../src/components/overlay/overlay.css";',
   '@import "../src/mdx/mdx.css";',
   '@import "../src/components/table/table.css";',
   '@import "../src/components/tabs/tabs.css";',
@@ -580,6 +581,12 @@ describe('Storybook structure', () => {
         'React MDX',
         'Astro MDX',
       ],
+      'stories/components/overlay.docs.mdx': [
+        'title="Modal"',
+        'title="Placement"',
+        'title="Anchored Layer"',
+        'createOverlayManager(document)',
+      ],
       'stories/components/table.docs.mdx': [
         'title="Density"',
         'tableDensities.map',
@@ -609,9 +616,9 @@ describe('Storybook structure', () => {
       'Native',
     ];
 
-    expect(componentDocsManifest).toHaveLength(15);
-    expect(new Set(componentDocsManifest.map(({ id }) => id)).size).toBe(15);
-    expect(new Set(componentDocsManifest.map(({ storyId }) => storyId)).size).toBe(15);
+    expect(componentDocsManifest).toHaveLength(16);
+    expect(new Set(componentDocsManifest.map(({ id }) => id)).size).toBe(16);
+    expect(new Set(componentDocsManifest.map(({ storyId }) => storyId)).size).toBe(16);
     expect(manifestFiles).toEqual(actualComponentDocs);
 
     for (const entry of componentDocsManifest) {
@@ -841,6 +848,7 @@ describe('Storybook structure', () => {
       'form-switch.stories.tsx',
       'form-textarea.stories.tsx',
       'link.stories.tsx',
+      'overlay.stories.tsx',
       'table.stories.tsx',
       'tabs.stories.tsx',
     ]);

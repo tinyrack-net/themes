@@ -19,6 +19,22 @@ export type ComponentDocsManifestEntry = {
 export const componentDocsManifest = [
   {
     capabilities: ['responsive'],
+    file: 'stories/components/alert.docs.mdx',
+    id: 'alert',
+    requiredExamples: ['alert-basic', 'alert-variant'],
+    storyId: 'components-alert--docs',
+    title: 'Alert',
+  },
+  {
+    capabilities: ['responsive'],
+    file: 'stories/components/avatar.docs.mdx',
+    id: 'avatar',
+    requiredExamples: ['avatar-basic', 'avatar-size-shape'],
+    storyId: 'components-avatar--docs',
+    title: 'Avatar',
+  },
+  {
+    capabilities: ['responsive'],
     file: 'stories/components/badge.docs.mdx',
     id: 'badge',
     requiredExamples: ['badge-basic', 'badge-size-variant', 'badge-content'],
@@ -42,6 +58,14 @@ export const componentDocsManifest = [
     title: 'Button',
   },
   {
+    capabilities: ['responsive'],
+    file: 'stories/components/card.docs.mdx',
+    id: 'card',
+    requiredExamples: ['card-basic', 'card-appearance'],
+    storyId: 'components-card--docs',
+    title: 'Card',
+  },
+  {
     capabilities: ['responsive', 'overflow'],
     file: 'stories/components/code-block.docs.mdx',
     id: 'code-block',
@@ -60,6 +84,14 @@ export const componentDocsManifest = [
     requiredExamples: ['code-basic', 'code-inline-contexts', 'code-command-path-token'],
     storyId: 'components-code--docs',
     title: 'Code',
+  },
+  {
+    capabilities: ['responsive'],
+    file: 'stories/components/divider.docs.mdx',
+    id: 'divider',
+    requiredExamples: ['divider-basic', 'divider-orientation'],
+    storyId: 'components-divider--docs',
+    title: 'Divider',
   },
   {
     capabilities: ['keyboard', 'validation'],
@@ -159,6 +191,26 @@ export const componentDocsManifest = [
     requiredExamples: ['link-basic', 'link-underline-variant', 'link-mdx'],
     storyId: 'components-link--docs',
     title: 'Link',
+  },
+  {
+    capabilities: ['responsive'],
+    file: 'stories/components/progress.docs.mdx',
+    id: 'progress',
+    requiredExamples: [
+      'progress-basic',
+      'progress-size-variant',
+      'progress-indeterminate',
+    ],
+    storyId: 'components-progress--docs',
+    title: 'Progress',
+  },
+  {
+    capabilities: ['responsive'],
+    file: 'stories/components/skeleton.docs.mdx',
+    id: 'skeleton',
+    requiredExamples: ['skeleton-basic', 'skeleton-shape', 'skeleton-motion'],
+    storyId: 'components-skeleton--docs',
+    title: 'Skeleton',
   },
   {
     capabilities: ['responsive', 'keyboard', 'overflow'],

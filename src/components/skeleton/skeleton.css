@@ -1,0 +1,57 @@
+.tr-skeleton {
+  --tr-skeleton-highlight: var(--tinyrack-surface);
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 1rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  background-color: var(--tinyrack-surface-muted);
+  color: transparent;
+}
+
+.tr-skeleton[data-shape="text"] {
+  height: 1em;
+}
+
+.tr-skeleton[data-shape="rectangle"] {
+  min-height: 4rem;
+  border-radius: 0.5rem;
+}
+
+.tr-skeleton[data-shape="circle"] {
+  width: 3rem;
+  height: 3rem;
+  min-height: 3rem;
+  border-radius: 9999px;
+}
+
+.tr-skeleton[data-animate="true"]::after {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    var(--tr-skeleton-highlight),
+    transparent
+  );
+  background-size: 200% 100%;
+  content: "";
+  animation: tr-skeleton-shimmer 1.2s linear infinite;
+}
+
+@keyframes tr-skeleton-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-skeleton[data-animate="true"]::after {
+    animation: none;
+  }
+}

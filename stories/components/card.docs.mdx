@@ -1,0 +1,131 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { cardPaddings, cardVariants } from '../../src/components/card/contract.js';
+import { Card } from '../../src/components/card/react.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import * as CardStories from './card.stories';
+
+<Meta of={CardStories} />
+
+# Card
+
+An operational surface for grouping related content without adding layout-specific subcomponents.
+
+## Contract
+
+| Category | CSS / HTML | React | Values & default | Guidance |
+| --- | --- | --- | --- | --- |
+| Component | `tr-card` on `<div>` | `Card` | Required surface; variant default `default` | Use for a bounded group of related content. |
+| Variant | `data-variant` | `variant` | `default`, `muted`; default `default` | Use muted surfaces for secondary operational context. |
+| Padding | `data-padding` | `padding` | `sm`, `md`, `lg`; default `md` | Match padding to content density. |
+| Native | Native `<div>` attributes | `HTMLAttributes<HTMLDivElement>` | Passed through | Keep card semantics supplied by the surrounding heading and content. |
+
+## Install
+
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/card/card.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: ["import { Card } from '@tinyrack/ui/components/card/react';"],
+    },
+  ]}
+/>
+
+## Usage
+
+<ComponentExampleTabs
+  id="card-basic"
+  title="Basic card"
+  description="Use Card as a bounded surface while keeping internal layout in application markup."
+  preview={<Card>Rack A is healthy.</Card>}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`import '@tinyrack/ui/core/core.css';
+import '@tinyrack/ui/components/card/card.css';
+import { Card } from '@tinyrack/ui/components/card/react';
+
+<Card padding="md">
+  Rack A is healthy.
+</Card>;`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-card" data-padding="md" data-variant="default">
+  Rack A is healthy.
+</div>`,
+    },
+  ]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  id="card-appearance"
+  title="Padding x Variant Matrix"
+  description="Compare every supported padding and surface variant combination."
+  preview={(
+    <div className="grid gap-3">
+      {cardPaddings.map((padding) => (
+        <div key={padding} className="grid gap-2 md:grid-cols-2">
+          {cardVariants.map((variant) => (
+            <Card key={variant} padding={padding} variant={variant}>
+              {padding} / {variant}
+            </Card>
+          ))}
+        </div>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<Card padding="sm" variant="default">sm / default</Card>
+<Card padding="md" variant="muted">md / muted</Card>
+<Card padding="lg" variant="default">lg / default</Card>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-card" data-padding="sm" data-variant="default">sm / default</div>
+<div class="tr-card" data-padding="md" data-variant="muted">md / muted</div>
+<div class="tr-card" data-padding="lg" data-variant="default">lg / default</div>`,
+    },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Use Card for a bounded operational surface such as a resource summary or log block.',
+    'Keep headings, actions, and layout composition in the card content.',
+  ]}
+  avoid={[
+    'Do not use Card as a page-wide layout primitive; use Tailwind layout utilities for that.',
+    'Do not create nested cards when a spacing or divider relationship is enough.',
+  ]}
+  accessibility={[
+    'Give the content an appropriate heading when the card represents a distinct section.',
+    'Do not rely on the border or background alone to communicate status.',
+  ]}
+/>
+
+## API
+
+| Component | Main props | Note |
+| --- | --- | --- |
+| `Card` | `padding`, `variant`, native div props | Presentational surface only; no built-in header or footer. |

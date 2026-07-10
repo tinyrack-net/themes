@@ -14,6 +14,18 @@ type DistButtonModule = Record<string, unknown> & {
   IconButton: unknown;
 };
 
+type DistAlertModule = Record<string, unknown> & {
+  Alert: unknown;
+};
+
+type DistAvatarModule = Record<string, unknown> & {
+  Avatar: unknown;
+};
+
+type DistCardModule = Record<string, unknown> & {
+  Card: unknown;
+};
+
 type DistLinkModule = Record<string, unknown> & {
   Link: unknown;
 };
@@ -41,6 +53,10 @@ type DistCodeModule = Record<string, unknown> & {
 
 type DistCodeBlockModule = Record<string, unknown> & {
   CodeBlock: unknown;
+};
+
+type DistDividerModule = Record<string, unknown> & {
+  Divider: unknown;
 };
 
 type DistShikiCodeBlockModule = Record<string, unknown> & {
@@ -73,6 +89,14 @@ type DistOverlayReactModule = Record<string, unknown> & {
 type DistMdxReactModule = Record<string, unknown> & {
   createTinyrackMdxComponents: unknown;
   tinyrackMdxComponents: unknown;
+};
+
+type DistProgressModule = Record<string, unknown> & {
+  Progress: unknown;
+};
+
+type DistSkeletonModule = Record<string, unknown> & {
+  Skeleton: unknown;
 };
 
 function assert(condition: unknown, message: string): asserts condition {
@@ -155,6 +179,13 @@ const coreModule = await assertJsExport<DistTokenModule>('/core', [
   'tinyrackPalettes',
   'tinyrackSemanticColors',
 ]);
+const alertModule = await assertJsExport<DistAlertModule>('/components/alert/react', [
+  'Alert',
+]);
+const avatarModule = await assertJsExport<DistAvatarModule>(
+  '/components/avatar/react',
+  ['Avatar'],
+);
 const badgeModule = await assertJsExport<DistBadgeModule>('/components/badge/react', [
   'Badge',
 ]);
@@ -162,12 +193,19 @@ const buttonModule = await assertJsExport<DistButtonModule>(
   '/components/button/react',
   ['Button', 'IconButton'],
 );
+const cardModule = await assertJsExport<DistCardModule>('/components/card/react', [
+  'Card',
+]);
 const codeModule = await assertJsExport<DistCodeModule>('/components/code/react', [
   'Code',
 ]);
 const codeBlockModule = await assertJsExport<DistCodeBlockModule>(
   '/components/code-block/react',
   ['CodeBlock'],
+);
+const dividerModule = await assertJsExport<DistDividerModule>(
+  '/components/divider/react',
+  ['Divider'],
 );
 const shikiCodeBlockModule = await assertJsExport<DistShikiCodeBlockModule>(
   '/components/code-block/shiki-react',
@@ -176,6 +214,14 @@ const shikiCodeBlockModule = await assertJsExport<DistShikiCodeBlockModule>(
 const linkModule = await assertJsExport<DistLinkModule>('/components/link/react', [
   'Link',
 ]);
+const progressModule = await assertJsExport<DistProgressModule>(
+  '/components/progress/react',
+  ['Progress'],
+);
+const skeletonModule = await assertJsExport<DistSkeletonModule>(
+  '/components/skeleton/react',
+  ['Skeleton'],
+);
 const formModule = await assertJsExport<DistFormModule>('/components/form/react', [
   'Checkbox',
   'Field',
@@ -349,6 +395,14 @@ assert(
   'dark primary semantic color changed unexpectedly',
 );
 assert(
+  typeof alertModule.Alert === 'object' || typeof alertModule.Alert === 'function',
+  'Alert export should be a React component',
+);
+assert(
+  typeof avatarModule.Avatar === 'object' || typeof avatarModule.Avatar === 'function',
+  'Avatar export should be a React component',
+);
+assert(
   typeof badgeModule.Badge === 'object' || typeof badgeModule.Badge === 'function',
   'Badge export should be a React component',
 );
@@ -362,6 +416,10 @@ assert(
   'IconButton export should be a React component',
 );
 assert(
+  typeof cardModule.Card === 'object' || typeof cardModule.Card === 'function',
+  'Card export should be a React component',
+);
+assert(
   typeof codeModule.Code === 'object' || typeof codeModule.Code === 'function',
   'Code export should be a React component',
 );
@@ -371,12 +429,27 @@ assert(
   'CodeBlock export should be a React component',
 );
 assert(
+  typeof dividerModule.Divider === 'object' ||
+    typeof dividerModule.Divider === 'function',
+  'Divider export should be a React component',
+);
+assert(
   typeof shikiCodeBlockModule.ShikiCodeBlock === 'function',
   'ShikiCodeBlock export should be a React component',
 );
 assert(
   typeof linkModule.Link === 'object' || typeof linkModule.Link === 'function',
   'Link export should be a React component',
+);
+assert(
+  typeof progressModule.Progress === 'object' ||
+    typeof progressModule.Progress === 'function',
+  'Progress export should be a React component',
+);
+assert(
+  typeof skeletonModule.Skeleton === 'object' ||
+    typeof skeletonModule.Skeleton === 'function',
+  'Skeleton export should be a React component',
 );
 assert(
   typeof formModule.Field === 'object' || typeof formModule.Field === 'function',
@@ -417,23 +490,38 @@ assert(
 );
 
 assertCssExport('/core/core.css', ['@theme', '--color-tinyrack-primary']);
+assertCssExport('/components/alert/alert.css', ['.tr-alert', 'data-variant="danger"']);
+assertCssExport('/components/avatar/avatar.css', ['.tr-avatar', 'data-size="lg"']);
 assertCssExport('/components/badge/badge.css', ['.tr-badge', 'data-size="sm"']);
 assertCssExport('/components/button/button.css', [
   '.tr-btn',
   'data-appearance="solid"',
 ]);
+assertCssExport('/components/card/card.css', ['.tr-card', 'data-padding="md"']);
 assertCssExport('/components/code/code.css', ['.tr-code']);
 assertCssExport('/components/code-block/code-block.css', [
   '.tr-code-block',
   'data-wrap="true"',
 ]);
+assertCssExport('/components/divider/divider.css', [
+  '.tr-divider',
+  'data-orientation="vertical"',
+]);
 assertCssExport('/components/link/link.css', ['.tr-link', 'data-underline="hover"']);
+assertCssExport('/components/progress/progress.css', [
+  '.tr-progress',
+  'data-size="lg"',
+]);
 assertCssExport('/components/overlay/overlay.css', [
   '.tr-modal',
   '.tr-modal-box',
   '.tr-layer:popover-open',
 ]);
 assertCssExport('/components/form/form.css', ['.tr-field', '.tr-switch']);
+assertCssExport('/components/skeleton/skeleton.css', [
+  '.tr-skeleton',
+  'data-shape="circle"',
+]);
 assertCssExport('/components/table/table.css', ['.tr-table', 'data-density="normal"']);
 assertCssExport('/components/tabs/tabs.css', ['.tr-tabs', 'aria-selected="true"']);
 assertCssExport('/mdx/mdx.css', ['.tr-mdx', '.tr-mdx-h1']);

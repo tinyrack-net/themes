@@ -11,14 +11,20 @@ const repoRoot = process.cwd();
 const allowedPreviewImports = [
   '@import "tailwindcss";',
   '@import "../src/core/core.css";',
+  '@import "../src/components/alert/alert.css";',
+  '@import "../src/components/avatar/avatar.css";',
   '@import "../src/components/badge/badge.css";',
   '@import "../src/components/button/button.css";',
+  '@import "../src/components/card/card.css";',
   '@import "../src/components/code-block/code-block.css";',
   '@import "../src/components/code/code.css";',
+  '@import "../src/components/divider/divider.css";',
   '@import "../src/components/form/form.css";',
   '@import "../src/components/link/link.css";',
   '@import "../src/components/overlay/overlay.css";',
   '@import "../src/mdx/mdx.css";',
+  '@import "../src/components/progress/progress.css";',
+  '@import "../src/components/skeleton/skeleton.css";',
   '@import "../src/components/table/table.css";',
   '@import "../src/components/tabs/tabs.css";',
 ];
@@ -505,6 +511,18 @@ describe('Storybook structure', () => {
         'badgeVariants.map',
         'class="tr-badge"',
       ],
+      'stories/components/alert.docs.mdx': [
+        'Variant Matrix',
+        'alertVariants.map',
+        'role="alert"',
+        'class="tr-alert"',
+      ],
+      'stories/components/avatar.docs.mdx': [
+        'Size x Shape Matrix',
+        'avatarSizes.map',
+        'avatarShapes.map',
+        'class="tr-avatar"',
+      ],
       'stories/components/button.docs.mdx': [
         'Solid Appearance',
         'Outline Appearance',
@@ -512,6 +530,12 @@ describe('Storybook structure', () => {
         'buttonVariants.map',
         'States and Icon Actions',
         'IconButton',
+      ],
+      'stories/components/card.docs.mdx': [
+        'Padding x Variant Matrix',
+        'cardPaddings.map',
+        'cardVariants.map',
+        'class="tr-card"',
       ],
       'stories/components/code-block.docs.mdx': [
         'React Shiki block',
@@ -524,6 +548,12 @@ describe('Storybook structure', () => {
         'Astro MDX',
         'Inline Contexts',
         'Command, Path, and Token Names',
+      ],
+      'stories/components/divider.docs.mdx': [
+        'Orientation Matrix',
+        'dividerOrientations.map',
+        'aria-orientation="vertical"',
+        'class="tr-divider"',
       ],
       'stories/components/form-checkbox.docs.mdx': [
         'React MDX',
@@ -581,6 +611,19 @@ describe('Storybook structure', () => {
         'React MDX',
         'Astro MDX',
       ],
+      'stories/components/progress.docs.mdx': [
+        'Size x Variant Matrix',
+        'progressSizes.map',
+        'progressVariants.map',
+        'Indeterminate',
+        'class="tr-progress"',
+      ],
+      'stories/components/skeleton.docs.mdx': [
+        'Shape Matrix',
+        'skeletonShapes.map',
+        'prefers-reduced-motion',
+        'class="tr-skeleton"',
+      ],
       'stories/components/overlay.docs.mdx': [
         'title="Modal"',
         'title="Placement"',
@@ -611,14 +654,19 @@ describe('Storybook structure', () => {
       'Part',
       'Variant',
       'Size',
+      'Padding',
+      'Shape',
+      'Orientation',
+      'Motion',
+      'Image',
       'State',
       'Behavior',
       'Native',
     ];
 
-    expect(componentDocsManifest).toHaveLength(16);
-    expect(new Set(componentDocsManifest.map(({ id }) => id)).size).toBe(16);
-    expect(new Set(componentDocsManifest.map(({ storyId }) => storyId)).size).toBe(16);
+    expect(componentDocsManifest).toHaveLength(22);
+    expect(new Set(componentDocsManifest.map(({ id }) => id)).size).toBe(22);
+    expect(new Set(componentDocsManifest.map(({ storyId }) => storyId)).size).toBe(22);
     expect(manifestFiles).toEqual(actualComponentDocs);
 
     for (const entry of componentDocsManifest) {
@@ -715,12 +763,40 @@ describe('Storybook structure', () => {
     expect(welcomeSource).toContain('pnpm add @tinyrack/ui astro @astrojs/mdx shiki');
     expect(welcomeSource).toContain('@tinyrack/ui/components/badge/react');
     expect(welcomeSource).toContain('@tinyrack/ui/components/badge/badge.css');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/alert/react');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/alert/alert.css');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/avatar/react');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/avatar/avatar.css');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/code-block/react');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/code-block/shiki-react');
+    expect(welcomeSource).toContain(
+      '@tinyrack/ui/components/code-block/code-block.css',
+    );
+    expect(welcomeSource).toContain('@tinyrack/ui/components/code/react');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/code/code.css');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/divider/react');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/divider/divider.css');
     expect(welcomeSource).toContain('@tinyrack/ui/mdx/react');
     expect(welcomeSource).toContain('@tinyrack/ui/mdx/astro');
     expect(welcomeSource).toContain('@tinyrack/ui/mdx/mdx.css');
     expect(welcomeSource).toContain('@tinyrack/ui/core/core.css');
     expect(welcomeSource).toContain('@tinyrack/ui/components/button/button.css');
     expect(welcomeSource).toContain('@tinyrack/ui/components/button/react');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/card/react');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/card/card.css');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/form/form.css');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/form/react');
+    expect(welcomeSource).toContain('Use Tailwind utilities directly for layout');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/link/link.css');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/link/react');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/progress/react');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/progress/progress.css');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/skeleton/react');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/skeleton/skeleton.css');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/table/table.css');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/table/react');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/tabs/tabs.css');
+    expect(welcomeSource).toContain('@tinyrack/ui/components/tabs/react');
     expect(welcomeSource).toContain('data-docs-route="foundations"');
     expect(welcomeSource).toContain('/?path=/docs/foundations-overview--docs');
     expect(welcomeSource).toContain('/?path=/docs/components-button--docs');
@@ -836,10 +912,14 @@ describe('Storybook structure', () => {
         .filter((file) => file.endsWith('.stories.tsx'))
         .sort(),
     ).toEqual([
+      'alert.stories.tsx',
+      'avatar.stories.tsx',
       'badge.stories.tsx',
       'button.stories.tsx',
+      'card.stories.tsx',
       'code-block.stories.tsx',
       'code.stories.tsx',
+      'divider.stories.tsx',
       'form-checkbox.stories.tsx',
       'form-field.stories.tsx',
       'form-input.stories.tsx',
@@ -849,9 +929,74 @@ describe('Storybook structure', () => {
       'form-textarea.stories.tsx',
       'link.stories.tsx',
       'overlay.stories.tsx',
+      'progress.stories.tsx',
+      'skeleton.stories.tsx',
       'table.stories.tsx',
       'tabs.stories.tsx',
     ]);
+  });
+
+  it('exposes controls and docs for the operational primitive public APIs', () => {
+    const components = [
+      {
+        name: 'Alert',
+        contract: 'alertVariants',
+        css: '@tinyrack/ui/components/alert/alert.css',
+        react: '@tinyrack/ui/components/alert/react',
+        className: 'class="tr-alert"',
+      },
+      {
+        name: 'Avatar',
+        contract: 'avatarSizes',
+        css: '@tinyrack/ui/components/avatar/avatar.css',
+        react: '@tinyrack/ui/components/avatar/react',
+        className: 'class="tr-avatar"',
+      },
+      {
+        name: 'Card',
+        contract: 'cardPaddings',
+        css: '@tinyrack/ui/components/card/card.css',
+        react: '@tinyrack/ui/components/card/react',
+        className: 'class="tr-card"',
+      },
+      {
+        name: 'Divider',
+        contract: 'dividerOrientations',
+        css: '@tinyrack/ui/components/divider/divider.css',
+        react: '@tinyrack/ui/components/divider/react',
+        className: 'class="tr-divider"',
+      },
+      {
+        name: 'Progress',
+        contract: 'progressSizes',
+        css: '@tinyrack/ui/components/progress/progress.css',
+        react: '@tinyrack/ui/components/progress/react',
+        className: 'class="tr-progress"',
+      },
+      {
+        name: 'Skeleton',
+        contract: 'skeletonShapes',
+        css: '@tinyrack/ui/components/skeleton/skeleton.css',
+        react: '@tinyrack/ui/components/skeleton/react',
+        className: 'class="tr-skeleton"',
+      },
+    ] as const;
+
+    for (const component of components) {
+      const storySource = readText(
+        `stories/components/${component.name.toLowerCase()}.stories.tsx`,
+      );
+      const docsSource = readText(
+        `stories/components/${component.name.toLowerCase()}.docs.mdx`,
+      );
+
+      expect(storySource).toContain(`title: 'Components/${component.name}'`);
+      expect(storySource).toContain('argTypes:');
+      expect(storySource).toContain(component.contract);
+      expect(docsSource).toContain(component.react);
+      expect(docsSource).toContain(component.css);
+      expect(docsSource).toContain(component.className);
+    }
   });
 
   it('exposes Badge story controls for the supported public API', () => {

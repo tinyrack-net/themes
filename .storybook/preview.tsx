@@ -126,10 +126,14 @@ const preview: Preview = {
           ['Overview', 'Colors', 'Typography', 'Spacing', 'Radius'],
           'Components',
           [
+            'Alert',
+            'Avatar',
             'Badge',
             'Button',
+            'Card',
             'Code',
             'CodeBlock',
+            'Divider',
             'Form',
             [
               'Overview',
@@ -142,6 +146,8 @@ const preview: Preview = {
               'Switch',
             ],
             'Link',
+            'Progress',
+            'Skeleton',
             'Overlay',
             'Table',
             'Tabs',

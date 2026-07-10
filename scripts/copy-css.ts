@@ -7,13 +7,19 @@ const distRoot = resolve(root, 'dist');
 const checkMode = process.argv.includes('--check');
 
 const publicAssetSourcePaths = {
+  'components/alert/alert.css': 'components/alert/alert.css',
+  'components/avatar/avatar.css': 'components/avatar/avatar.css',
   'core/core.css': 'core/core.css',
   'components/badge/badge.css': 'components/badge/badge.css',
   'components/button/button.css': 'components/button/button.css',
+  'components/card/card.css': 'components/card/card.css',
   'components/code-block/code-block.css': 'components/code-block/code-block.css',
   'components/code/code.css': 'components/code/code.css',
+  'components/divider/divider.css': 'components/divider/divider.css',
   'components/form/form.css': 'components/form/form.css',
   'components/link/link.css': 'components/link/link.css',
+  'components/progress/progress.css': 'components/progress/progress.css',
+  'components/skeleton/skeleton.css': 'components/skeleton/skeleton.css',
   'components/overlay/overlay.css': 'components/overlay/overlay.css',
   'components/table/table.css': 'components/table/table.css',
   'components/tabs/tabs.css': 'components/tabs/tabs.css',

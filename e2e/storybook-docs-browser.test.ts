@@ -183,6 +183,7 @@ const guidedDocsManifest = [
       'Build one operational surface',
       'Where next',
       'Package map',
+      'Primitive component paths',
       'Use boundary',
     ],
     id: 'welcome',

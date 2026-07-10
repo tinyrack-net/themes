@@ -34,3 +34,6 @@ jobs:
 
       - name: Verify package
         run: pnpm run verify
+
+      - name: Build and audit Storybook
+        run: pnpm run test:storybook

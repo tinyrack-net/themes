@@ -2,6 +2,8 @@ import { Meta } from '@storybook/addon-docs/blocks';
 import { Table, TableContainer } from '../../src/components/table/react.js';
 import { tableDensities } from '../../src/components/table/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as TableStories from './table.stories';
 
 <Meta of={TableStories} />
@@ -12,35 +14,56 @@ Native table structure with a compact Tinyrack visual contract.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| Container class | `tr-table-container` | div element | required for overflow | Wrap wide tables for horizontal scrolling. |
-| Table class | `tr-table` | table element | required | Keep native table semantics. |
-| Density attribute | `data-density` | `compact`, `normal`, `comfortable` | `normal` | Use `normal` for operational tables. |
-| Striped attribute | `data-striped` | `true` | unset | Opt in for dense row scanning. |
-| React prop | `striped` | `boolean` | false | Adds `data-striped="true"`. |
-| Native props | table and div attributes | native values | pass-through | Use real `thead`, `tbody`, `th`, and `td`. |
+| Component | `tr-table` | `Table` | Required | Keep native table semantics. |
+| Part | `tr-table-container` | `TableContainer` | Required when columns may overflow | Wrap wide tables so the page itself never scrolls horizontally. |
+| Size | `data-density` | `density` | `compact`, `normal` (default), `comfortable` | Use `normal` for most operational tables. |
+| Variant | `data-striped="true"` | `striped` | `false` (default), `true` | Add striping only when it materially improves row scanning. |
+| Native | Table and div attributes | Native table and div props | Pass-through | Use real `caption`, `thead`, `tbody`, `th`, and `td` elements. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/table/table.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/table/react` |
-| React MDX | `pnpm add @tinyrack/ui @mdx-js/react` | `@tinyrack/ui/mdx/react` maps markdown tables. |
-| Astro MDX | `pnpm add @tinyrack/ui astro @astrojs/mdx` | `@tinyrack/ui/mdx/astro` maps markdown tables. |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/table/table.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "tailwindcss";',
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/table/table.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        "import { Table, TableContainer } from '@tinyrack/ui/components/table/react';",
+      ],
+    },
+    {
+      label: 'React MDX',
+      install: 'pnpm add @tinyrack/ui @mdx-js/react',
+      imports: ["import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';"],
+      note: 'Maps Markdown tables to the Tinyrack table contract.',
+    },
+    {
+      label: 'Astro MDX',
+      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx',
+      imports: ["import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';"],
+      note: 'Maps Markdown tables in Astro content.',
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
+  id="table-basic"
   title="Basic table"
   description="Wrap native tables in `TableContainer` when columns may overflow."
+  previewLayout="stretch"
   preview={(
     <TableContainer>
       <Table density="normal">
@@ -110,8 +133,10 @@ import { Table, TableContainer } from '@tinyrack/ui/components/table/react';
 ## Examples
 
 <ComponentExampleTabs
+  id="table-density"
   title="Density"
   description="Density changes vertical rhythm without changing native table structure."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-4">
       {tableDensities.map((density) => (
@@ -172,8 +197,10 @@ import { Table, TableContainer } from '@tinyrack/ui/components/table/react';
 />
 
 <ComponentExampleTabs
+  id="table-striped"
   title="Striped Operational Table"
   description="Use striping for dense row scanning, especially with repeated operational records."
+  previewLayout="stretch"
   preview={(
     <TableContainer>
       <Table density="normal" striped>
@@ -243,6 +270,129 @@ import { Table, TableContainer } from '@tinyrack/ui/components/table/react';
   </table>
 </div>`,
     },
+  ]}
+/>
+
+<ComponentExampleTabs
+  id="table-responsive-overflow"
+  title="Wide Table in a Narrow Viewport"
+  description="Keep column relationships intact and let `TableContainer` own horizontal scrolling instead of compressing data until it becomes unreadable."
+  previewClassName="!overflow-x-hidden"
+  previewLayout="stretch"
+  preview={(
+    <div className="max-w-md">
+      <TableContainer>
+        <Table density="compact" style={{ minWidth: '48rem' }}>
+          <caption className="sr-only">Rack deployment status</caption>
+          <thead>
+            <tr>
+              <th scope="col">Node</th>
+              <th scope="col">Region</th>
+              <th scope="col">Release</th>
+              <th scope="col">Last backup</th>
+              <th scope="col">Latency</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">rack-a-01</th>
+              <td>Seoul</td>
+              <td>2026.07.10-rc.3</td>
+              <td>03:18 KST</td>
+              <td>48 ms</td>
+              <td>Healthy</td>
+            </tr>
+            <tr>
+              <th scope="row">rack-b-03</th>
+              <td>Tokyo</td>
+              <td>2026.07.09</td>
+              <td>02:54 JST</td>
+              <td>62 ms</td>
+              <td>Review</td>
+            </tr>
+          </tbody>
+        </Table>
+      </TableContainer>
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<TableContainer>
+  <Table density="compact" style={{ minWidth: '48rem' }}>
+    <caption className="sr-only">Rack deployment status</caption>
+    <thead>
+      <tr>
+        <th scope="col">Node</th>
+        <th scope="col">Region</th>
+        <th scope="col">Release</th>
+        <th scope="col">Last backup</th>
+        <th scope="col">Latency</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">rack-a-01</th>
+        <td>Seoul</td>
+        <td>2026.07.10-rc.3</td>
+        <td>03:18 KST</td>
+        <td>48 ms</td>
+        <td>Healthy</td>
+      </tr>
+    </tbody>
+  </Table>
+</TableContainer>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-table-container">
+  <table class="tr-table" data-density="compact" style="min-width: 48rem">
+    <caption class="sr-only">Rack deployment status</caption>
+    <thead>
+      <tr>
+        <th scope="col">Node</th>
+        <th scope="col">Region</th>
+        <th scope="col">Release</th>
+        <th scope="col">Last backup</th>
+        <th scope="col">Latency</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">rack-a-01</th>
+        <td>Seoul</td>
+        <td>2026.07.10-rc.3</td>
+        <td>03:18 KST</td>
+        <td>48 ms</td>
+        <td>Healthy</td>
+      </tr>
+    </tbody>
+  </table>
+</div>`,
+    },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Use a table when users need to compare values across consistent rows and columns.',
+    'Use TableContainer whenever content can exceed the available viewport width.',
+  ]}
+  avoid={[
+    'Do not use table markup only to align page layout; use grid or flex layout instead.',
+    'Do not collapse operational columns into ambiguous abbreviations just to avoid horizontal scrolling.',
+  ]}
+  accessibility={[
+    'Provide a concise caption when the surrounding heading does not fully name the data set.',
+    'Use scope="col" for column headers and scope="row" when the first cell identifies its row.',
+    'Keep status meaning in text rather than relying on color or striping alone.',
   ]}
 />
 

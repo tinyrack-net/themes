@@ -1,7 +1,14 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Select } from '../../src/components/form/react.js';
+import {
+  Field,
+  FormMessage,
+  Label,
+  Select,
+} from '../../src/components/form/react.js';
 import { formControlSizes } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as SelectStories from './form-select.stories';
 
 <Meta of={SelectStories} />
@@ -12,37 +19,52 @@ Native select for compact option sets, sharing text control size and state styli
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| CSS class | `tr-select` | select element | required | Use native `option` elements. |
-| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Shared with `Input` and `Textarea`. |
-| Invalid attribute | `data-invalid` | `true` | unset | Mirrors `aria-invalid` when `invalid` is set. |
-| React prop | `invalid` | `boolean` | false | Sets `aria-invalid` and `data-invalid`. |
-| Native props | select attributes | native values | pass-through | Keep browser select semantics. |
+| Component | `select.tr-select` | `Select` | native select element | Use native option elements for a compact choice list. |
+| Part | `option`, `optgroup` | native children | browser behavior | Give every option a concise, distinct label. |
+| Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Shares the control scale with Input and Textarea. |
+| State | `data-invalid`, `aria-invalid` | `invalid` | `true` or unset; default unset | Pair invalid state with an associated error message. |
+| Native | `required`, `disabled`, `aria-describedby` | native select props | pass-through | Keeps browser selection, validation, and keyboard semantics. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/form/form.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/form/form.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        "import { Field, FormMessage, Label, Select } from '@tinyrack/ui/components/form/react';",
+      ],
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
-  title="Basic select"
-  description="Use native `option` elements so browser select semantics remain intact."
+  id="form-select-basic"
+  title="Basic select field"
+  description="Pair native options with a visible label and associated selection guidance."
+  previewLayout="stretch"
   preview={(
-    <Select defaultValue="seoul">
-      <option value="seoul">Seoul</option>
-      <option value="tokyo">Tokyo</option>
-    </Select>
+    <Field>
+      <Label htmlFor="deploy-region">Deployment region</Label>
+      <Select aria-describedby="deploy-region-help" defaultValue="seoul" id="deploy-region">
+        <option value="seoul">Seoul</option>
+        <option value="tokyo">Tokyo</option>
+      </Select>
+      <FormMessage id="deploy-region-help">New workloads start in this region.</FormMessage>
+    </Field>
   )}
   sources={[
     {
@@ -50,20 +72,35 @@ Native select for compact option sets, sharing text control size and state styli
       language: 'tsx',
       code: String.raw`import '@tinyrack/ui/core/core.css';
 import '@tinyrack/ui/components/form/form.css';
-import { Select } from '@tinyrack/ui/components/form/react';
+import { Field, FormMessage, Label, Select } from '@tinyrack/ui/components/form/react';
 
-<Select defaultValue="seoul">
-  <option value="seoul">Seoul</option>
-  <option value="tokyo">Tokyo</option>
-</Select>;`,
+<Field>
+  <Label htmlFor="deploy-region">Deployment region</Label>
+  <Select aria-describedby="deploy-region-help" defaultValue="seoul" id="deploy-region">
+    <option value="seoul">Seoul</option>
+    <option value="tokyo">Tokyo</option>
+  </Select>
+  <FormMessage id="deploy-region-help">New workloads start in this region.</FormMessage>
+</Field>;`,
     },
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<select class="tr-select" data-size="md">
-  <option value="seoul">Seoul</option>
-  <option value="tokyo">Tokyo</option>
-</select>`,
+      code: String.raw`<div class="tr-field" data-size="md">
+  <label class="tr-label" for="deploy-region">Deployment region</label>
+  <select
+    aria-describedby="deploy-region-help"
+    class="tr-select"
+    data-size="md"
+    id="deploy-region"
+  >
+    <option value="seoul">Seoul</option>
+    <option value="tokyo">Tokyo</option>
+  </select>
+  <p class="tr-form-message" id="deploy-region-help">
+    New workloads start in this region.
+  </p>
+</div>`,
     },
   ]}
 />
@@ -71,8 +108,10 @@ import { Select } from '@tinyrack/ui/components/form/react';
 ## Examples
 
 <ComponentExampleTabs
+  id="form-select-size"
   title="Size"
   description="Select shares the same control sizes as Input and Textarea."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3">
       {formControlSizes.map((size) => (
@@ -106,8 +145,10 @@ import { Select } from '@tinyrack/ui/components/form/react';
 />
 
 <ComponentExampleTabs
+  id="form-select-state"
   title="State"
   description="Invalid and disabled states should match native form behavior."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3 lg:grid-cols-3">
       <Select defaultValue="seoul" aria-label="Normal region">
@@ -146,6 +187,24 @@ import { Select } from '@tinyrack/ui/components/form/react';
 <select class="tr-select" data-invalid="true" aria-invalid="true"><option>Missing region</option></select>
 <select class="tr-select" disabled><option>Locked</option></select>`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Use Select for a compact list of mutually exclusive options whose labels are known in advance.',
+    'Compose it with Field, Label, and FormMessage when the choice needs persistent help or validation text.',
+  ]}
+  avoid={[
+    'Do not use Select when users need to compare many options at once or enter a value that is not in the list.',
+    'Do not use a disabled placeholder option as the only label or rely on invalid color without an error message.',
+  ]}
+  accessibility={[
+    'Associate a visible label with htmlFor/id and help or error text with aria-describedby.',
+    'Use native required, disabled, option, and optgroup semantics; set invalid/aria-invalid only after validation fails.',
+    'Preserve the browser select keyboard behavior, including focus, arrow-key selection, and type-ahead.',
   ]}
 />
 

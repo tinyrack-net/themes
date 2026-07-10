@@ -2,6 +2,8 @@ import { Meta } from '@storybook/addon-docs/blocks';
 import { Checkbox } from '../../src/components/form/react.js';
 import { formControlSizes } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as CheckboxStories from './form-checkbox.stories';
 
 <Meta of={CheckboxStories} />
@@ -12,35 +14,61 @@ Boolean native input with a custom visual control and preserved input semantics.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| Wrapper class | `tr-checkbox` | label element | required | Wraps the native input and visible label. |
-| Input class | `tr-checkbox-input` | native checkbox | required | The native input remains focusable. |
-| Control class | `tr-checkbox-control` | decorative span | required | Mark with `aria-hidden="true"`. |
-| Label class | `tr-checkbox-label` | span text | optional | Omitted when children are undefined. |
-| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Shared with `Radio` and `Switch`. |
-| Invalid attribute | `data-invalid` | `true` | unset | Mirrors `aria-invalid` when `invalid` is set. |
+| Component | `label.tr-checkbox` | `Checkbox` | native checkbox input plus optional label | Keep the whole visible label clickable. |
+| Part | `tr-checkbox-input` | native input props | `type="checkbox"`; required part | The native input remains focusable and operable. |
+| Part | `tr-checkbox-control` | generated control | decorative span; required part | Mark custom visual control `aria-hidden="true"`. |
+| Part | `tr-checkbox-label` | `children` | `ReactNode`; omitted by default | Use a clear affirmative label. |
+| Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Shares the choice-control scale with Radio and Switch. |
+| State | `data-invalid`, `aria-invalid` | `invalid` | `true` or unset; default unset | Pair invalid state with an associated error message. |
+| Native | `checked`, `required`, `disabled` | native checkbox props | pass-through | Preserve native state and Space-key behavior. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
-| React MDX | `pnpm add @tinyrack/ui @mdx-js/react` | `@tinyrack/ui/mdx/react` maps task-list checkboxes. |
-| Astro MDX | `pnpm add @tinyrack/ui astro @astrojs/mdx` | `@tinyrack/ui/mdx/astro` maps task-list checkboxes. |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/form/form.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/form/form.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        "import { Checkbox } from '@tinyrack/ui/components/form/react';",
+      ],
+    },
+    {
+      label: 'React MDX',
+      install: 'pnpm add @tinyrack/ui @mdx-js/react',
+      imports: [
+        "import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';",
+      ],
+      note: 'Maps task-list checkboxes.',
+    },
+    {
+      label: 'Astro MDX',
+      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx',
+      imports: [
+        "import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';",
+      ],
+      note: 'Maps task-list checkboxes.',
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
+  id="form-checkbox-basic"
   title="Basic checkbox"
   description="The wrapper styles a native checkbox input and keeps it focusable."
+  previewLayout="start"
   preview={<Checkbox defaultChecked>Monitoring enabled</Checkbox>}
   sources={[
     {
@@ -67,8 +95,10 @@ import { Checkbox } from '@tinyrack/ui/components/form/react';
 ## Examples
 
 <ComponentExampleTabs
+  id="form-checkbox-size"
   title="Size"
   description="Checkbox size follows the shared form control size scale."
+  previewLayout="start"
   preview={(
     <div className="grid gap-3">
       {formControlSizes.map((size) => (
@@ -99,8 +129,10 @@ import { Checkbox } from '@tinyrack/ui/components/form/react';
 />
 
 <ComponentExampleTabs
+  id="form-checkbox-state"
   title="State"
   description="Checked, disabled, and invalid states are driven by the native input."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3 lg:grid-cols-3">
       <Checkbox>Unchecked</Checkbox>
@@ -141,6 +173,24 @@ import { Checkbox } from '@tinyrack/ui/components/form/react';
   <span class="tr-checkbox-label">Disabled</span>
 </label>`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Use Checkbox for independent yes/no selections or for choosing any number of options from a group.',
+    'Use an affirmative visible label that describes what the checked state means.',
+  ]}
+  avoid={[
+    'Do not use Checkbox for mutually exclusive choices; use a radio group instead.',
+    'Do not make the decorative control focusable or communicate invalid state only with color.',
+  ]}
+  accessibility={[
+    'Keep the native checkbox in the tab order and preserve Space-key toggling; the visual control remains aria-hidden.',
+    'Set required, disabled, and aria-invalid on the native input and associate any help or error text with aria-describedby.',
+    'Wrap related checkbox sets in a fieldset with a legend so the group has an accessible name.',
   ]}
 />
 

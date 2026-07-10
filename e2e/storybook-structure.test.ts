@@ -2,6 +2,10 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
+import {
+  componentDocCapabilities,
+  componentDocsManifest,
+} from '../stories/shared/component-docs-manifest.js';
 
 const repoRoot = process.cwd();
 const allowedPreviewImports = [
@@ -85,29 +89,14 @@ function expectSnippetsInOrder(source: string, snippets: string[]) {
   }
 }
 
-const componentDocsFiles = [
-  'stories/components/badge.docs.mdx',
-  'stories/components/button.docs.mdx',
-  'stories/components/code-block.docs.mdx',
-  'stories/components/code.docs.mdx',
-  'stories/components/form-checkbox.docs.mdx',
-  'stories/components/form-field.docs.mdx',
-  'stories/components/form-input.docs.mdx',
-  'stories/components/form-radio.docs.mdx',
-  'stories/components/form-select.docs.mdx',
-  'stories/components/form-switch.docs.mdx',
-  'stories/components/form-textarea.docs.mdx',
-  'stories/components/form.docs.mdx',
-  'stories/components/link.docs.mdx',
-  'stories/components/table.docs.mdx',
-  'stories/components/tabs.docs.mdx',
-] as const;
+const componentDocsFiles = componentDocsManifest.map(({ file }) => file);
 
 const standardComponentDocSections = [
   '## Contract',
   '## Install',
   '## Usage',
   '## Examples',
+  '## Guidance',
   '## API',
 ] as const;
 
@@ -374,21 +363,7 @@ describe('Storybook structure', () => {
       'stories/foundations/typography.mdx',
       'stories/foundations/spacing.mdx',
       'stories/foundations/radius.mdx',
-      'stories/components/badge.docs.mdx',
-      'stories/components/button.docs.mdx',
-      'stories/components/code-block.docs.mdx',
-      'stories/components/code.docs.mdx',
-      'stories/components/form-checkbox.docs.mdx',
-      'stories/components/form-field.docs.mdx',
-      'stories/components/form-input.docs.mdx',
-      'stories/components/form-radio.docs.mdx',
-      'stories/components/form-select.docs.mdx',
-      'stories/components/form-switch.docs.mdx',
-      'stories/components/form-textarea.docs.mdx',
-      'stories/components/form.docs.mdx',
-      'stories/components/link.docs.mdx',
-      'stories/components/table.docs.mdx',
-      'stories/components/tabs.docs.mdx',
+      ...componentDocsFiles,
       'stories/integrations/mdx-renderer.docs.mdx',
     ];
     const removedStoryDocs = [
@@ -437,6 +412,11 @@ describe('Storybook structure', () => {
     const componentExampleTabsSource = readText(
       'stories/shared/component-example-tabs.tsx',
     );
+    const componentGuidanceSource = readText('stories/shared/component-guidance.tsx');
+    const componentInstallSource = readText('stories/shared/component-install.tsx');
+    const componentManifestSource = readText(
+      'stories/shared/component-docs-manifest.ts',
+    );
     const mdxRendererDocs = readText('stories/integrations/mdx-renderer.docs.mdx');
     const radiusDocs = readText('stories/foundations/radius.mdx');
     const welcomeDocs = readText('stories/welcome.mdx');
@@ -459,13 +439,34 @@ describe('Storybook structure', () => {
     expect(componentExampleTabsSource).toContain('data-component-example-tabs=""');
     expect(componentExampleTabsSource).toContain('<TabsTrigger value="preview">');
     expect(componentExampleTabsSource).toContain('Preview');
-    expect(componentExampleTabsSource).toContain("['React', 0]");
-    expect(componentExampleTabsSource).toContain("['HTML', 1]");
+    expect(componentExampleTabsSource).toContain("['HTML', 0]");
+    expect(componentExampleTabsSource).toContain("['React', 1]");
+    expect(componentExampleTabsSource).toContain('id: string;');
+    expect(componentExampleTabsSource).toContain("'center' | 'start' | 'stretch'");
+    expect(componentExampleTabsSource).toContain('min-h-40');
+    expect(componentExampleTabsSource).toContain('navigator.clipboard.writeText');
+    expect(componentExampleTabsSource).toContain("unavailable: 'Copy unavailable'");
+    expect(componentExampleTabsSource).toContain('data-copy-source={label}');
+    expect(componentExampleTabsSource).toContain('data-copy-status={copyStatus}');
+    expect(componentExampleTabsSource).toContain('aria-live="polite"');
     expect(componentExampleTabsSource).not.toContain('@storybook/addon-docs');
     expect(componentExampleTabsSource).not.toContain('Canvas');
     expect(componentExampleTabsSource).not.toContain('<Source');
     expect(componentExampleTabsSource).not.toContain('daisyui');
-    expect(componentExampleTabsSource).not.toContain('navigator.clipboard');
+    expect(componentInstallSource).toContain('data-component-install=""');
+    expect(componentInstallSource).toContain('Installation options');
+    expect(componentInstallSource).toContain('Installation target');
+    expect(componentInstallSource).toContain('ShikiCodeBlock');
+    expect(componentInstallSource).toContain('language="shellscript"');
+    expect(componentInstallSource).toContain("surface.imports.join('\\n')");
+    expect(componentInstallSource).toContain('data-install-copy-status');
+    expect(componentInstallSource).not.toContain('md:grid-cols-2');
+    expect(componentInstallSource).not.toContain('import { Code }');
+    expect(componentGuidanceSource).toContain('data-component-guidance=""');
+    expect(componentGuidanceSource).toContain("title: 'When to use'");
+    expect(componentGuidanceSource).toContain("title: 'Avoid'");
+    expect(componentGuidanceSource).toContain("title: 'Accessibility'");
+    expect(componentManifestSource).toContain('componentDocsManifest');
     expect(mdxRendererDocs).toContain('@tinyrack/ui/mdx/react');
     expect(mdxRendererDocs).toContain('<Meta title="Integrations/MDX Renderer" />');
     expect(mdxRendererDocs).toContain('@tinyrack/ui/mdx/astro');
@@ -477,6 +478,12 @@ describe('Storybook structure', () => {
       '<Content components={{ ...tinyrackAstroMdxComponents, ...components }} />',
     );
     expect(mdxRendererDocs).toContain('| Headings `h1`-`h6` |');
+    expectSnippetsInOrder(mdxRendererDocs, [
+      '### Third level heading',
+      '#### Fourth level heading',
+      '##### Fifth level heading',
+      '###### Sixth level heading',
+    ]);
     expect(mdxRendererDocs).toContain('#### Fourth level heading');
     expect(mdxRendererDocs).toContain('- [x] Task lists reuse the checkbox contract.');
     expect(mdxRendererDocs).toContain('Footnote reference[^tinyrack-mdx].');
@@ -496,8 +503,9 @@ describe('Storybook structure', () => {
         'class="tr-badge"',
       ],
       'stories/components/button.docs.mdx': [
-        'Appearance x Variant Matrix',
-        'buttonAppearances.map',
+        'Solid Appearance',
+        'Outline Appearance',
+        'Ghost Appearance',
         'buttonVariants.map',
         'States and Icon Actions',
         'IconButton',
@@ -585,22 +593,80 @@ describe('Storybook structure', () => {
       ],
     };
 
-    for (const docsFile of componentDocsFiles) {
+    const manifestFiles = componentDocsManifest.map(({ file }) => file).sort();
+    const actualComponentDocs = collectFiles('stories/components')
+      .filter((file) => file.endsWith('.docs.mdx'))
+      .sort();
+    const allowedContractCategories = [
+      'Component',
+      'Part',
+      'Variant',
+      'Size',
+      'State',
+      'Behavior',
+      'Native',
+    ];
+
+    expect(componentDocsManifest).toHaveLength(15);
+    expect(new Set(componentDocsManifest.map(({ id }) => id)).size).toBe(15);
+    expect(new Set(componentDocsManifest.map(({ storyId }) => storyId)).size).toBe(15);
+    expect(manifestFiles).toEqual(actualComponentDocs);
+
+    for (const entry of componentDocsManifest) {
+      const docsFile = entry.file;
       const docsSource = readText(docsFile);
 
       expectSnippetsInOrder(docsSource, [...standardComponentDocSections]);
-      expect(docsSource).toContain('| Surface | API | Values | Default | Rule |');
+      expect(docsSource).toContain(
+        '| Category | CSS / HTML | React | Values & default | Guidance |',
+      );
       expect(docsSource).toContain('CSS / HTML');
       expect(docsSource).toContain('React');
       expect(docsSource).toContain('@tinyrack/ui/core/core.css');
       expect(docsSource).toContain(
         "import { ComponentExampleTabs } from '../shared/component-example-tabs.js';",
       );
+      expect(docsSource).toContain(
+        "import { ComponentGuidance } from '../shared/component-guidance.js';",
+      );
+      expect(docsSource).toContain(
+        "import { ComponentInstall } from '../shared/component-install.js';",
+      );
       expect(docsSource).toContain('<ComponentExampleTabs');
+      expect(docsSource).toContain('<ComponentInstall');
+      expect(docsSource).toContain('<ComponentGuidance');
       expect(docsSource).toContain("label: 'React'");
       expect(docsSource).toContain("label: 'HTML'");
 
-      for (const snippet of qualitySnippets[docsFile]) {
+      for (const exampleId of entry.requiredExamples) {
+        expect(docsSource).toContain(`id="${exampleId}"`);
+      }
+
+      const contractSource = docsSource.match(
+        /## Contract\s+([\s\S]*?)\n## Install/,
+      )?.[1];
+      const contractCategories = (contractSource ?? '')
+        .split('\n')
+        .filter(
+          (line) =>
+            line.startsWith('| ') &&
+            !line.startsWith('| Category ') &&
+            !line.startsWith('| ---'),
+        )
+        .map((line) => line.split('|')[1]?.trim())
+        .filter((category): category is string => category !== undefined);
+
+      expect(contractCategories.length).toBeGreaterThan(0);
+
+      for (const category of contractCategories) {
+        expect(allowedContractCategories).toContain(category);
+      }
+
+      for (const capability of entry.capabilities) {
+        expect(componentDocCapabilities).toContain(capability);
+      }
+
+      for (const snippet of qualitySnippets[docsFile] ?? []) {
         expect(docsSource).toContain(snippet);
       }
     }
@@ -984,5 +1050,35 @@ describe('Storybook structure', () => {
     expect(deployWorkflow).toContain('pnpm run deploy:storybook');
     expect(deployWorkflow).toContain('CLOUDFLARE_API_TOKEN');
     expect(deployWorkflow).toContain('CLOUDFLARE_ACCOUNT_ID');
+  });
+
+  it('runs the built component docs audit in pull requests and deploys', () => {
+    const packageJson = JSON.parse(readText('package.json')) as {
+      scripts: Record<string, string>;
+    };
+    const ciWorkflow = readText('.github/workflows/ci.yml');
+    const deployWorkflow = readText('.github/workflows/deploy-storybook.yml');
+    const vitestConfig = readText('vitest.config.ts');
+    const browserAudit = readText('e2e/storybook-docs-browser.test.ts');
+
+    expect(packageJson.scripts['storybook:audit']).toBe(
+      'vitest run --project storybook-docs',
+    );
+    expect(packageJson.scripts['test:storybook']).toBe(
+      'pnpm storybook:build && pnpm storybook:audit',
+    );
+    expect(ciWorkflow).toContain('pnpm exec playwright install --with-deps chromium');
+    expect(ciWorkflow).toContain('pnpm run test:storybook');
+    expect(deployWorkflow).toContain(
+      'pnpm exec playwright install --with-deps chromium',
+    );
+    expect(deployWorkflow).toContain('pnpm run test:storybook');
+    expect(vitestConfig).toContain("name: 'storybook-docs'");
+    expect(vitestConfig).toContain("include: ['e2e/storybook-docs-browser.test.ts']");
+    expect(browserAudit).toContain('componentDocsManifest');
+    expect(browserAudit).toContain(
+      "permissions: ['clipboard-read', 'clipboard-write']",
+    );
+    expect(browserAudit).toContain('viewport: { height: 844, width: 390 }');
   });
 });

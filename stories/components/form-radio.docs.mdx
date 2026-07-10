@@ -5,6 +5,8 @@ import {
   radioGroupOrientations,
 } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as RadioStories from './form-radio.stories';
 
 <Meta of={RadioStories} />
@@ -15,35 +17,48 @@ Mutually exclusive native choices with vertical or horizontal group layout.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| Group class | `tr-radio-group` | fieldset element | required for groups | Use fieldset semantics for related choices. |
-| Group orientation | `data-orientation` | `vertical`, `horizontal` | `vertical` | Match the space where the choices appear. |
-| Wrapper class | `tr-radio` | label element | required | Wraps the native input and visible label. |
-| Input class | `tr-radio-input` | native radio | required | Radios share a native `name`. |
-| Control class | `tr-radio-control` | decorative span | required | Mark with `aria-hidden="true"`. |
-| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Shared with `Checkbox` and `Switch`. |
+| Component | `fieldset.tr-radio-group` | `RadioGroup` | fieldset attributes | Name related choices with a legend. |
+| Behavior | `data-orientation` | `RadioGroup.orientation` | `vertical`, `horizontal`; default `vertical` | Use horizontal only when labels fit at narrow widths. |
+| Component | `label.tr-radio` | `Radio` | native radio plus optional label | Give every choice a visible label. |
+| Part | `tr-radio-input` | native input props | `type="radio"`; required part | Use one shared `name` for mutually exclusive choices. |
+| Part | `tr-radio-control`, `tr-radio-label` | generated control, `children` | control required; label optional | Keep the custom control decorative. |
+| Size | `data-size` | `Radio.size` | `sm`, `md`, `lg`; default `md` | Shares the choice-control scale with Checkbox and Switch. |
+| State | `data-invalid`, `aria-invalid`, `disabled` | `Radio.invalid`, native props | invalid unset; disabled default `false` | Put state on each affected native radio. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/form/form.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/form/form.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        "import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';",
+      ],
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
+  id="form-radio-basic"
   title="Basic radio group"
-  description="Group related radio choices with fieldset semantics and a shared native name."
+  description="Group related choices in a fieldset with a legend and a shared native name."
+  previewLayout="start"
   preview={(
-    <RadioGroup aria-label="Rack role" orientation="vertical">
+    <RadioGroup orientation="vertical">
+      <legend>Rack role</legend>
       <Radio defaultChecked name="rack-role" value="primary">Primary</Radio>
       <Radio name="rack-role" value="replica">Replica</Radio>
     </RadioGroup>
@@ -56,7 +71,8 @@ Mutually exclusive native choices with vertical or horizontal group layout.
 import '@tinyrack/ui/components/form/form.css';
 import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';
 
-<RadioGroup aria-label="Rack role" orientation="vertical">
+<RadioGroup orientation="vertical">
+  <legend>Rack role</legend>
   <Radio defaultChecked name="rack-role" value="primary">Primary</Radio>
   <Radio name="rack-role" value="replica">Replica</Radio>
 </RadioGroup>;`,
@@ -65,6 +81,7 @@ import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';
       label: 'HTML',
       language: 'html',
       code: String.raw`<fieldset class="tr-radio-group" data-orientation="vertical">
+  <legend>Rack role</legend>
   <label class="tr-radio" data-size="md">
     <input class="tr-radio-input" type="radio" name="rack-role" checked />
     <span aria-hidden="true" class="tr-radio-control"></span>
@@ -83,16 +100,18 @@ import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';
 ## Examples
 
 <ComponentExampleTabs
+  id="form-radio-orientation"
   title="Orientation"
   description="Use horizontal groups only when the choices can fit without wrapping awkwardly."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-4">
       {radioGroupOrientations.map((orientation) => (
         <RadioGroup
           key={orientation}
-          aria-label={`Rack role ${orientation}`}
           orientation={orientation}
         >
+          <legend>Rack role, {orientation}</legend>
           <Radio defaultChecked name={`docs-radio-${orientation}`} value="primary">Primary</Radio>
           <Radio name={`docs-radio-${orientation}`} value="replica">Replica</Radio>
           <Radio name={`docs-radio-${orientation}`} value="standby">Standby</Radio>
@@ -105,7 +124,8 @@ import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';
       label: 'React',
       language: 'tsx',
       code: String.raw`{radioGroupOrientations.map((orientation) => (
-  <RadioGroup key={orientation} aria-label={'Rack role ' + orientation} orientation={orientation}>
+  <RadioGroup key={orientation} orientation={orientation}>
+    <legend>Rack role, {orientation}</legend>
     <Radio defaultChecked name={'rack-role-' + orientation} value="primary">Primary</Radio>
     <Radio name={'rack-role-' + orientation} value="replica">Replica</Radio>
     <Radio name={'rack-role-' + orientation} value="standby">Standby</Radio>
@@ -115,15 +135,23 @@ import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<fieldset class="tr-radio-group" data-orientation="vertical">...</fieldset>
-<fieldset class="tr-radio-group" data-orientation="horizontal">...</fieldset>`,
+      code: String.raw`<fieldset class="tr-radio-group" data-orientation="vertical">
+  <legend>Rack role, vertical</legend>
+  <!-- Radio choices -->
+</fieldset>
+<fieldset class="tr-radio-group" data-orientation="horizontal">
+  <legend>Rack role, horizontal</legend>
+  <!-- Radio choices -->
+</fieldset>`,
     },
   ]}
 />
 
 <ComponentExampleTabs
+  id="form-radio-size"
   title="Size"
   description="Radio size follows the shared choice-control scale."
+  previewLayout="start"
   preview={(
     <div className="grid gap-3">
       {formControlSizes.map((size) => (
@@ -154,8 +182,10 @@ import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';
 />
 
 <ComponentExampleTabs
+  id="form-radio-state"
   title="State"
   description="Disabled and invalid states stay on the native radio input."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3 lg:grid-cols-3">
       <Radio name="docs-radio-state" value="unchecked">Unchecked</Radio>
@@ -187,6 +217,24 @@ import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';
   <span class="tr-radio-label">Invalid</span>
 </label>`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Use RadioGroup when users must choose exactly one option from a short, visible set.',
+    'Default to vertical orientation; use horizontal orientation only when every label fits comfortably at narrow widths.',
+  ]}
+  avoid={[
+    'Do not use radio buttons for independent choices or give radios in one group different name values.',
+    'Do not use aria-label instead of a visible legend when the group question can be shown on screen.',
+  ]}
+  accessibility={[
+    'Wrap related radios in RadioGroup/fieldset and provide a legend that states the group question.',
+    'Keep every native radio focusable with a visible label; the custom control remains aria-hidden.',
+    'Preserve native keyboard behavior: Tab enters the group, arrow keys move selection, and Space selects the focused radio.',
   ]}
 />
 

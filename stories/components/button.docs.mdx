@@ -1,12 +1,10 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { RefreshCw } from 'lucide-react';
-import {
-  buttonAppearances,
-  buttonSizes,
-  buttonVariants,
-} from '../../src/components/button/contract.js';
+import { buttonSizes, buttonVariants } from '../../src/components/button/contract.js';
 import { Button, IconButton } from '../../src/components/button/react.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as ButtonStories from './button.stories';
 
 <Meta of={ButtonStories} />
@@ -17,33 +15,50 @@ Native button behavior with Tinyrack size, variant, and appearance axes.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| CSS class | `tr-btn` | button element | required | Use for text buttons with native button semantics. |
-| CSS class | `tr-icon-btn` | button element | required for icon-only | Pair with an accessible label. |
-| Size attribute | `data-size` | `sm`, `md`, `lg` | `md` | Use `md` for normal actions. |
-| Variant attribute | `data-variant` | `neutral`, `primary`, `danger` | `neutral` | Use `primary` once per action group. |
-| Appearance attribute | `data-appearance` | `solid`, `outline`, `ghost` | `solid` | Choose emphasis without changing semantics. |
-| React prop | `label` | `string` | required for `IconButton` | Names icon-only actions. |
-| Native props | `ButtonHTMLAttributes<HTMLButtonElement>` | button props | pass-through | `type` defaults to `button`. |
+| Component | `tr-btn` on `<button>` | `<Button>` | Required text-button surface | Use for commands with visible text. |
+| Component | `tr-icon-btn` on `<button>` | `<IconButton>` | Icon-only button surface | Provide an accessible name for every icon action. |
+| Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Use `md` for routine actions and change size only for layout density. |
+| Variant | `data-variant` | `variant` | `neutral`, `primary`, `danger`; default `neutral` | Reserve `primary` for the main action and `danger` for destructive intent. |
+| Variant | `data-appearance` | `appearance` | `solid`, `outline`, `ghost`; default `solid` | Tune emphasis without changing action semantics. |
+| Behavior | `aria-label` | `label` on `IconButton` | Required for `IconButton` | Name the command, not the icon artwork. |
+| State | Native `disabled` attribute | `disabled` | Default `false` | Use native disabled behavior when an action is unavailable. |
+| Native | Native `<button>` attributes | `ButtonHTMLAttributes<HTMLButtonElement>` | Passed through; `type` defaults to `button` | Set `type="submit"` explicitly for form submission. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/button/button.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/button/react` |
-| Icons | `pnpm add lucide-react` | Optional for `IconButton` examples. |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/button/button.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "tailwindcss";',
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/button/button.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        "import { Button, IconButton } from '@tinyrack/ui/components/button/react';",
+      ],
+    },
+    {
+      label: 'Icons',
+      install: 'pnpm add lucide-react',
+      imports: ["import { RefreshCw } from 'lucide-react';"],
+      note: 'Optional for IconButton examples.',
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
+  id="button-basic"
   title="Basic action"
   description="Use a native button contract for commands, with an icon-only button only when the label names the action."
   preview={(
@@ -95,6 +110,7 @@ import { Button, IconButton } from '@tinyrack/ui/components/button/react';
 ## Examples
 
 <ComponentExampleTabs
+  id="button-size"
   title="Size"
   description="All sizes keep the same action semantics and only change density."
   preview={(
@@ -127,6 +143,7 @@ import { Button, IconButton } from '@tinyrack/ui/components/button/react';
 />
 
 <ComponentExampleTabs
+  id="button-variant"
   title="Variant"
   description="Variants communicate action intent without changing the element type."
   preview={(
@@ -159,23 +176,16 @@ import { Button, IconButton } from '@tinyrack/ui/components/button/react';
 />
 
 <ComponentExampleTabs
-  title="Appearance x Variant Matrix"
-  description="Pair appearance and variant to tune emphasis while keeping the supported visual axes visible."
+  id="button-appearance-solid"
+  title="Solid Appearance"
+  description="Solid is the default high-emphasis surface; compare its three intent variants."
+  previewLayout="start"
   preview={(
-    <div className="grid gap-4">
-      {buttonAppearances.map((appearance) => (
-        <section key={appearance} className="grid gap-2">
-          <h3 className="text-tinyrack-sm font-semibold leading-tinyrack-sm">
-            appearance: {appearance}
-          </h3>
-          <div className="flex flex-wrap items-center gap-2">
-            {buttonVariants.map((variant) => (
-              <Button key={variant} appearance={appearance} variant={variant}>
-                {variant}
-              </Button>
-            ))}
-          </div>
-        </section>
+    <div className="flex flex-wrap items-center gap-2">
+      {buttonVariants.map((variant) => (
+        <Button key={variant} appearance="solid" variant={variant}>
+          {variant}
+        </Button>
       ))}
     </div>
   )}
@@ -183,35 +193,113 @@ import { Button, IconButton } from '@tinyrack/ui/components/button/react';
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`{buttonAppearances.map((appearance) => (
-  <section key={appearance}>
-    {buttonVariants.map((variant) => (
-      <Button key={variant} appearance={appearance} variant={variant}>
-        {variant}
-      </Button>
-    ))}
-  </section>
-))}`,
+      code: String.raw`<div className="flex flex-wrap items-center gap-2">
+  {buttonVariants.map((variant) => (
+    <Button key={variant} appearance="solid" variant={variant}>
+      {variant}
+    </Button>
+  ))}
+</div>`,
     },
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<button class="tr-btn" data-appearance="solid" data-variant="primary">primary</button>
-<button class="tr-btn" data-appearance="outline" data-variant="primary">primary</button>
-<button class="tr-btn" data-appearance="ghost" data-variant="primary">primary</button>`,
+      code: String.raw`<div class="flex flex-wrap items-center gap-2">
+  <button class="tr-btn" data-appearance="solid" data-variant="neutral">neutral</button>
+  <button class="tr-btn" data-appearance="solid" data-variant="primary">primary</button>
+  <button class="tr-btn" data-appearance="solid" data-variant="danger">danger</button>
+</div>`,
     },
   ]}
 />
 
 <ComponentExampleTabs
-  title="States and Icon Actions"
-  description="Disabled and icon-only actions should remain native buttons with clear accessible names."
+  id="button-appearance-outline"
+  title="Outline Appearance"
+  description="Outline keeps the same intents with less visual weight than solid."
+  previewLayout="start"
   preview={(
     <div className="flex flex-wrap items-center gap-2">
-      <Button variant="primary">Enabled</Button>
-      <Button disabled variant="primary">Disabled</Button>
-      <Button appearance="outline">Secondary</Button>
-      <Button appearance="ghost" variant="danger">Delete</Button>
+      {buttonVariants.map((variant) => (
+        <Button key={variant} appearance="outline" variant={variant}>
+          {variant}
+        </Button>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<div className="flex flex-wrap items-center gap-2">
+  {buttonVariants.map((variant) => (
+    <Button key={variant} appearance="outline" variant={variant}>
+      {variant}
+    </Button>
+  ))}
+</div>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="flex flex-wrap items-center gap-2">
+  <button class="tr-btn" data-appearance="outline" data-variant="neutral">neutral</button>
+  <button class="tr-btn" data-appearance="outline" data-variant="primary">primary</button>
+  <button class="tr-btn" data-appearance="outline" data-variant="danger">danger</button>
+</div>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  id="button-appearance-ghost"
+  title="Ghost Appearance"
+  description="Ghost provides the lightest emphasis for secondary and compact actions."
+  previewLayout="start"
+  preview={(
+    <div className="flex flex-wrap items-center gap-2">
+      {buttonVariants.map((variant) => (
+        <Button key={variant} appearance="ghost" variant={variant}>
+          {variant}
+        </Button>
+      ))}
+    </div>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<div className="flex flex-wrap items-center gap-2">
+  {buttonVariants.map((variant) => (
+    <Button key={variant} appearance="ghost" variant={variant}>
+      {variant}
+    </Button>
+  ))}
+</div>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="flex flex-wrap items-center gap-2">
+  <button class="tr-btn" data-appearance="ghost" data-variant="neutral">neutral</button>
+  <button class="tr-btn" data-appearance="ghost" data-variant="primary">primary</button>
+  <button class="tr-btn" data-appearance="ghost" data-variant="danger">danger</button>
+</div>`,
+    },
+  ]}
+/>
+
+<ComponentExampleTabs
+  id="button-states-icons"
+  title="States and Icon Actions"
+  description="Build a rack action group with one primary command, lower-emphasis alternatives, native disabled state, and a named icon action."
+  previewLayout="start"
+  preview={(
+    <div className="flex flex-wrap items-center gap-2">
+      <Button variant="primary">Deploy changes</Button>
+      <Button appearance="outline">Review diff</Button>
+      <Button disabled>Restart unavailable</Button>
+      <Button appearance="ghost" variant="danger">Remove node</Button>
       <IconButton appearance="outline" label="Refresh rack">
         <RefreshCw aria-hidden="true" size={18} />
       </IconButton>
@@ -221,10 +309,10 @@ import { Button, IconButton } from '@tinyrack/ui/components/button/react';
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<Button variant="primary">Enabled</Button>
-<Button disabled variant="primary">Disabled</Button>
-<Button appearance="outline">Secondary</Button>
-<Button appearance="ghost" variant="danger">Delete</Button>
+      code: String.raw`<Button variant="primary">Deploy changes</Button>
+<Button appearance="outline">Review diff</Button>
+<Button disabled>Restart unavailable</Button>
+<Button appearance="ghost" variant="danger">Remove node</Button>
 <IconButton appearance="outline" label="Refresh rack">
   <RefreshCw aria-hidden="true" size={18} />
 </IconButton>`,
@@ -232,14 +320,31 @@ import { Button, IconButton } from '@tinyrack/ui/components/button/react';
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<button class="tr-btn" data-variant="primary">Enabled</button>
-<button class="tr-btn" data-variant="primary" disabled>Disabled</button>
-<button class="tr-btn" data-appearance="outline">Secondary</button>
-<button class="tr-btn" data-appearance="ghost" data-variant="danger">Delete</button>
+      code: String.raw`<button class="tr-btn" data-variant="primary">Deploy changes</button>
+<button class="tr-btn" data-appearance="outline">Review diff</button>
+<button class="tr-btn" disabled>Restart unavailable</button>
+<button class="tr-btn" data-appearance="ghost" data-variant="danger">Remove node</button>
 <button class="tr-icon-btn" data-appearance="outline" aria-label="Refresh rack">
   <!-- icon svg -->
 </button>`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Trigger an immediate command such as deploy, refresh, retry, or remove.',
+    'Use IconButton for familiar compact actions when the visible layout cannot accommodate text.',
+  ]}
+  avoid={[
+    'Do not use a button for navigation; use Link so browser link behavior remains available.',
+    'Do not show several primary buttons in one action group or use danger styling for harmless actions.',
+  ]}
+  accessibility={[
+    'Keep native button semantics, keyboard focus, and disabled behavior; set type="submit" only for intentional form submission.',
+    'Give IconButton a concise action label such as "Refresh rack" and mark a decorative icon aria-hidden="true".',
   ]}
 />
 

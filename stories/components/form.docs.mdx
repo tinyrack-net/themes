@@ -13,6 +13,8 @@ import {
 } from '../../src/components/form/react.js';
 import { formControlSizes } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 
 <Meta title="Components/Form/Overview" />
 
@@ -22,40 +24,76 @@ SSR-friendly field, text control, choice control, and message primitives over na
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| CSS import | `form.css` | every form primitive | required | One stylesheet covers field, text, and choice controls. |
-| Field class | `tr-field` | `data-size` | `md` | Groups label, control, and message rhythm. |
-| Text controls | `tr-input`, `tr-textarea`, `tr-select` | `data-size`, `data-invalid` | `md`, unset | Native controls keep native behavior. |
-| Choice controls | `tr-checkbox`, `tr-radio`, `tr-switch` | `data-size`, `data-invalid` | `md`, unset | Native inputs remain focusable. |
-| Radio group | `tr-radio-group` | `data-orientation` | `vertical` | Use fieldset semantics for grouped choices. |
-| Message | `tr-form-message` | `data-variant` | `neutral` | Use `error` for validation support text. |
+| Component | `tr-field` | `Field` | `data-size`; `sm`, `md`, `lg`; default `md` | Groups a label, control, and associated message. |
+| Part | `tr-label`, `tr-form-message` | `Label`, `FormMessage` | message variants `neutral`, `error`; default `neutral` | Associate labels and messages with the control they explain. |
+| Component | `tr-input`, `tr-textarea`, `tr-select` | `Input`, `Textarea`, `Select` | `data-size`, `data-invalid`; size default `md` | Keeps native text-control behavior and validation semantics. |
+| Component | `tr-checkbox`, `tr-radio`, `tr-switch` | `Checkbox`, `Radio`, `Switch` | `data-size`, `data-invalid`; size default `md` | Keeps the native input focusable and keyboard operable. |
+| Behavior | `tr-radio-group[data-orientation]` | `RadioGroup.orientation` | `vertical`, `horizontal`; default `vertical` | Group related choices with a fieldset and an accessible name. |
+| State | `data-invalid`, `aria-invalid`, `required`, `disabled` | `invalid` and native props | invalid unset; native props default `false` | Expose state semantically instead of relying on color alone. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/form/form.css` |
-| React | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/form/react` |
-| React MDX | `pnpm add @tinyrack/ui @mdx-js/react` | `@tinyrack/ui/mdx/react` maps task-list checkboxes. |
-| Astro MDX | `pnpm add @tinyrack/ui astro @astrojs/mdx` | `@tinyrack/ui/mdx/astro` maps task-list checkboxes. |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/form/form.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/form/form.css";',
+      ],
+    },
+    {
+      label: 'React',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        'import {',
+        '  Checkbox,',
+        '  Field,',
+        '  FormMessage,',
+        '  Input,',
+        '  Label,',
+        '  Radio,',
+        '  RadioGroup,',
+        '  Select,',
+        '  Switch,',
+        '  Textarea,',
+        "} from '@tinyrack/ui/components/form/react';",
+      ],
+    },
+    {
+      label: 'React MDX',
+      install: 'pnpm add @tinyrack/ui @mdx-js/react',
+      imports: [
+        "import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';",
+      ],
+      note: 'Maps task-list checkboxes.',
+    },
+    {
+      label: 'Astro MDX',
+      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx',
+      imports: [
+        "import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';",
+      ],
+      note: 'Maps task-list checkboxes.',
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
+  id="form-basic"
   title="Basic field"
-  description="Compose label, native control, and message primitives around the shared form stylesheet."
+  description="Compose a complete field with an explicit label and programmatically associated help text."
+  previewLayout="stretch"
   preview={(
     <Field>
       <Label htmlFor="rack-name">Rack name</Label>
-      <Input id="rack-name" placeholder="rack-a-01" />
-      <FormMessage>Use a stable rack identifier.</FormMessage>
+      <Input aria-describedby="rack-name-help" id="rack-name" placeholder="rack-a-01" />
+      <FormMessage id="rack-name-help">Use a stable rack identifier.</FormMessage>
     </Field>
   )}
   sources={[
@@ -68,8 +106,8 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
 
 <Field>
   <Label htmlFor="rack-name">Rack name</Label>
-  <Input id="rack-name" placeholder="rack-a-01" />
-  <FormMessage>Use a stable rack identifier.</FormMessage>
+  <Input aria-describedby="rack-name-help" id="rack-name" placeholder="rack-a-01" />
+  <FormMessage id="rack-name-help">Use a stable rack identifier.</FormMessage>
 </Field>;`,
     },
     {
@@ -77,8 +115,8 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
       language: 'html',
       code: String.raw`<div class="tr-field" data-size="md">
   <label class="tr-label" for="rack-name">Rack name</label>
-  <input class="tr-input" data-size="md" id="rack-name" />
-  <p class="tr-form-message" data-variant="neutral">
+  <input class="tr-input" data-size="md" id="rack-name" aria-describedby="rack-name-help" />
+  <p class="tr-form-message" data-variant="neutral" id="rack-name-help">
     Use a stable rack identifier.
   </p>
 </div>
@@ -95,8 +133,10 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
 ## Examples
 
 <ComponentExampleTabs
+  id="form-primitive-gallery"
   title="Primitive Gallery"
-  description="Text controls, choice controls, and messages share one form stylesheet."
+  description="Complete fields and native choice controls share one responsive form stylesheet."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-4 lg:grid-cols-2">
       <Field>
@@ -169,8 +209,10 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
 />
 
 <ComponentExampleTabs
+  id="form-size-matrix"
   title="Size Matrix"
   description="Apply the same size to field wrappers and nested controls."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-4">
       {formControlSizes.map((size) => (
@@ -219,8 +261,10 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
 />
 
 <ComponentExampleTabs
+  id="form-state-matrix"
   title="State Matrix"
   description="Invalid and disabled states are exposed through native attributes and Tinyrack data attributes."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3 lg:grid-cols-3">
       <Input placeholder="Normal input" />
@@ -257,6 +301,24 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
   ]}
 />
 
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Compose each control as a complete field with a visible label and associated help or error text.',
+    'Use the native control that matches the data and interaction: input, textarea, select, checkbox, radio, or switch.',
+  ]}
+  avoid={[
+    'Do not use placeholder text as the only label or validation color as the only error signal.',
+    'Do not replace native required, disabled, checked, or selected behavior with visual state alone.',
+  ]}
+  accessibility={[
+    'Connect labels with htmlFor/id and connect help or error text with aria-describedby.',
+    'Set required, disabled, and aria-invalid on the native control; keep invalid messages specific and visible.',
+    'Wrap related radio or checkbox choices in a fieldset with a legend, and preserve native Tab, Space, arrow-key, and select keyboard behavior.',
+  ]}
+/>
+
 ## API
 
 | Component | Main props | Note |
@@ -268,7 +330,7 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
 | `RadioGroup` | `orientation`, fieldset props | Renders a `fieldset`. |
 | `FormMessage` | `variant` | Renders supporting or error text. |
 
-## Pages
+### Related pages
 
 | Page | Purpose |
 | --- | --- |

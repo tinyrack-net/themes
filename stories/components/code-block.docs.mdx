@@ -1,6 +1,8 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { CodeBlock } from '../../src/components/code-block/react.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
 import * as CodeBlockStories from './code-block.stories';
 
 <Meta of={CodeBlockStories} />
@@ -11,35 +13,67 @@ SSR-safe block code with optional client-side Shiki highlighting.
 
 ## Contract
 
-| Surface | API | Values | Default | Rule |
+| Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
-| CSS class | `tr-code-block` | `<pre><code>` | required | Always readable without JavaScript. |
-| Language attribute | `data-language` | `string` | unset | Shows the language label when provided. |
-| Wrap attribute | `data-wrap` | `true` | unset | Opt in only for prose-friendly snippets. |
-| React wrapper | `CodeBlock` | `children`, `language`, `wrap` | SSR-safe | Does not import Shiki. |
-| Client wrapper | `ShikiCodeBlock` | `code`, `language`, `theme`, `wrap` | `github-dark` | Requires optional `shiki` peer. |
+| Component | `tr-code-block` on `<pre><code>` | `<CodeBlock>` | Required base surface; SSR-safe | Keep code readable without JavaScript or syntax highlighting. |
+| Component | Base class plus generated token spans | `<ShikiCodeBlock>` | Client-highlighted; theme defaults to `github-dark` | Add the optional `shiki` peer only when token highlighting is valuable. |
+| Behavior | `data-language` | `language` | Any string for CodeBlock; bundled language for ShikiCodeBlock; default unset | Provide a language when the label or tokenization helps readers. |
+| Behavior | `data-wrap="true"` | `wrap` | `boolean`; default `false` | Leave commands and source scrollable; wrap prose-like output deliberately. |
+| Native | Native `<pre>` attributes | `HTMLAttributes<HTMLPreElement>` | Passed through | Preserve whitespace and copyable source text. |
 
 ## Install
 
-| Surface | Install | Import |
-| --- | --- | --- |
-| CSS / HTML | `pnpm add @tinyrack/ui tailwindcss` | `@tinyrack/ui/core/core.css` and `@tinyrack/ui/components/code-block/code-block.css` |
-| React plain block | `pnpm add @tinyrack/ui react react-dom` | `@tinyrack/ui/components/code-block/react` |
-| React Shiki block | `pnpm add shiki` | `@tinyrack/ui/components/code-block/shiki-react` |
-| React MDX | `pnpm add @tinyrack/ui @mdx-js/react shiki` | `@tinyrack/ui/mdx/react` maps fenced code. |
-| Astro MDX | `pnpm add @tinyrack/ui astro @astrojs/mdx shiki` | `@tinyrack/ui/mdx/astro` maps fenced code. |
-
-```css
-@import "tailwindcss";
-@import "@tinyrack/ui/core/core.css";
-@import "@tinyrack/ui/components/code-block/code-block.css";
-```
+<ComponentInstall
+  surfaces={[
+    {
+      label: 'CSS / HTML',
+      install: 'pnpm add @tinyrack/ui tailwindcss',
+      imports: [
+        '@import "tailwindcss";',
+        '@import "@tinyrack/ui/core/core.css";',
+        '@import "@tinyrack/ui/components/code-block/code-block.css";',
+      ],
+    },
+    {
+      label: 'React plain block',
+      install: 'pnpm add @tinyrack/ui react react-dom',
+      imports: [
+        "import { CodeBlock } from '@tinyrack/ui/components/code-block/react';",
+      ],
+    },
+    {
+      label: 'React Shiki block',
+      install: 'pnpm add shiki',
+      imports: [
+        "import { ShikiCodeBlock } from '@tinyrack/ui/components/code-block/shiki-react';",
+      ],
+    },
+    {
+      label: 'React MDX',
+      install: 'pnpm add @tinyrack/ui @mdx-js/react shiki',
+      imports: [
+        "import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';",
+      ],
+      note: 'Maps fenced code.',
+    },
+    {
+      label: 'Astro MDX',
+      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx shiki',
+      imports: [
+        "import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';",
+      ],
+      note: 'Maps fenced code.',
+    },
+  ]}
+/>
 
 ## Usage
 
 <ComponentExampleTabs
-  title="Plain and highlighted blocks"
-  description="The plain block is SSR-safe; the Shiki wrapper progressively highlights on the client."
+  id="code-block-basic"
+  title="Plain block and Shiki upgrade"
+  description="The preview is the SSR-safe base rendering; open the React Shiki tab for the optional client-highlighted equivalent."
+  previewLayout="stretch"
   preview={(
     <CodeBlock language="sh">{'pnpm install\npnpm verify'}</CodeBlock>
   )}
@@ -69,24 +103,21 @@ import '@tinyrack/ui/components/code-block/code-block.css';
 import { ShikiCodeBlock } from '@tinyrack/ui/components/code-block/shiki-react';
 
 <ShikiCodeBlock
-  code={'const answer = 1;'}
-  language="ts"
+  code={'pnpm install\npnpm verify'}
+  language="sh"
   theme="github-dark"
 />;`,
     },
   ]}
 />
 
-```typescript
-const answer = 1;
-console.log(answer);
-```
-
 ## Examples
 
 <ComponentExampleTabs
+  id="code-block-languages"
   title="Languages"
   description="Set `language` when the block should expose a language label or Shiki should tokenize it."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-4 lg:grid-cols-2">
       <CodeBlock language="sh">{'pnpm install\npnpm verify'}</CodeBlock>
@@ -114,13 +145,15 @@ console.log(answer);</code></pre>`,
 />
 
 <ComponentExampleTabs
+  id="code-block-wrapping"
   title="Wrapped and Unwrapped"
-  description="Leave long technical strings scrollable by default; opt into wrapping for prose-heavy snippets."
+  description="Long paths stay locally scrollable by default; opt into wrapping only when reading the complete line matters more than preserving columns."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-4">
-      <CodeBlock language="txt">C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx</CodeBlock>
+      <CodeBlock language="txt">/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</CodeBlock>
       <CodeBlock language="txt" wrap>
-        C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx
+        /srv/tinyrack/config/inventory/garage-switch-02.production.yaml
       </CodeBlock>
     </div>
   )}
@@ -129,24 +162,41 @@ console.log(answer);</code></pre>`,
       label: 'React',
       language: 'tsx',
       code: String.raw`<CodeBlock language="txt">
-  C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx
+  /srv/tinyrack/config/inventory/garage-switch-02.production.yaml
 </CodeBlock>
 
 <CodeBlock language="txt" wrap>
-  C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx
+  /srv/tinyrack/config/inventory/garage-switch-02.production.yaml
 </CodeBlock>`,
     },
     {
       label: 'HTML',
       language: 'html',
       code: String.raw`<pre class="tr-code-block" data-language="txt">
-  <code>C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx</code>
+  <code>/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</code>
 </pre>
 
 <pre class="tr-code-block" data-language="txt" data-wrap="true">
-  <code>C:\Users\winetree94\.codex\worktrees\e71a\themes\stories\components\code-block.docs.mdx</code>
+  <code>/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</code>
 </pre>`,
     },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance
+  whenToUse={[
+    'Present multiline commands, configuration, logs, or source that readers may copy.',
+    'Use ShikiCodeBlock when language-aware highlighting materially improves a longer example.',
+  ]}
+  avoid={[
+    'Do not use a block for a short literal embedded in prose; use Code instead.',
+    'Do not enable wrapping for source where indentation or aligned columns carry meaning.',
+  ]}
+  accessibility={[
+    'Keep the pre and code structure so whitespace, keyboard selection, and copied text remain predictable.',
+    'Treat syntax color as enhancement only; the plain SSR output must stay readable, and long unwrapped lines must scroll inside the block.',
   ]}
 />
 

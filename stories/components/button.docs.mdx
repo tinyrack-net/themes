@@ -5,6 +5,7 @@ import { Button, IconButton } from '../../src/components/button/react.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as ButtonStories from './button.stories';
 
 <Meta of={ButtonStories} />
@@ -346,3 +347,5 @@ import { Button, IconButton } from '@tinyrack/ui/components/button/react';
 | `disabled` | `boolean` | Native disabled state. |
 | `type` | `button`, `submit`, `reset` | Default `button`. |
 | native button props | `ButtonHTMLAttributes<HTMLButtonElement>` | Passed through to `<button>`. |
+
+<ComponentTokenTable component="button" />

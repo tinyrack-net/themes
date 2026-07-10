@@ -73,12 +73,12 @@ A compact relationship scale where proximity explains whether interface elements
 
 ## Implementation
 
-Spacing values are public TypeScript metadata, not Tinyrack-prefixed CSS variables or utilities. In rendered layouts, use the matching standard Tailwind spacing utility or read the metadata in tooling.
+Spacing values are available as TypeScript metadata, runtime CSS variables, and prefixed Tailwind utilities.
 
 ```html
-<div class="grid gap-3 p-4">
-  <div class="flex items-center gap-2">...</div>
-  <section class="mt-6">...</section>
+<div class="grid gap-tinyrack-md p-tinyrack-lg">
+  <div class="flex items-center gap-tinyrack-sm">...</div>
+  <section style="margin-top: var(--tinyrack-space-xl)">...</section>
 </div>
 ```
 
@@ -89,7 +89,7 @@ const panelPadding = tinyrackSpacing.lg;
 const sectionGap = tinyrackSpacing.xl;
 ```
 
-Do not write `gap-tinyrack-md` or `--tinyrack-spacing-md`; those runtime contracts are not exported.
+Use `--tinyrack-space-*` in component CSS and `gap/p/m-tinyrack-*` utilities in Tailwind layouts.
 
 ## Reference
 

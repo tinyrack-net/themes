@@ -43,9 +43,9 @@ describe('badge.css source contract', () => {
       'utf8',
     );
 
-    expect(css).toContain('--tr-badge-background: var(--tinyrack-primary);');
-    expect(css).toContain('--tr-badge-background: var(--tinyrack-error);');
-    expect(css).toContain('border-radius: 9999px;');
+    expect(css).toContain('--_tr-badge-background: var(--tinyrack-primary);');
+    expect(css).toContain('--_tr-badge-background: var(--tinyrack-error);');
+    expect(css).toContain('var(--tr-badge-radius, var(--tinyrack-radius-full))');
     expect(contractSource).not.toContain('var(--');
     expect(contractSource).not.toContain('--tinyrack-');
     expect(contractSource).not.toContain('--tr-badge-');

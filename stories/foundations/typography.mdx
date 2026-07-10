@@ -46,7 +46,7 @@ Named text roles create hierarchy for dense operational UI without depending on 
         style={{
           fontFamily: key === 'code' ? 'var(--tinyrack-font-mono)' : key.startsWith('heading') || key === 'display' ? 'var(--tinyrack-font-heading)' : 'var(--tinyrack-font-body)',
           fontSize: tinyrackTypography.fontSize[recipe.fontSize],
-          fontWeight: key.startsWith('heading') || key === 'display' ? 650 : key === 'label' ? 700 : 400,
+          fontWeight: tinyrackTypography.fontWeight[recipe.fontWeight],
           letterSpacing: tinyrackTypography.letterSpacing[recipe.letterSpacing],
           lineHeight: tinyrackTypography.lineHeight[recipe.lineHeight],
           textTransform: key === 'label' ? 'uppercase' : 'none',
@@ -70,7 +70,7 @@ Named text roles create hierarchy for dense operational UI without depending on 
   </div>
 </section>
 
-The role recipes define font size, line height, and tracking. Weight remains a contextual hierarchy decision rather than a tokenized text-style property.
+The role recipes define font size, line height, tracking, and weight. Components use the same named weights instead of repeating numeric values.
 
 ## Implementation
 
@@ -118,7 +118,7 @@ const bodySize = tinyrackTypography.fontSize.md;
           <td><Code>{recipe.fontSize}</Code> · {tinyrackTypography.fontSize[recipe.fontSize]}</td>
           <td><Code>{recipe.lineHeight}</Code> · {tinyrackTypography.lineHeight[recipe.lineHeight]}</td>
           <td><Code>{recipe.letterSpacing}</Code> · {tinyrackTypography.letterSpacing[recipe.letterSpacing]}</td>
-          <td><Code>text-tinyrack-{recipe.fontSize} leading-tinyrack-{recipe.lineHeight} tracking-tinyrack-{recipe.letterSpacing}</Code></td>
+          <td><Code>text-tinyrack-{recipe.fontSize} leading-tinyrack-{recipe.lineHeight} tracking-tinyrack-{recipe.letterSpacing} font-tinyrack-{recipe.fontWeight}</Code></td>
         </tr>
       ))}
     </tbody>

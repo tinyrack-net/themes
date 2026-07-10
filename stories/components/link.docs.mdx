@@ -4,6 +4,7 @@ import { linkUnderlines, linkVariants } from '../../src/components/link/contract
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as LinkStories from './link.stories';
 
 <Meta of={LinkStories} />
@@ -241,3 +242,5 @@ import { Link } from '@tinyrack/ui/components/link/react';
 | `href` | `string` | Native anchor href. |
 | `className` | `string` | Merged with `tr-link`. |
 | native anchor props | `AnchorHTMLAttributes<HTMLAnchorElement>` | Passed through to `<a>`. |
+
+<ComponentTokenTable component="link" />

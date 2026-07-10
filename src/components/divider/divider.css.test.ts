@@ -14,7 +14,8 @@ describe('divider.css source contract', () => {
     const css = readDividerCss();
 
     expect(css).toContain('.tr-divider');
-    expect(css).toContain('background-color: var(--tinyrack-border);');
+    expect(css).toContain('var(--tr-divider-color, var(--tinyrack-border))');
+    expect(css).toContain('var(--tinyrack-border-width-default)');
     expect(css).not.toContain('Generated from');
     expect(css).not.toContain('@theme static');
     expect(css).not.toContain('[data-theme="tinyrack-light"]');

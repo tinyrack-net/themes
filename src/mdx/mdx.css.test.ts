@@ -13,8 +13,9 @@ describe('MDX CSS contract', () => {
     expect(css).toContain('.tr-mdx');
     expect(css).toContain('.tr-mdx-h1');
     expect(css).toContain('.tr-mdx-h2');
-    expect(css).toContain('margin: 3rem 0 1.25rem;');
-    expect(css).toContain('margin: 2.25rem 0 1rem;');
+    expect(css).toContain('--_tr-mdx-section-gap: 3rem;');
+    expect(css).toContain('--_tr-mdx-block-gap: 1.25rem;');
+    expect(css).toContain('var(--tr-mdx-content-width, var(--_tr-mdx-content-width))');
     expect(css).toContain('.tr-mdx-h3');
     expect(css).toContain('.tr-mdx-h4');
     expect(css).toContain('.tr-mdx-h5');
@@ -31,8 +32,10 @@ describe('MDX CSS contract', () => {
     expect(css).toContain('.tr-mdx-link');
     expect(css).toContain('.tr-mdx-image');
     expect(css).toContain('.tr-mdx-code-block');
+    expect(css).toContain('--tr-code-block-radius: var(--tinyrack-radius-lg);');
     expect(css).toContain('.tr-mdx-table-container');
     expect(css).toContain('.tr-mdx-table');
+    expect(css).toContain('--tr-table-radius: var(--tinyrack-radius-md);');
     expect(css).toContain('overflow-x: auto;');
     expect(css).toContain('width: max-content;');
     expect(css).toContain('min-width: 100%;');

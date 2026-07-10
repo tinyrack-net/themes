@@ -1,151 +1,157 @@
 .tr-btn,
 .tr-icon-btn {
-  --tr-btn-height: 2.5rem;
-  --tr-btn-padding-x: 1rem;
-  --tr-btn-gap: 0.5rem;
-  --tr-btn-font-size: 0.875rem;
-  --tr-btn-line-height: 1.25rem;
-  --tr-btn-variant-fill: var(--tinyrack-surface-muted);
-  --tr-btn-variant-fill-hover: var(--tinyrack-surface);
-  --tr-btn-variant-border: var(--tinyrack-border);
-  --tr-btn-variant-text: var(--tinyrack-text);
+  --_tr-btn-height: var(--tinyrack-control-height-md);
+  --_tr-btn-padding-x: var(--tinyrack-control-padding-inline-md);
+  --_tr-btn-gap: var(--tinyrack-control-gap-md);
+  --_tr-btn-font-size: var(--tinyrack-control-font-size-md);
+  --_tr-btn-line-height: var(--tinyrack-control-line-height-md);
+  --_tr-btn-variant-fill: var(--tinyrack-surface-interactive);
+  --_tr-btn-variant-fill-hover: var(--tinyrack-surface-interactive-hover);
+  --_tr-btn-variant-border: var(--tinyrack-border);
+  --_tr-btn-variant-text: var(--tinyrack-text);
   align-items: center;
   appearance: none;
-  background-color: var(--tr-btn-variant-fill);
-  border: 1px solid var(--tr-btn-variant-border);
-  border-color: var(--tr-btn-variant-border);
-  border-radius: 0.375rem;
+  background-color: var(--tr-btn-variant-fill, var(--_tr-btn-variant-fill));
+  border: var(--tinyrack-border-width-default) solid
+    var(--tr-btn-variant-border, var(--_tr-btn-variant-border));
+  border-color: var(--tr-btn-variant-border, var(--_tr-btn-variant-border));
+  border-radius: var(--tr-btn-radius, var(--tinyrack-radius-md));
   box-sizing: border-box;
-  color: var(--tr-btn-variant-text);
+  color: var(--tr-btn-variant-text, var(--_tr-btn-variant-text));
   cursor: pointer;
   display: inline-flex;
   font-family: var(--tinyrack-font-body);
-  font-size: var(--tr-btn-font-size);
-  font-weight: 600;
-  gap: var(--tr-btn-gap);
-  height: var(--tr-btn-height);
+  font-size: var(--tr-btn-font-size, var(--_tr-btn-font-size));
+  font-weight: var(--tr-btn-font-weight, var(--tinyrack-weight-medium));
+  gap: var(--tr-btn-gap, var(--_tr-btn-gap));
+  height: var(--tr-btn-height, var(--_tr-btn-height));
   justify-content: center;
-  line-height: var(--tr-btn-line-height);
-  padding-inline: var(--tr-btn-padding-x);
+  line-height: var(--tr-btn-line-height, var(--_tr-btn-line-height));
+  padding-inline: var(--tr-btn-padding-x, var(--_tr-btn-padding-x));
   text-decoration: none;
   transition:
-    background-color 120ms ease,
-    border-color 120ms ease,
-    color 120ms ease,
-    opacity 120ms ease,
-    transform 120ms ease;
+    background-color var(--tr-btn-duration, var(--tinyrack-duration-fast))
+    var(--tinyrack-ease-standard),
+    border-color var(--tr-btn-duration, var(--tinyrack-duration-fast))
+    var(--tinyrack-ease-standard),
+    color var(--tr-btn-duration, var(--tinyrack-duration-fast))
+    var(--tinyrack-ease-standard),
+    opacity var(--tr-btn-duration, var(--tinyrack-duration-fast))
+    var(--tinyrack-ease-standard),
+    transform var(--tr-btn-duration, var(--tinyrack-duration-fast))
+    var(--tinyrack-ease-standard);
   user-select: none;
   white-space: nowrap;
 }
 
 .tr-icon-btn {
-  width: var(--tr-btn-height);
+  width: var(--tr-btn-height, var(--_tr-btn-height));
   padding-inline: 0;
 }
 
 .tr-btn:hover:not(:disabled):not([aria-disabled="true"]),
 .tr-icon-btn:hover:not(:disabled):not([aria-disabled="true"]) {
-  background-color: var(--tr-btn-variant-fill-hover);
+  background-color: var(--tr-btn-variant-fill-hover, var(--_tr-btn-variant-fill-hover));
 }
 
 .tr-btn[data-size="sm"],
 .tr-icon-btn[data-size="sm"] {
-  --tr-btn-height: 2rem;
-  --tr-btn-padding-x: 0.75rem;
-  --tr-btn-gap: 0.375rem;
-  --tr-btn-font-size: 0.875rem;
-  --tr-btn-line-height: 1.25rem;
+  --_tr-btn-height: var(--tinyrack-control-height-sm);
+  --_tr-btn-padding-x: var(--tinyrack-control-padding-inline-sm);
+  --_tr-btn-gap: var(--tinyrack-control-gap-sm);
+  --_tr-btn-font-size: var(--tinyrack-control-font-size-sm);
+  --_tr-btn-line-height: var(--tinyrack-control-line-height-sm);
 }
 
 .tr-btn[data-size="md"],
 .tr-icon-btn[data-size="md"] {
-  --tr-btn-height: 2.5rem;
-  --tr-btn-padding-x: 1rem;
-  --tr-btn-gap: 0.5rem;
-  --tr-btn-font-size: 0.875rem;
-  --tr-btn-line-height: 1.25rem;
+  --_tr-btn-height: var(--tinyrack-control-height-md);
+  --_tr-btn-padding-x: var(--tinyrack-control-padding-inline-md);
+  --_tr-btn-gap: var(--tinyrack-control-gap-md);
+  --_tr-btn-font-size: var(--tinyrack-control-font-size-md);
+  --_tr-btn-line-height: var(--tinyrack-control-line-height-md);
 }
 
 .tr-btn[data-size="lg"],
 .tr-icon-btn[data-size="lg"] {
-  --tr-btn-height: 3rem;
-  --tr-btn-padding-x: 1.25rem;
-  --tr-btn-gap: 0.625rem;
-  --tr-btn-font-size: 1rem;
-  --tr-btn-line-height: 1.5rem;
+  --_tr-btn-height: var(--tinyrack-control-height-lg);
+  --_tr-btn-padding-x: var(--tinyrack-control-padding-inline-lg);
+  --_tr-btn-gap: var(--tinyrack-control-gap-lg);
+  --_tr-btn-font-size: var(--tinyrack-control-font-size-lg);
+  --_tr-btn-line-height: var(--tinyrack-control-line-height-lg);
 }
 
 .tr-btn[data-variant="neutral"],
 .tr-icon-btn[data-variant="neutral"] {
-  --tr-btn-variant-fill: var(--tinyrack-surface-muted);
-  --tr-btn-variant-fill-hover: var(--tinyrack-surface);
-  --tr-btn-variant-border: var(--tinyrack-border);
-  --tr-btn-variant-text: var(--tinyrack-text);
+  --_tr-btn-variant-fill: var(--tinyrack-surface-interactive);
+  --_tr-btn-variant-fill-hover: var(--tinyrack-surface-interactive-hover);
+  --_tr-btn-variant-border: var(--tinyrack-border);
+  --_tr-btn-variant-text: var(--tinyrack-text);
 }
 
 .tr-btn[data-variant="primary"],
 .tr-icon-btn[data-variant="primary"] {
-  --tr-btn-variant-fill: var(--tinyrack-primary);
-  --tr-btn-variant-fill-hover: var(--tinyrack-primary);
-  --tr-btn-variant-border: var(--tinyrack-primary);
-  --tr-btn-variant-text: var(--tinyrack-primary-contrast);
+  --_tr-btn-variant-fill: var(--tinyrack-primary);
+  --_tr-btn-variant-fill-hover: var(--tinyrack-primary-hover);
+  --_tr-btn-variant-border: var(--tinyrack-primary);
+  --_tr-btn-variant-text: var(--tinyrack-primary-contrast);
 }
 
 .tr-btn[data-variant="danger"],
 .tr-icon-btn[data-variant="danger"] {
-  --tr-btn-variant-fill: var(--tinyrack-error);
-  --tr-btn-variant-fill-hover: var(--tinyrack-error);
-  --tr-btn-variant-border: var(--tinyrack-error);
-  --tr-btn-variant-text: var(--tinyrack-error-contrast);
+  --_tr-btn-variant-fill: var(--tinyrack-error);
+  --_tr-btn-variant-fill-hover: var(--tinyrack-error-hover);
+  --_tr-btn-variant-border: var(--tinyrack-error);
+  --_tr-btn-variant-text: var(--tinyrack-error-contrast);
 }
 
 .tr-btn[data-appearance="solid"],
 .tr-icon-btn[data-appearance="solid"] {
-  background-color: var(--tr-btn-variant-fill);
-  border-color: var(--tr-btn-variant-border);
-  color: var(--tr-btn-variant-text);
+  background-color: var(--tr-btn-variant-fill, var(--_tr-btn-variant-fill));
+  border-color: var(--tr-btn-variant-border, var(--_tr-btn-variant-border));
+  color: var(--tr-btn-variant-text, var(--_tr-btn-variant-text));
 }
 
 .tr-btn[data-appearance="solid"]:hover:not(:disabled):not([aria-disabled="true"]),
 .tr-icon-btn[data-appearance="solid"]:hover:not(:disabled):not([aria-disabled="true"]) {
-  background-color: var(--tr-btn-variant-fill-hover);
+  background-color: var(--tr-btn-variant-fill-hover, var(--_tr-btn-variant-fill-hover));
 }
 
 .tr-btn[data-appearance="outline"],
 .tr-icon-btn[data-appearance="outline"] {
   background-color: transparent;
-  border-color: var(--tr-btn-variant-border);
-  color: var(--tr-btn-variant-border);
+  border-color: var(--tr-btn-variant-border, var(--_tr-btn-variant-border));
+  color: var(--tr-btn-variant-border, var(--_tr-btn-variant-border));
 }
 
 .tr-btn[data-appearance="outline"]:hover:not(:disabled):not([aria-disabled="true"]),
 .tr-icon-btn[data-appearance="outline"]:hover:not(:disabled):not(
   [aria-disabled="true"]
 ) {
-  background-color: var(--tinyrack-surface-muted);
+  background-color: var(--tr-btn-hover-background, var(--tinyrack-surface-interactive));
 }
 
 .tr-btn[data-appearance="ghost"],
 .tr-icon-btn[data-appearance="ghost"] {
   background-color: transparent;
   border-color: transparent;
-  color: var(--tr-btn-variant-border);
+  color: var(--tr-btn-variant-border, var(--_tr-btn-variant-border));
 }
 
 .tr-btn[data-appearance="ghost"]:hover:not(:disabled):not([aria-disabled="true"]),
 .tr-icon-btn[data-appearance="ghost"]:hover:not(:disabled):not([aria-disabled="true"]) {
-  background-color: var(--tinyrack-surface-muted);
+  background-color: var(--tr-btn-hover-background, var(--tinyrack-surface-interactive));
 }
 
 .tr-btn:active:not(:disabled):not([aria-disabled="true"]),
 .tr-icon-btn:active:not(:disabled):not([aria-disabled="true"]) {
-  transform: translateY(1px);
+  transform: translateY(var(--tr-btn-press-distance, 1px));
 }
 
 .tr-btn:focus-visible,
 .tr-icon-btn:focus-visible {
-  outline: 2px solid var(--tinyrack-focus);
-  outline-offset: 2px;
+  outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+  outline-offset: var(--tinyrack-focus-offset);
 }
 
 .tr-btn:disabled,
@@ -153,6 +159,6 @@
 .tr-icon-btn:disabled,
 .tr-icon-btn[aria-disabled="true"] {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--tr-btn-disabled-opacity, var(--tinyrack-opacity-disabled));
   pointer-events: none;
 }

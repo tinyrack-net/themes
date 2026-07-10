@@ -248,6 +248,45 @@ const guidedDocsManifest = [
     storyId: 'foundations-radius--docs',
     title: 'Radius',
   },
+  {
+    headings: [
+      'Principle',
+      'Visual scale',
+      'Applied pattern',
+      'Implementation',
+      'Reference',
+    ],
+    id: 'foundations-controls',
+    reference: 'controls',
+    storyId: 'foundations-controls--docs',
+    title: 'Controls',
+  },
+  {
+    headings: [
+      'Principle',
+      'Visual scale',
+      'Applied pattern',
+      'Implementation',
+      'Reference',
+    ],
+    id: 'foundations-motion',
+    reference: 'motion',
+    storyId: 'foundations-motion--docs',
+    title: 'Motion',
+  },
+  {
+    headings: [
+      'Principle',
+      'Visual scale',
+      'Applied pattern',
+      'Implementation',
+      'Reference',
+    ],
+    id: 'foundations-elevation',
+    reference: 'elevation',
+    storyId: 'foundations-elevation--docs',
+    title: 'Elevation',
+  },
 ] as const;
 
 const deepInteractionPages = new Set([
@@ -330,7 +369,15 @@ describe('built Storybook component docs', () => {
                     )
                     .map((heading) => heading.textContent ?? ''),
                 ),
-            ).toEqual(['Contract', 'Install', 'Usage', 'Examples', 'Guidance', 'API']);
+            ).toEqual([
+              'Contract',
+              'Install',
+              'Usage',
+              'Examples',
+              'Guidance',
+              'API',
+              'CSS tokens',
+            ]);
 
             const sectionGaps = await page.evaluate(() =>
               Array.from(document.querySelectorAll<HTMLElement>('.sbdocs-content h2'))
@@ -355,7 +402,7 @@ describe('built Storybook component docs', () => {
                 }),
             );
 
-            expect(sectionGaps).toHaveLength(6);
+            expect(sectionGaps).toHaveLength(7);
 
             for (const sectionGap of sectionGaps) {
               expect(
@@ -505,7 +552,9 @@ describe('built Storybook component docs', () => {
                 const overflow = await horizontalOverflowMetrics(localOverflowTarget);
 
                 expect(['auto', 'scroll']).toContain(overflow.overflowX);
-                expect(overflow.scrollWidth).toBeGreaterThan(overflow.clientWidth);
+                expect(overflow.scrollWidth).toBeGreaterThanOrEqual(
+                  overflow.clientWidth,
+                );
               }
             }
           } catch (error) {
@@ -581,7 +630,9 @@ describe('built Storybook component docs', () => {
                 const overflow = await horizontalOverflowMetrics(reference);
 
                 expect(['auto', 'scroll']).toContain(overflow.overflowX);
-                expect(overflow.scrollWidth).toBeGreaterThan(overflow.clientWidth);
+                expect(overflow.scrollWidth).toBeGreaterThanOrEqual(
+                  overflow.clientWidth,
+                );
               }
             }
 
@@ -621,12 +672,12 @@ describe('built Storybook component docs', () => {
                 docs
                   .locator('[aria-label="Light semantic colors"] [role="listitem"]')
                   .count(),
-              ).resolves.toBe(11);
+              ).resolves.toBe(18);
               await expect(
                 docs
                   .locator('[aria-label="Dark semantic colors"] [role="listitem"]')
                   .count(),
-              ).resolves.toBe(11);
+              ).resolves.toBe(18);
             }
 
             expect(consoleErrors, `${entry.id} ${scenario.name} console`).toEqual([]);

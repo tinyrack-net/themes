@@ -9,6 +9,7 @@ import { formControlSizes } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as TextareaStories from './form-textarea.stories';
 
 <Meta of={TextareaStories} />
@@ -205,3 +206,5 @@ Maintenance complete.
 | `invalid` | `boolean` | Sets `aria-invalid` and `data-invalid`. |
 | `rows` | native number | Passed through to `<textarea>`. |
 | native textarea props | `TextareaHTMLAttributes<HTMLTextAreaElement>` except native `size` | Passed through to `<textarea>`. |
+
+<ComponentTokenTable component="form" />

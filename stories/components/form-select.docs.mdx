@@ -9,6 +9,7 @@ import { formControlSizes } from '../../src/components/form/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as SelectStories from './form-select.stories';
 
 <Meta of={SelectStories} />
@@ -222,3 +223,5 @@ import { Field, FormMessage, Label, Select } from '@tinyrack/ui/components/form/
 | `invalid` | `boolean` | Sets `aria-invalid` and `data-invalid`. |
 | `children` | native `option` elements | Keep browser select semantics. |
 | native select props | `SelectHTMLAttributes<HTMLSelectElement>` except native `size` | Passed through to `<select>`. |
+
+<ComponentTokenTable component="form" />

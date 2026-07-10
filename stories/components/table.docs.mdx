@@ -4,6 +4,7 @@ import { tableDensities } from '../../src/components/table/contract.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as TableStories from './table.stories';
 
 <Meta of={TableStories} />
@@ -460,3 +461,5 @@ import { Table, TableContainer } from '@tinyrack/ui/components/table/react';
 | `className` | `string` | Merged with `tr-table` or `tr-table-container`. |
 | native table props | `TableHTMLAttributes<HTMLTableElement>` | Passed through to `<table>`. |
 | native div props | `HTMLAttributes<HTMLDivElement>` | Passed through to `TableContainer`. |
+
+<ComponentTokenTable component="table" />

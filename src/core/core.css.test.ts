@@ -8,12 +8,12 @@ function readCoreCss() {
   return readFileSync(join(repoRoot, 'src/core/core.css'), 'utf8');
 }
 
-describe('core.css source contract', () => {
-  it('is a source-owned core stylesheet without generated component CSS', () => {
+describe('core.css generated token contract', () => {
+  it('is generated from TypeScript tokens without component CSS', () => {
     const css = readCoreCss();
 
     expect(css).toContain('@theme static');
-    expect(css).not.toContain('Generated from');
+    expect(css).toContain('Generated from src/core/tokens');
     expect(css).not.toContain('.tr-btn');
     expect(css).not.toContain('.tr-table');
     expect(css).not.toContain('daisyui');
@@ -32,12 +32,16 @@ describe('core.css source contract', () => {
     );
     expect(css).toContain('--leading-tinyrack-lg: var(--tinyrack-leading-lg);');
     expect(css).toContain('--tracking-tinyrack-xl: var(--tinyrack-tracking-xl);');
+    expect(css).toContain(
+      '--font-weight-tinyrack-heading: var(--tinyrack-weight-heading);',
+    );
+    expect(css).toContain('--spacing-tinyrack-md: var(--tinyrack-space-md);');
+    expect(css).toContain('--radius-tinyrack-md: var(--tinyrack-radius-md);');
+    expect(css).toContain('--shadow-tinyrack-overlay: var(--tinyrack-shadow-overlay);');
     expect(css).toContain('--color-tinyrack-primary: var(--tinyrack-primary);');
     expect(css).toContain('--color-tinyrack-surface: var(--tinyrack-surface);');
     expect(css).toContain('--color-tinyrack-border: var(--tinyrack-border);');
-    expect(css).toContain(
-      ':where([data-theme="tinyrack-light"], [data-theme="tinyrack-dark"])',
-    );
+    expect(css).toContain(':root {');
     expect(css).toContain('[data-theme="tinyrack-light"]');
     expect(css).toContain('[data-theme="tinyrack-dark"]');
   });
@@ -50,7 +54,22 @@ describe('core.css source contract', () => {
     expect(css).not.toContain('--color-tinyrack-success');
     expect(css).not.toContain('--color-tinyrack-warning');
     expect(css).not.toContain('--color-tinyrack-info');
-    expect(css).not.toContain('--color-tinyrack-surface-raised');
-    expect(css).not.toContain('--radius-tinyrack-');
+    expect(css).toContain('--color-tinyrack-surface-raised');
+    expect(css).toContain('--color-tinyrack-border-strong');
+    expect(css).toContain('--radius-tinyrack-');
+  });
+
+  it('contains shared control, focus, motion, opacity, and elevation decisions', () => {
+    const css = readCoreCss();
+
+    expect(css).toContain('--tinyrack-control-height-sm: 2rem;');
+    expect(css).toContain('--tinyrack-control-height-md: 2.5rem;');
+    expect(css).toContain('--tinyrack-control-height-lg: 3rem;');
+    expect(css).toContain('--tinyrack-focus-width: 2px;');
+    expect(css).toContain('--tinyrack-duration-fast: 120ms;');
+    expect(css).toContain('--tinyrack-duration-loading: 1.2s;');
+    expect(css).toContain('--tinyrack-ease-linear: linear;');
+    expect(css).toContain('--tinyrack-opacity-disabled: 0.5;');
+    expect(css).toContain('--tinyrack-shadow-overlay:');
   });
 });

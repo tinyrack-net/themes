@@ -1,11 +1,11 @@
 .tr-tabs {
-  --tr-tabs-list-gap: 0.25rem;
-  --tr-tabs-trigger-height: 2.5rem;
-  --tr-tabs-trigger-padding-x: 1rem;
-  --tr-tabs-trigger-gap: 0.5rem;
-  --tr-tabs-trigger-font-size: 0.875rem;
-  --tr-tabs-trigger-line-height: 1.25rem;
-  --tr-tabs-panel-padding: 1rem;
+  --_tr-tabs-list-gap: var(--tinyrack-space-xs);
+  --_tr-tabs-trigger-height: var(--tinyrack-control-height-md);
+  --_tr-tabs-trigger-padding-x: var(--tinyrack-control-padding-inline-md);
+  --_tr-tabs-trigger-gap: var(--tinyrack-control-gap-md);
+  --_tr-tabs-trigger-font-size: var(--tinyrack-control-font-size-md);
+  --_tr-tabs-trigger-line-height: var(--tinyrack-control-line-height-md);
+  --_tr-tabs-panel-padding: var(--tinyrack-space-lg);
   box-sizing: border-box;
   color: var(--tinyrack-text);
   display: grid;
@@ -17,30 +17,30 @@
 }
 
 .tr-tabs[data-size="sm"] {
-  --tr-tabs-trigger-height: 2rem;
-  --tr-tabs-trigger-padding-x: 0.75rem;
-  --tr-tabs-trigger-gap: 0.375rem;
-  --tr-tabs-trigger-font-size: 0.875rem;
-  --tr-tabs-trigger-line-height: 1.25rem;
-  --tr-tabs-panel-padding: 0.75rem;
+  --_tr-tabs-trigger-height: var(--tinyrack-control-height-sm);
+  --_tr-tabs-trigger-padding-x: var(--tinyrack-control-padding-inline-sm);
+  --_tr-tabs-trigger-gap: var(--tinyrack-control-gap-sm);
+  --_tr-tabs-trigger-font-size: var(--tinyrack-control-font-size-sm);
+  --_tr-tabs-trigger-line-height: var(--tinyrack-control-line-height-sm);
+  --_tr-tabs-panel-padding: var(--tinyrack-space-md);
 }
 
 .tr-tabs[data-size="md"] {
-  --tr-tabs-trigger-height: 2.5rem;
-  --tr-tabs-trigger-padding-x: 1rem;
-  --tr-tabs-trigger-gap: 0.5rem;
-  --tr-tabs-trigger-font-size: 0.875rem;
-  --tr-tabs-trigger-line-height: 1.25rem;
-  --tr-tabs-panel-padding: 1rem;
+  --_tr-tabs-trigger-height: var(--tinyrack-control-height-md);
+  --_tr-tabs-trigger-padding-x: var(--tinyrack-control-padding-inline-md);
+  --_tr-tabs-trigger-gap: var(--tinyrack-control-gap-md);
+  --_tr-tabs-trigger-font-size: var(--tinyrack-control-font-size-md);
+  --_tr-tabs-trigger-line-height: var(--tinyrack-control-line-height-md);
+  --_tr-tabs-panel-padding: var(--tinyrack-space-lg);
 }
 
 .tr-tabs[data-size="lg"] {
-  --tr-tabs-trigger-height: 3rem;
-  --tr-tabs-trigger-padding-x: 1.25rem;
-  --tr-tabs-trigger-gap: 0.625rem;
-  --tr-tabs-trigger-font-size: 1rem;
-  --tr-tabs-trigger-line-height: 1.5rem;
-  --tr-tabs-panel-padding: 1.25rem;
+  --_tr-tabs-trigger-height: var(--tinyrack-control-height-lg);
+  --_tr-tabs-trigger-padding-x: var(--tinyrack-control-padding-inline-lg);
+  --_tr-tabs-trigger-gap: var(--tinyrack-control-gap-lg);
+  --_tr-tabs-trigger-font-size: var(--tinyrack-control-font-size-lg);
+  --_tr-tabs-trigger-line-height: var(--tinyrack-control-line-height-lg);
+  --_tr-tabs-panel-padding: 1.25rem;
 }
 
 .tr-tabs[data-orientation="vertical"] {
@@ -54,8 +54,8 @@
   width: 100%;
   min-width: 0;
   align-items: center;
-  gap: var(--tr-tabs-list-gap);
-  border-bottom: 1px solid var(--tinyrack-border);
+  gap: var(--tr-tabs-list-gap, var(--_tr-tabs-list-gap));
+  border-bottom: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
 }
 
 .tr-tabs[data-orientation="horizontal"] .tr-tabs-list {
@@ -66,7 +66,7 @@
   flex-direction: column;
   align-items: stretch;
   width: max-content;
-  border-right: 1px solid var(--tinyrack-border);
+  border-right: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
   border-bottom: 0;
 }
 
@@ -74,28 +74,33 @@
   align-items: center;
   appearance: none;
   background-color: transparent;
-  border: 1px solid transparent;
-  border-radius: 0.375rem 0.375rem 0 0;
+  border: var(--tinyrack-border-width-default) solid transparent;
+  border-radius: var(--tr-tabs-radius, var(--tinyrack-radius-md))
+    var(--tr-tabs-radius, var(--tinyrack-radius-md)) 0 0;
   box-sizing: border-box;
   color: var(--tinyrack-text-muted);
   cursor: pointer;
   display: inline-flex;
   font-family: var(--tinyrack-font-body);
-  font-size: var(--tr-tabs-trigger-font-size);
-  font-weight: 600;
-  gap: var(--tr-tabs-trigger-gap);
-  height: var(--tr-tabs-trigger-height);
+  font-size: var(--tr-tabs-trigger-font-size, var(--_tr-tabs-trigger-font-size));
+  font-weight: var(--tr-tabs-font-weight, var(--tinyrack-weight-medium));
+  gap: var(--tr-tabs-trigger-gap, var(--_tr-tabs-trigger-gap));
+  height: var(--tr-tabs-trigger-height, var(--_tr-tabs-trigger-height));
   justify-content: center;
-  line-height: var(--tr-tabs-trigger-line-height);
+  line-height: var(--tr-tabs-trigger-line-height, var(--_tr-tabs-trigger-line-height));
   margin-bottom: -1px;
-  padding-inline: var(--tr-tabs-trigger-padding-x);
+  padding-inline: var(--tr-tabs-trigger-padding-x, var(--_tr-tabs-trigger-padding-x));
   position: relative;
   text-decoration: none;
   transition:
-    background-color 120ms ease,
-    border-color 120ms ease,
-    color 120ms ease,
-    opacity 120ms ease;
+    background-color var(--tr-tabs-duration, var(--tinyrack-duration-fast))
+    var(--tinyrack-ease-standard),
+    border-color var(--tr-tabs-duration, var(--tinyrack-duration-fast))
+    var(--tinyrack-ease-standard),
+    color var(--tr-tabs-duration, var(--tinyrack-duration-fast))
+    var(--tinyrack-ease-standard),
+    opacity var(--tr-tabs-duration, var(--tinyrack-duration-fast))
+    var(--tinyrack-ease-standard);
   user-select: none;
   white-space: nowrap;
 }
@@ -104,56 +109,74 @@
   justify-content: flex-start;
   margin-right: -1px;
   margin-bottom: 0;
-  border-radius: 0.375rem 0 0 0.375rem;
+  border-radius: var(--tr-tabs-radius, var(--tinyrack-radius-md)) 0 0
+    var(--tr-tabs-radius, var(--tinyrack-radius-md));
 }
 
 .tr-tabs-trigger:hover:not(:disabled):not([aria-disabled="true"]) {
-  background-color: var(--tinyrack-surface-muted);
+  background-color: var(
+    --tr-tabs-hover-background,
+    var(--tinyrack-surface-interactive)
+  );
   color: var(--tinyrack-text);
 }
 
 .tr-tabs-trigger[aria-selected="true"],
 .tr-tabs-trigger[data-active="true"] {
-  background-color: var(--tinyrack-surface);
+  background-color: var(
+    --tr-tabs-selected-background,
+    var(--tinyrack-surface-selected)
+  );
   border-color: var(--tinyrack-border);
-  border-bottom-color: var(--tinyrack-surface);
+  border-bottom-color: var(
+    --tr-tabs-selected-background,
+    var(--tinyrack-surface-selected)
+  );
   color: var(--tinyrack-text);
-  font-weight: 700;
+  font-weight: var(--tr-tabs-selected-font-weight, var(--tinyrack-weight-bold));
   z-index: 1;
 }
 
 .tr-tabs[data-orientation="vertical"] .tr-tabs-trigger[aria-selected="true"],
 .tr-tabs[data-orientation="vertical"] .tr-tabs-trigger[data-active="true"] {
-  border-right-color: var(--tinyrack-surface);
+  border-right-color: var(
+    --tr-tabs-selected-background,
+    var(--tinyrack-surface-selected)
+  );
   border-bottom-color: var(--tinyrack-border);
 }
 
 .tr-tabs-trigger:focus-visible {
-  outline: 2px solid var(--tinyrack-focus);
-  outline-offset: 2px;
+  outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+  outline-offset: var(--tinyrack-focus-offset);
 }
 
 .tr-tabs-trigger:disabled,
 .tr-tabs-trigger[aria-disabled="true"] {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--tr-tabs-disabled-opacity, var(--tinyrack-opacity-disabled));
   pointer-events: none;
 }
 
 .tr-tabs-panel {
   box-sizing: border-box;
   min-width: 0;
-  border: 1px solid var(--tinyrack-border);
-  border-radius: 0 0 0.375rem 0.375rem;
-  background-color: var(--tinyrack-surface);
+  border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+  border-radius: 0 0 var(--tr-tabs-radius, var(--tinyrack-radius-md))
+    var(--tr-tabs-radius, var(--tinyrack-radius-md));
+  background-color: var(
+    --tr-tabs-selected-background,
+    var(--tinyrack-surface-selected)
+  );
   color: var(--tinyrack-text);
   font-size: var(--tinyrack-text-sm);
   line-height: var(--tinyrack-leading-md);
-  padding: var(--tr-tabs-panel-padding);
+  padding: var(--tr-tabs-panel-padding, var(--_tr-tabs-panel-padding));
 }
 
 .tr-tabs[data-orientation="vertical"] .tr-tabs-panel {
-  border-radius: 0 0.375rem 0.375rem 0;
+  border-radius: 0 var(--tr-tabs-radius, var(--tinyrack-radius-md))
+    var(--tr-tabs-radius, var(--tinyrack-radius-md)) 0;
 }
 
 .tr-tabs-panel[data-active="true"] {
@@ -165,6 +188,6 @@
 }
 
 .tr-tabs-panel:focus-visible {
-  outline: 2px solid var(--tinyrack-focus);
-  outline-offset: 2px;
+  outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+  outline-offset: var(--tinyrack-focus-offset);
 }

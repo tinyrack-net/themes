@@ -14,6 +14,8 @@ describe('card.css source contract', () => {
     const css = readCardCss();
 
     expect(css).toContain('.tr-card');
+    expect(css).toContain('var(--tr-card-padding, var(--_tr-card-padding))');
+    expect(css).toContain('var(--tinyrack-radius-lg)');
     expect(css).not.toContain('Generated from');
     expect(css).not.toContain('@theme static');
     expect(css).not.toContain('[data-theme="tinyrack-light"]');

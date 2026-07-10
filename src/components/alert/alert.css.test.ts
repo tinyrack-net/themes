@@ -14,7 +14,8 @@ describe('alert.css source contract', () => {
     const css = readAlertCss();
 
     expect(css).toContain('.tr-alert');
-    expect(css).toContain('--tr-alert-border: var(--tinyrack-error);');
+    expect(css).toContain('--_tr-alert-border: var(--tinyrack-error);');
+    expect(css).toContain('var(--tr-alert-radius, var(--_tr-alert-radius))');
     expect(css).not.toContain('Generated from');
     expect(css).not.toContain('@theme static');
     expect(css).not.toContain('[data-theme="tinyrack-light"]');

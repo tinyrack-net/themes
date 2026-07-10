@@ -1,28 +1,32 @@
 .tr-card {
+  --_tr-card-background: var(--tinyrack-surface);
+  --_tr-card-padding: var(--tinyrack-space-md);
   box-sizing: border-box;
-  border: 1px solid var(--tinyrack-border);
-  border-radius: 0.5rem;
-  background-color: var(--tinyrack-surface);
-  color: var(--tinyrack-text);
+  border: var(--tinyrack-border-width-default) solid
+    var(--tr-card-border, var(--tinyrack-border));
+  border-radius: var(--tr-card-radius, var(--tinyrack-radius-lg));
+  background-color: var(--tr-card-background, var(--_tr-card-background));
+  color: var(--tr-card-color, var(--tinyrack-text));
   font-family: var(--tinyrack-font-body);
+  padding: var(--tr-card-padding, var(--_tr-card-padding));
 }
 
 .tr-card[data-padding="sm"] {
-  padding: 0.5rem;
+  --_tr-card-padding: var(--tinyrack-space-sm);
 }
 
 .tr-card[data-padding="md"] {
-  padding: 0.75rem;
+  --_tr-card-padding: var(--tinyrack-space-md);
 }
 
 .tr-card[data-padding="lg"] {
-  padding: 1rem;
+  --_tr-card-padding: var(--tinyrack-space-lg);
 }
 
 .tr-card[data-variant="default"] {
-  background-color: var(--tinyrack-surface);
+  --_tr-card-background: var(--tinyrack-surface);
 }
 
 .tr-card[data-variant="muted"] {
-  background-color: var(--tinyrack-surface-muted);
+  --_tr-card-background: var(--tinyrack-surface-muted);
 }

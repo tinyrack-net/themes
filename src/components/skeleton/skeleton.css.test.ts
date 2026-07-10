@@ -16,6 +16,8 @@ describe('skeleton.css source contract', () => {
     expect(css).toContain('.tr-skeleton');
     expect(css).toContain('prefers-reduced-motion: reduce');
     expect(css).toContain('tr-skeleton-shimmer');
+    expect(css).toContain('var(--tinyrack-duration-loading)');
+    expect(css).toContain('var(--tr-skeleton-radius, var(--_tr-skeleton-radius))');
     expect(css).not.toContain('Generated from');
     expect(css).not.toContain('@theme static');
     expect(css).not.toContain('[data-theme="tinyrack-light"]');

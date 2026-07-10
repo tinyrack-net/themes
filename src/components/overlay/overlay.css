@@ -10,13 +10,13 @@
   }
 
   .tr-modal {
-    --tr-modal-backdrop-color: rgb(0 0 0 / 0.56);
-    --tr-modal-box-max-width: 32rem;
-    --tr-modal-box-padding: 1.5rem;
-    --tr-modal-box-radius: 0.375rem;
-    --tr-modal-motion-duration: 180ms;
-    --tr-modal-closed-translate: 0 0.75rem;
-    --tr-modal-closed-scale: 0.98;
+    --_tr-modal-backdrop-color: rgb(0 0 0 / var(--tinyrack-opacity-backdrop));
+    --_tr-modal-box-max-width: 32rem;
+    --_tr-modal-box-padding: var(--tinyrack-space-xl);
+    --_tr-modal-box-radius: var(--tinyrack-radius-xl);
+    --_tr-modal-motion-duration: var(--tinyrack-duration-slow);
+    --_tr-modal-closed-translate: 0 var(--tinyrack-space-md);
+    --_tr-modal-closed-scale: 0.98;
     background: transparent;
     border: 0;
     box-sizing: border-box;
@@ -34,8 +34,10 @@
     padding: 0;
     position: fixed;
     transition:
-      opacity var(--tr-modal-motion-duration) ease-out,
-      visibility var(--tr-modal-motion-duration) allow-discrete;
+      opacity var(--tr-modal-motion-duration, var(--_tr-modal-motion-duration))
+      var(--tinyrack-ease-out),
+      visibility var(--tr-modal-motion-duration, var(--_tr-modal-motion-duration))
+      allow-discrete;
     visibility: hidden;
     width: 100%;
   }
@@ -60,10 +62,10 @@
 
   .tr-modal-box {
     align-self: center;
-    background-color: var(--tinyrack-surface);
-    border: 1px solid var(--tinyrack-border);
-    border-radius: var(--tr-modal-box-radius);
-    box-shadow: 0 1.5rem 3rem -1.25rem rgb(0 0 0 / 0.4);
+    background-color: var(--tr-modal-background, var(--tinyrack-surface-raised));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tr-modal-box-radius, var(--_tr-modal-box-radius));
+    box-shadow: var(--tr-modal-shadow, var(--tinyrack-shadow-overlay));
     color: var(--tinyrack-text);
     display: grid;
     font-family: var(--tinyrack-font-body);
@@ -71,36 +73,41 @@
     grid-template-rows: auto auto minmax(0, 1fr) auto;
     justify-self: center;
     max-height: calc(100dvh - 5rem);
-    max-width: var(--tr-modal-box-max-width);
+    max-width: var(--tr-modal-box-max-width, var(--_tr-modal-box-max-width));
     opacity: 0;
     overflow: hidden;
-    padding: var(--tr-modal-box-padding);
-    scale: var(--tr-modal-closed-scale);
+    padding: var(--tr-modal-box-padding, var(--_tr-modal-box-padding));
+    scale: var(--tr-modal-closed-scale, var(--_tr-modal-closed-scale));
     transition:
-      border-radius var(--tr-modal-motion-duration) ease-out,
-      box-shadow var(--tr-modal-motion-duration) ease-out,
-      opacity var(--tr-modal-motion-duration) ease-out,
-      scale var(--tr-modal-motion-duration) ease-out,
-      translate var(--tr-modal-motion-duration) ease-out;
-    translate: var(--tr-modal-closed-translate);
+      border-radius var(--tr-modal-motion-duration, var(--_tr-modal-motion-duration))
+      var(--tinyrack-ease-out),
+      box-shadow var(--tr-modal-motion-duration, var(--_tr-modal-motion-duration))
+      var(--tinyrack-ease-out),
+      opacity var(--tr-modal-motion-duration, var(--_tr-modal-motion-duration))
+      var(--tinyrack-ease-out),
+      scale var(--tr-modal-motion-duration, var(--_tr-modal-motion-duration))
+      var(--tinyrack-ease-out),
+      translate var(--tr-modal-motion-duration, var(--_tr-modal-motion-duration))
+      var(--tinyrack-ease-out);
+    translate: var(--tr-modal-closed-translate, var(--_tr-modal-closed-translate));
     width: 91.6667%;
     z-index: 1;
   }
 
   .tr-modal-box[data-size="sm"] {
-    --tr-modal-box-max-width: 24rem;
+    --_tr-modal-box-max-width: 24rem;
   }
 
   .tr-modal-box[data-size="md"] {
-    --tr-modal-box-max-width: 32rem;
+    --_tr-modal-box-max-width: 32rem;
   }
 
   .tr-modal-box[data-size="lg"] {
-    --tr-modal-box-max-width: 48rem;
+    --_tr-modal-box-max-width: 48rem;
   }
 
   .tr-modal-box[data-size="full"] {
-    --tr-modal-box-max-width: none;
+    --_tr-modal-box-max-width: none;
     height: calc(100dvh - 2rem);
     width: calc(100% - 2rem);
   }
@@ -114,14 +121,16 @@
   .tr-modal-backdrop {
     align-self: stretch;
     appearance: none;
-    background-color: var(--tr-modal-backdrop-color);
+    background-color: var(--tr-modal-backdrop-color, var(--_tr-modal-backdrop-color));
     border: 0;
     color: transparent;
     justify-self: stretch;
     margin: 0;
     opacity: 1;
     padding: 0;
-    transition: background-color var(--tr-modal-motion-duration) ease-out;
+    transition: background-color
+      var(--tr-modal-motion-duration, var(--_tr-modal-motion-duration))
+      var(--tinyrack-ease-out);
     z-index: 0;
   }
 
@@ -144,7 +153,7 @@
   .tr-modal-header {
     align-items: flex-start;
     display: flex;
-    gap: 1rem;
+    gap: var(--tr-modal-header-gap, var(--tinyrack-space-lg));
     justify-content: space-between;
     min-width: 0;
   }
@@ -153,7 +162,7 @@
     color: var(--tinyrack-text);
     font-family: var(--tinyrack-font-heading);
     font-size: var(--tinyrack-text-lg);
-    font-weight: 700;
+    font-weight: var(--tr-modal-title-weight, var(--tinyrack-weight-bold));
     line-height: var(--tinyrack-leading-sm);
     margin: 0;
   }
@@ -162,7 +171,7 @@
     color: var(--tinyrack-text-muted);
     font-size: var(--tinyrack-text-sm);
     line-height: var(--tinyrack-leading-md);
-    margin: 0.5rem 0 0;
+    margin: var(--tinyrack-space-sm) 0 0;
   }
 
   .tr-modal-body {
@@ -172,16 +181,16 @@
     min-height: 0;
     overflow: auto;
     overscroll-behavior: contain;
-    padding-block: 1rem;
+    padding-block: var(--tr-modal-body-padding, var(--tinyrack-space-lg));
   }
 
   .tr-modal-action {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--tr-modal-action-gap, var(--tinyrack-space-sm));
     justify-content: flex-end;
-    margin-top: 0.5rem;
+    margin-top: var(--tinyrack-space-sm);
   }
 
   .tr-modal[data-placement="top"]:modal {
@@ -189,8 +198,8 @@
   }
 
   .tr-modal[data-placement="top"] .tr-modal-box {
-    --tr-modal-closed-scale: 1;
-    --tr-modal-closed-translate: 0 -100%;
+    --_tr-modal-closed-scale: 1;
+    --_tr-modal-closed-translate: 0 -100%;
     align-self: start;
     border-start-start-radius: 0;
     border-start-end-radius: 0;
@@ -203,8 +212,8 @@
   }
 
   .tr-modal[data-placement="bottom"] .tr-modal-box {
-    --tr-modal-closed-scale: 1;
-    --tr-modal-closed-translate: 0 100%;
+    --_tr-modal-closed-scale: 1;
+    --_tr-modal-closed-translate: 0 100%;
     align-self: end;
     border-end-start-radius: 0;
     border-end-end-radius: 0;
@@ -217,8 +226,8 @@
   }
 
   .tr-modal[data-placement="start"] .tr-modal-box {
-    --tr-modal-closed-scale: 1;
-    --tr-modal-closed-translate: -100% 0;
+    --_tr-modal-closed-scale: 1;
+    --_tr-modal-closed-translate: -100% 0;
     align-self: stretch;
     border-start-start-radius: 0;
     border-end-start-radius: 0;
@@ -232,8 +241,8 @@
   }
 
   .tr-modal[data-placement="end"] .tr-modal-box {
-    --tr-modal-closed-scale: 1;
-    --tr-modal-closed-translate: 100% 0;
+    --_tr-modal-closed-scale: 1;
+    --_tr-modal-closed-translate: 100% 0;
     align-self: stretch;
     border-start-end-radius: 0;
     border-end-end-radius: 0;
@@ -245,16 +254,16 @@
   .tr-modal :focus-visible,
   .tr-layer:focus-visible,
   .tr-layer :focus-visible {
-    outline: 2px solid var(--tinyrack-focus);
-    outline-offset: 2px;
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
   }
 
   .tr-layer {
-    --tr-layer-motion-duration: 160ms;
-    background-color: var(--tinyrack-surface);
-    border: 1px solid var(--tinyrack-border);
-    border-radius: 0.375rem;
-    box-shadow: 0 1rem 2.25rem -1rem rgb(0 0 0 / 0.4);
+    --_tr-layer-motion-duration: var(--tinyrack-duration-normal);
+    background-color: var(--tr-layer-background, var(--tinyrack-surface-raised));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tr-layer-radius, var(--tinyrack-radius-lg));
+    box-shadow: var(--tr-layer-shadow, var(--tinyrack-shadow-raised));
     box-sizing: border-box;
     color: var(--tinyrack-text);
     font-family: var(--tinyrack-font-body);
@@ -267,12 +276,15 @@
     opacity: 0;
     overflow: auto;
     overscroll-behavior: contain;
-    padding: 0.75rem;
+    padding: var(--tr-layer-padding, var(--tinyrack-space-md));
     scale: 0.98;
     transition:
-      opacity var(--tr-layer-motion-duration) ease-out,
-      scale var(--tr-layer-motion-duration) ease-out,
-      visibility var(--tr-layer-motion-duration) allow-discrete;
+      opacity var(--tr-layer-motion-duration, var(--_tr-layer-motion-duration))
+      var(--tinyrack-ease-out),
+      scale var(--tr-layer-motion-duration, var(--_tr-layer-motion-duration))
+      var(--tinyrack-ease-out),
+      visibility var(--tr-layer-motion-duration, var(--_tr-layer-motion-duration))
+      allow-discrete;
     visibility: hidden;
     width: max-content;
   }
@@ -317,7 +329,7 @@
 
   @media (max-width: 40rem) {
     .tr-modal {
-      --tr-modal-box-padding: 1rem;
+      --_tr-modal-box-padding: var(--tinyrack-space-lg);
     }
 
     .tr-modal[data-placement="middle"] .tr-modal-box {

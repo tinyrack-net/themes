@@ -1,0 +1,48 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Button } from '../../src/components/button/react.js';
+import { Code } from '../../src/components/code/react.js';
+import { Table, TableContainer } from '../../src/components/table/react.js';
+import { tinyrackMotion } from '../../src/core/index.js';
+
+<Meta title="Foundations/Motion" />
+
+# Motion
+
+Motion explains state change without slowing down compact operational work.
+
+## Principle
+
+Use the fast duration for direct interaction, normal for anchored layers, slow for modal entry and exit, and loading for repeating progress or skeleton feedback. Reduced-motion preferences always remove decorative transitions.
+
+## Visual scale
+
+<div className="grid gap-tinyrack-md md:grid-cols-4" role="list">
+  {Object.entries(tinyrackMotion.duration).map(([name, value]) => (
+    <section className="grid gap-tinyrack-sm border border-tinyrack-border p-tinyrack-lg" key={name} role="listitem">
+      <strong>{name}</strong><Code>{value}</Code><div className="h-2 bg-tinyrack-primary" style={{ transition: `transform ${value} ${tinyrackMotion.easing.easeOut}` }} />
+    </section>
+  ))}
+</div>
+
+## Applied pattern
+
+<div className="flex flex-wrap gap-tinyrack-sm"><Button>Fast interaction</Button><Button style={{ ['--tr-btn-duration']: tinyrackMotion.duration.slow }}>Deliberate exception</Button></div>
+
+## Implementation
+
+Components consume duration and easing variables. Prefer the semantic duration names over authoring milliseconds inside component CSS.
+
+```css
+.rack-layer {
+  transition: opacity var(--tinyrack-duration-normal) var(--tinyrack-ease-out);
+}
+```
+
+## Reference
+
+<TableContainer data-foundation-reference="motion">
+  <Table>
+    <thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Use</th></tr></thead>
+    <tbody>{Object.entries(tinyrackMotion.duration).map(([name, value]) => <tr key={name}><th scope="row"><Code>{name}</Code></th><td><Code>{value}</Code></td><td>{name === 'fast' ? 'Controls and links' : name === 'normal' ? 'Layers' : name === 'slow' ? 'Modals' : 'Progress and skeleton loading'}</td></tr>)}</tbody>
+  </Table>
+</TableContainer>

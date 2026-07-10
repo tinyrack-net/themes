@@ -12,6 +12,7 @@ import {
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as FieldStories from './form-field.stories';
 
 <Meta of={FieldStories} />
@@ -232,3 +233,5 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
 | `Label.htmlFor` | `string` | Native label association. |
 | `FormMessage.variant` | `neutral`, `error` | Default `neutral`; sets `data-variant`. |
 | native props | div, label, paragraph attributes | Passed through to each primitive. |
+
+<ComponentTokenTable component="form" />

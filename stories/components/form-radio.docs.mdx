@@ -7,6 +7,7 @@ import {
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
 import * as RadioStories from './form-radio.stories';
 
 <Meta of={RadioStories} />
@@ -260,3 +261,5 @@ import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';
 | `children` | `ReactNode` | Renders `tr-radio-label` when present. |
 | native radio props | `InputHTMLAttributes<HTMLInputElement>` except `children`, `size`, `type` | Passed through to the native radio input. |
 | native fieldset props | `FieldsetHTMLAttributes<HTMLFieldSetElement>` | Passed through to `RadioGroup`. |
+
+<ComponentTokenTable component="form" />

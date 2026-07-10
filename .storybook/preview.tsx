@@ -123,7 +123,16 @@ const preview: Preview = {
           'Welcome',
           ['Start Here'],
           'Foundations',
-          ['Overview', 'Colors', 'Typography', 'Spacing', 'Radius'],
+          [
+            'Overview',
+            'Colors',
+            'Typography',
+            'Spacing',
+            'Radius',
+            'Controls',
+            'Motion',
+            'Elevation',
+          ],
           'Components',
           [
             'Alert',

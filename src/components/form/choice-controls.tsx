@@ -13,6 +13,7 @@ import {
   checkboxLabelClassName,
   type FormControlSize,
   formContract,
+  type RadioGroupAppearance,
   type RadioGroupOrientation,
   radioClassName,
   radioControlClassName,
@@ -36,6 +37,7 @@ export type CheckboxProps = Omit<
 };
 
 export type RadioGroupProps = FieldsetHTMLAttributes<HTMLFieldSetElement> & {
+  appearance?: RadioGroupAppearance;
   orientation?: RadioGroupOrientation;
 };
 
@@ -93,6 +95,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
 export const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(
   function RadioGroup(
     {
+      appearance = formContract.defaultRadioGroupAppearance,
       className,
       orientation = formContract.defaultRadioGroupOrientation,
       ...groupProps
@@ -103,6 +106,7 @@ export const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(
       <fieldset
         {...groupProps}
         className={mergeClassNames(radioGroupClassName, className)}
+        data-appearance={appearance}
         data-orientation={orientation}
         ref={ref}
       />

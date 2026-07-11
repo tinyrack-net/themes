@@ -1,0 +1,18 @@
+@layer components {
+  .tr-tooltip {
+    display: inline-flex;
+  }
+
+  .tr-tooltip-content {
+    max-width: min(20rem, var(--tr-layer-available-width, calc(100vw - 1rem)));
+    padding: var(--tinyrack-space-xs) var(--tinyrack-space-sm);
+    border-color: var(--tinyrack-text);
+    border-radius: var(--tinyrack-radius-sm);
+    background: var(--tinyrack-text);
+    color: var(--tinyrack-background);
+    font-size: var(--tinyrack-text-xs);
+    font-weight: var(--tinyrack-weight-medium);
+    line-height: 1.4;
+    pointer-events: none;
+  }
+}

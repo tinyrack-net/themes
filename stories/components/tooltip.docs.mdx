@@ -1,0 +1,71 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Button } from '../../src/components/button/react.js';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../../src/components/tooltip/react.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
+import * as TooltipStories from './tooltip.stories';
+
+<Meta of={TooltipStories} />
+
+# Tooltip
+
+Short supporting text shown on hover or keyboard focus.
+
+## Contract
+
+| Category | CSS / HTML | React | Values & default | Guidance |
+| --- | --- | --- | --- | --- |
+| Component | `data-tr-tooltip` | `Tooltip` | Delayed hover and focus | Keep one trigger and one content part together. |
+| Part | `data-tr-tooltip-trigger` | `TooltipTrigger` | `aria-describedby` relationship | Trigger must remain focusable. |
+| Part | `tr-tooltip-content`, `role="tooltip"` | `TooltipContent` | Native popover layer | Keep content short and non-interactive. |
+| Behavior | `data-open-delay`, `data-close-delay` | `openDelay`, `closeDelay` | 500 ms, 100 ms | Escape closes the active tooltip. |
+
+## Install
+
+<ComponentInstall surfaces={[
+  { label: 'CSS / HTML', install: 'pnpm add @tinyrack/ui tailwindcss', imports: ['@import "@tinyrack/ui/core/core.css";', '@import "@tinyrack/ui/components/overlay/overlay.css";', '@import "@tinyrack/ui/components/tooltip/tooltip.css";', "import { createTooltipManager } from '@tinyrack/ui/components/tooltip/dom';"] },
+  { label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import { Tooltip, TooltipContent, TooltipTrigger } from '@tinyrack/ui/components/tooltip/react';"] },
+]} />
+
+## Usage
+
+<ComponentExampleTabs id="tooltip-basic" title="Focus and hover help" description="Focus the trigger or hover it to reveal the description." preview={<Tooltip openDelay={0}><TooltipTrigger><Button>Rack status</Button></TooltipTrigger><TooltipContent>All checks passed</TooltipContent></Tooltip>} sources={[
+  { label: 'React', language: 'tsx', code: String.raw`import { Tooltip, TooltipContent, TooltipTrigger } from '@tinyrack/ui/components/tooltip/react';
+
+<Tooltip>
+  <TooltipTrigger><button type="button">Rack status</button></TooltipTrigger>
+  <TooltipContent>All checks passed</TooltipContent>
+</Tooltip>;` },
+  { label: 'HTML', language: 'html', code: String.raw`<span data-tr-tooltip data-open-delay="500" data-close-delay="100">
+  <button data-tr-tooltip-trigger aria-describedby="rack-tip">Rack status</button>
+  <span id="rack-tip" class="tr-layer tr-tooltip-content" data-tr-overlay="layer" data-placement="top" popover="manual" role="tooltip">All checks passed</span>
+</span>` },
+]} />
+
+## Examples
+
+<ComponentExampleTabs id="tooltip-placement" title="Logical placement" description="Placement flips and shifts within the available viewport." preview={<Tooltip openDelay={0} placement="bottom-start"><TooltipTrigger><Button>Translation</Button></TooltipTrigger><TooltipContent>Translate selected text</TooltipContent></Tooltip>} sources={[
+  { label: 'React', language: 'tsx', code: String.raw`<Tooltip placement="bottom-start">
+  <TooltipTrigger><button type="button">Translation</button></TooltipTrigger>
+  <TooltipContent>Translate selected text</TooltipContent>
+</Tooltip>` },
+  { label: 'HTML', language: 'html', code: String.raw`<span data-tr-tooltip>
+  <button data-tr-tooltip-trigger aria-describedby="translation-tip">Translation</button>
+  <span id="translation-tip" class="tr-layer tr-tooltip-content" data-tr-overlay="layer" data-placement="bottom-start" popover="manual" role="tooltip">Translate selected text</span>
+</span>` },
+]} />
+
+## Guidance
+
+<ComponentGuidance whenToUse={['Use for brief supplementary labels and hints.']} avoid={['Do not place actions or essential instructions inside a tooltip.']} accessibility={['Expose content through aria-describedby and support both hover and focus.']} />
+
+## API
+
+| Component | Main props | Note |
+| --- | --- | --- |
+| `Tooltip` | `openDelay`, `closeDelay`, `placement` | DOM manager coordinates focus, hover and Escape. |
+| `TooltipTrigger`, `TooltipContent` | Native props | Shared IDs establish `aria-describedby`. |
+
+<ComponentTokenTable component="tooltip" />

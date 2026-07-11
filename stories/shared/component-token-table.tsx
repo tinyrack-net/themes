@@ -6,14 +6,21 @@ type ComponentTokenName =
   | 'card'
   | 'code'
   | 'code-block'
+  | 'combobox'
+  | 'disclosure'
   | 'divider'
   | 'form'
   | 'link'
+  | 'menu'
   | 'overlay'
+  | 'pin-input'
   | 'progress'
   | 'skeleton'
+  | 'spinner'
   | 'table'
-  | 'tabs';
+  | 'tabs'
+  | 'toast'
+  | 'tooltip';
 
 type CssToken = {
   name: string;
@@ -134,6 +141,30 @@ const componentTokens: Record<ComponentTokenName, readonly CssToken[]> = {
       fallback: '--tinyrack-leading-lg',
     },
   ],
+  combobox: [
+    {
+      name: '--tr-layer-anchor-width',
+      role: 'Trigger-aligned minimum width',
+      fallback: 'positioning measurement',
+    },
+    {
+      name: '--tr-layer-available-width / -height',
+      role: 'Collision-safe maximum size',
+      fallback: 'viewport measurement',
+    },
+  ],
+  disclosure: [
+    {
+      name: '--tr-disclosure-background',
+      role: 'Surface fill',
+      fallback: '--tinyrack-surface',
+    },
+    {
+      name: '--tr-disclosure-radius',
+      role: 'Shape',
+      fallback: '--tinyrack-radius-md',
+    },
+  ],
   divider: [
     { name: '--tr-divider-color', role: 'Rule color', fallback: '--tinyrack-border' },
     {
@@ -213,6 +244,18 @@ const componentTokens: Record<ComponentTokenName, readonly CssToken[]> = {
     },
     { name: '--tr-link-radius', role: 'Focus shape', fallback: '--tinyrack-radius-xs' },
   ],
+  menu: [
+    {
+      name: '--tr-layer-available-width / -height',
+      role: 'Collision-safe maximum size',
+      fallback: 'viewport measurement',
+    },
+    {
+      name: '--tr-layer-radius',
+      role: 'Popup shape',
+      fallback: '--tinyrack-radius-md',
+    },
+  ],
   overlay: [
     {
       name: '--tr-modal-background',
@@ -260,6 +303,18 @@ const componentTokens: Record<ComponentTokenName, readonly CssToken[]> = {
       fallback: '--tinyrack-duration-normal',
     },
   ],
+  'pin-input': [
+    {
+      name: '--tr-pin-input-size',
+      role: 'Digit control size',
+      fallback: '--tinyrack-control-height-lg',
+    },
+    {
+      name: '--tr-pin-input-gap',
+      role: 'Digit spacing',
+      fallback: '--tinyrack-control-gap-sm',
+    },
+  ],
   progress: [
     {
       name: '--tr-progress-background',
@@ -305,6 +360,18 @@ const componentTokens: Record<ComponentTokenName, readonly CssToken[]> = {
       name: '--tr-skeleton-duration / -easing',
       role: 'Shimmer motion',
       fallback: 'loading motion tokens',
+    },
+  ],
+  spinner: [
+    {
+      name: '--tr-spinner-size',
+      role: 'Indicator size',
+      fallback: 'size recipe',
+    },
+    {
+      name: '--tr-spinner-color',
+      role: 'Indicator color',
+      fallback: 'currentColor or semantic variant',
     },
   ],
   table: [
@@ -374,6 +441,30 @@ const componentTokens: Record<ComponentTokenName, readonly CssToken[]> = {
     {
       name: '--tr-tabs-duration',
       role: 'Interaction duration',
+      fallback: '--tinyrack-duration-fast',
+    },
+  ],
+  toast: [
+    {
+      name: '--tinyrack-duration-fast',
+      role: 'Entrance motion',
+      fallback: 'motion foundation',
+    },
+    {
+      name: '--tinyrack-shadow-raised',
+      role: 'Toast elevation',
+      fallback: 'elevation foundation',
+    },
+  ],
+  tooltip: [
+    {
+      name: '--tr-layer-available-width',
+      role: 'Collision-safe maximum width',
+      fallback: 'viewport measurement',
+    },
+    {
+      name: '--tr-layer-motion-duration',
+      role: 'Popup motion',
       fallback: '--tinyrack-duration-fast',
     },
   ],

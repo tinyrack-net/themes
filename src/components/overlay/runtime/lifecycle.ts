@@ -10,19 +10,25 @@ type OverlayLifecycleHandlers = {
 };
 
 export function connectOverlayLifecycle(
-  document: Document,
-  handlers: OverlayLifecycleHandlers,
+  root: Document | ShadowRoot,
+  documentOrHandlers: Document | OverlayLifecycleHandlers,
+  providedHandlers?: OverlayLifecycleHandlers,
 ) {
-  document.addEventListener('click', handlers.click, true);
-  document.addEventListener('keydown', handlers.keydown, true);
-  document.addEventListener('cancel', handlers.cancel, true);
-  document.addEventListener('close', handlers.close, true);
-  document.addEventListener('toggle', handlers.toggle, true);
-  document.addEventListener('focusin', handlers.focusin, true);
+  const document =
+    providedHandlers === undefined
+      ? (root as Document)
+      : (documentOrHandlers as Document);
+  const handlers = providedHandlers ?? (documentOrHandlers as OverlayLifecycleHandlers);
+  root.addEventListener('click', handlers.click as EventListener, true);
+  root.addEventListener('keydown', handlers.keydown as EventListener, true);
+  root.addEventListener('cancel', handlers.cancel as EventListener, true);
+  root.addEventListener('close', handlers.close as EventListener, true);
+  root.addEventListener('toggle', handlers.toggle as EventListener, true);
+  root.addEventListener('focusin', handlers.focusin as EventListener, true);
 
   const Observer = document.defaultView?.MutationObserver;
   const observer = Observer === undefined ? null : new Observer(handlers.mutations);
-  observer?.observe(document.documentElement, {
+  observer?.observe(root.nodeType === 9 ? document.documentElement : root, {
     childList: true,
     subtree: true,
   });
@@ -30,12 +36,12 @@ export function connectOverlayLifecycle(
   queueMicrotask(handlers.onConnected);
 
   return () => {
-    document.removeEventListener('click', handlers.click, true);
-    document.removeEventListener('keydown', handlers.keydown, true);
-    document.removeEventListener('cancel', handlers.cancel, true);
-    document.removeEventListener('close', handlers.close, true);
-    document.removeEventListener('toggle', handlers.toggle, true);
-    document.removeEventListener('focusin', handlers.focusin, true);
+    root.removeEventListener('click', handlers.click as EventListener, true);
+    root.removeEventListener('keydown', handlers.keydown as EventListener, true);
+    root.removeEventListener('cancel', handlers.cancel as EventListener, true);
+    root.removeEventListener('close', handlers.close as EventListener, true);
+    root.removeEventListener('toggle', handlers.toggle as EventListener, true);
+    root.removeEventListener('focusin', handlers.focusin as EventListener, true);
     observer?.disconnect();
   };
 }

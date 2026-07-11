@@ -2,8 +2,11 @@ import { Meta } from '@storybook/addon-docs/blocks';
 import {
   Checkbox,
   Field,
+  FieldDescription,
   FormMessage,
   Input,
+  InputAdornment,
+  InputGroup,
   Label,
   Radio,
   RadioGroup,
@@ -28,7 +31,8 @@ SSR-friendly field, text control, choice control, and message primitives over na
 | Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
 | Component | `tr-field` | `Field` | `data-size`; `sm`, `md`, `lg`; default `md` | Groups a label, control, and associated message. |
-| Part | `tr-label`, `tr-form-message` | `Label`, `FormMessage` | message variants `neutral`, `error`; default `neutral` | Associate labels and messages with the control they explain. |
+| Part | `tr-label`, `tr-field-description`, `tr-form-message` | `Label`, `FieldDescription`, `FormMessage` | description plus neutral or error message | Associate labels, descriptions and messages with the control they explain. |
+| Component | `tr-input-group`, `tr-input-adornment` | `InputGroup`, `InputAdornment` | leading or trailing adornment | Keep the native Input as the focusable value control. |
 | Component | `tr-input`, `tr-textarea`, `tr-select` | `Input`, `Textarea`, `Select` | `data-size`, `data-invalid`; size default `md` | Keeps native text-control behavior and validation semantics. |
 | Component | `tr-checkbox`, `tr-radio`, `tr-switch` | `Checkbox`, `Radio`, `Switch` | `data-size`, `data-invalid`; size default `md` | Keeps the native input focusable and keyboard operable. |
 | Behavior | `tr-radio-group[data-orientation]` | `RadioGroup.orientation` | `vertical`, `horizontal`; default `vertical` | Group related choices with a fieldset and an accessible name. |
@@ -53,8 +57,11 @@ SSR-friendly field, text control, choice control, and message primitives over na
         'import {',
         '  Checkbox,',
         '  Field,',
+        '  FieldDescription,',
         '  FormMessage,',
         '  Input,',
+        '  InputAdornment,',
+        '  InputGroup,',
         '  Label,',
         '  Radio,',
         '  RadioGroup,',
@@ -308,6 +315,52 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
   ]}
 />
 
+<ComponentExampleTabs
+  id="form-input-group"
+  title="Description and input adornments"
+  description="Compose icons, units or reveal actions around one native input."
+  previewLayout="stretch"
+  preview={(
+    <Field>
+      <Label htmlFor="docs-endpoint">API endpoint</Label>
+      <FieldDescription id="docs-endpoint-help">Use the provider host without a trailing slash.</FieldDescription>
+      <InputGroup>
+        <InputAdornment position="start">https://</InputAdornment>
+        <Input id="docs-endpoint" aria-describedby="docs-endpoint-help" defaultValue="api.example.com" />
+        <InputAdornment position="end">v1</InputAdornment>
+      </InputGroup>
+    </Field>
+  )}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<Field>
+  <Label htmlFor="endpoint">API endpoint</Label>
+  <FieldDescription id="endpoint-help">Use the provider host without a trailing slash.</FieldDescription>
+  <InputGroup>
+    <InputAdornment position="start">https://</InputAdornment>
+    <Input id="endpoint" aria-describedby="endpoint-help" />
+    <InputAdornment position="end">v1</InputAdornment>
+  </InputGroup>
+</Field>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-field">
+  <label class="tr-label" for="endpoint">API endpoint</label>
+  <p class="tr-field-description" id="endpoint-help">Use the provider host without a trailing slash.</p>
+  <div class="tr-input-group">
+    <span class="tr-input-adornment" data-position="start">https://</span>
+    <input class="tr-input" id="endpoint" aria-describedby="endpoint-help">
+    <span class="tr-input-adornment" data-position="end">v1</span>
+  </div>
+</div>`,
+    },
+  ]}
+/>
+
 ## Guidance
 
 <ComponentGuidance
@@ -331,10 +384,12 @@ import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/r
 | Component | Main props | Note |
 | --- | --- | --- |
 | `Field` | `size` | Field layout wrapper. |
+| `FieldDescription` | native paragraph props | Supporting text separate from validation status. |
+| `InputGroup`, `InputAdornment` | `invalid`, `size`, `position` | Leading and trailing content around one Input. |
 | `Label` | native label props | Use `htmlFor` or wrap the control. |
 | `Input`, `Textarea`, `Select` | `size`, `invalid`, native props | Text controls share sizing and validation styling. |
 | `Checkbox`, `Radio`, `Switch` | `size`, `invalid`, `disabled`, native input props | Native input remains focusable. |
-| `RadioGroup` | `orientation`, fieldset props | Renders a `fieldset`. |
+| `RadioGroup` | `orientation`, `appearance`, fieldset props | `appearance="segmented"` reuses native radio semantics. |
 | `FormMessage` | `variant` | Renders supporting or error text. |
 
 ### Related pages

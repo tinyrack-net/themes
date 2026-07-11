@@ -1,6 +1,13 @@
 export const badgeClassName = 'tr-badge';
 export const badgeSizes = ['sm', 'md'] as const;
-export const badgeVariants = ['neutral', 'primary', 'danger'] as const;
+export const badgeVariants = [
+  'neutral',
+  'primary',
+  'info',
+  'success',
+  'warning',
+  'danger',
+] as const;
 
 export type BadgeSize = (typeof badgeSizes)[number];
 export type BadgeVariant = (typeof badgeVariants)[number];

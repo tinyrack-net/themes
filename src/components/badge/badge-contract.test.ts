@@ -17,7 +17,7 @@ describe('Badge contract source boundaries', () => {
 
     expect(contractSource).toContain("export const badgeSizes = ['sm', 'md']");
     expect(contractSource).toContain(
-      "export const badgeVariants = ['neutral', 'primary', 'danger']",
+      "'neutral',\n  'primary',\n  'info',\n  'success',\n  'warning',\n  'danger'",
     );
     expect(contractSource).not.toContain("from 'react'");
     expect(contractSource).not.toContain('var(--');
@@ -25,7 +25,7 @@ describe('Badge contract source boundaries', () => {
     expect(contractSource).not.toContain('--tr-badge-');
     expect(reactBadgeSource).toContain("from './contract.js';");
     expect(reactBadgeSource).not.toContain("['sm', 'md']");
-    expect(reactBadgeSource).not.toContain("['neutral', 'primary', 'danger']");
+    expect(reactBadgeSource).not.toContain("'success'");
     expect(reactBadgeSource).not.toContain('Doc');
   });
 });

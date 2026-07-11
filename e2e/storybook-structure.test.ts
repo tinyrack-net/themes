@@ -15,18 +15,25 @@ const allowedPreviewImports = [
   '@import "../src/components/avatar/avatar.css";',
   '@import "../src/components/badge/badge.css";',
   '@import "../src/components/button/button.css";',
+  '@import "../src/components/combobox/combobox.css";',
   '@import "../src/components/card/card.css";',
   '@import "../src/components/code-block/code-block.css";',
   '@import "../src/components/code/code.css";',
   '@import "../src/components/divider/divider.css";',
+  '@import "../src/components/disclosure/disclosure.css";',
   '@import "../src/components/form/form.css";',
   '@import "../src/components/link/link.css";',
+  '@import "../src/components/menu/menu.css";',
   '@import "../src/components/overlay/overlay.css";',
+  '@import "../src/components/pin-input/pin-input.css";',
   '@import "../src/mdx/mdx.css";',
   '@import "../src/components/progress/progress.css";',
   '@import "../src/components/skeleton/skeleton.css";',
+  '@import "../src/components/spinner/spinner.css";',
   '@import "../src/components/table/table.css";',
   '@import "../src/components/tabs/tabs.css";',
+  '@import "../src/components/toast/toast.css";',
+  '@import "../src/components/tooltip/tooltip.css";',
 ];
 
 function readText(path: string) {
@@ -643,6 +650,28 @@ describe('Storybook structure', () => {
         'tabsActivationModes.map',
         'Activation Mode',
       ],
+      'stories/components/spinner.docs.mdx': ['Labeled progress', 'class="tr-spinner"'],
+      'stories/components/disclosure.docs.mdx': [
+        'Initially open',
+        'details class="tr-disclosure"',
+      ],
+      'stories/components/tooltip.docs.mdx': ['Logical placement', 'role="tooltip"'],
+      'stories/components/menu.docs.mdx': [
+        'Labels, links and disabled items',
+        'role="menuitem"',
+      ],
+      'stories/components/combobox.docs.mdx': [
+        'Freeform autocomplete',
+        'role="combobox"',
+      ],
+      'stories/components/pin-input.docs.mdx': [
+        'Six-digit verification',
+        'data-tr-pin-input',
+      ],
+      'stories/components/toast.docs.mdx': [
+        'Stable update and action',
+        'createToastManager',
+      ],
     };
 
     const manifestFiles = componentDocsManifest.map(({ file }) => file).sort();
@@ -664,9 +693,9 @@ describe('Storybook structure', () => {
       'Native',
     ];
 
-    expect(componentDocsManifest).toHaveLength(22);
-    expect(new Set(componentDocsManifest.map(({ id }) => id)).size).toBe(22);
-    expect(new Set(componentDocsManifest.map(({ storyId }) => storyId)).size).toBe(22);
+    expect(componentDocsManifest).toHaveLength(29);
+    expect(new Set(componentDocsManifest.map(({ id }) => id)).size).toBe(29);
+    expect(new Set(componentDocsManifest.map(({ storyId }) => storyId)).size).toBe(29);
     expect(manifestFiles).toEqual(actualComponentDocs);
 
     for (const entry of componentDocsManifest) {
@@ -954,6 +983,8 @@ describe('Storybook structure', () => {
       'card.stories.tsx',
       'code-block.stories.tsx',
       'code.stories.tsx',
+      'combobox.stories.tsx',
+      'disclosure.stories.tsx',
       'divider.stories.tsx',
       'form-checkbox.stories.tsx',
       'form-field.stories.tsx',
@@ -963,11 +994,16 @@ describe('Storybook structure', () => {
       'form-switch.stories.tsx',
       'form-textarea.stories.tsx',
       'link.stories.tsx',
+      'menu.stories.tsx',
       'overlay.stories.tsx',
+      'pin-input.stories.tsx',
       'progress.stories.tsx',
       'skeleton.stories.tsx',
+      'spinner.stories.tsx',
       'table.stories.tsx',
       'tabs.stories.tsx',
+      'toast.stories.tsx',
+      'tooltip.stories.tsx',
     ]);
   });
 

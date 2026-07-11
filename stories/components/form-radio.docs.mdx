@@ -22,6 +22,7 @@ Mutually exclusive native choices with vertical or horizontal group layout.
 | --- | --- | --- | --- | --- |
 | Component | `fieldset.tr-radio-group` | `RadioGroup` | fieldset attributes | Name related choices with a legend. |
 | Behavior | `data-orientation` | `RadioGroup.orientation` | `vertical`, `horizontal`; default `vertical` | Use horizontal only when labels fit at narrow widths. |
+| Variant | `data-appearance` | `RadioGroup.appearance` | `default`, `segmented`; default `default` | Segmented presentation preserves native radio inputs. |
 | Component | `label.tr-radio` | `Radio` | native radio plus optional label | Give every choice a visible label. |
 | Part | `tr-radio-input` | native input props | `type="radio"`; required part | Use one shared `name` for mutually exclusive choices. |
 | Part | `tr-radio-control`, `tr-radio-label` | generated control, `children` | control required; label optional | Keep the custom control decorative. |
@@ -233,6 +234,31 @@ import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';
   ]}
 />
 
+<ComponentExampleTabs
+  id="form-radio-segmented"
+  title="Segmented appearance"
+  description="Use segmented styling for a short mutually exclusive mode switch."
+  preview={<RadioGroup appearance="segmented" aria-label="Translation mode" orientation="horizontal"><Radio defaultChecked name="docs-mode" value="page">Page</Radio><Radio name="docs-mode" value="text">Text</Radio></RadioGroup>}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<RadioGroup appearance="segmented" aria-label="Translation mode" orientation="horizontal">
+  <Radio defaultChecked name="mode" value="page">Page</Radio>
+  <Radio name="mode" value="text">Text</Radio>
+</RadioGroup>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<fieldset class="tr-radio-group" data-appearance="segmented" data-orientation="horizontal" aria-label="Translation mode">
+  <label class="tr-radio"><input class="tr-radio-input" type="radio" name="mode" value="page" checked><span class="tr-radio-control"></span><span>Page</span></label>
+  <label class="tr-radio"><input class="tr-radio-input" type="radio" name="mode" value="text"><span class="tr-radio-control"></span><span>Text</span></label>
+</fieldset>`,
+    },
+  ]}
+/>
+
 ## Guidance
 
 <ComponentGuidance
@@ -256,6 +282,7 @@ import { Radio, RadioGroup } from '@tinyrack/ui/components/form/react';
 | Prop | Values | Note |
 | --- | --- | --- |
 | `RadioGroup.orientation` | `vertical`, `horizontal` | Default `vertical`; sets `data-orientation`. |
+| `RadioGroup.appearance` | `default`, `segmented` | Default `default`; presentation only. |
 | `Radio.size` | `sm`, `md`, `lg` | Default `md`; sets `data-size`. |
 | `Radio.invalid` | `boolean` | Sets `aria-invalid` on input and `data-invalid` on wrapper. |
 | `children` | `ReactNode` | Renders `tr-radio-label` when present. |

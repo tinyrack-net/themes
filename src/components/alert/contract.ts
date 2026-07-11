@@ -1,5 +1,12 @@
 export const alertClassName = 'tr-alert';
-export const alertVariants = ['neutral', 'primary', 'danger'] as const;
+export const alertVariants = [
+  'neutral',
+  'primary',
+  'info',
+  'success',
+  'warning',
+  'danger',
+] as const;
 
 export type AlertVariant = (typeof alertVariants)[number];
 

@@ -3,6 +3,8 @@ node_modules/
 dist/
 **/dist/
 coverage/
+!src/coverage/
+!src/coverage/**
 storybook-static/
 artifacts/
 audits/

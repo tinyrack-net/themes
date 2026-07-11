@@ -24,6 +24,7 @@ import { OverlayStack } from './runtime/stack.js';
 import type { OverlayEntry } from './runtime/types.js';
 
 export type OverlayTarget = string | HTMLElement;
+export type OverlayRoot = Document | ShadowRoot;
 
 export type OverlayOpenOptions = {
   reason?: OverlayOpenChangeReason;
@@ -41,7 +42,7 @@ export type OverlayManager = {
   toggle: (target: OverlayTarget, options?: OverlayOpenOptions) => boolean;
 };
 
-const sharedManagers = new WeakMap<Document, SharedOverlayManager>();
+const sharedManagers = new WeakMap<OverlayRoot, SharedOverlayManager>();
 const forcedCloseReasons = new Set<OverlayOpenChangeReason>([
   'ancestor-close',
   'modal-open',
@@ -56,6 +57,7 @@ function closestOverlay(element: Element | null) {
 }
 
 class SharedOverlayManager {
+  private readonly root: OverlayRoot;
   private readonly document: Document;
   private readonly stack = new OverlayStack();
   private readonly documentState: ReturnType<typeof createDocumentStateController>;
@@ -64,10 +66,12 @@ class SharedOverlayManager {
   private lifecycleCleanup: (() => void) | null = null;
   private references = 0;
 
-  constructor(document: Document) {
-    this.document = document;
-    this.documentState = createDocumentStateController(document);
-    this.focusController = createFocusController(document, closestOverlay);
+  constructor(root: OverlayRoot) {
+    this.root = root;
+    this.document =
+      root.nodeType === 9 ? (root as Document) : (root.ownerDocument as Document);
+    this.documentState = createDocumentStateController(this.document);
+    this.focusController = createFocusController(this.document, closestOverlay);
   }
 
   acquire() {
@@ -178,7 +182,7 @@ class SharedOverlayManager {
   }
 
   private connect() {
-    this.lifecycleCleanup = connectOverlayLifecycle(this.document, {
+    this.lifecycleCleanup = connectOverlayLifecycle(this.root, this.document, {
       cancel: this.handleCancel,
       click: this.handleClick,
       close: this.handleNativeClose,
@@ -186,7 +190,7 @@ class SharedOverlayManager {
       keydown: this.handleKeyDown,
       mutations: this.handleMutations,
       onConnected: () => {
-        for (const element of this.document.querySelectorAll<HTMLElement>(
+        for (const element of this.root.querySelectorAll<HTMLElement>(
           `dialog.${modalClassName}:modal, .${layerClassName}:popover-open`,
         )) {
           if (this.findEntry(element) === null) {
@@ -194,7 +198,7 @@ class SharedOverlayManager {
           }
         }
 
-        for (const element of this.document.querySelectorAll<HTMLElement>(
+        for (const element of this.root.querySelectorAll<HTMLElement>(
           '[data-default-open="true"]',
         )) {
           this.open(element, {
@@ -258,7 +262,7 @@ class SharedOverlayManager {
     if (commandTrigger !== null) {
       const targetId = commandTrigger.getAttribute('commandfor');
       const action = commandTrigger.getAttribute('command') ?? 'show-modal';
-      const target = this.document.getElementById(targetId ?? '');
+      const target = this.root.getElementById(targetId ?? '');
 
       if (isHTMLElement(target)) {
         event.preventDefault();
@@ -278,7 +282,7 @@ class SharedOverlayManager {
     }
 
     const targetId = popoverTrigger.getAttribute('popovertarget');
-    const target = this.document.getElementById(targetId ?? '');
+    const target = this.root.getElementById(targetId ?? '');
 
     if (!isHTMLElement(target)) {
       return;
@@ -553,7 +557,7 @@ class SharedOverlayManager {
       return null;
     }
 
-    for (const trigger of this.document.querySelectorAll<HTMLElement>(
+    for (const trigger of this.root.querySelectorAll<HTMLElement>(
       '[commandfor], [popovertarget]',
     )) {
       if (
@@ -569,7 +573,7 @@ class SharedOverlayManager {
 
   private resolveTarget(target: OverlayTarget) {
     const element =
-      typeof target === 'string' ? this.document.getElementById(target) : target;
+      typeof target === 'string' ? this.root.getElementById(target) : target;
 
     return isHTMLElement(element) ? element : null;
   }
@@ -617,12 +621,12 @@ class SharedOverlayManager {
   }
 }
 
-export function createOverlayManager(document: Document): OverlayManager {
-  let shared = sharedManagers.get(document);
+export function createOverlayManager(root: OverlayRoot): OverlayManager {
+  let shared = sharedManagers.get(root);
 
   if (shared === undefined) {
-    shared = new SharedOverlayManager(document);
-    sharedManagers.set(document, shared);
+    shared = new SharedOverlayManager(root);
+    sharedManagers.set(root, shared);
   }
 
   shared.acquire();

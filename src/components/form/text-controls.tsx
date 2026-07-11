@@ -21,7 +21,10 @@ export type TextareaProps = Omit<
   TextareaHTMLAttributes<HTMLTextAreaElement>,
   'size'
 > & {
+  autosize?: boolean;
   invalid?: boolean;
+  maxRows?: number;
+  minRows?: number;
   size?: FormControlSize;
 };
 
@@ -56,7 +59,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   function Textarea(
-    { className, invalid, size = formContract.defaultSize, ...textareaProps },
+    {
+      autosize = false,
+      className,
+      invalid,
+      maxRows,
+      minRows,
+      rows,
+      size = formContract.defaultSize,
+      style,
+      ...textareaProps
+    },
     ref,
   ) {
     return (
@@ -64,9 +77,17 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {...textareaProps}
         aria-invalid={invalid ? true : textareaProps['aria-invalid']}
         className={mergeClassNames(textareaClassName, className)}
+        data-autosize={autosize ? 'true' : undefined}
         data-invalid={invalidState(invalid)}
+        data-max-rows={maxRows}
+        data-min-rows={minRows}
         data-size={size}
         ref={ref}
+        rows={rows ?? minRows}
+        style={{
+          ...style,
+          maxHeight: maxRows === undefined ? style?.maxHeight : `${maxRows}lh`,
+        }}
       />
     );
   },

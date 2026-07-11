@@ -1,0 +1,82 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ToastProvider, ToastViewport } from '../../src/components/toast/react.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
+import { ToastDemo } from '../shared/toast-demo.js';
+import * as ToastStories from './toast.stories';
+
+<Meta of={ToastStories} />
+
+# Toast
+
+Transient feedback with stable IDs, actions and pause-aware timers.
+
+## Contract
+
+| Category | CSS / HTML | React | Values & default | Guidance |
+| --- | --- | --- | --- | --- |
+| Component | `createToastManager(root)` | `ToastProvider`, `useToast` | `show`, `update`, `dismiss` | Use stable IDs when feedback changes in place. |
+| Part | `tr-toast-viewport` | `ToastViewport` | Six logical viewport positions | Viewport stays inside the provided Document or ShadowRoot. |
+| Variant | `data-variant` | Toast option `variant` | `neutral`, `info`, `success`, `warning`, `danger` | Danger uses alert urgency; others use status. |
+| Behavior | Manager timer | Shared manager | Default 5000 ms | Hover, focus and inactive windows pause timeouts. |
+
+## Install
+
+<ComponentInstall surfaces={[
+  { label: 'CSS / HTML', install: 'pnpm add @tinyrack/ui tailwindcss', imports: ['@import "@tinyrack/ui/core/core.css";', '@import "@tinyrack/ui/components/toast/toast.css";', "import { createToastManager } from '@tinyrack/ui/components/toast/dom';"] },
+  { label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import { ToastProvider, ToastViewport, useToast } from '@tinyrack/ui/components/toast/react';"] },
+]} />
+
+## Usage
+
+<ComponentExampleTabs id="toast-basic" title="Show feedback" description="Use the hook below a provider and render one logical viewport." preview={<div className="flex justify-center"><ToastProvider><ToastDemo variant="success" /><ToastViewport /></ToastProvider></div>} sources={[
+  { label: 'React', language: 'tsx', code: String.raw`import { ToastProvider, ToastViewport, useToast } from '@tinyrack/ui/components/toast/react';
+
+function SaveButton() {
+  const toast = useToast();
+  return <button onClick={() => toast.show({ title: 'Saved', variant: 'success' })}>Save</button>;
+}
+
+<ToastProvider>
+  <SaveButton />
+  <ToastViewport />
+</ToastProvider>;` },
+  { label: 'HTML', language: 'html', code: String.raw`<div class="tr-toast-viewport" data-tr-toast-viewport data-position="block-end-inline-end" popover="manual" aria-label="Notifications"></div>
+<script type="module">
+  import { createToastManager } from '@tinyrack/ui/components/toast/dom';
+  const toast = createToastManager(document);
+  toast.show({ title: 'Saved', variant: 'success' });
+</script>` },
+]} />
+
+## Examples
+
+<ComponentExampleTabs id="toast-action" title="Stable update and action" description="Update one notification by ID and provide a concise recovery action." preview={<div className="flex justify-center"><ToastProvider><ToastDemo variant="danger" /><ToastViewport position="block-start-inline-end" /></ToastProvider></div>} sources={[
+  { label: 'React', language: 'tsx', code: String.raw`const id = toast.show({ id: 'sync', title: 'Syncing', duration: 0 });
+toast.update(id, {
+  action: { label: 'Retry', onAction: () => retry() },
+  title: 'Sync failed',
+  variant: 'danger',
+});` },
+  { label: 'HTML', language: 'javascript', code: String.raw`const id = toast.show({ id: 'sync', title: 'Syncing', duration: 0 });
+toast.update(id, {
+  action: { label: 'Retry', onAction: retry },
+  title: 'Sync failed',
+  variant: 'danger',
+});` },
+]} />
+
+## Guidance
+
+<ComponentGuidance whenToUse={['Use for feedback that does not block the current task.']} avoid={['Do not use a toast for a decision that requires immediate confirmation.']} accessibility={['Pause timeouts during interaction and keep action labels concise.']} />
+
+## API
+
+| Component | Main props | Note |
+| --- | --- | --- |
+| `createToastManager` | `show`, `update`, `dismiss`, `destroy` | Root-scoped and ShadowRoot-safe. |
+| `ToastProvider`, `ToastViewport`, `useToast` | React context and logical position | React delegates rendering and timers to the DOM manager. |
+
+<ComponentTokenTable component="toast" />

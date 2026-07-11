@@ -19,7 +19,7 @@ Compact status text for operational metadata, health states, and dense labels.
 | --- | --- | --- | --- | --- |
 | Component | `tr-badge` on `<span>` | `<Badge>` | Required component surface | Use for compact, inline status metadata. |
 | Size | `data-size` | `size` | `sm`, `md`; default `sm` | Use `sm` in dense tables and `md` near controls. |
-| Variant | `data-variant` | `variant` | `neutral`, `primary`, `danger`; default `neutral` | Communicate operational state rather than decoration. |
+| Variant | `data-variant` | `variant` | `neutral`, `primary`, `info`, `success`, `warning`, `danger`; default `neutral` | Communicate operational state rather than decoration. |
 | Native | Native `<span>` attributes | `HTMLAttributes<HTMLSpanElement>` | Passed through | Preserve inline semantics and add an accessible name only when surrounding text does not explain the status. |
 
 ## Install
@@ -229,7 +229,7 @@ import { Badge } from '@tinyrack/ui/components/badge/react';
 | Prop | Values | Note |
 | --- | --- | --- |
 | `size` | `sm`, `md` | Default `sm`; sets `data-size`. |
-| `variant` | `neutral`, `primary`, `danger` | Default `neutral`; sets `data-variant`. |
+| `variant` | `neutral`, `primary`, `info`, `success`, `warning`, `danger` | Default `neutral`; sets `data-variant`. |
 | `className` | `string` | Merged with `tr-badge`. |
 | native span props | `HTMLAttributes<HTMLSpanElement>` | Passed through to `<span>`. |
 

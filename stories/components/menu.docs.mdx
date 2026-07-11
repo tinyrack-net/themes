@@ -1,0 +1,82 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Button } from '../../src/components/button/react.js';
+import { Menu, MenuContent, MenuItem, MenuLabel, MenuSeparator, MenuTrigger } from '../../src/components/menu/react.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
+import * as MenuStories from './menu.stories';
+
+<Meta of={MenuStories} />
+
+# Menu
+
+Keyboard-navigable actions and links in a native top-layer popover.
+
+## Contract
+
+| Category | CSS / HTML | React | Values & default | Guidance |
+| --- | --- | --- | --- | --- |
+| Component | `data-tr-menu` | `Menu` | One trigger and content | Use for compact action collections. |
+| Part | `data-tr-menu-trigger` | `MenuTrigger` | Native button or `asChild` | Arrow Down or Up opens at an edge. |
+| Part | `tr-menu-content`, `role="menu"` | `MenuContent` | Native popover | Top-layer position follows Overlay. |
+| Part | `tr-menu-item`, `role="menuitem"` | `MenuItem` | Button or link, optional disabled | Selection closes unless the select event is canceled. |
+| Behavior | DOM manager | Shared DOM manager | Arrows, Home, End, typeahead | Roving focus skips disabled items. |
+
+## Install
+
+<ComponentInstall surfaces={[
+  { label: 'CSS / HTML', install: 'pnpm add @tinyrack/ui tailwindcss', imports: ['@import "@tinyrack/ui/core/core.css";', '@import "@tinyrack/ui/components/overlay/overlay.css";', '@import "@tinyrack/ui/components/menu/menu.css";', "import { createMenuManager } from '@tinyrack/ui/components/menu/dom';"] },
+  { label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import { Menu, MenuContent, MenuItem, MenuTrigger } from '@tinyrack/ui/components/menu/react';"] },
+]} />
+
+## Usage
+
+<ComponentExampleTabs id="menu-basic" title="Action menu" description="Use native button items for application actions." preview={<Menu><MenuTrigger asChild><Button>Actions</Button></MenuTrigger><MenuContent><MenuItem value="refresh">Refresh</MenuItem><MenuItem value="restart">Restart</MenuItem></MenuContent></Menu>} sources={[
+  { label: 'React', language: 'tsx', code: String.raw`import { Menu, MenuContent, MenuItem, MenuTrigger } from '@tinyrack/ui/components/menu/react';
+
+<Menu>
+  <MenuTrigger><button type="button">Actions</button></MenuTrigger>
+  <MenuContent>
+    <MenuItem value="refresh">Refresh</MenuItem>
+    <MenuItem value="restart">Restart</MenuItem>
+  </MenuContent>
+</Menu>;` },
+  { label: 'HTML', language: 'html', code: String.raw`<div data-tr-menu>
+  <button data-tr-menu-trigger popovertarget="rack-menu" aria-controls="rack-menu" aria-haspopup="menu">Actions</button>
+  <div id="rack-menu" class="tr-layer tr-menu-content" data-tr-overlay="layer" popover="auto" role="menu">
+    <button class="tr-menu-item" role="menuitem" data-value="refresh" tabindex="-1">Refresh</button>
+    <button class="tr-menu-item" role="menuitem" data-value="restart" tabindex="-1">Restart</button>
+  </div>
+</div>` },
+]} />
+
+## Examples
+
+<ComponentExampleTabs id="menu-parts" title="Labels, links and disabled items" description="Group related items and preserve link semantics for navigation." preview={<Menu><MenuTrigger asChild><Button>More</Button></MenuTrigger><MenuContent><MenuLabel>Rack</MenuLabel><MenuItem disabled value="locked">Locked</MenuItem><MenuSeparator /><MenuItem asChild value="docs"><a href="#menu-api">Documentation</a></MenuItem></MenuContent></Menu>} sources={[
+  { label: 'React', language: 'tsx', code: String.raw`<MenuContent>
+  <MenuLabel>Rack</MenuLabel>
+  <MenuItem disabled value="locked">Locked</MenuItem>
+  <MenuSeparator />
+  <MenuItem asChild value="docs"><a href="/docs">Documentation</a></MenuItem>
+</MenuContent>` },
+  { label: 'HTML', language: 'html', code: String.raw`<div class="tr-menu-content" role="menu">
+  <div class="tr-menu-label" role="presentation">Rack</div>
+  <button class="tr-menu-item" role="menuitem" aria-disabled="true" tabindex="-1">Locked</button>
+  <hr class="tr-menu-separator" role="separator">
+  <a class="tr-menu-item" role="menuitem" href="/docs" tabindex="-1">Documentation</a>
+</div>` },
+]} />
+
+## Guidance
+
+<ComponentGuidance whenToUse={['Use for a short collection of actions or navigation links.']} avoid={['Do not use a menu as a general form or persistent sidebar.']} accessibility={['Keep link and button semantics; disabled items remain out of the roving order.']} />
+
+## API
+
+| Component | Main props | Note |
+| --- | --- | --- |
+| `Menu` | Overlay open props and placement | Uses the framework-neutral manager. |
+| `MenuItem` | `value`, `disabled`, `leadingVisual`, `asChild` | Emits `tinyrack:menu-select`. |
+
+<ComponentTokenTable component="menu" />

@@ -44,6 +44,52 @@
   text-transform: uppercase;
 }
 
+.tr-field-description {
+  margin: 0;
+  color: var(--tinyrack-text-muted);
+  font-family: var(--tinyrack-font-body);
+  font-size: var(--tinyrack-text-xs);
+  line-height: var(--tinyrack-leading-md);
+}
+
+.tr-input-group {
+  --_tr-form-control-border: var(--tinyrack-border);
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  border: var(--tinyrack-border-width-default) solid
+    var(--tr-form-control-border, var(--_tr-form-control-border));
+  border-radius: var(--tr-form-control-radius, var(--tinyrack-radius-md));
+  background-color: var(--tinyrack-surface);
+}
+
+.tr-input-group:focus-within {
+  border-color: var(--tinyrack-focus);
+  outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+  outline-offset: var(--tinyrack-focus-offset);
+}
+
+.tr-input-group[data-invalid="true"] {
+  --_tr-form-control-border: var(--tinyrack-error);
+}
+
+.tr-input-adornment {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: var(--tinyrack-text-muted);
+}
+
+.tr-input-adornment[data-position="start"] {
+  padding-inline-start: var(--tinyrack-control-gap-lg);
+}
+
+.tr-input-adornment[data-position="end"] {
+  padding-inline-end: var(--tinyrack-control-gap-lg);
+}
+
 /* Text controls */
 
 .tr-input,
@@ -106,6 +152,11 @@
   resize: vertical;
 }
 
+.tr-textarea[data-autosize="true"] {
+  field-sizing: content;
+  resize: none;
+}
+
 .tr-input[data-size="sm"],
 .tr-textarea[data-size="sm"],
 .tr-select[data-size="sm"] {
@@ -163,6 +214,14 @@
 .tr-select:disabled {
   cursor: not-allowed;
   opacity: var(--tr-form-disabled-opacity, var(--tinyrack-opacity-disabled));
+}
+
+.tr-input-group > .tr-input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  background: transparent;
+  outline: 0;
 }
 
 /* Choice controls */
@@ -293,6 +352,33 @@
 .tr-radio-group[data-orientation="horizontal"] {
   flex-wrap: wrap;
   align-items: center;
+}
+
+.tr-radio-group[data-appearance="segmented"] {
+  width: fit-content;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0;
+  border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+  border-radius: var(--tinyrack-radius-md);
+  background-color: var(--tinyrack-surface-interactive);
+  padding: var(--tinyrack-radius-xs);
+}
+
+.tr-radio-group[data-appearance="segmented"] .tr-radio {
+  min-height: var(--tinyrack-control-height-sm);
+  padding-inline: var(--tinyrack-control-padding-inline-sm);
+  border-radius: var(--tinyrack-radius-sm);
+  justify-content: center;
+}
+
+.tr-radio-group[data-appearance="segmented"] .tr-radio-control {
+  display: none;
+}
+
+.tr-radio-group[data-appearance="segmented"] .tr-radio:has(.tr-radio-input:checked) {
+  background-color: var(--tinyrack-primary);
+  color: var(--tinyrack-primary-contrast);
 }
 
 /* Switch */

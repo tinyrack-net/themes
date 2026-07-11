@@ -20,3 +20,11 @@ export const tabsContract = {
   defaultOrientation: TabsOrientation;
   defaultSize: TabsSize;
 };
+
+export const tabsChangeEventName = 'tinyrack:tabs-change' as const;
+
+export type TabsChangeDetail = {
+  root: HTMLElement;
+  trigger: HTMLElement;
+  value: string;
+};

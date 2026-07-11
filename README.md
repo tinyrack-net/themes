@@ -52,6 +52,12 @@ subpaths.
 - **Native dialog and popover CSS** through `@tinyrack/ui/components/overlay/overlay.css`
 - **Framework-neutral Overlay manager** through `@tinyrack/ui/components/overlay/dom`
 - **Optional React Modal and Layer compounds** through `@tinyrack/ui/components/overlay/react`
+- **Framework-neutral Tabs behavior** through `@tinyrack/ui/components/tabs/dom`
+- **Spinner and native Disclosure primitives** through isolated CSS and React subpaths
+- **Root-scoped Tooltip and Menu behavior** through their `dom` and `react` subpaths
+- **Single-value Combobox** with select and freeform modes through `@tinyrack/ui/components/combobox/*`
+- **Pause-aware Toast manager** with ShadowRoot-local viewports through `@tinyrack/ui/components/toast/*`
+- **Multi-digit PinInput manager** with paste and keyboard handling through `@tinyrack/ui/components/pin-input/*`
 - **Storybook review surface** with foundations and owned component contracts
 
 ## Installation
@@ -304,6 +310,29 @@ import '@tinyrack/ui/components/overlay/overlay.css';
 
 The DOM export does not import React. React and React DOM are optional peers and
 are only required when importing `@tinyrack/ui/components/overlay/react`.
+
+## Consumer composition recipes
+
+TinyAuth and Tiny Translate use these documented compositions instead of
+additional public wrappers:
+
+| Consumer pattern | Tinyrack composition |
+| --- | --- |
+| AppShell, Drawer, Burger, Navbar | Semantic `header`/`nav`/`main`, Modal placement, IconButton |
+| NavList, Breadcrumbs, Pagination | `nav`, lists, Link, Button, Badge |
+| Stack, Group, Flex, Container, SimpleGrid | Native elements with core token or Tailwind utilities |
+| ScrollArea | Native overflow container, labeled as a region when appropriate |
+| Stats, EmptyState, PageHeader, PageLayout | Card, Alert, Button, Badge and semantic headings |
+| RouteErrorFallback | Alert with a recovery Button or Link |
+| PasswordInput, IconInput | Field, FieldDescription, InputGroup, InputAdornment, Input, IconButton |
+| JsonInput | Autosize Textarea plus application-owned JSON parsing and validation |
+| ConfirmationDialog and feature modals | Modal compound with Alert and Button variants |
+| InitialAvatar, Pill, Paper, ActionIcon | Avatar, Badge, Card and IconButton |
+| AlertBanner and labeled Divider | Alert; or Divider adjacent to a semantic label |
+
+Application copy, routing, data fetching, form state and domain validation stay
+in the consumer. Tinyrack owns the semantic structure, visual tokens, keyboard
+behavior and shared DOM lifecycle.
 
 ## Storybook
 

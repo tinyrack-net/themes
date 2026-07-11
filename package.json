@@ -39,6 +39,10 @@
     "dist/components/button/button.css",
     "dist/components/button/contract.*",
     "dist/components/button/react.*",
+    "dist/components/combobox/combobox.css",
+    "dist/components/combobox/contract.*",
+    "dist/components/combobox/dom.*",
+    "dist/components/combobox/react.*",
     "dist/components/card/card.css",
     "dist/components/card/contract.*",
     "dist/components/card/react.*",
@@ -51,15 +55,23 @@
     "dist/components/divider/divider.css",
     "dist/components/divider/contract.*",
     "dist/components/divider/react.*",
+    "dist/components/disclosure/disclosure.css",
+    "dist/components/disclosure/contract.*",
+    "dist/components/disclosure/react.*",
     "dist/components/form/choice-controls.*",
     "dist/components/form/field.*",
     "dist/components/form/form.css",
+    "dist/components/form/input-group.*",
     "dist/components/form/contract.*",
     "dist/components/form/react.*",
     "dist/components/form/text-controls.*",
     "dist/components/link/link.css",
     "dist/components/link/contract.*",
     "dist/components/link/react.*",
+    "dist/components/menu/menu.css",
+    "dist/components/menu/contract.*",
+    "dist/components/menu/dom.*",
+    "dist/components/menu/react.*",
     "dist/components/progress/contract.*",
     "dist/components/progress/progress.css",
     "dist/components/progress/react.*",
@@ -72,12 +84,28 @@
     "dist/components/overlay/overlay.css",
     "dist/components/overlay/react/**",
     "dist/components/overlay/react.*",
+    "dist/components/pin-input/pin-input.css",
+    "dist/components/pin-input/contract.*",
+    "dist/components/pin-input/dom.*",
+    "dist/components/pin-input/react.*",
+    "dist/components/spinner/spinner.css",
+    "dist/components/spinner/contract.*",
+    "dist/components/spinner/react.*",
     "dist/components/table/table.css",
     "dist/components/table/contract.*",
     "dist/components/table/react.*",
     "dist/components/tabs/contract.*",
+    "dist/components/tabs/dom.*",
     "dist/components/tabs/react.*",
     "dist/components/tabs/tabs.css",
+    "dist/components/toast/toast.css",
+    "dist/components/toast/contract.*",
+    "dist/components/toast/dom.*",
+    "dist/components/toast/react.*",
+    "dist/components/tooltip/tooltip.css",
+    "dist/components/tooltip/contract.*",
+    "dist/components/tooltip/dom.*",
+    "dist/components/tooltip/react.*",
     "dist/core/core.css",
     "dist/core/index.*",
     "dist/core/tokens",
@@ -202,6 +230,14 @@
       "types": "./dist/components/button/react.d.ts",
       "import": "./dist/components/button/react.js"
     },
+    "./components/combobox/dom": {
+      "types": "./dist/components/combobox/dom.d.ts",
+      "import": "./dist/components/combobox/dom.js"
+    },
+    "./components/combobox/react": {
+      "types": "./dist/components/combobox/react.d.ts",
+      "import": "./dist/components/combobox/react.js"
+    },
     "./components/card/react": {
       "types": "./dist/components/card/react.d.ts",
       "import": "./dist/components/card/react.js"
@@ -218,6 +254,10 @@
       "types": "./dist/components/divider/react.d.ts",
       "import": "./dist/components/divider/react.js"
     },
+    "./components/disclosure/react": {
+      "types": "./dist/components/disclosure/react.d.ts",
+      "import": "./dist/components/disclosure/react.js"
+    },
     "./components/form/react": {
       "types": "./dist/components/form/react.d.ts",
       "import": "./dist/components/form/react.js"
@@ -225,6 +265,14 @@
     "./components/link/react": {
       "types": "./dist/components/link/react.d.ts",
       "import": "./dist/components/link/react.js"
+    },
+    "./components/menu/dom": {
+      "types": "./dist/components/menu/dom.d.ts",
+      "import": "./dist/components/menu/dom.js"
+    },
+    "./components/menu/react": {
+      "types": "./dist/components/menu/react.d.ts",
+      "import": "./dist/components/menu/react.js"
     },
     "./components/progress/react": {
       "types": "./dist/components/progress/react.d.ts",
@@ -234,6 +282,10 @@
       "types": "./dist/components/skeleton/react.d.ts",
       "import": "./dist/components/skeleton/react.js"
     },
+    "./components/spinner/react": {
+      "types": "./dist/components/spinner/react.d.ts",
+      "import": "./dist/components/spinner/react.js"
+    },
     "./components/overlay/dom": {
       "types": "./dist/components/overlay/dom.d.ts",
       "import": "./dist/components/overlay/dom.js"
@@ -241,6 +293,14 @@
     "./components/overlay/react": {
       "types": "./dist/components/overlay/react.d.ts",
       "import": "./dist/components/overlay/react.js"
+    },
+    "./components/pin-input/dom": {
+      "types": "./dist/components/pin-input/dom.d.ts",
+      "import": "./dist/components/pin-input/dom.js"
+    },
+    "./components/pin-input/react": {
+      "types": "./dist/components/pin-input/react.d.ts",
+      "import": "./dist/components/pin-input/react.js"
     },
     "./components/table/react": {
       "types": "./dist/components/table/react.d.ts",
@@ -258,22 +318,49 @@
     "./components/avatar/avatar.css": "./dist/components/avatar/avatar.css",
     "./components/badge/badge.css": "./dist/components/badge/badge.css",
     "./components/button/button.css": "./dist/components/button/button.css",
+    "./components/combobox/combobox.css": "./dist/components/combobox/combobox.css",
     "./components/card/card.css": "./dist/components/card/card.css",
     "./components/code-block/code-block.css": "./dist/components/code-block/code-block.css",
     "./components/code/code.css": "./dist/components/code/code.css",
     "./components/divider/divider.css": "./dist/components/divider/divider.css",
+    "./components/disclosure/disclosure.css": "./dist/components/disclosure/disclosure.css",
     "./components/form/form.css": "./dist/components/form/form.css",
     "./components/link/link.css": "./dist/components/link/link.css",
+    "./components/menu/menu.css": "./dist/components/menu/menu.css",
     "./components/progress/progress.css": "./dist/components/progress/progress.css",
     "./components/skeleton/skeleton.css": "./dist/components/skeleton/skeleton.css",
     "./components/overlay/overlay.css": "./dist/components/overlay/overlay.css",
+    "./components/pin-input/pin-input.css": "./dist/components/pin-input/pin-input.css",
+    "./components/spinner/spinner.css": "./dist/components/spinner/spinner.css",
     "./mdx/mdx.css": "./dist/mdx/mdx.css",
     "./components/table/table.css": "./dist/components/table/table.css",
     "./components/tabs/react": {
       "types": "./dist/components/tabs/react.d.ts",
       "import": "./dist/components/tabs/react.js"
     },
+    "./components/tabs/dom": {
+      "types": "./dist/components/tabs/dom.d.ts",
+      "import": "./dist/components/tabs/dom.js"
+    },
+    "./components/toast/dom": {
+      "types": "./dist/components/toast/dom.d.ts",
+      "import": "./dist/components/toast/dom.js"
+    },
+    "./components/toast/react": {
+      "types": "./dist/components/toast/react.d.ts",
+      "import": "./dist/components/toast/react.js"
+    },
+    "./components/tooltip/dom": {
+      "types": "./dist/components/tooltip/dom.d.ts",
+      "import": "./dist/components/tooltip/dom.js"
+    },
+    "./components/tooltip/react": {
+      "types": "./dist/components/tooltip/react.d.ts",
+      "import": "./dist/components/tooltip/react.js"
+    },
     "./components/tabs/tabs.css": "./dist/components/tabs/tabs.css",
+    "./components/toast/toast.css": "./dist/components/toast/toast.css",
+    "./components/tooltip/tooltip.css": "./dist/components/tooltip/tooltip.css",
     "./core/core.css": "./dist/core/core.css",
     "./package.json": "./package.json"
   },

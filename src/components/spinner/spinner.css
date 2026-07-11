@@ -1,0 +1,55 @@
+.tr-spinner {
+  --_tr-spinner-size: 1.25rem;
+  --_tr-spinner-color: currentcolor;
+  box-sizing: border-box;
+  display: inline-block;
+  width: var(--tr-spinner-size, var(--_tr-spinner-size));
+  height: var(--tr-spinner-size, var(--_tr-spinner-size));
+  flex: 0 0 auto;
+  border: max(0.125rem, calc(var(--tr-spinner-size, var(--_tr-spinner-size)) / 8)) solid
+    color-mix(
+      in srgb,
+      var(--tr-spinner-color, var(--_tr-spinner-color)) 24%,
+      transparent
+    );
+  border-block-start-color: var(--tr-spinner-color, var(--_tr-spinner-color));
+  border-radius: var(--tinyrack-radius-full);
+  animation: tr-spinner-rotate var(--tinyrack-duration-loading)
+    var(--tinyrack-ease-linear) infinite;
+}
+
+.tr-spinner[data-size="sm"] {
+  --_tr-spinner-size: 1rem;
+}
+
+.tr-spinner[data-size="md"] {
+  --_tr-spinner-size: 1.25rem;
+}
+
+.tr-spinner[data-size="lg"] {
+  --_tr-spinner-size: 1.75rem;
+}
+
+.tr-spinner[data-variant="neutral"] {
+  --_tr-spinner-color: var(--tinyrack-text-muted);
+}
+
+.tr-spinner[data-variant="primary"] {
+  --_tr-spinner-color: var(--tinyrack-primary);
+}
+
+.tr-spinner[data-variant="danger"] {
+  --_tr-spinner-color: var(--tinyrack-error);
+}
+
+@keyframes tr-spinner-rotate {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-spinner {
+    animation-duration: calc(var(--tinyrack-duration-loading) * 2);
+  }
+}

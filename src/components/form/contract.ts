@@ -18,21 +18,28 @@ export const switchTrackClassName = 'tr-switch-track';
 export const switchThumbClassName = 'tr-switch-thumb';
 export const switchLabelClassName = 'tr-switch-label';
 export const formMessageClassName = 'tr-form-message';
+export const fieldDescriptionClassName = 'tr-field-description';
+export const inputGroupClassName = 'tr-input-group';
+export const inputAdornmentClassName = 'tr-input-adornment';
 
 export const formControlSizes = ['sm', 'md', 'lg'] as const;
 export const formMessageVariants = ['neutral', 'error'] as const;
 export const radioGroupOrientations = ['vertical', 'horizontal'] as const;
+export const radioGroupAppearances = ['default', 'segmented'] as const;
 
 export type FormControlSize = (typeof formControlSizes)[number];
 export type FormMessageVariant = (typeof formMessageVariants)[number];
 export type RadioGroupOrientation = (typeof radioGroupOrientations)[number];
+export type RadioGroupAppearance = (typeof radioGroupAppearances)[number];
 
 export const formContract = {
   defaultMessageVariant: 'neutral',
   defaultRadioGroupOrientation: 'vertical',
+  defaultRadioGroupAppearance: 'default',
   defaultSize: 'md',
 } as const satisfies {
   defaultMessageVariant: FormMessageVariant;
   defaultRadioGroupOrientation: RadioGroupOrientation;
+  defaultRadioGroupAppearance: RadioGroupAppearance;
   defaultSize: FormControlSize;
 };

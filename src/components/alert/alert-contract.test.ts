@@ -16,11 +16,11 @@ describe('Alert contract source boundaries', () => {
     );
 
     expect(contractSource).toContain(
-      "export const alertVariants = ['neutral', 'primary', 'danger']",
+      "'neutral',\n  'primary',\n  'info',\n  'success',\n  'warning',\n  'danger'",
     );
     expect(contractSource).not.toContain("from 'react'");
     expect(contractSource).not.toContain('var(--');
     expect(reactSource).toContain("from './contract.js';");
-    expect(reactSource).not.toContain("['neutral', 'primary', 'danger']");
+    expect(reactSource).not.toContain("'success'");
   });
 });

@@ -25,6 +25,7 @@ Native multiline input with the shared Tinyrack text control contract.
 | Component | `textarea.tr-textarea` | `Textarea` | native textarea element | Use for multiline free-form input. |
 | Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Shares the control scale with Input and Select. |
 | State | `data-invalid`, `aria-invalid` | `invalid` | `true` or unset; default unset | Pair invalid state with an associated error message. |
+| Behavior | `data-autosize`, row bounds | `autosize`, `minRows`, `maxRows` | Autosize default `false` | Bound content-driven growth in compact layouts. |
 | Native | `rows` | `rows` | positive number; browser default | Set an initial height without removing native resize behavior. |
 | Native | `required`, `disabled`, `aria-describedby` | native textarea props | pass-through | Put semantics on the native textarea. |
 
@@ -180,6 +181,17 @@ Maintenance complete.
   ]}
 />
 
+<ComponentExampleTabs
+  id="form-textarea-autosize"
+  title="Bounded autosize"
+  description="Grow with content while preserving a practical maximum height."
+  preview={<Textarea autosize minRows={3} maxRows={8} defaultValue="Translate this text while keeping the popup compact." />}
+  sources={[
+    { label: 'React', language: 'tsx', code: String.raw`<Textarea autosize minRows={3} maxRows={8} defaultValue="Translate this text." />` },
+    { label: 'HTML', language: 'html', code: String.raw`<textarea class="tr-textarea" data-autosize="true" data-min-rows="3" data-max-rows="8" rows="3">Translate this text.</textarea>` },
+  ]}
+/>
+
 ## Guidance
 
 <ComponentGuidance
@@ -205,6 +217,7 @@ Maintenance complete.
 | `size` | `sm`, `md`, `lg` | Default `md`; sets `data-size`. |
 | `invalid` | `boolean` | Sets `aria-invalid` and `data-invalid`. |
 | `rows` | native number | Passed through to `<textarea>`. |
+| `autosize`, `minRows`, `maxRows` | `boolean`, number, number | Uses native content sizing with a bounded maximum height. |
 | native textarea props | `TextareaHTMLAttributes<HTMLTextAreaElement>` except native `size` | Passed through to `<textarea>`. |
 
 <ComponentTokenTable component="form" />

@@ -3,6 +3,7 @@ import {
   type FormControlSize,
   type FormMessageVariant,
   fieldClassName,
+  fieldDescriptionClassName,
   formContract,
   formMessageClassName,
   labelClassName,
@@ -17,6 +18,7 @@ export type LabelProps = LabelHTMLAttributes<HTMLLabelElement>;
 export type FormMessageProps = HTMLAttributes<HTMLParagraphElement> & {
   variant?: FormMessageVariant;
 };
+export type FieldDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
 
 function mergeClassNames(...classNames: Array<string | undefined>) {
   return classNames.filter(Boolean).join(' ');
@@ -61,6 +63,18 @@ export const FormMessage = forwardRef<HTMLParagraphElement, FormMessageProps>(
         {...messageProps}
         className={mergeClassNames(formMessageClassName, className)}
         data-variant={variant}
+        ref={ref}
+      />
+    );
+  },
+);
+
+export const FieldDescription = forwardRef<HTMLParagraphElement, FieldDescriptionProps>(
+  function FieldDescription({ className, ...descriptionProps }, ref) {
+    return (
+      <p
+        {...descriptionProps}
+        className={mergeClassNames(fieldDescriptionClassName, className)}
         ref={ref}
       />
     );

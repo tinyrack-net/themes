@@ -11,14 +11,14 @@ import * as AlertStories from './alert.stories';
 
 # Alert
 
-An operational message surface for neutral guidance, primary notices, and danger states.
+An operational message surface for neutral guidance and semantic status feedback.
 
 ## Contract
 
 | Category | CSS / HTML | React | Values & default | Guidance |
 | --- | --- | --- | --- | --- |
 | Component | `tr-alert` on `<div>` | `Alert` | Required message surface | Keep the message short and actionable. |
-| Variant | `data-variant` | `variant` | `neutral`, `primary`, `danger`; default `neutral` | Use danger for errors and destructive consequences. |
+| Variant | `data-variant` | `variant` | `neutral`, `primary`, `info`, `success`, `warning`, `danger`; default `neutral` | Match the status meaning and reserve danger for errors. |
 | Native | Native `<div>` attributes | `HTMLAttributes<HTMLDivElement>` | Passed through | Caller chooses `role="status"` or `role="alert"` when announcement is needed. |
 
 ## Install
@@ -112,7 +112,7 @@ import { Alert } from '@tinyrack/ui/components/alert/react';
   ]}
   avoid={[
     'Do not announce every static message as an alert.',
-    'Do not add success, warning, or info variants until matching semantic tokens exist.',
+    'Do not choose success, warning, info, or danger only for visual emphasis; match the message meaning.',
   ]}
   accessibility={[
     'Choose the live-region role based on urgency rather than visual variant alone.',

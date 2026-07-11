@@ -26,8 +26,8 @@ Accessible tabbed navigation for compact operational panels.
 | Part | `tr-tabs-trigger`, `role="tab"` | `TabsTrigger` | Required | Uses native buttons with roving tab focus. |
 | Part | `tr-tabs-panel`, `role="tabpanel"` | `TabsPanel` | Required | Inactive panels are hidden. |
 | Size | `data-size` | `size` | `sm`, `md` (default), `lg` | Changes trigger height and panel padding. |
-| Behavior | `data-orientation` and app keyboard logic | `orientation` | `horizontal` (default), `vertical` | Orientation changes layout and arrow-key mapping. |
-| Behavior | App-controlled | `activationMode` | `automatic` (default), `manual` | Use manual activation when switching panels is expensive. |
+| Behavior | `createTabsManager(root)` and `data-orientation` | `orientation` | `horizontal` (default), `vertical` | The shared DOM manager owns logical RTL-aware arrow-key mapping. |
+| Behavior | `data-activation-mode` | `activationMode` | `automatic` (default), `manual` | Use manual activation when switching panels is expensive. |
 | State | `aria-selected`, `data-active` | `value` or `defaultValue` | One selected value | Use exactly one controlled or uncontrolled selection mode. |
 | Native | Div and button attributes | Native root, list, trigger, and panel props | Pass-through | Preserve generated IDs and ARIA relationships. |
 
@@ -42,8 +42,9 @@ Accessible tabbed navigation for compact operational panels.
         '@import "tailwindcss";',
         '@import "@tinyrack/ui/core/core.css";',
         '@import "@tinyrack/ui/components/tabs/tabs.css";',
+        "import { createTabsManager } from '@tinyrack/ui/components/tabs/dom';",
       ],
-      note: 'Provide application JavaScript for selection and keyboard behavior when using the CSS classes directly.',
+      note: 'Initialize one manager for the document or ShadowRoot; event delegation survives DOM replacement.',
     },
     {
       label: 'React',
@@ -92,21 +93,26 @@ import { Tabs, TabsList, TabsPanel, TabsTrigger } from '@tinyrack/ui/components/
     {
       label: 'HTML',
       language: 'html',
-      code: String.raw`<div class="tr-tabs" data-size="md" data-orientation="horizontal">
+      code: String.raw`<div class="tr-tabs" data-tr-tabs data-size="md" data-orientation="horizontal" data-activation-mode="automatic" data-value="overview">
   <div class="tr-tabs-list" role="tablist" aria-label="Rack sections">
     <button
       class="tr-tabs-trigger"
       role="tab"
       aria-selected="true"
       data-active="true"
+      data-value="overview"
     >
       Overview
     </button>
   </div>
-  <div class="tr-tabs-panel" role="tabpanel" data-active="true">
+  <div class="tr-tabs-panel" role="tabpanel" data-active="true" data-value="overview">
     Rack A is healthy.
   </div>
-</div>`,
+</div>
+<script type="module">
+  import { createTabsManager } from '@tinyrack/ui/components/tabs/dom';
+  createTabsManager(document);
+</script>`,
     },
   ]}
 />

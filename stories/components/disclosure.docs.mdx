@@ -1,0 +1,71 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Disclosure, DisclosureContent, DisclosureSummary } from '../../src/components/disclosure/react.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
+import * as DisclosureStories from './disclosure.stories';
+
+<Meta of={DisclosureStories} />
+
+# Disclosure
+
+Native expandable content with no JavaScript requirement.
+
+## Contract
+
+| Category | CSS / HTML | React | Values & default | Guidance |
+| --- | --- | --- | --- | --- |
+| Component | `details.tr-disclosure` | `Disclosure` | Native closed state | Preserve native `open` and `toggle`. |
+| Part | `summary.tr-disclosure-summary` | `DisclosureSummary` | Required first summary | Use a concise visible label. |
+| Part | `tr-disclosure-content` | `DisclosureContent` | Flow content | Keep forms and headings semantically valid. |
+
+## Install
+
+<ComponentInstall surfaces={[
+  { label: 'CSS / HTML', install: 'pnpm add @tinyrack/ui tailwindcss', imports: ['@import "@tinyrack/ui/core/core.css";', '@import "@tinyrack/ui/components/disclosure/disclosure.css";'] },
+  { label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import { Disclosure, DisclosureContent, DisclosureSummary } from '@tinyrack/ui/components/disclosure/react';"] },
+]} />
+
+## Usage
+
+<ComponentExampleTabs id="disclosure-basic" title="Advanced settings" description="Use the native summary as the only toggle." preview={<Disclosure><DisclosureSummary>Advanced settings</DisclosureSummary><DisclosureContent>Retry failed translations twice.</DisclosureContent></Disclosure>} sources={[
+  { label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core/core.css';
+import '@tinyrack/ui/components/disclosure/disclosure.css';
+import { Disclosure, DisclosureContent, DisclosureSummary } from '@tinyrack/ui/components/disclosure/react';
+
+<Disclosure>
+  <DisclosureSummary>Advanced settings</DisclosureSummary>
+  <DisclosureContent>Retry failed translations twice.</DisclosureContent>
+</Disclosure>;` },
+  { label: 'HTML', language: 'html', code: String.raw`<details class="tr-disclosure">
+  <summary class="tr-disclosure-summary">Advanced settings</summary>
+  <div class="tr-disclosure-content">Retry failed translations twice.</div>
+</details>` },
+]} />
+
+## Examples
+
+<ComponentExampleTabs id="disclosure-open" title="Initially open" description="Set the native open attribute when the content should start expanded." preview={<Disclosure open><DisclosureSummary>Recovery codes</DisclosureSummary><DisclosureContent>Store these codes in a secure location.</DisclosureContent></Disclosure>} sources={[
+  { label: 'React', language: 'tsx', code: String.raw`<Disclosure open>
+  <DisclosureSummary>Recovery codes</DisclosureSummary>
+  <DisclosureContent>Store these codes in a secure location.</DisclosureContent>
+</Disclosure>` },
+  { label: 'HTML', language: 'html', code: String.raw`<details class="tr-disclosure" open>
+  <summary class="tr-disclosure-summary">Recovery codes</summary>
+  <div class="tr-disclosure-content">Store these codes in a secure location.</div>
+</details>` },
+]} />
+
+## Guidance
+
+<ComponentGuidance whenToUse={['Use for optional content that remains understandable when collapsed.']} avoid={['Do not hide required validation or the primary action.']} accessibility={['Keep Summary as a native summary element and retain its keyboard behavior.']} />
+
+## API
+
+| Component | Main props | Note |
+| --- | --- | --- |
+| `Disclosure` | Native details props | Native `open` and `toggle` behavior. |
+| `DisclosureSummary`, `DisclosureContent` | Native element props | Stable public part classes. |
+
+<ComponentTokenTable component="disclosure" />

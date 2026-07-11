@@ -24,7 +24,7 @@ Role-based colors keep compact operational surfaces readable across light and da
   </section>
   <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
     <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Pair actions with contrast</h3>
-    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Use primaryContrast only on primary and errorContrast only on error so filled actions stay readable.</div>
+    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Pair every primary, info, success, warning, or error fill with its matching contrast role.</div>
   </section>
 </div>
 
@@ -119,6 +119,18 @@ const neutral950 = tinyrackPalettes.neutral[950];
         { role: 'focus', css: '--tinyrack-focus', light: tinyrackSemanticColors.light.focus, dark: tinyrackSemanticColors.dark.focus },
         { role: 'primary', css: '--tinyrack-primary', light: tinyrackSemanticColors.light.primary, dark: tinyrackSemanticColors.dark.primary },
         { role: 'primaryContrast', css: '--tinyrack-primary-contrast', light: tinyrackSemanticColors.light.primaryContrast, dark: tinyrackSemanticColors.dark.primaryContrast },
+        { role: 'info', css: '--tinyrack-info', light: tinyrackSemanticColors.light.info, dark: tinyrackSemanticColors.dark.info },
+        { role: 'infoSurface', css: '--tinyrack-info-surface', light: tinyrackSemanticColors.light.infoSurface, dark: tinyrackSemanticColors.dark.infoSurface },
+        { role: 'infoBorder', css: '--tinyrack-info-border', light: tinyrackSemanticColors.light.infoBorder, dark: tinyrackSemanticColors.dark.infoBorder },
+        { role: 'infoContrast', css: '--tinyrack-info-contrast', light: tinyrackSemanticColors.light.infoContrast, dark: tinyrackSemanticColors.dark.infoContrast },
+        { role: 'success', css: '--tinyrack-success', light: tinyrackSemanticColors.light.success, dark: tinyrackSemanticColors.dark.success },
+        { role: 'successSurface', css: '--tinyrack-success-surface', light: tinyrackSemanticColors.light.successSurface, dark: tinyrackSemanticColors.dark.successSurface },
+        { role: 'successBorder', css: '--tinyrack-success-border', light: tinyrackSemanticColors.light.successBorder, dark: tinyrackSemanticColors.dark.successBorder },
+        { role: 'successContrast', css: '--tinyrack-success-contrast', light: tinyrackSemanticColors.light.successContrast, dark: tinyrackSemanticColors.dark.successContrast },
+        { role: 'warning', css: '--tinyrack-warning', light: tinyrackSemanticColors.light.warning, dark: tinyrackSemanticColors.dark.warning },
+        { role: 'warningSurface', css: '--tinyrack-warning-surface', light: tinyrackSemanticColors.light.warningSurface, dark: tinyrackSemanticColors.dark.warningSurface },
+        { role: 'warningBorder', css: '--tinyrack-warning-border', light: tinyrackSemanticColors.light.warningBorder, dark: tinyrackSemanticColors.dark.warningBorder },
+        { role: 'warningContrast', css: '--tinyrack-warning-contrast', light: tinyrackSemanticColors.light.warningContrast, dark: tinyrackSemanticColors.dark.warningContrast },
         { role: 'error', css: '--tinyrack-error', light: tinyrackSemanticColors.light.error, dark: tinyrackSemanticColors.dark.error },
         { role: 'errorContrast', css: '--tinyrack-error-contrast', light: tinyrackSemanticColors.light.errorContrast, dark: tinyrackSemanticColors.dark.errorContrast },
       ].map(({ role, css, light, dark }) => (

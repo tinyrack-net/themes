@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { RefreshCw } from 'lucide-react';
 import { buttonSizes, buttonVariants } from '../../src/components/button/contract.js';
-import { Button, IconButton } from '../../src/components/button/react.js';
+import { Button, ButtonGroup, IconButton } from '../../src/components/button/react.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
@@ -20,11 +20,13 @@ Native button behavior with Tinyrack size, variant, and appearance axes.
 | --- | --- | --- | --- | --- |
 | Component | `tr-btn` on `<button>` | `<Button>` | Required text-button surface | Use for commands with visible text. |
 | Component | `tr-icon-btn` on `<button>` | `<IconButton>` | Icon-only button surface | Provide an accessible name for every icon action. |
+| Component | `tr-btn-group` | `<ButtonGroup>` | Horizontal; optionally attached | Group related actions without creating a new command semantic. |
 | Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Use `md` for routine actions and change size only for layout density. |
 | Variant | `data-variant` | `variant` | `neutral`, `primary`, `danger`; default `neutral` | Reserve `primary` for the main action and `danger` for destructive intent. |
 | Variant | `data-appearance` | `appearance` | `solid`, `outline`, `ghost`; default `solid` | Tune emphasis without changing action semantics. |
 | Behavior | `aria-label` | `label` on `IconButton` | Required for `IconButton` | Name the command, not the icon artwork. |
 | State | Native `disabled` attribute | `disabled` | Default `false` | Use native disabled behavior when an action is unavailable. |
+| State | `aria-busy`, disabled and Spinner | `loading`, `loadingLabel` | Default `false` | Keep the visible action text and label the busy operation. |
 | Native | Native `<button>` attributes | `ButtonHTMLAttributes<HTMLButtonElement>` | Passed through; `type` defaults to `button` | Set `type="submit"` explicitly for form submission. |
 
 ## Install
@@ -44,7 +46,7 @@ Native button behavior with Tinyrack size, variant, and appearance axes.
       label: 'React',
       install: 'pnpm add @tinyrack/ui react react-dom',
       imports: [
-        "import { Button, IconButton } from '@tinyrack/ui/components/button/react';",
+        "import { Button, ButtonGroup, IconButton } from '@tinyrack/ui/components/button/react';",
       ],
     },
     {
@@ -318,6 +320,34 @@ import { Button, IconButton } from '@tinyrack/ui/components/button/react';
   ]}
 />
 
+<ComponentExampleTabs
+  id="button-loading-group"
+  title="Loading and attached actions"
+  description="Loading disables the active command while ButtonGroup keeps related actions aligned."
+  preview={<ButtonGroup attached><Button loading loadingLabel="Saving settings">Save</Button><Button>Cancel</Button></ButtonGroup>}
+  sources={[
+    {
+      label: 'React',
+      language: 'tsx',
+      code: String.raw`<ButtonGroup attached>
+  <Button loading loadingLabel="Saving settings">Save</Button>
+  <Button>Cancel</Button>
+</ButtonGroup>`,
+    },
+    {
+      label: 'HTML',
+      language: 'html',
+      code: String.raw`<div class="tr-btn-group" data-attached="true" data-orientation="horizontal" role="group">
+  <button class="tr-btn" aria-busy="true" aria-label="Saving settings" disabled>
+    <span class="tr-spinner" data-size="sm" aria-hidden="true"></span>
+    Save
+  </button>
+  <button class="tr-btn">Cancel</button>
+</div>`,
+    },
+  ]}
+/>
+
 ## Guidance
 
 <ComponentGuidance
@@ -345,6 +375,8 @@ import { Button, IconButton } from '@tinyrack/ui/components/button/react';
 | `label` | `string` | Required for `IconButton` accessible names. |
 | Icon child | `ReactNode` | Use `aria-hidden="true"` when `label` names the action. |
 | `disabled` | `boolean` | Native disabled state. |
+| `loading`, `loadingLabel` | `boolean`, `string` | Adds a Spinner, busy state and native disabled behavior. |
+| `ButtonGroup` | `attached`, `orientation` | Renders a semantic `role="group"` wrapper. |
 | `type` | `button`, `submit`, `reset` | Default `button`. |
 | native button props | `ButtonHTMLAttributes<HTMLButtonElement>` | Passed through to `<button>`. |
 

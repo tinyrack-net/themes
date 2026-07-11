@@ -28,9 +28,9 @@ describe('CSS exports', () => {
     expect(css).toContain('--leading-tinyrack-lg: var(--tinyrack-leading-lg);');
     expect(css).toContain('--tracking-tinyrack-xl: var(--tinyrack-tracking-xl);');
     expect(css).not.toContain('--color-tinyrack-secondary');
-    expect(css).not.toContain('--color-tinyrack-success');
-    expect(css).not.toContain('--color-tinyrack-warning');
-    expect(css).not.toContain('--color-tinyrack-info');
+    expect(css).toContain('--color-tinyrack-success: var(--tinyrack-success);');
+    expect(css).toContain('--color-tinyrack-warning: var(--tinyrack-warning);');
+    expect(css).toContain('--color-tinyrack-info: var(--tinyrack-info);');
     expect(css).toContain('--color-tinyrack-surface-raised');
     expect(css).toContain('--radius-tinyrack-md');
     expect(css).toContain('--spacing-tinyrack-md');

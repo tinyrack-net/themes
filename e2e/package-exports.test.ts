@@ -81,6 +81,58 @@ const expectedJsExports = {
     types: './dist/components/tabs/react.d.ts',
     import: './dist/components/tabs/react.js',
   },
+  './components/combobox/dom': {
+    types: './dist/components/combobox/dom.d.ts',
+    import: './dist/components/combobox/dom.js',
+  },
+  './components/combobox/react': {
+    types: './dist/components/combobox/react.d.ts',
+    import: './dist/components/combobox/react.js',
+  },
+  './components/disclosure/react': {
+    types: './dist/components/disclosure/react.d.ts',
+    import: './dist/components/disclosure/react.js',
+  },
+  './components/menu/dom': {
+    types: './dist/components/menu/dom.d.ts',
+    import: './dist/components/menu/dom.js',
+  },
+  './components/menu/react': {
+    types: './dist/components/menu/react.d.ts',
+    import: './dist/components/menu/react.js',
+  },
+  './components/pin-input/dom': {
+    types: './dist/components/pin-input/dom.d.ts',
+    import: './dist/components/pin-input/dom.js',
+  },
+  './components/pin-input/react': {
+    types: './dist/components/pin-input/react.d.ts',
+    import: './dist/components/pin-input/react.js',
+  },
+  './components/spinner/react': {
+    types: './dist/components/spinner/react.d.ts',
+    import: './dist/components/spinner/react.js',
+  },
+  './components/tabs/dom': {
+    types: './dist/components/tabs/dom.d.ts',
+    import: './dist/components/tabs/dom.js',
+  },
+  './components/toast/dom': {
+    types: './dist/components/toast/dom.d.ts',
+    import: './dist/components/toast/dom.js',
+  },
+  './components/toast/react': {
+    types: './dist/components/toast/react.d.ts',
+    import: './dist/components/toast/react.js',
+  },
+  './components/tooltip/dom': {
+    types: './dist/components/tooltip/dom.d.ts',
+    import: './dist/components/tooltip/dom.js',
+  },
+  './components/tooltip/react': {
+    types: './dist/components/tooltip/react.d.ts',
+    import: './dist/components/tooltip/react.js',
+  },
 } as const;
 
 const expectedCssExports = {
@@ -102,6 +154,14 @@ const expectedCssExports = {
   './components/tabs/tabs.css': './dist/components/tabs/tabs.css',
   './mdx/mdx.css': './dist/mdx/mdx.css',
   './core/core.css': './dist/core/core.css',
+  './components/combobox/combobox.css': './dist/components/combobox/combobox.css',
+  './components/disclosure/disclosure.css':
+    './dist/components/disclosure/disclosure.css',
+  './components/menu/menu.css': './dist/components/menu/menu.css',
+  './components/pin-input/pin-input.css': './dist/components/pin-input/pin-input.css',
+  './components/spinner/spinner.css': './dist/components/spinner/spinner.css',
+  './components/toast/toast.css': './dist/components/toast/toast.css',
+  './components/tooltip/tooltip.css': './dist/components/tooltip/tooltip.css',
 } as const;
 
 describe('package exports', () => {
@@ -270,7 +330,27 @@ describe('package exports', () => {
     expect(existsSync(join(repoRoot, 'src/components/table/react.tsx'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/table/table.css'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/tabs/react.tsx'))).toBe(true);
+    expect(existsSync(join(repoRoot, 'src/components/tabs/dom.ts'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/components/tabs/tabs.css'))).toBe(true);
+    for (const component of ['combobox', 'menu', 'pin-input', 'toast', 'tooltip']) {
+      expect(existsSync(join(repoRoot, `src/components/${component}/dom.ts`))).toBe(
+        true,
+      );
+      expect(existsSync(join(repoRoot, `src/components/${component}/react.tsx`))).toBe(
+        true,
+      );
+      expect(
+        existsSync(join(repoRoot, `src/components/${component}/${component}.css`)),
+      ).toBe(true);
+    }
+    for (const component of ['disclosure', 'spinner']) {
+      expect(existsSync(join(repoRoot, `src/components/${component}/react.tsx`))).toBe(
+        true,
+      );
+      expect(
+        existsSync(join(repoRoot, `src/components/${component}/${component}.css`)),
+      ).toBe(true);
+    }
     expect(existsSync(join(repoRoot, 'src/mdx/react.tsx'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/mdx/astro.ts'))).toBe(true);
     expect(existsSync(join(repoRoot, 'src/mdx/mdx.css'))).toBe(true);
@@ -349,6 +429,7 @@ describe('package exports', () => {
       'choice-controls.tsx',
       'contract.ts',
       'field.tsx',
+      'input-group.tsx',
       'react.tsx',
       'text-controls.tsx',
     ]);
@@ -383,7 +464,7 @@ describe('package exports', () => {
             !file.includes('.test.') && (file.endsWith('.ts') || file.endsWith('.tsx')),
         )
         .sort(),
-    ).toEqual(['contract.ts', 'react.tsx']);
+    ).toEqual(['contract.ts', 'dom.ts', 'react.tsx']);
     expect(
       readdirSync(join(repoRoot, 'src/mdx'))
         .filter(

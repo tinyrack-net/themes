@@ -24,6 +24,7 @@ type DistTokenModule = Record<string, unknown> & {
 
 type DistButtonModule = Record<string, unknown> & {
   Button: unknown;
+  ButtonGroup: unknown;
   IconButton: unknown;
 };
 
@@ -46,8 +47,10 @@ type DistLinkModule = Record<string, unknown> & {
 type DistFormModule = Record<string, unknown> & {
   Checkbox: unknown;
   Field: unknown;
+  FieldDescription: unknown;
   FormMessage: unknown;
   Input: unknown;
+  InputGroup: unknown;
   Label: unknown;
   Radio: unknown;
   RadioGroup: unknown;
@@ -208,7 +211,7 @@ const badgeModule = await assertJsExport<DistBadgeModule>('/components/badge/rea
 ]);
 const buttonModule = await assertJsExport<DistButtonModule>(
   '/components/button/react',
-  ['Button', 'IconButton'],
+  ['Button', 'ButtonGroup', 'IconButton'],
 );
 const cardModule = await assertJsExport<DistCardModule>('/components/card/react', [
   'Card',
@@ -238,8 +241,10 @@ const skeletonModule = await assertJsExport<DistSkeletonModule>(
 const formModule = await assertJsExport<DistFormModule>('/components/form/react', [
   'Checkbox',
   'Field',
+  'FieldDescription',
   'FormMessage',
   'Input',
+  'InputGroup',
   'Label',
   'Radio',
   'RadioGroup',
@@ -265,6 +270,41 @@ const overlayReactModule = await assertJsExport<DistOverlayReactModule>(
   '/components/overlay/react',
   ['Layer', 'LayerContent', 'Modal', 'ModalContent'],
 );
+await assertJsExport('/components/combobox/dom', ['createComboboxManager']);
+await assertJsExport('/components/combobox/react', [
+  'Combobox',
+  'ComboboxContent',
+  'ComboboxInput',
+  'ComboboxOption',
+]);
+await assertJsExport('/components/disclosure/react', [
+  'Disclosure',
+  'DisclosureContent',
+  'DisclosureSummary',
+]);
+await assertJsExport('/components/menu/dom', ['createMenuManager']);
+await assertJsExport('/components/menu/react', [
+  'Menu',
+  'MenuContent',
+  'MenuItem',
+  'MenuTrigger',
+]);
+await assertJsExport('/components/pin-input/dom', ['createPinInputManager']);
+await assertJsExport('/components/pin-input/react', ['PinInput']);
+await assertJsExport('/components/spinner/react', ['Spinner']);
+await assertJsExport('/components/tabs/dom', ['createTabsManager']);
+await assertJsExport('/components/toast/dom', ['createToastManager']);
+await assertJsExport('/components/toast/react', [
+  'ToastProvider',
+  'ToastViewport',
+  'useToast',
+]);
+await assertJsExport('/components/tooltip/dom', ['createTooltipManager']);
+await assertJsExport('/components/tooltip/react', [
+  'Tooltip',
+  'TooltipContent',
+  'TooltipTrigger',
+]);
 const mdxReactModule = await assertJsExport<DistMdxReactModule>('/mdx/react', [
   'createTinyrackMdxComponents',
   'tinyrackMdxComponents',
@@ -544,6 +584,13 @@ assertCssExport('/components/skeleton/skeleton.css', [
 ]);
 assertCssExport('/components/table/table.css', ['.tr-table', 'data-density="normal"']);
 assertCssExport('/components/tabs/tabs.css', ['.tr-tabs', 'aria-selected="true"']);
+assertCssExport('/components/combobox/combobox.css', ['.tr-combobox']);
+assertCssExport('/components/disclosure/disclosure.css', ['.tr-disclosure']);
+assertCssExport('/components/menu/menu.css', ['.tr-menu-item']);
+assertCssExport('/components/pin-input/pin-input.css', ['.tr-pin-input-digit']);
+assertCssExport('/components/spinner/spinner.css', ['.tr-spinner']);
+assertCssExport('/components/toast/toast.css', ['.tr-toast-viewport']);
+assertCssExport('/components/tooltip/tooltip.css', ['.tr-tooltip-content']);
 assertCssExport('/mdx/mdx.css', ['.tr-mdx', '.tr-mdx-h1']);
 
 console.log('dist package smoke test passed');

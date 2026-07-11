@@ -1,0 +1,72 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Spinner } from '../../src/components/spinner/react.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentGuidance } from '../shared/component-guidance.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import { ComponentTokenTable } from '../shared/component-token-table.js';
+import * as SpinnerStories from './spinner.stories';
+
+<Meta of={SpinnerStories} />
+
+# Spinner
+
+Compact progress feedback for work without a measurable completion value.
+
+## Contract
+
+| Category | CSS / HTML | React | Values & default | Guidance |
+| --- | --- | --- | --- | --- |
+| Component | `tr-spinner` | `Spinner` | Native status or decorative span | Label standalone progress; hide embedded decoration. |
+| Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Match the surrounding control density. |
+| Variant | `data-variant` | `variant` | `currentColor`, `neutral`, `primary`, `danger`; default `currentColor` | Prefer current color inside a Button. |
+
+## Install
+
+<ComponentInstall surfaces={[
+  { label: 'CSS / HTML', install: 'pnpm add @tinyrack/ui tailwindcss', imports: ['@import "@tinyrack/ui/core/core.css";', '@import "@tinyrack/ui/components/spinner/spinner.css";'] },
+  { label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import { Spinner } from '@tinyrack/ui/components/spinner/react';"] },
+]} />
+
+## Usage
+
+<ComponentExampleTabs
+  id="spinner-basic"
+  title="Labeled progress"
+  description="Give a standalone spinner a concise operation label."
+  preview={<Spinner label="Loading translations" />}
+  sources={[
+    { label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core/core.css';
+import '@tinyrack/ui/components/spinner/spinner.css';
+import { Spinner } from '@tinyrack/ui/components/spinner/react';
+
+<Spinner label="Loading translations" />;` },
+    { label: 'HTML', language: 'html', code: String.raw`<span class="tr-spinner" data-size="md" data-variant="currentColor" role="status" aria-label="Loading translations"></span>` },
+  ]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  id="spinner-size-variant"
+  title="Size and semantic color"
+  description="Use compact neutral feedback or a larger primary indicator."
+  preview={<div className="flex items-center gap-4"><Spinner label="Neutral" size="sm" variant="neutral" /><Spinner label="Primary" size="lg" variant="primary" /></div>}
+  sources={[
+    { label: 'React', language: 'tsx', code: String.raw`<Spinner label="Neutral" size="sm" variant="neutral" />
+<Spinner label="Primary" size="lg" variant="primary" />` },
+    { label: 'HTML', language: 'html', code: String.raw`<span class="tr-spinner" data-size="sm" data-variant="neutral" role="status" aria-label="Neutral"></span>
+<span class="tr-spinner" data-size="lg" data-variant="primary" role="status" aria-label="Primary"></span>` },
+  ]}
+/>
+
+## Guidance
+
+<ComponentGuidance whenToUse={['Use for indeterminate work in a compact surface.']} avoid={['Do not replace determinate Progress with Spinner.']} accessibility={['Label standalone status; use aria-hidden for decorative use inside a labeled control.']} />
+
+## API
+
+| Component | Main props | Note |
+| --- | --- | --- |
+| `Spinner` | `size`, `variant`, `label` | Without a label the React adapter emits `aria-hidden`. |
+
+<ComponentTokenTable component="spinner" />

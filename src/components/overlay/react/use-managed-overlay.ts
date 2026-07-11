@@ -16,7 +16,9 @@ export function useManagedOverlay(
       return;
     }
 
-    const manager = createOverlayManager(element.ownerDocument);
+    const rootNode = element.getRootNode();
+    const root = rootNode instanceof ShadowRoot ? rootNode : element.ownerDocument;
+    const manager = createOverlayManager(root);
     managerRef.current = manager;
 
     function handleChange(event: Event) {

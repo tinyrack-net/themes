@@ -4,7 +4,10 @@ import type { AddressInfo } from 'node:net';
 import { extname, join, resolve, sep } from 'node:path';
 import { type Browser, chromium, type Locator, type Page } from 'playwright';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { tinyrackSemanticColors } from '../src/core/tokens/semantic.js';
 import { componentDocsManifest } from '../stories/shared/component-docs-manifest.js';
+
+const semanticColorCount = Object.keys(tinyrackSemanticColors.light).length;
 
 const repoRoot = process.cwd();
 const storybookRoot = join(repoRoot, 'storybook-static');
@@ -306,6 +309,29 @@ const deepInteractionPages = new Set([
   'table',
   'tabs',
 ]);
+
+const consumerCoverageScenarios = [
+  {
+    storyId: 'scenarios-consumer-coverage--tiny-auth-auth',
+    title: 'TinyAuth · authentication',
+  },
+  {
+    storyId: 'scenarios-consumer-coverage--tiny-auth-admin',
+    title: 'TinyAuth · admin',
+  },
+  {
+    storyId: 'scenarios-consumer-coverage--tiny-translate-popup',
+    title: 'Tiny Translate · popup',
+  },
+  {
+    storyId: 'scenarios-consumer-coverage--tiny-translate-options',
+    title: 'Tiny Translate · options',
+  },
+  {
+    storyId: 'scenarios-consumer-coverage--tiny-translate-content-overlay',
+    title: 'Tiny Translate · content overlay',
+  },
+] as const;
 
 describe('built Storybook component docs', () => {
   let browser: Browser | undefined;
@@ -764,18 +790,70 @@ describe('built Storybook component docs', () => {
                 docs
                   .locator('[aria-label="Light semantic colors"] [role="listitem"]')
                   .count(),
-              ).resolves.toBe(18);
+              ).resolves.toBe(semanticColorCount);
               await expect(
                 docs
                   .locator('[aria-label="Dark semantic colors"] [role="listitem"]')
                   .count(),
-              ).resolves.toBe(18);
+              ).resolves.toBe(semanticColorCount);
             }
 
             expect(consoleErrors, `${entry.id} ${scenario.name} console`).toEqual([]);
             expect(pageErrors, `${entry.id} ${scenario.name} page errors`).toEqual([]);
           } catch (error) {
             await captureFailure(page, [entry.id, scenario.name]);
+            throw error;
+          }
+        }
+      } finally {
+        await context.close();
+      }
+    });
+  }
+
+  for (const scenario of [renderScenarios[0], renderScenarios[3]]) {
+    it(`renders every consumer coverage scenario in ${scenario.name}`, async () => {
+      if (browser === undefined) {
+        throw new Error('Chromium did not start.');
+      }
+
+      const context = await browser.newContext({ viewport: scenario.viewport });
+      const page = await context.newPage();
+      const consoleErrors: string[] = [];
+      const pageErrors: string[] = [];
+
+      page.on('console', (message) => {
+        if (message.type() === 'error') {
+          consoleErrors.push(message.text());
+        }
+      });
+      page.on('pageerror', (error) => pageErrors.push(error.message));
+
+      try {
+        for (const entry of consumerCoverageScenarios) {
+          consoleErrors.length = 0;
+          pageErrors.length = 0;
+
+          try {
+            await page.goto(storyUrl(origin, entry.storyId, scenario.theme), {
+              waitUntil: 'domcontentloaded',
+            });
+            await page
+              .getByRole('heading', { exact: true, level: 1, name: entry.title })
+              .waitFor();
+            await page.waitForLoadState('networkidle');
+
+            const widths = await page.evaluate(() => ({
+              clientWidth: document.documentElement.clientWidth,
+              scrollWidth: document.documentElement.scrollWidth,
+            }));
+
+            expect(widths.scrollWidth).toBeLessThanOrEqual(widths.clientWidth + 1);
+            await expect(page.locator('button button').count()).resolves.toBe(0);
+            expect(consoleErrors, `${entry.storyId} console`).toEqual([]);
+            expect(pageErrors, `${entry.storyId} page errors`).toEqual([]);
+          } catch (error) {
+            await captureFailure(page, [entry.storyId, scenario.name]);
             throw error;
           }
         }

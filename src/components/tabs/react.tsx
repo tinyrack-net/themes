@@ -1,38 +1,37 @@
+'use client';
+
 import {
   type ButtonHTMLAttributes,
   createContext,
   forwardRef,
   type HTMLAttributes,
-  type KeyboardEvent,
-  type MouseEvent,
   useCallback,
   useContext,
+  useEffect,
   useId,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import {
   type TabsActivationMode,
+  type TabsChangeDetail,
   type TabsOrientation,
   type TabsSize,
+  tabsChangeEventName,
   tabsClassName,
   tabsContract,
   tabsListClassName,
   tabsPanelClassName,
   tabsTriggerClassName,
 } from './contract.js';
+import { createTabsManager } from './dom.js';
 
-export type {
-  TabsActivationMode,
-  TabsOrientation,
-  TabsSize,
-} from './contract.js';
+export type { TabsActivationMode, TabsOrientation, TabsSize } from './contract.js';
 
 type TabsContextValue = {
-  activationMode: TabsActivationMode;
   baseId: string;
   orientation: TabsOrientation;
-  setValue: (value: string) => void;
   size: TabsSize;
   value: string;
 };
@@ -45,129 +44,46 @@ type TabsBaseProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export type TabsProps =
-  | (TabsBaseProps & {
-      defaultValue?: never;
-      value: string;
-    })
-  | (TabsBaseProps & {
-      defaultValue: string;
-      value?: never;
-    });
+  | (TabsBaseProps & { defaultValue?: never; value: string })
+  | (TabsBaseProps & { defaultValue: string; value?: never });
 
 export type TabsListProps = HTMLAttributes<HTMLDivElement>;
-
 export type TabsTriggerProps = Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
   'value'
 > & {
   value: string;
 };
-
-export type TabsPanelProps = HTMLAttributes<HTMLDivElement> & {
-  value: string;
-};
+export type TabsPanelProps = HTMLAttributes<HTMLDivElement> & { value: string };
 
 const TabsContext = createContext<TabsContextValue | null>(null);
 const focusableTabPanelProps = { tabIndex: 0 } as const;
 
-function mergeClassNames(...classNames: Array<string | undefined>) {
-  return classNames.filter(Boolean).join(' ');
+function mergeClassNames(...values: Array<string | undefined>) {
+  return values.filter(Boolean).join(' ');
 }
 
 function normalizeIdPart(value: string) {
-  const normalized = value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9_-]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-
-  return normalized || 'tab';
+  return (
+    value
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'tab'
+  );
 }
 
 function idsForValue(baseId: string, value: string) {
   const idPart = normalizeIdPart(value);
-
-  return {
-    panelId: `${baseId}-panel-${idPart}`,
-    tabId: `${baseId}-tab-${idPart}`,
-  };
+  return { panelId: `${baseId}-panel-${idPart}`, tabId: `${baseId}-tab-${idPart}` };
 }
 
-function useTabsContext(componentName: string) {
+function useTabsContext(name: string) {
   const context = useContext(TabsContext);
-
   if (context === null) {
-    throw new Error(`${componentName} must be used within Tabs.`);
+    throw new Error(`${name} must be used within Tabs.`);
   }
-
   return context;
-}
-
-function enabledTabsFrom(tab: HTMLButtonElement) {
-  const tabList = tab.closest('[role="tablist"]');
-
-  if (tabList === null) {
-    return [];
-  }
-
-  return Array.from(tabList.querySelectorAll<HTMLButtonElement>('[role="tab"]')).filter(
-    (candidate) =>
-      !candidate.disabled && candidate.getAttribute('aria-disabled') !== 'true',
-  );
-}
-
-function focusTabByOffset(
-  event: KeyboardEvent<HTMLButtonElement>,
-  offset: number,
-  activateOnFocus: boolean,
-  setValue: (value: string) => void,
-) {
-  const tabs = enabledTabsFrom(event.currentTarget);
-  const currentIndex = tabs.indexOf(event.currentTarget);
-
-  if (currentIndex === -1 || tabs.length === 0) {
-    return;
-  }
-
-  event.preventDefault();
-
-  const nextIndex = (currentIndex + offset + tabs.length) % tabs.length;
-  const nextTab = tabs[nextIndex];
-
-  nextTab?.focus();
-
-  if (activateOnFocus) {
-    const nextValue = nextTab?.getAttribute('data-value') ?? undefined;
-
-    if (nextValue !== undefined) {
-      setValue(nextValue);
-    }
-  }
-}
-
-function focusTabAtEdge(
-  event: KeyboardEvent<HTMLButtonElement>,
-  edge: 'first' | 'last',
-  activateOnFocus: boolean,
-  setValue: (value: string) => void,
-) {
-  const tabs = enabledTabsFrom(event.currentTarget);
-  const nextTab = edge === 'first' ? tabs[0] : tabs.at(-1);
-
-  if (nextTab === undefined) {
-    return;
-  }
-
-  event.preventDefault();
-  nextTab.focus();
-
-  if (activateOnFocus) {
-    const nextValue = nextTab.getAttribute('data-value') ?? undefined;
-
-    if (nextValue !== undefined) {
-      setValue(nextValue);
-    }
-  }
 }
 
 export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
@@ -179,63 +95,82 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     orientation = tabsContract.defaultOrientation,
     size = tabsContract.defaultSize,
     value,
-    ...tabsProps
+    ...props
   },
-  ref,
+  forwardedRef,
 ) {
   const baseId = useId();
-  const isControlled = value !== undefined;
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const controlled = value !== undefined;
   const [uncontrolledValue, setUncontrolledValue] = useState(
     defaultValue ?? value ?? '',
   );
-  const currentValue = isControlled ? value : uncontrolledValue;
-
-  const setValue = useCallback(
-    (nextValue: string) => {
-      if (!isControlled) {
-        setUncontrolledValue(nextValue);
+  const currentValue = controlled ? value : uncontrolledValue;
+  const setRootRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      rootRef.current = element;
+      if (typeof forwardedRef === 'function') {
+        forwardedRef(element);
+      } else if (forwardedRef !== null) {
+        forwardedRef.current = element;
       }
-
-      onValueChange?.(nextValue);
     },
-    [isControlled, onValueChange],
+    [forwardedRef],
   );
 
+  useEffect(() => {
+    const root = rootRef.current;
+    if (root === null) {
+      return;
+    }
+    const manager = createTabsManager(root);
+    const handleChange = (event: Event) => {
+      const detail = (event as CustomEvent<TabsChangeDetail>).detail;
+      if (detail.root !== root) {
+        return;
+      }
+      if (!controlled) {
+        setUncontrolledValue(detail.value);
+      }
+      onValueChange?.(detail.value);
+    };
+    root.addEventListener(tabsChangeEventName, handleChange);
+    return () => {
+      root.removeEventListener(tabsChangeEventName, handleChange);
+      manager.destroy();
+    };
+  }, [controlled, onValueChange]);
+
   const context = useMemo(
-    () => ({
-      activationMode,
-      baseId,
-      orientation,
-      setValue,
-      size,
-      value: currentValue,
-    }),
-    [activationMode, baseId, currentValue, orientation, setValue, size],
+    () => ({ baseId, orientation, size, value: currentValue }),
+    [baseId, currentValue, orientation, size],
   );
 
   return (
     <TabsContext.Provider value={context}>
       <div
-        {...tabsProps}
+        {...props}
         className={mergeClassNames(tabsClassName, className)}
+        data-activation-mode={activationMode}
         data-orientation={orientation}
         data-size={size}
-        ref={ref}
+        data-tr-tabs="true"
+        data-value={currentValue}
+        ref={setRootRef}
       />
     </TabsContext.Provider>
   );
 });
 
 export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(function TabsList(
-  { className, ...listProps },
+  { className, ...props },
   ref,
 ) {
   const { orientation, size } = useTabsContext('TabsList');
-
   return (
     <div
-      {...listProps}
-      aria-orientation={orientation === 'vertical' ? orientation : undefined}
+      {...props}
+      aria-orientation={orientation === 'vertical' ? 'vertical' : undefined}
       className={mergeClassNames(tabsListClassName, className)}
       data-orientation={orientation}
       data-size={size}
@@ -246,100 +181,22 @@ export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(function TabsL
 });
 
 export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
-  function TabsTrigger(
-    {
-      className,
-      disabled,
-      onClick,
-      onKeyDown,
-      type = 'button',
-      value,
-      ...triggerProps
-    },
-    ref,
-  ) {
+  function TabsTrigger({ className, disabled, type = 'button', value, ...props }, ref) {
     const context = useTabsContext('TabsTrigger');
     const selected = context.value === value;
     const { panelId, tabId } = idsForValue(context.baseId, value);
-    const ariaDisabled =
-      triggerProps['aria-disabled'] === true ||
-      triggerProps['aria-disabled'] === 'true';
-    const disabledState = disabled === true || ariaDisabled;
-
-    function handleClick(event: MouseEvent<HTMLButtonElement>) {
-      onClick?.(event);
-
-      if (!event.defaultPrevented && !disabledState) {
-        context.setValue(value);
-      }
-    }
-
-    function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
-      onKeyDown?.(event);
-
-      if (event.defaultPrevented || disabledState) {
-        return;
-      }
-
-      const activateOnFocus = context.activationMode === 'automatic';
-
-      if (event.key === 'Home') {
-        focusTabAtEdge(event, 'first', activateOnFocus, context.setValue);
-        return;
-      }
-
-      if (event.key === 'End') {
-        focusTabAtEdge(event, 'last', activateOnFocus, context.setValue);
-        return;
-      }
-
-      if (
-        context.orientation === 'horizontal' &&
-        (event.key === 'ArrowRight' || event.key === 'ArrowLeft')
-      ) {
-        focusTabByOffset(
-          event,
-          event.key === 'ArrowRight' ? 1 : -1,
-          activateOnFocus,
-          context.setValue,
-        );
-        return;
-      }
-
-      if (
-        context.orientation === 'vertical' &&
-        (event.key === 'ArrowDown' || event.key === 'ArrowUp')
-      ) {
-        focusTabByOffset(
-          event,
-          event.key === 'ArrowDown' ? 1 : -1,
-          activateOnFocus,
-          context.setValue,
-        );
-        return;
-      }
-
-      if (
-        context.activationMode === 'manual' &&
-        (event.key === 'Enter' || event.key === ' ')
-      ) {
-        event.preventDefault();
-        context.setValue(value);
-      }
-    }
-
+    const disabledState =
+      disabled || props['aria-disabled'] === true || props['aria-disabled'] === 'true';
     return (
       <button
-        {...triggerProps}
+        {...props}
         aria-controls={panelId}
         aria-selected={selected}
         className={mergeClassNames(tabsTriggerClassName, className)}
-        data-active={selected ? 'true' : undefined}
+        data-active={selected ? 'true' : 'false'}
         data-value={value}
         disabled={disabled}
         id={tabId}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
         ref={ref}
         role="tab"
         tabIndex={selected && !disabledState ? 0 : -1}
@@ -350,20 +207,20 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
 );
 
 export const TabsPanel = forwardRef<HTMLDivElement, TabsPanelProps>(function TabsPanel(
-  { className, value, ...panelProps },
+  { className, value, ...props },
   ref,
 ) {
   const context = useTabsContext('TabsPanel');
   const selected = context.value === value;
   const { panelId, tabId } = idsForValue(context.baseId, value);
-
   return (
     <div
-      {...panelProps}
+      {...props}
       {...focusableTabPanelProps}
       aria-labelledby={tabId}
       className={mergeClassNames(tabsPanelClassName, className)}
-      data-active={selected ? 'true' : undefined}
+      data-active={selected ? 'true' : 'false'}
+      data-value={value}
       hidden={!selected}
       id={panelId}
       ref={ref}

@@ -52,6 +52,24 @@
   --_tr-badge-color: var(--tinyrack-primary-contrast);
 }
 
+.tr-badge[data-variant="info"] {
+  --_tr-badge-background: var(--tinyrack-info-surface);
+  --_tr-badge-border: var(--tinyrack-info-border);
+  --_tr-badge-color: var(--tinyrack-info);
+}
+
+.tr-badge[data-variant="success"] {
+  --_tr-badge-background: var(--tinyrack-success-surface);
+  --_tr-badge-border: var(--tinyrack-success-border);
+  --_tr-badge-color: var(--tinyrack-success);
+}
+
+.tr-badge[data-variant="warning"] {
+  --_tr-badge-background: var(--tinyrack-warning-surface);
+  --_tr-badge-border: var(--tinyrack-warning-border);
+  --_tr-badge-color: var(--tinyrack-warning);
+}
+
 .tr-badge[data-variant="danger"] {
   --_tr-badge-background: var(--tinyrack-error);
   --_tr-badge-border: var(--tinyrack-error);

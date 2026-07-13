@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import { baseUiExampleSources } from '../shared/base-ui-example-sources.js';
+import * as Stories from './slider.stories';
+
+<Meta of={Stories} />
+
+# Slider
+
+Selects a numeric value with pointer and keyboard input.
+
+## Contract
+
+This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, events, and the `render` contract. Storybook controls cover `label`, `value`, `disabled`, `orientation`.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/slider.css';", "import { Slider } from '@tinyrack/ui/components/slider';"] }]} />
+
+## Usage
+
+<ComponentExampleTabs
+  id="slider-basic"
+  title="Default"
+  preview={<Stories.SliderPreview label={'Volume'} value={48} disabled={false} orientation={'horizontal'} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['slider'] }]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  id="slider-states"
+  title="State comparison"
+  description="Use Controls above to inspect every supported public state."
+  preview={<Stories.SliderPreview label={'Volume'} value={82} disabled={false} orientation={'vertical'} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['slider'] }]}
+/>
+
+## API
+
+Every compound part and prop/state type is exported from `@tinyrack/ui/components/slider`; styles remain opt-in through the matching CSS subpath.

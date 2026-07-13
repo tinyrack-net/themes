@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   tinyrackBorders,
   tinyrackControlMetrics,
+  tinyrackLayers,
   tinyrackMotion,
   tinyrackOpacity,
   tinyrackPalettes,
@@ -19,8 +20,11 @@ const semanticColorNames = [
   'surface',
   'surfaceMuted',
   'surfaceHover',
+  'surfaceSelected',
+  'surfacePressed',
   'text',
   'textMuted',
+  'textPlaceholder',
   'border',
   'borderStrong',
   'focus',
@@ -41,6 +45,7 @@ const semanticColorNames = [
   'dangerBorder',
   'dangerHover',
   'onDanger',
+  'scrim',
 ] as const;
 
 function hexToRgb(hex: string): [number, number, number] {
@@ -88,7 +93,7 @@ describe('tinyrack design tokens', () => {
   it('provides exactly the public light and dark functional colors', () => {
     for (const mode of ['light', 'dark'] as const) {
       expect(Object.keys(tinyrackSemanticColors[mode])).toEqual(semanticColorNames);
-      expect(Object.keys(tinyrackSemanticColors[mode])).toHaveLength(26);
+      expect(Object.keys(tinyrackSemanticColors[mode])).toHaveLength(30);
     }
   });
 
@@ -130,6 +135,8 @@ describe('tinyrack design tokens', () => {
     const approvedValues = new Set([
       '#ffffff',
       '#030303',
+      '#0000008f',
+      '#000000b8',
       ...Object.values(tinyrackPalettes).flatMap((palette) => Object.values(palette)),
     ]);
     for (const semanticColors of Object.values(tinyrackSemanticColors)) {
@@ -163,6 +170,12 @@ describe('tinyrack design tokens', () => {
       loading: '2.4s',
     });
     expect(tinyrackOpacity.disabled).toBe('0.5');
+    expect(tinyrackLayers).toMatchObject({
+      dropdown: 1000,
+      backdrop: 1200,
+      dialog: 1210,
+      tooltip: 1400,
+    });
     expect(tinyrackControlMetrics).toMatchObject({
       sm: { height: '2rem', paddingInline: '0.75rem' },
       md: { height: '2.5rem', paddingInline: '1rem' },

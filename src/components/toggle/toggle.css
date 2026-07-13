@@ -1,0 +1,40 @@
+@layer components {
+  .tr-toggle {
+    align-items: center;
+    background: var(--tr-toggle-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-md);
+    box-sizing: border-box;
+    color: var(--tr-toggle-color, var(--tinyrack-text));
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    gap: var(--tinyrack-control-gap-md);
+    justify-content: center;
+    min-height: var(--tinyrack-control-height-md);
+    padding-inline: var(--tinyrack-control-padding-inline-md);
+    transition:
+      background-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard),
+      border-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard);
+  }
+
+  .tr-toggle:hover:not(:disabled, [data-disabled]) {
+    background: var(--tinyrack-surface-hover);
+  }
+
+  .tr-toggle[data-pressed] {
+    background: var(--tr-toggle-pressed-background, var(--tinyrack-surface-selected));
+    border-color: var(--tr-toggle-pressed-border, var(--tinyrack-primary));
+  }
+
+  .tr-toggle:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-toggle:disabled,
+  .tr-toggle[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

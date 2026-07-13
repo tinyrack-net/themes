@@ -2,35 +2,9 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import packageJson from '../package.json' with { type: 'json' };
+import { componentNames } from '../scripts/component-catalog.js';
 
 const repoRoot = process.cwd();
-const componentNames = [
-  'accordion',
-  'alert',
-  'avatar',
-  'badge',
-  'button',
-  'card',
-  'code',
-  'code-block',
-  'combobox',
-  'disclosure',
-  'divider',
-  'form',
-  'link',
-  'menu',
-  'modal',
-  'pin-input',
-  'popover',
-  'progress',
-  'skeleton',
-  'spinner',
-  'table',
-  'tabs',
-  'toast',
-  'tooltip',
-];
-
 describe('component CSS distribution', () => {
   it('maps suffix-free CSS subpaths to colocated semantic files', () => {
     expect(packageJson.exports['./components/*.css']).toBe('./dist/components/*/*.css');

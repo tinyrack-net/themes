@@ -22,7 +22,7 @@ Elevation separates temporary UI that sits above the page. Keep normal cards and
   </section>
   <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
     <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm"><Code>overlay</Code> · blocking</h3>
-    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Use for Modal surfaces that block the page until the focused task is complete.</div>
+    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Use for Dialog surfaces that block the page until the focused task is complete.</div>
   </section>
 </div>
 
@@ -31,7 +31,7 @@ Elevation separates temporary UI that sits above the page. Keep normal cards and
 <div className="grid gap-tinyrack-xl" data-elevation-visual-scale role="list">
   {[
     { name: 'raised', value: tinyrackShadows.raised, purpose: 'Popover and Toast' },
-    { name: 'overlay', value: tinyrackShadows.overlay, purpose: 'Modal' },
+    { name: 'overlay', value: tinyrackShadows.overlay, purpose: 'Dialog' },
   ].map(({ name, value, purpose }) => (
     <section className="grid min-w-0 gap-4 border border-tinyrack-border p-4" data-elevation-token={name} key={name} role="listitem">
       <div className="grid min-w-0 gap-1">
@@ -83,7 +83,7 @@ In dark themes, borders and surface contrast carry most of the separation. Shado
     </div>
   </section>
   <section className="grid content-start gap-3 bg-tinyrack-surface-muted p-4">
-    <div><h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Modal</h3><div className="text-tinyrack-sm text-tinyrack-text-muted"><Code>overlay</Code> · page is blocked</div></div>
+    <div><h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Dialog</h3><div className="text-tinyrack-sm text-tinyrack-text-muted"><Code>overlay</Code> · page is blocked</div></div>
     <div className="relative grid min-h-52 overflow-hidden bg-tinyrack-canvas p-4" aria-hidden="true">
       <div className="grid content-start gap-2 text-tinyrack-sm text-tinyrack-text-muted"><span>Rack settings</span><span>Background content</span></div>
       <div className="absolute inset-0 grid place-items-center bg-black/60 p-4">
@@ -97,7 +97,7 @@ In dark themes, borders and surface contrast carry most of the separation. Shado
 
 ## Implementation
 
-Popover, Toast, and Modal already apply the correct elevation through their component CSS. Use a public shadow token only when building a custom floating surface; do not add it to normal layout sections.
+Popover, Toast, and Dialog already apply the correct elevation through their component CSS. Use a public shadow token only when building a custom floating surface; do not add it to normal layout sections.
 
 ```css
 .rack-popover {
@@ -120,7 +120,7 @@ Use `tinyrackShadows.raised` and `tinyrackShadows.overlay` when tooling or gener
     <tbody>
       {[
         { name: 'raised', purpose: 'Non-blocking floating UI', consumers: 'Popover, Toast' },
-        { name: 'overlay', purpose: 'Blocking focused task', consumers: 'Modal' },
+        { name: 'overlay', purpose: 'Blocking focused task', consumers: 'Dialog' },
       ].map(({ name, purpose, consumers }) => (
         <tr key={name}>
           <th scope="row"><Code className="whitespace-nowrap">{name}</Code></th>

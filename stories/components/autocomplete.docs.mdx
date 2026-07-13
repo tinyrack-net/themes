@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import { baseUiExampleSources } from '../shared/base-ui-example-sources.js';
+import * as Stories from './autocomplete.stories';
+
+<Meta of={Stories} />
+
+# Autocomplete
+
+Free-form text input with filtered suggestions and keyboard navigation.
+
+## Contract
+
+This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, events, and the `render` contract. Storybook controls cover `placeholder`, `open`, `disabled`.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/autocomplete.css';", "import { Autocomplete } from '@tinyrack/ui/components/autocomplete';"] }]} />
+
+## Usage
+
+<ComponentExampleTabs
+  id="autocomplete-basic"
+  title="Default"
+  preview={<Stories.AutocompletePreview placeholder={'Search racks'} open={false} disabled={false} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['autocomplete'] }]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  id="autocomplete-states"
+  title="State comparison"
+  description="Use Controls above to inspect every supported public state."
+  preview={<Stories.AutocompletePreview placeholder={'Search racks'} open={true} disabled={false} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['autocomplete'] }]}
+/>
+
+## API
+
+Every compound part and prop/state type is exported from `@tinyrack/ui/components/autocomplete`; styles remain opt-in through the matching CSS subpath.

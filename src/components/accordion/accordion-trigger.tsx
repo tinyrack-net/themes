@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type AccordionTriggerProps = ComponentProps<typeof BaseAccordion.Trigger>;
 export const AccordionTrigger = createComponentPart(
   BaseAccordion.Trigger,
-  'tr-accordion-trigger tr-disclosure-summary',
+  'tr-accordion-trigger tr-collapsible-summary',
 );

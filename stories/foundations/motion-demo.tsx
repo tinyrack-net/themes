@@ -16,7 +16,7 @@ const durationExamples = [
   },
   {
     name: 'slow',
-    use: 'Modal entry and task-context changes',
+    use: 'Dialog entry and task-context changes',
     value: tinyrackMotion.duration.slow,
   },
 ] as const;

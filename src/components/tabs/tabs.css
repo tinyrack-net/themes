@@ -1,10 +1,11 @@
 .tr-tabs {
+  --_tr-tabs-seam-offset: -1px;
   --_tr-tabs-list-gap: var(--tinyrack-space-xs);
-  --_tr-tabs-trigger-height: var(--tinyrack-control-height-md);
-  --_tr-tabs-trigger-padding-x: var(--tinyrack-control-padding-inline-md);
-  --_tr-tabs-trigger-gap: var(--tinyrack-control-gap-md);
-  --_tr-tabs-trigger-font-size: var(--tinyrack-control-font-size-md);
-  --_tr-tabs-trigger-line-height: var(--tinyrack-control-line-height-md);
+  --_tr-tabs-tab-height: var(--tinyrack-control-height-md);
+  --_tr-tabs-tab-padding-x: var(--tinyrack-control-padding-inline-md);
+  --_tr-tabs-tab-gap: var(--tinyrack-control-gap-md);
+  --_tr-tabs-tab-font-size: var(--tinyrack-control-font-size-md);
+  --_tr-tabs-tab-line-height: var(--tinyrack-control-line-height-md);
   --_tr-tabs-panel-padding: var(--tinyrack-space-lg);
   box-sizing: border-box;
   color: var(--tinyrack-text);
@@ -17,29 +18,29 @@
 }
 
 .tr-tabs[data-size="sm"] {
-  --_tr-tabs-trigger-height: var(--tinyrack-control-height-sm);
-  --_tr-tabs-trigger-padding-x: var(--tinyrack-control-padding-inline-sm);
-  --_tr-tabs-trigger-gap: var(--tinyrack-control-gap-sm);
-  --_tr-tabs-trigger-font-size: var(--tinyrack-control-font-size-sm);
-  --_tr-tabs-trigger-line-height: var(--tinyrack-control-line-height-sm);
+  --_tr-tabs-tab-height: var(--tinyrack-control-height-sm);
+  --_tr-tabs-tab-padding-x: var(--tinyrack-control-padding-inline-sm);
+  --_tr-tabs-tab-gap: var(--tinyrack-control-gap-sm);
+  --_tr-tabs-tab-font-size: var(--tinyrack-control-font-size-sm);
+  --_tr-tabs-tab-line-height: var(--tinyrack-control-line-height-sm);
   --_tr-tabs-panel-padding: var(--tinyrack-space-md);
 }
 
 .tr-tabs[data-size="md"] {
-  --_tr-tabs-trigger-height: var(--tinyrack-control-height-md);
-  --_tr-tabs-trigger-padding-x: var(--tinyrack-control-padding-inline-md);
-  --_tr-tabs-trigger-gap: var(--tinyrack-control-gap-md);
-  --_tr-tabs-trigger-font-size: var(--tinyrack-control-font-size-md);
-  --_tr-tabs-trigger-line-height: var(--tinyrack-control-line-height-md);
+  --_tr-tabs-tab-height: var(--tinyrack-control-height-md);
+  --_tr-tabs-tab-padding-x: var(--tinyrack-control-padding-inline-md);
+  --_tr-tabs-tab-gap: var(--tinyrack-control-gap-md);
+  --_tr-tabs-tab-font-size: var(--tinyrack-control-font-size-md);
+  --_tr-tabs-tab-line-height: var(--tinyrack-control-line-height-md);
   --_tr-tabs-panel-padding: var(--tinyrack-space-lg);
 }
 
 .tr-tabs[data-size="lg"] {
-  --_tr-tabs-trigger-height: var(--tinyrack-control-height-lg);
-  --_tr-tabs-trigger-padding-x: var(--tinyrack-control-padding-inline-lg);
-  --_tr-tabs-trigger-gap: var(--tinyrack-control-gap-lg);
-  --_tr-tabs-trigger-font-size: var(--tinyrack-control-font-size-lg);
-  --_tr-tabs-trigger-line-height: var(--tinyrack-control-line-height-lg);
+  --_tr-tabs-tab-height: var(--tinyrack-control-height-lg);
+  --_tr-tabs-tab-padding-x: var(--tinyrack-control-padding-inline-lg);
+  --_tr-tabs-tab-gap: var(--tinyrack-control-gap-lg);
+  --_tr-tabs-tab-font-size: var(--tinyrack-control-font-size-lg);
+  --_tr-tabs-tab-line-height: var(--tinyrack-control-line-height-lg);
   --_tr-tabs-panel-padding: 1.25rem;
 }
 
@@ -71,7 +72,7 @@
   border-bottom: 0;
 }
 
-.tr-tabs-trigger {
+.tr-tabs-tab {
   align-items: center;
   appearance: none;
   background-color: transparent;
@@ -83,14 +84,14 @@
   cursor: pointer;
   display: inline-flex;
   font-family: var(--tinyrack-font-body);
-  font-size: var(--tr-tabs-trigger-font-size, var(--_tr-tabs-trigger-font-size));
+  font-size: var(--tr-tabs-tab-font-size, var(--_tr-tabs-tab-font-size));
   font-weight: var(--tr-tabs-font-weight, var(--tinyrack-weight-medium));
-  gap: var(--tr-tabs-trigger-gap, var(--_tr-tabs-trigger-gap));
-  height: var(--tr-tabs-trigger-height, var(--_tr-tabs-trigger-height));
+  gap: var(--tr-tabs-tab-gap, var(--_tr-tabs-tab-gap));
+  height: var(--tr-tabs-tab-height, var(--_tr-tabs-tab-height));
   justify-content: center;
-  line-height: var(--tr-tabs-trigger-line-height, var(--_tr-tabs-trigger-line-height));
-  margin-bottom: -1px;
-  padding-inline: var(--tr-tabs-trigger-padding-x, var(--_tr-tabs-trigger-padding-x));
+  line-height: var(--tr-tabs-tab-line-height, var(--_tr-tabs-tab-line-height));
+  margin-bottom: var(--_tr-tabs-seam-offset);
+  padding-inline: var(--tr-tabs-tab-padding-x, var(--_tr-tabs-tab-padding-x));
   position: relative;
   text-decoration: none;
   transition:
@@ -106,21 +107,21 @@
   white-space: nowrap;
 }
 
-.tr-tabs[data-orientation="vertical"] .tr-tabs-trigger {
+.tr-tabs[data-orientation="vertical"] .tr-tabs-tab {
   justify-content: flex-start;
-  margin-right: -1px;
+  margin-right: var(--_tr-tabs-seam-offset);
   margin-bottom: 0;
   border-radius: var(--tr-tabs-radius, var(--tinyrack-radius-md)) 0 0
     var(--tr-tabs-radius, var(--tinyrack-radius-md));
 }
 
-.tr-tabs-trigger:hover:not(:disabled):not([aria-disabled="true"]) {
+.tr-tabs-tab:hover:not(:disabled):not([aria-disabled="true"]) {
   background-color: var(--tr-tabs-hover-background, var(--tinyrack-surface-hover));
   color: var(--tinyrack-text);
 }
 
-.tr-tabs-trigger[aria-selected="true"],
-.tr-tabs-trigger[data-active] {
+.tr-tabs-tab[aria-selected="true"],
+.tr-tabs-tab[data-active] {
   background-color: var(--tr-tabs-selected-background, var(--tinyrack-surface));
   border-color: var(--tinyrack-border);
   border-bottom-color: var(--tr-tabs-selected-background, var(--tinyrack-surface));
@@ -129,19 +130,19 @@
   z-index: 1;
 }
 
-.tr-tabs[data-orientation="vertical"] .tr-tabs-trigger[aria-selected="true"],
-.tr-tabs[data-orientation="vertical"] .tr-tabs-trigger[data-active] {
+.tr-tabs[data-orientation="vertical"] .tr-tabs-tab[aria-selected="true"],
+.tr-tabs[data-orientation="vertical"] .tr-tabs-tab[data-active] {
   border-right-color: var(--tr-tabs-selected-background, var(--tinyrack-surface));
   border-bottom-color: var(--tinyrack-border);
 }
 
-.tr-tabs-trigger:focus-visible {
+.tr-tabs-tab:focus-visible {
   outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
   outline-offset: var(--tinyrack-focus-offset);
 }
 
-.tr-tabs-trigger:disabled,
-.tr-tabs-trigger[aria-disabled="true"] {
+.tr-tabs-tab:disabled,
+.tr-tabs-tab[aria-disabled="true"] {
   cursor: not-allowed;
   opacity: var(--tr-tabs-disabled-opacity, var(--tinyrack-opacity-disabled));
   pointer-events: none;

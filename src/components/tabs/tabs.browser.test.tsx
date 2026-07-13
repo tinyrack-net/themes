@@ -8,14 +8,14 @@ test('uses Base UI keyboard and selection semantics', async () => {
   await render(
     <Tabs.Root defaultValue="general" size="lg">
       <Tabs.List>
-        <Tabs.Trigger value="general">General</Tabs.Trigger>
-        <Tabs.Trigger value="network">Network</Tabs.Trigger>
+        <Tabs.Tab value="general">General</Tabs.Tab>
+        <Tabs.Tab value="network">Network</Tabs.Tab>
       </Tabs.List>
       <Tabs.Panel value="general">General settings</Tabs.Panel>
       <Tabs.Panel value="network">Network settings</Tabs.Panel>
     </Tabs.Root>,
   );
-  const triggers = document.querySelectorAll<HTMLButtonElement>('.tr-tabs-trigger');
+  const triggers = document.querySelectorAll<HTMLButtonElement>('.tr-tabs-tab');
   expect(triggers[0]?.getAttribute('aria-selected')).toBe('true');
   triggers[1]?.click();
   await expect.poll(() => triggers[1]?.getAttribute('aria-selected')).toBe('true');

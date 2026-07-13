@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Dialog } from '../../src/components/dialog/index.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import * as Stories from './dialog.stories';
+
+<Meta of={Stories} />
+
+# Dialog
+
+Focus-trapped dialog surfaces with four sizes and five placements.
+
+## Contract
+
+| Axis | Values | Default |
+| --- | --- | --- |
+| `size` on `Popup` | `sm`, `md`, `lg`, `full` | `md` |
+| `placement` on `Popup` | `middle`, `top`, `bottom`, `start`, `end` | `middle` |
+| state | controlled `open` or uncontrolled `defaultOpen` | closed |
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/dialog.css';", "import { Dialog } from '@tinyrack/ui/components/dialog';"] }]} />
+
+## Usage
+
+<ComponentExampleTabs id="dialog-basic" title="Confirmation dialog" preview={<Dialog.Root><Dialog.Trigger>Open dialog</Dialog.Trigger><Dialog.Portal><Dialog.Backdrop /><Dialog.Popup><Dialog.Title>Deploy changes</Dialog.Title><Dialog.Description>This restarts the service.</Dialog.Description><Dialog.Close>Cancel</Dialog.Close></Dialog.Popup></Dialog.Portal></Dialog.Root>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Dialog.Root>
+  <Dialog.Trigger>Open dialog</Dialog.Trigger>
+  <Dialog.Portal>
+    <Dialog.Backdrop />
+    <Dialog.Popup size="md" placement="middle">
+      <Dialog.Title>Deploy changes</Dialog.Title>
+      <Dialog.Description>This restarts the service.</Dialog.Description>
+      <Dialog.Close>Cancel</Dialog.Close>
+    </Dialog.Popup>
+  </Dialog.Portal>
+</Dialog.Root>` }]} />
+
+## Examples
+
+<ComponentExampleTabs
+  id="dialog-sizes"
+  title="Sizes"
+  description="Each trigger opens the real popup at its labeled size."
+  preview={(
+    <div className="flex flex-wrap gap-2">
+      <Dialog.Root><Dialog.Trigger>Small</Dialog.Trigger><Dialog.Portal><Dialog.Backdrop /><Dialog.Popup size="sm"><Dialog.Title>Small dialog</Dialog.Title><Dialog.Description>Compact confirmation.</Dialog.Description><Dialog.Close>Close</Dialog.Close></Dialog.Popup></Dialog.Portal></Dialog.Root>
+      <Dialog.Root><Dialog.Trigger>Medium</Dialog.Trigger><Dialog.Portal><Dialog.Backdrop /><Dialog.Popup size="md"><Dialog.Title>Medium dialog</Dialog.Title><Dialog.Description>Routine workflow.</Dialog.Description><Dialog.Close>Close</Dialog.Close></Dialog.Popup></Dialog.Portal></Dialog.Root>
+      <Dialog.Root><Dialog.Trigger>Large</Dialog.Trigger><Dialog.Portal><Dialog.Backdrop /><Dialog.Popup size="lg"><Dialog.Title>Large dialog</Dialog.Title><Dialog.Description>Complex workflow.</Dialog.Description><Dialog.Close>Close</Dialog.Close></Dialog.Popup></Dialog.Portal></Dialog.Root>
+      <Dialog.Root><Dialog.Trigger>Full</Dialog.Trigger><Dialog.Portal><Dialog.Backdrop /><Dialog.Popup size="full"><Dialog.Title>Full dialog</Dialog.Title><Dialog.Description>Immersive workflow.</Dialog.Description><Dialog.Close>Close</Dialog.Close></Dialog.Popup></Dialog.Portal></Dialog.Root>
+    </div>
+  )}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Dialog.Popup size="sm">...</Dialog.Popup>
+<Dialog.Popup size="md">...</Dialog.Popup>
+<Dialog.Popup size="lg">...</Dialog.Popup>
+<Dialog.Popup size="full">...</Dialog.Popup>` }]}
+/>
+
+<ComponentExampleTabs
+  id="dialog-placements"
+  title="Placements"
+  description="Use the same compound structure and change only popup placement."
+  preview={<div className="flex flex-wrap gap-2">{['middle', 'top', 'bottom', 'start', 'end'].map((placement) => <Dialog.Root key={placement}><Dialog.Trigger>{placement}</Dialog.Trigger><Dialog.Portal><Dialog.Backdrop /><Dialog.Popup placement={placement}><Dialog.Title>{placement} dialog</Dialog.Title><Dialog.Description>Placement preview.</Dialog.Description><Dialog.Close>Close</Dialog.Close></Dialog.Popup></Dialog.Portal></Dialog.Root>)}</div>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Dialog.Popup placement="middle">...</Dialog.Popup>
+<Dialog.Popup placement="top">...</Dialog.Popup>
+<Dialog.Popup placement="bottom">...</Dialog.Popup>
+<Dialog.Popup placement="start">...</Dialog.Popup>
+<Dialog.Popup placement="end">...</Dialog.Popup>` }]}
+/>
+
+## API
+
+Base UI owns focus trapping, scroll lock, portal, backdrop interaction, restoration, and Escape dismissal.

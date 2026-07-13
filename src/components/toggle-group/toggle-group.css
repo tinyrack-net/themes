@@ -1,0 +1,26 @@
+@layer components {
+  .tr-toggle-group {
+    box-sizing: border-box;
+    color: var(--tr-toggle-group-color, var(--tinyrack-text));
+    display: inline-flex;
+    font-family: var(--tinyrack-font-body);
+    gap: var(--tr-toggle-group-gap, var(--tinyrack-space-xs));
+  }
+
+  .tr-toggle-group[data-orientation="vertical"] {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .tr-toggle-group :focus-visible,
+  .tr-toggle-group:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-toggle-group :disabled,
+  .tr-toggle-group[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

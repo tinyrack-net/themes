@@ -1,0 +1,104 @@
+@layer components {
+  .tr-alert-dialog {
+    --_tr-alert-dialog-popup-max-width: 32rem;
+    box-sizing: border-box;
+    color: var(--tr-alert-dialog-color, var(--tinyrack-text));
+    font-family: var(--tinyrack-font-body);
+  }
+
+  .tr-alert-dialog-close,
+  .tr-alert-dialog-trigger {
+    align-items: center;
+    background: var(--tr-alert-dialog-control-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-md);
+    color: var(--tinyrack-text);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    gap: var(--tinyrack-control-gap-md);
+    min-height: var(--tinyrack-control-height-md);
+    padding-inline: var(--tinyrack-control-padding-inline-md);
+  }
+
+  .tr-alert-dialog-popup {
+    background: var(--tr-alert-dialog-popup-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-lg);
+    box-shadow: var(--tinyrack-shadow-overlay);
+    color: var(--tinyrack-text);
+    max-width: min(
+      90vw,
+      var(--tr-alert-dialog-popup-max-width, var(--_tr-alert-dialog-popup-max-width))
+    );
+    display: grid;
+    gap: var(--tinyrack-space-md);
+    padding: var(--tinyrack-space-xl);
+    width: min(
+      100%,
+      var(--tr-alert-dialog-popup-max-width, var(--_tr-alert-dialog-popup-max-width))
+    );
+  }
+
+  .tr-alert-dialog-title {
+    color: var(--tinyrack-text);
+    font-family: var(--tinyrack-font-heading);
+    font-size: var(--tinyrack-text-lg);
+    font-weight: var(--tinyrack-weight-medium);
+    margin: 0;
+  }
+
+  .tr-alert-dialog-description {
+    color: var(--tinyrack-text-muted);
+    font-size: var(--tinyrack-text-sm);
+    line-height: var(--tinyrack-leading-md);
+    margin: 0;
+  }
+
+  .tr-alert-dialog-backdrop {
+    background: var(--tr-alert-dialog-backdrop, var(--tinyrack-scrim));
+    inset: 0;
+    position: fixed;
+    z-index: var(--tinyrack-layer-backdrop);
+  }
+
+  .tr-alert-dialog-viewport {
+    display: grid;
+    inset: 0;
+    padding: var(--tinyrack-space-xl);
+    place-items: center;
+    position: fixed;
+    z-index: var(--tinyrack-layer-dialog);
+  }
+
+  .tr-alert-dialog-popup[data-open],
+  .tr-alert-dialog-backdrop[data-open] {
+    animation: tr-alert-dialog-enter var(--tinyrack-duration-slow)
+      var(--tinyrack-ease-out);
+  }
+
+  @keyframes tr-alert-dialog-enter {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .tr-alert-dialog :focus-visible,
+  .tr-alert-dialog:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-alert-dialog :disabled,
+  .tr-alert-dialog[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tr-alert-dialog-popup,
+    .tr-alert-dialog-backdrop {
+      animation: none;
+    }
+  }
+}

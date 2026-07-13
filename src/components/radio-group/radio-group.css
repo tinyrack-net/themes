@@ -1,0 +1,21 @@
+@layer components {
+  .tr-radio-group {
+    box-sizing: border-box;
+    color: var(--tr-radio-group-color, var(--tinyrack-text));
+    display: grid;
+    font-family: var(--tinyrack-font-body);
+    gap: var(--tr-radio-group-gap, var(--tinyrack-space-sm));
+  }
+
+  .tr-radio-group :focus-visible,
+  .tr-radio-group:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-radio-group :disabled,
+  .tr-radio-group[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

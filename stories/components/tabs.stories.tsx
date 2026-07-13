@@ -32,11 +32,11 @@ const meta = {
       size={size}
     >
       <Tabs.List>
-        <Tabs.Trigger value="overview">Overview</Tabs.Trigger>
-        <Tabs.Trigger value="network">Network</Tabs.Trigger>
-        <Tabs.Trigger disabled={disabled} value="logs">
+        <Tabs.Tab value="overview">Overview</Tabs.Tab>
+        <Tabs.Tab value="network">Network</Tabs.Tab>
+        <Tabs.Tab disabled={disabled} value="logs">
           Logs
-        </Tabs.Trigger>
+        </Tabs.Tab>
       </Tabs.List>
       <Tabs.Panel value="overview">All systems operational.</Tabs.Panel>
       <Tabs.Panel value="network">10 Gbps uplink.</Tabs.Panel>

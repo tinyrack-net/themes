@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import {
   tinyrackBorders,
   tinyrackControlMetrics,
+  tinyrackLayers,
   tinyrackMotion,
   tinyrackOpacity,
   tinyrackRadii,
@@ -184,6 +185,7 @@ describe('core.css source contract', () => {
       '--tinyrack-ease-out': tinyrackMotion.easing.easeOut,
       '--tinyrack-ease-linear': tinyrackMotion.easing.linear,
       ...tokenDeclarations(tinyrackOpacity, 'tinyrack-opacity'),
+      ...tokenDeclarations(tinyrackLayers, 'tinyrack-layer'),
       ...controlDeclarations,
     });
   });

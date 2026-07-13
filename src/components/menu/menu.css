@@ -6,19 +6,33 @@
   }
 
   .tr-menu-content {
+    --_tr-menu-content-max-height: 24rem;
+    --_tr-menu-content-max-width: 22rem;
+    --_tr-menu-content-min-width: 12rem;
+    --_tr-menu-viewport-inset: var(--tinyrack-space-lg);
     display: grid;
-    min-width: 12rem;
-    max-width: min(22rem, var(--tr-layer-available-width, calc(100vw - 1rem)));
-    max-height: var(--tr-layer-available-height, min(24rem, calc(100vh - 1rem)));
+    min-width: var(--tr-menu-content-min-width, var(--_tr-menu-content-min-width));
+    max-width: min(
+      var(--tr-menu-content-max-width, var(--_tr-menu-content-max-width)),
+      var(--tr-layer-available-width, calc(100vw - var(--_tr-menu-viewport-inset)))
+    );
+    max-height: var(
+      --tr-layer-available-height,
+      min(
+        var(--tr-menu-content-max-height, var(--_tr-menu-content-max-height)),
+        calc(100vh - var(--_tr-menu-viewport-inset))
+      )
+    );
     gap: var(--tinyrack-radius-xs);
     padding: var(--tinyrack-space-xs);
     overflow: auto;
   }
 
   .tr-menu-item {
+    --_tr-menu-item-min-height: 2.25rem;
     display: flex;
     width: 100%;
-    min-height: 2.25rem;
+    min-height: var(--tr-menu-item-min-height, var(--_tr-menu-item-min-height));
     align-items: center;
     gap: var(--tinyrack-space-sm);
     padding: var(--tinyrack-space-sm) var(--tinyrack-space-md);
@@ -56,7 +70,7 @@
   }
 
   .tr-menu-separator {
-    height: 1px;
+    height: var(--tinyrack-border-width-default);
     margin: var(--tinyrack-space-xs) calc(var(--tinyrack-space-xs) * -1);
     border: 0;
     background: var(--tinyrack-border);

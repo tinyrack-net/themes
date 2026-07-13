@@ -1,35 +1,11 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { componentNames, providerNames } from '../scripts/component-catalog.js';
 
 const repoRoot = process.cwd();
 const componentsRoot = join(repoRoot, 'src/components');
-const expectedComponents = [
-  'accordion',
-  'alert',
-  'avatar',
-  'badge',
-  'button',
-  'card',
-  'code',
-  'code-block',
-  'combobox',
-  'disclosure',
-  'divider',
-  'form',
-  'link',
-  'menu',
-  'modal',
-  'pin-input',
-  'popover',
-  'progress',
-  'skeleton',
-  'spinner',
-  'table',
-  'tabs',
-  'toast',
-  'tooltip',
-];
+const providersRoot = join(repoRoot, 'src/providers');
 
 describe('React-only component structure', () => {
   it('has exactly the supported public component directories', () => {
@@ -38,11 +14,11 @@ describe('React-only component structure', () => {
       .map((entry) => entry.name)
       .sort();
 
-    expect(actual).toEqual([...expectedComponents].sort());
+    expect(actual).toEqual([...componentNames].sort());
   });
 
   it.each(
-    expectedComponents,
+    componentNames,
   )('%s has a public index, CSS, and one browser suite', (component) => {
     const componentRoot = join(componentsRoot, component);
     expect(existsSync(join(componentRoot, 'index.tsx'))).toBe(true);
@@ -59,7 +35,7 @@ describe('React-only component structure', () => {
       'utils.ts',
       'types.ts',
     ]);
-    const files = expectedComponents.flatMap((component) =>
+    const files = componentNames.flatMap((component) =>
       readdirSync(join(componentsRoot, component)).map(
         (file) => `${component}/${file}`,
       ),
@@ -75,12 +51,25 @@ describe('React-only component structure', () => {
     expect(existsSync(join(componentsRoot, 'index.tsx'))).toBe(false);
   });
 
-  it.each(expectedComponents)('%s index is composition-only', (component) => {
+  it.each(componentNames)('%s index is composition-only', (component) => {
     const source = readFileSync(join(componentsRoot, component, 'index.tsx'), 'utf8');
 
     expect(source).not.toMatch(/\buse(State|Effect|LayoutEffect|Reducer|Ref)\b/);
     expect(source).not.toMatch(/return\s*\(/);
     expect(source).not.toMatch(/className=/);
-    expect(source).not.toMatch(/<\w/);
+    expect(source).not.toMatch(/<([A-Za-z]\w*)\b[^>]*>[\s\S]*<\/\1>/);
+    expect(source).not.toMatch(/<[A-Za-z]\w*\b[^>]*\/>/);
+  });
+
+  it('has exactly the supported provider directories', () => {
+    const actual = readdirSync(providersRoot, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort();
+
+    expect(actual).toEqual([...providerNames].sort());
+    for (const provider of providerNames) {
+      expect(existsSync(join(providersRoot, provider, 'index.tsx'))).toBe(true);
+    }
   });
 });

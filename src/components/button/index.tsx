@@ -1,3 +1,4 @@
+export type { ButtonState } from '@base-ui/react/button';
 export type {
   ButtonAppearance,
   ButtonProps,

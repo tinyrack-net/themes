@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Collapsible } from '../../src/components/collapsible/index.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import * as Stories from './collapsible.stories';
+
+<Meta of={Stories} />
+
+# Collapsible
+
+A single keyboard-accessible trigger and panel for optional detail.
+
+## Contract
+
+Use controlled `open` or uncontrolled `defaultOpen`; `disabled` prevents expansion.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/collapsible.css';", "import { Collapsible } from '@tinyrack/ui/components/collapsible';"] }]} />
+
+## Usage
+
+<ComponentExampleTabs id="collapsible-basic" title="Optional details" previewLayout="stretch" preview={<Collapsible.Root><Collapsible.Trigger>Advanced settings</Collapsible.Trigger><Collapsible.Panel>Retry and timeout controls.</Collapsible.Panel></Collapsible.Root>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Collapsible.Root>
+  <Collapsible.Trigger>Advanced settings</Collapsible.Trigger>
+  <Collapsible.Panel>Retry and timeout controls.</Collapsible.Panel>
+</Collapsible.Root>` }]} />
+
+## Examples
+
+<ComponentExampleTabs
+  id="collapsible-states"
+  title="Open, closed, and disabled"
+  previewLayout="stretch"
+  preview={<div className="grid gap-3"><Collapsible.Root defaultOpen><Collapsible.Trigger>Open by default</Collapsible.Trigger><Collapsible.Panel>Visible detail.</Collapsible.Panel></Collapsible.Root><Collapsible.Root><Collapsible.Trigger>Closed by default</Collapsible.Trigger><Collapsible.Panel>Hidden detail.</Collapsible.Panel></Collapsible.Root><Collapsible.Root disabled><Collapsible.Trigger>Unavailable</Collapsible.Trigger><Collapsible.Panel>Cannot open.</Collapsible.Panel></Collapsible.Root></div>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Collapsible.Root defaultOpen>...</Collapsible.Root>
+<Collapsible.Root>...</Collapsible.Root>
+<Collapsible.Root disabled>...</Collapsible.Root>` }]}
+/>
+
+## API
+
+Base UI supplies trigger semantics, focus, controlled state, and reduced-motion-friendly transition attributes.

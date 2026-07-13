@@ -58,7 +58,7 @@
 .tr-mdx-h3,
 .tr-mdx .tr-mdx-h3.tr-mdx-h3 {
   max-width: var(--tr-mdx-content-width, var(--_tr-mdx-content-width));
-  margin: 2.25rem 0 0;
+  margin: calc(var(--tinyrack-space-2xl) + var(--tinyrack-space-xs)) 0 0;
   border: 0;
   color: var(--tinyrack-text);
   font-family: var(--tinyrack-font-heading);
@@ -75,7 +75,7 @@
 .tr-mdx .tr-mdx-h5.tr-mdx-h5,
 .tr-mdx .tr-mdx-h6.tr-mdx-h6 {
   max-width: var(--tr-mdx-content-width, var(--_tr-mdx-content-width));
-  margin: 1.75rem 0 0;
+  margin: calc(var(--tinyrack-space-xl) + var(--tinyrack-space-xs)) 0 0;
   border: 0;
   color: var(--tinyrack-text);
   font-family: var(--tinyrack-font-heading);
@@ -136,9 +136,9 @@
 .tr-mdx .tr-mdx-list.tr-mdx-list {
   display: grid;
   max-width: var(--tr-mdx-content-width, var(--_tr-mdx-content-width));
-  margin: 1.125rem 0 0;
+  margin: calc(var(--tinyrack-space-lg) + var(--tinyrack-radius-xs)) 0 0;
   padding-left: var(--tinyrack-space-xl);
-  gap: 0.625rem;
+  gap: var(--tinyrack-control-gap-lg);
   color: var(--tinyrack-text);
   font-size: var(--tinyrack-text-md);
   line-height: var(--tinyrack-leading-lg);
@@ -209,7 +209,8 @@
 .tr-mdx .tr-mdx-blockquote.tr-mdx-blockquote {
   max-width: var(--tr-mdx-content-width, var(--_tr-mdx-content-width));
   margin: var(--tinyrack-space-xl) 0 0;
-  padding: var(--tinyrack-radius-xs) 0 var(--tinyrack-radius-xs) 1.25rem;
+  padding: var(--tinyrack-radius-xs) 0 var(--tinyrack-radius-xs)
+    calc(var(--tinyrack-space-lg) + var(--tinyrack-space-xs));
   border: 0;
   border-left: var(--tinyrack-border-width-accent) solid var(--tinyrack-border);
   color: var(--tinyrack-text-muted);
@@ -289,11 +290,11 @@
 .tr-mdx .sr-only {
   position: absolute;
   overflow: hidden;
-  width: 1px;
-  height: 1px;
+  width: var(--tinyrack-border-width-default);
+  height: var(--tinyrack-border-width-default);
   padding: 0;
   border: 0;
-  margin: -1px;
+  margin: calc(var(--tinyrack-border-width-default) * -1);
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
 }
@@ -320,8 +321,9 @@
 
   .tr-mdx-h2,
   .tr-mdx .tr-mdx-h2.tr-mdx-h2 {
-    margin: 2.25rem 0 var(--tinyrack-space-lg);
-    padding-top: 1.25rem;
+    margin: calc(var(--tinyrack-space-2xl) + var(--tinyrack-space-xs)) 0
+      var(--tinyrack-space-lg);
+    padding-top: calc(var(--tinyrack-space-lg) + var(--tinyrack-space-xs));
     font-size: var(--tinyrack-text-xl);
   }
 
@@ -331,6 +333,6 @@
   }
 
   .tr-mdx .tr-mdx-table.tr-mdx-table :where(th, td) {
-    padding: 0.625rem var(--tinyrack-space-md);
+    padding: var(--tinyrack-control-gap-lg) var(--tinyrack-space-md);
   }
 }

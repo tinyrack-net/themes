@@ -9,6 +9,7 @@ import { componentDocsManifest } from '../stories/shared/component-docs-manifest
 const repoRoot = process.cwd();
 const storybookRoot = join(repoRoot, 'storybook-static');
 const artifactRoot = join(repoRoot, 'artifacts', 'storybook-docs');
+const captureAllScreenshots = process.env['STORYBOOK_CAPTURE_ALL'] === '1';
 
 const contentTypes: Record<string, string> = {
   '.css': 'text/css; charset=utf-8',
@@ -135,6 +136,15 @@ async function captureFailure(page: Page, parts: string[]) {
   });
 }
 
+async function captureSnapshot(page: Page, parts: string[]) {
+  if (!captureAllScreenshots) return;
+  await mkdir(artifactRoot, { recursive: true });
+  await page.screenshot({
+    fullPage: true,
+    path: join(artifactRoot, `${artifactName(['snapshot', ...parts])}.png`),
+  });
+}
+
 describe('built React-only Storybook', () => {
   let browser: Browser;
   let origin: string;
@@ -222,6 +232,7 @@ describe('built React-only Storybook', () => {
               expect(canvasColors.actual).toBe('rgb(3, 3, 3)');
               expect(canvasColors.expected).toBe('#030303');
             }
+            await captureSnapshot(page, [scenario.name, 'docs', entry.id]);
           } catch (error) {
             await captureFailure(page, [scenario.name, entry.id]);
             throw error;
@@ -268,6 +279,7 @@ describe('built React-only Storybook', () => {
               height.scrollHeight,
               `${entry.id} ${viewport.name} story height`,
             ).toBeLessThanOrEqual(height.clientHeight + 1);
+            await captureSnapshot(page, [viewport.name, 'story', entry.id]);
           } catch (error) {
             await captureFailure(page, ['story', viewport.name, entry.id]);
             throw error;
@@ -353,10 +365,16 @@ describe('built React-only Storybook', () => {
 
     try {
       for (const [component, selector] of [
+        ['alert-dialog', '.tr-alert-dialog-popup'],
+        ['autocomplete', '.tr-autocomplete-popup'],
         ['combobox', '.tr-combobox-content'],
+        ['context-menu', '.tr-context-menu-popup'],
+        ['drawer', '.tr-drawer-popup'],
         ['menu', '.tr-menu-content'],
-        ['modal', '.tr-modal-box'],
+        ['dialog', '.tr-dialog-box'],
         ['popover', '.tr-popover-positioner'],
+        ['preview-card', '.tr-preview-card-popup'],
+        ['select', '.tr-select-popup'],
         ['toast', '.tr-toast-viewport'],
         ['tooltip', '.tr-tooltip-content'],
       ] as const) {
@@ -382,9 +400,9 @@ describe('built React-only Storybook', () => {
 
     try {
       await page.goto(
-        iframeUrl(origin, 'components-modal--default', 'story', 'tinyrack-dark'),
+        iframeUrl(origin, 'components-dialog--default', 'story', 'tinyrack-dark'),
       );
-      await page.getByRole('button', { name: 'Open modal' }).click();
+      await page.getByRole('button', { name: 'Open dialog' }).click();
       await expect(page.getByRole('dialog').isVisible()).resolves.toBe(true);
       await page.keyboard.press('Escape');
       await expect.poll(() => page.getByRole('dialog').isVisible()).toBe(false);

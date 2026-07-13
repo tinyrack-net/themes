@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import { baseUiExampleSources } from '../shared/base-ui-example-sources.js';
+import * as Stories from './checkbox-group.stories';
+
+<Meta of={Stories} />
+
+# CheckboxGroup
+
+Coordinates the value and disabled state of related checkboxes.
+
+## Contract
+
+This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, events, and the `render` contract. Storybook controls cover `disabled`, `selected`, `label`.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/checkbox-group.css';", "import '@tinyrack/ui/components/checkbox.css';", "import { CheckboxGroup } from '@tinyrack/ui/components/checkbox-group';", "import { Checkbox } from '@tinyrack/ui/components/checkbox';"] }]} />
+
+## Usage
+
+<ComponentExampleTabs
+  id="checkbox-group-basic"
+  title="Default"
+  preview={<Stories.CheckboxGroupPreview disabled={false} selected={true} label={'Rack features'} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['checkbox-group'] }]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  id="checkbox-group-states"
+  title="State comparison"
+  description="Use Controls above to inspect every supported public state."
+  preview={<Stories.CheckboxGroupPreview disabled={true} selected={true} label={'Rack features'} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['checkbox-group'] }]}
+/>
+
+## API
+
+Every compound part and prop/state type is exported from `@tinyrack/ui/components/checkbox-group`; styles remain opt-in through the matching CSS subpath.

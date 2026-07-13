@@ -1,0 +1,21 @@
+@layer components {
+  .tr-checkbox-group {
+    box-sizing: border-box;
+    color: var(--tr-checkbox-group-color, var(--tinyrack-text));
+    display: grid;
+    font-family: var(--tinyrack-font-body);
+    gap: var(--tr-checkbox-group-gap, var(--tinyrack-space-sm));
+  }
+
+  .tr-checkbox-group :focus-visible,
+  .tr-checkbox-group:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-checkbox-group :disabled,
+  .tr-checkbox-group[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

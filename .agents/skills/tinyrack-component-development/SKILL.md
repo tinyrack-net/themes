@@ -41,7 +41,8 @@ Compound components use responsibility-specific part files and are assembled in
 src/components/tabs/
   tabs-root.tsx
   tabs-list.tsx
-  tabs-trigger.tsx
+  tabs-tab.tsx
+  tabs-indicator.tsx
   tabs-panel.tsx
   tabs.css
   tabs.browser.test.tsx
@@ -60,6 +61,21 @@ src/components/tabs/
 - Do not create files named `react.tsx`, `dom.ts`, `contract.ts`, `shared.ts`,
   `utils.ts`, or `types.ts`. Name internal files by responsibility, such as
   `toast-store.ts` or `tabs-context.ts`.
+
+## Base UI Catalog
+
+- Pin `@base-ui/react` to an exact version. A Base UI upgrade is a reviewed
+  design-system migration, not an automatic dependency refresh.
+- Treat `scripts/component-catalog.ts` as the single source of truth for Base UI,
+  Tinyrack-native, and provider module names. Do not duplicate component lists in
+  build or test scripts.
+- Every public React anatomy part in the pinned Base UI version must have a
+  semantic Tinyrack wrapper, named export, prop type, and compound namespace
+  member. Do not expose an incomplete subset under a Base UI module name.
+- Match Base UI public names exactly (`Tabs.Tab`, `Dialog`, `Collapsible`,
+  `OTPField`, `Separator`). Do not add aliases for displaced Tinyrack names.
+- Keep application providers under `@tinyrack/ui/providers/<provider>`; providers
+  are not components and are not re-exported from a root barrel.
 
 ## React Contract
 
@@ -93,6 +109,10 @@ base colors -> functional/semantic tokens -> component/pattern tokens
   borders/focus indicators at 3:1.
 - Do not add literal colors to component CSS except documented external content
   such as syntax highlighting or transparent backdrop composition.
+- Do not add literal spacing, size, radius, border, shadow, layer, opacity, or
+  motion values to component declarations. Reuse a `--tinyrack-*` token or add a
+  named token to the appropriate foundation group; component customization tokens
+  use a `--tr-*` property with a Tinyrack-token fallback.
 - Ship CSS separately at `@tinyrack/ui/components/<component>.css`; component JS
   must not auto-import CSS.
 
@@ -107,6 +127,20 @@ base colors -> functional/semantic tokens -> component/pattern tokens
 - Keep React MDX at `@tinyrack/ui/mdx`. Do not add an Astro renderer.
 - Update README, Storybook, package export tests, and dist smoke tests whenever a
   public subpath changes.
+
+## Storybook Documentation
+
+- Every component module owns one `.stories.tsx` default story and one `.docs.mdx`
+  page.
+- Expose meaningful public behavior through Storybook Controls. Controlled story
+  args must be wired to the rendered component rather than shown as inert metadata.
+- Documentation compares relevant variants, sizes, orientations, validation and
+  disabled/read-only states at a glance.
+- Every rendered example uses `ComponentExampleTabs` with paste-ready React source
+  and explicit installation/import guidance.
+- Validate docs and default stories in light desktop and dark mobile modes. The
+  preview canvas must use `--tinyrack-canvas`, stay inside the viewport, and avoid
+  page-level horizontal overflow.
 
 ## Testing
 

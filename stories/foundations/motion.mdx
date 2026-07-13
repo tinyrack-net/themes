@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Button } from '../../src/components/button/index.js';
-import { Modal } from '../../src/components/modal/index.js';
+import { Dialog } from '../../src/components/dialog/index.js';
 import { Popover } from '../../src/components/popover/index.js';
 import { Progress } from '../../src/components/progress/index.js';
 import { Skeleton } from '../../src/components/skeleton/index.js';
@@ -35,7 +35,7 @@ Choose motion by the kind of change, not by preference or decoration.
   </section>
   <section className="grid content-start gap-tinyrack-sm border border-tinyrack-border p-tinyrack-lg" role="listitem">
     <div className="flex items-baseline justify-between gap-2"><strong>Task context</strong><Code>slow · 180ms</Code></div>
-    <p className="m-0 text-tinyrack-sm text-tinyrack-text-muted">Reserve the slow step for modals and changes that temporarily reshape the task.</p>
+    <p className="m-0 text-tinyrack-sm text-tinyrack-text-muted">Reserve the slow step for dialogs and changes that temporarily reshape the task.</p>
   </section>
 </div>
 
@@ -98,19 +98,19 @@ These examples use the real component contracts. Open them and compare how much 
   <section className="grid content-start gap-tinyrack-md border border-tinyrack-border p-tinyrack-lg">
     <div className="grid gap-1">
       <div className="flex items-baseline justify-between gap-2"><strong>Task context</strong><Code>slow</Code></div>
-      <span className="text-tinyrack-sm text-tinyrack-text-muted">A modal briefly becomes the primary task.</span>
+      <span className="text-tinyrack-sm text-tinyrack-text-muted">A dialog briefly becomes the primary task.</span>
     </div>
-    <Modal.Root>
-      <Modal.Trigger render={<Button />}>Open deployment review</Modal.Trigger>
-      <Modal.Portal>
-        <Modal.Backdrop />
-        <Modal.Popup size="sm">
-          <Modal.Title>Review deployment</Modal.Title>
-          <div className="tr-modal-body">Confirm the rack target before continuing.</div>
-          <Modal.Close>Close review</Modal.Close>
-        </Modal.Popup>
-      </Modal.Portal>
-    </Modal.Root>
+    <Dialog.Root>
+      <Dialog.Trigger render={<Button />}>Open deployment review</Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Backdrop />
+        <Dialog.Popup size="sm">
+          <Dialog.Title>Review deployment</Dialog.Title>
+          <div className="tr-dialog-body">Confirm the rack target before continuing.</div>
+          <Dialog.Close>Close review</Dialog.Close>
+        </Dialog.Popup>
+      </Dialog.Portal>
+    </Dialog.Root>
   </section>
 </div>
 
@@ -150,7 +150,7 @@ Use `--tinyrack-duration-*` for system-wide timing and component-level `--tr-*` 
     <tbody>
       <tr><th scope="row"><Code>fast</Code></th><td><Code>{tinyrackMotion.duration.fast}</Code></td><td>Press, toggle, and hover feedback</td></tr>
       <tr><th scope="row"><Code>normal</Code></th><td><Code>{tinyrackMotion.duration.normal}</Code></td><td>Menus, tooltips, and anchored layers</td></tr>
-      <tr><th scope="row"><Code>slow</Code></th><td><Code>{tinyrackMotion.duration.slow}</Code></td><td>Modals and task-context changes</td></tr>
+      <tr><th scope="row"><Code>slow</Code></th><td><Code>{tinyrackMotion.duration.slow}</Code></td><td>Dialogs and task-context changes</td></tr>
       <tr><th scope="row"><Code>loading</Code></th><td><Code>{tinyrackMotion.duration.loading}</Code></td><td>Repeating progress and skeleton feedback</td></tr>
     </tbody>
   </Table.Root>

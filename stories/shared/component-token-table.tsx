@@ -8,13 +8,13 @@ type ComponentTokenName =
   | 'code'
   | 'code-block'
   | 'combobox'
-  | 'disclosure'
-  | 'divider'
+  | 'collapsible'
+  | 'separator'
   | 'form'
   | 'link'
   | 'menu'
   | 'overlay'
-  | 'pin-input'
+  | 'otp-field'
   | 'progress'
   | 'skeleton'
   | 'spinner'
@@ -47,7 +47,7 @@ const componentTokens: Record<ComponentTokenName, readonly CssToken[]> = {
       fallback: 'transparent',
     },
     {
-      name: '--tr-disclosure-duration',
+      name: '--tr-collapsible-duration',
       role: 'Inherited item expansion motion',
       fallback: '--tinyrack-duration-normal',
     },
@@ -176,32 +176,32 @@ const componentTokens: Record<ComponentTokenName, readonly CssToken[]> = {
       fallback: 'viewport measurement',
     },
   ],
-  disclosure: [
+  collapsible: [
     {
-      name: '--tr-disclosure-background',
+      name: '--tr-collapsible-background',
       role: 'Surface fill',
       fallback: '--tinyrack-surface',
     },
     {
-      name: '--tr-disclosure-radius',
+      name: '--tr-collapsible-radius',
       role: 'Shape',
       fallback: '--tinyrack-radius-md',
     },
     {
-      name: '--tr-disclosure-duration',
+      name: '--tr-collapsible-duration',
       role: 'Expansion motion',
       fallback: '--tinyrack-duration-normal',
     },
   ],
-  divider: [
-    { name: '--tr-divider-color', role: 'Rule color', fallback: '--tinyrack-border' },
+  separator: [
+    { name: '--tr-separator-color', role: 'Rule color', fallback: '--tinyrack-border' },
     {
-      name: '--tr-divider-thickness',
+      name: '--tr-separator-thickness',
       role: 'Rule width',
       fallback: '--tinyrack-border-width-default',
     },
     {
-      name: '--tr-divider-min-length',
+      name: '--tr-separator-min-length',
       role: 'Vertical minimum',
       fallback: '--tinyrack-space-lg',
     },
@@ -286,33 +286,33 @@ const componentTokens: Record<ComponentTokenName, readonly CssToken[]> = {
   ],
   overlay: [
     {
-      name: '--tr-modal-background',
-      role: 'Modal surface',
+      name: '--tr-dialog-background',
+      role: 'Dialog surface',
       fallback: '--tinyrack-surface',
     },
     {
-      name: '--tr-modal-box-radius',
-      role: 'Modal shape',
+      name: '--tr-dialog-box-radius',
+      role: 'Dialog shape',
       fallback: '--tinyrack-radius-xl',
     },
     {
-      name: '--tr-modal-box-padding',
-      role: 'Modal inset',
+      name: '--tr-dialog-box-padding',
+      role: 'Dialog inset',
       fallback: 'responsive spacing recipe',
     },
     {
-      name: '--tr-modal-shadow',
-      role: 'Modal elevation',
+      name: '--tr-dialog-shadow',
+      role: 'Dialog elevation',
       fallback: '--tinyrack-shadow-overlay',
     },
     {
-      name: '--tr-modal-backdrop-color',
+      name: '--tr-dialog-backdrop-color',
       role: 'Backdrop',
       fallback: 'backdrop opacity recipe',
     },
     {
-      name: '--tr-modal-motion-duration',
-      role: 'Modal motion',
+      name: '--tr-dialog-motion-duration',
+      role: 'Dialog motion',
       fallback: '--tinyrack-duration-slow',
     },
     {
@@ -331,14 +331,14 @@ const componentTokens: Record<ComponentTokenName, readonly CssToken[]> = {
       fallback: '--tinyrack-duration-normal',
     },
   ],
-  'pin-input': [
+  'otp-field': [
     {
-      name: '--tr-pin-input-size',
+      name: '--tr-otp-field-size',
       role: 'Digit control size',
       fallback: '--tinyrack-control-height-lg',
     },
     {
-      name: '--tr-pin-input-gap',
+      name: '--tr-otp-field-gap',
       role: 'Digit spacing',
       fallback: '--tinyrack-control-gap-sm',
     },
@@ -436,17 +436,17 @@ const componentTokens: Record<ComponentTokenName, readonly CssToken[]> = {
   ],
   tabs: [
     {
-      name: '--tr-tabs-trigger-height',
+      name: '--tr-tabs-tab-height',
       role: 'Trigger height',
       fallback: 'shared size recipe',
     },
     {
-      name: '--tr-tabs-trigger-padding-x',
+      name: '--tr-tabs-tab-padding-x',
       role: 'Trigger inset',
       fallback: 'shared size recipe',
     },
     {
-      name: '--tr-tabs-trigger-gap',
+      name: '--tr-tabs-tab-gap',
       role: 'Trigger content gap',
       fallback: 'shared size recipe',
     },

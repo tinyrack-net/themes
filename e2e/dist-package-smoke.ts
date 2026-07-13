@@ -9,6 +9,7 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { componentNames } from '../scripts/component-catalog.ts';
 
 const repoRoot = process.cwd();
 const pnpm = process.platform === 'win32' ? 'pnpm.exe' : 'pnpm';
@@ -66,6 +67,8 @@ import { fileURLToPath } from 'node:url';
 import { Button } from '@tinyrack/ui/components/button';
 import { Tabs } from '@tinyrack/ui/components/tabs';
 import { createTinyrackMdxComponents, tinyrackMdxComponents } from '@tinyrack/ui/mdx';
+import { CSPProvider } from '@tinyrack/ui/providers/csp';
+import { DirectionProvider, useDirection } from '@tinyrack/ui/providers/direction';
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -74,10 +77,25 @@ function assert(condition, message) {
 assert(typeof Button === 'function', 'Button is not a React component');
 assert(typeof Tabs.Root === 'function', 'Tabs.Root is not a React component');
 assert(typeof Tabs.List === 'function', 'Tabs.List is not a React component');
-assert(typeof Tabs.Trigger === 'function', 'Tabs.Trigger is not a React component');
+assert(typeof Tabs.Tab === 'function', 'Tabs.Tab is not a React component');
 assert(typeof Tabs.Panel === 'function', 'Tabs.Panel is not a React component');
+assert(typeof CSPProvider === 'function', 'CSPProvider is missing');
+assert(typeof DirectionProvider === 'function', 'DirectionProvider is missing');
+assert(typeof useDirection === 'function', 'useDirection is missing');
 assert(typeof createTinyrackMdxComponents === 'function', 'MDX factory is missing');
 assert(typeof tinyrackMdxComponents === 'object', 'MDX component map is missing');
+
+for (const component of ${JSON.stringify(componentNames)}) {
+  const module = await import('@tinyrack/ui/components/' + component);
+  assert(Object.keys(module).length > 0, component + ' has no public exports');
+  const cssPath = fileURLToPath(
+    import.meta.resolve('@tinyrack/ui/components/' + component + '.css'),
+  );
+  assert(
+    readFileSync(cssPath, 'utf8').includes('.tr-'),
+    component + ' has invalid CSS',
+  );
+}
 
 for (const [specifier, marker] of [
   ['@tinyrack/ui/core.css', '--tinyrack-primary'],
@@ -93,12 +111,16 @@ for (const specifier of [
   '@tinyrack/ui/components/button/react',
   '@tinyrack/ui/components/button/dom',
   '@tinyrack/ui/components/overlay',
+  '@tinyrack/ui/components/modal',
+  '@tinyrack/ui/components/disclosure',
+  '@tinyrack/ui/components/pin-input',
+  '@tinyrack/ui/components/divider',
   '@tinyrack/ui/mdx/react',
   '@tinyrack/ui/mdx/astro',
 ]) {
   let resolved = true;
   try {
-    import.meta.resolve(specifier);
+    await import(specifier);
   } catch {
     resolved = false;
   }
@@ -111,23 +133,30 @@ for (const specifier of [
     join(appRoot, 'consumer.tsx'),
     `import { createRef } from 'react';
 import { Button, type ButtonProps } from '@tinyrack/ui/components/button';
+import { Dialog, type DialogRootProps } from '@tinyrack/ui/components/dialog';
 import { Tabs, type TabsRootProps } from '@tinyrack/ui/components/tabs';
 import { createTinyrackMdxComponents } from '@tinyrack/ui/mdx';
+import { CSPProvider } from '@tinyrack/ui/providers/csp';
+import { DirectionProvider } from '@tinyrack/ui/providers/direction';
 
 const buttonRef = createRef<HTMLButtonElement>();
 const buttonProps: ButtonProps = { appearance: 'outline', ref: buttonRef };
 const tabsProps: TabsRootProps = { defaultValue: 'overview' };
+const dialogProps: DialogRootProps = { defaultOpen: false };
 
 export const fixture = (
-  <>
-    <Button {...buttonProps}>Save</Button>
-    <Tabs.Root {...tabsProps}>
-      <Tabs.List>
-        <Tabs.Trigger value="overview">Overview</Tabs.Trigger>
-      </Tabs.List>
-      <Tabs.Panel value="overview">Content</Tabs.Panel>
-    </Tabs.Root>
-  </>
+  <CSPProvider nonce="consumer-nonce">
+    <DirectionProvider direction="ltr">
+      <Button {...buttonProps}>Save</Button>
+      <Tabs.Root {...tabsProps}>
+        <Tabs.List>
+          <Tabs.Tab value="overview">Overview</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="overview">Content</Tabs.Panel>
+      </Tabs.Root>
+      <Dialog.Root {...dialogProps} />
+    </DirectionProvider>
+  </CSPProvider>
 );
 
 export const mdxComponents = createTinyrackMdxComponents();

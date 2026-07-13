@@ -12,6 +12,13 @@ export const Accordion = {
   Panel: AccordionPanel,
 } as const;
 
+export type {
+  AccordionHeaderState,
+  AccordionItemState,
+  AccordionPanelState,
+  AccordionRootState,
+  AccordionTriggerState,
+} from '@base-ui/react/accordion';
 export type { AccordionHeaderProps } from './accordion-header.js';
 export type { AccordionItemProps } from './accordion-item.js';
 export type { AccordionPanelProps } from './accordion-panel.js';

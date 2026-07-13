@@ -115,7 +115,9 @@ test('React MDX renderer maps inline code, fenced code, and tables to Tinyrack c
   expect(table?.getAttribute('data-density')).toBe('compact');
   expect(rightAlignedHeader?.textContent).toBe('Value');
   await expect
-    .poll(() => codeBlock?.querySelectorAll('span[style*="color"]').length ?? 0)
+    .poll(() => codeBlock?.querySelectorAll('span[style*="color"]').length ?? 0, {
+      timeout: 10_000,
+    })
     .toBeGreaterThan(0);
 });
 

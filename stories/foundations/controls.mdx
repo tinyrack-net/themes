@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Button } from '../../src/components/button/index.js';
-import { Form } from '../../src/components/form/index.js';
+import { Field } from '../../src/components/field/index.js';
 import { Code } from '../../src/components/code/index.js';
 import { Table } from '../../src/components/table/index.js';
 import { tinyrackControlMetrics } from '../../src/core/index.js';
@@ -21,7 +21,7 @@ Use `sm` for dense secondary actions, `md` for the default operational interface
   {['sm', 'md', 'lg'].map((size) => (
     <section className="grid items-center gap-tinyrack-md border border-tinyrack-border p-tinyrack-lg md:grid-cols-[7rem_minmax(0,1fr)]" key={size} role="listitem">
       <div><strong>{size}</strong><div className="text-tinyrack-sm text-tinyrack-text-muted"><Code>{tinyrackControlMetrics[size].height}</Code></div></div>
-      <div className="flex flex-wrap items-center gap-tinyrack-sm"><Button size={size}>Deploy</Button><Form.Field><Form.Control aria-label={`${size} rack name`} data-size={size} placeholder="rack-a" /></Form.Field></div>
+      <div className="flex flex-wrap items-center gap-tinyrack-sm"><Button size={size}>Deploy</Button><Field.Root><Field.Control aria-label={`${size} rack name`} data-size={size} placeholder="rack-a" /></Field.Root></div>
     </section>
   ))}
 </div>
@@ -29,7 +29,7 @@ Use `sm` for dense secondary actions, `md` for the default operational interface
 ## Applied pattern
 
 <section className="grid gap-tinyrack-lg border border-tinyrack-border p-tinyrack-lg">
-  <div className="grid gap-tinyrack-sm md:grid-cols-[minmax(0,1fr)_auto]"><Form.Field><Form.Control aria-label="Rack name" placeholder="rack-a" /></Form.Field><Button variant="primary">Save rack</Button></div>
+  <div className="grid gap-tinyrack-sm md:grid-cols-[minmax(0,1fr)_auto]"><Field.Root><Field.Control aria-label="Rack name" placeholder="rack-a" /></Field.Root><Button variant="primary">Save rack</Button></div>
   <div className="text-tinyrack-sm text-tinyrack-text-muted">Both controls use the same 40px medium height and typography recipe.</div>
 </section>
 

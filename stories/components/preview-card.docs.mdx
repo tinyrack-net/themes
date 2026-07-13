@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import { baseUiExampleSources } from '../shared/base-ui-example-sources.js';
+import * as Stories from './preview-card.stories';
+
+<Meta of={Stories} />
+
+# PreviewCard
+
+A non-modal hover or focus preview for linked content.
+
+## Contract
+
+This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, events, and the `render` contract. Storybook controls cover `label`, `open`.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/preview-card.css';", "import { PreviewCard } from '@tinyrack/ui/components/preview-card';"] }]} />
+
+## Usage
+
+<ComponentExampleTabs
+  id="preview-card-basic"
+  title="Default"
+  preview={<Stories.PreviewCardPreview label={'Rack Alpha'} open={false} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['preview-card'] }]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  id="preview-card-states"
+  title="State comparison"
+  description="Use Controls above to inspect every supported public state."
+  preview={<Stories.PreviewCardPreview label={'Rack Alpha'} open={true} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['preview-card'] }]}
+/>
+
+## API
+
+Every compound part and prop/state type is exported from `@tinyrack/ui/components/preview-card`; styles remain opt-in through the matching CSS subpath.

@@ -4,11 +4,15 @@
   }
 
   .tr-toast-viewport {
+    --_tr-toast-viewport-max-width: 24rem;
     inset: auto;
     position: fixed;
     box-sizing: border-box;
     display: grid;
-    width: min(24rem, calc(100vw - var(--tinyrack-space-lg) * 2));
+    width: min(
+      var(--tr-toast-viewport-max-width, var(--_tr-toast-viewport-max-width)),
+      calc(100vw - var(--tinyrack-space-lg) * 2)
+    );
     max-height: calc(100vh - var(--tinyrack-space-lg) * 2);
     gap: var(--tinyrack-space-sm);
     margin: 0;

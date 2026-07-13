@@ -1,0 +1,124 @@
+@layer components {
+  .tr-autocomplete {
+    --_tr-autocomplete-popup-max-width: 32rem;
+    box-sizing: border-box;
+    color: var(--tr-autocomplete-color, var(--tinyrack-text));
+    font-family: var(--tinyrack-font-body);
+  }
+
+  .tr-autocomplete-trigger,
+  .tr-autocomplete-clear {
+    align-items: center;
+    background: var(--tr-autocomplete-control-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-md);
+    color: var(--tinyrack-text);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    gap: var(--tinyrack-control-gap-md);
+    min-height: var(--tinyrack-control-height-md);
+    padding-inline: var(--tinyrack-control-padding-inline-md);
+  }
+
+  .tr-autocomplete-input {
+    background: var(--tr-autocomplete-input-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-md);
+    color: var(--tinyrack-text);
+    font: inherit;
+    min-height: var(--tinyrack-control-height-md);
+    padding-inline: var(--tinyrack-control-padding-inline-md);
+  }
+
+  .tr-autocomplete-popup {
+    background: var(--tr-autocomplete-popup-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-lg);
+    box-shadow: var(--tinyrack-shadow-overlay);
+    color: var(--tinyrack-text);
+    max-width: min(
+      90vw,
+      var(--tr-autocomplete-popup-max-width, var(--_tr-autocomplete-popup-max-width))
+    );
+    padding: var(--tinyrack-space-md);
+    z-index: var(--tinyrack-layer-dropdown);
+  }
+
+  .tr-autocomplete-item {
+    align-items: center;
+    border-radius: var(--tinyrack-radius-sm);
+    color: var(--tinyrack-text);
+    cursor: pointer;
+    display: flex;
+    gap: var(--tinyrack-control-gap-md);
+    min-height: var(--tinyrack-control-height-sm);
+    padding-inline: var(--tinyrack-control-padding-inline-sm);
+  }
+
+  .tr-autocomplete-item[data-highlighted] {
+    background: var(--tinyrack-surface-hover);
+  }
+
+  .tr-autocomplete-group-label {
+    color: var(--tinyrack-text);
+    font-weight: var(--tinyrack-weight-medium);
+  }
+
+  .tr-autocomplete-status,
+  .tr-autocomplete-empty {
+    color: var(--tinyrack-text-muted);
+    font-size: var(--tinyrack-text-sm);
+  }
+
+  .tr-autocomplete-backdrop {
+    background: var(--tr-autocomplete-backdrop, var(--tinyrack-scrim));
+    inset: 0;
+    position: fixed;
+    z-index: var(--tinyrack-layer-backdrop);
+  }
+
+  .tr-autocomplete-input-group,
+  .tr-autocomplete-group {
+    align-items: center;
+    display: flex;
+    gap: var(--tinyrack-control-gap-md);
+  }
+
+  .tr-autocomplete-input-group {
+    align-items: stretch;
+  }
+
+  .tr-autocomplete-list,
+  .tr-autocomplete-collection,
+  .tr-autocomplete-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--tinyrack-space-xs);
+  }
+
+  .tr-autocomplete-list,
+  .tr-autocomplete-collection {
+    align-items: stretch;
+  }
+
+  .tr-autocomplete-positioner {
+    z-index: var(--tinyrack-layer-dropdown);
+  }
+
+  .tr-autocomplete-input::placeholder {
+    color: var(--tinyrack-text-placeholder);
+  }
+
+  .tr-autocomplete :focus-visible,
+  .tr-autocomplete:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-autocomplete :disabled,
+  .tr-autocomplete[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

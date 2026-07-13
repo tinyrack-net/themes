@@ -8,6 +8,11 @@ export const Avatar = {
   Fallback: AvatarFallback,
 } as const;
 
+export type {
+  AvatarFallbackState,
+  AvatarImageState,
+  AvatarRootState,
+} from '@base-ui/react/avatar';
 export type { AvatarFallbackProps } from './avatar-fallback.js';
 export type { AvatarImageProps } from './avatar-image.js';
 export type { AvatarRootProps, AvatarShape, AvatarSize } from './avatar-root.js';

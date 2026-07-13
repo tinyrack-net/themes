@@ -250,11 +250,11 @@ export function ComponentExampleTabs({
           aria-label={ariaLabel ?? `${title} example tabs`}
           className="!overflow-hidden"
         >
-          <Tabs.Trigger value="preview">Preview</Tabs.Trigger>
+          <Tabs.Tab value="preview">Preview</Tabs.Tab>
           {sortedSources.map((source) => (
-            <Tabs.Trigger key={source.label} value={sourceValue(source.label)}>
+            <Tabs.Tab key={source.label} value={sourceValue(source.label)}>
               {source.label}
-            </Tabs.Trigger>
+            </Tabs.Tab>
           ))}
         </Tabs.List>
         <Tabs.Panel value="preview">

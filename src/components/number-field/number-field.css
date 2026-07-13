@@ -1,0 +1,69 @@
+@layer components {
+  .tr-number-field {
+    --_tr-number-field-input-width: 8rem;
+    box-sizing: border-box;
+    color: var(--tr-number-field-color, var(--tinyrack-text));
+    display: grid;
+    font-family: var(--tinyrack-font-body);
+    gap: var(--tinyrack-space-sm);
+  }
+
+  .tr-number-field-increment,
+  .tr-number-field-decrement {
+    align-items: center;
+    background: var(--tr-number-field-control-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-md);
+    color: var(--tinyrack-text);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    gap: var(--tinyrack-control-gap-md);
+    min-height: var(--tinyrack-control-height-md);
+    padding-inline: var(--tinyrack-control-padding-inline-md);
+  }
+
+  .tr-number-field-input {
+    background: var(--tr-number-field-input-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-md);
+    color: var(--tinyrack-text);
+    font: inherit;
+    min-height: var(--tinyrack-control-height-md);
+    padding-inline: var(--tinyrack-control-padding-inline-md);
+  }
+
+  .tr-number-field-group {
+    align-items: center;
+    display: flex;
+    gap: var(--tinyrack-space-xs);
+  }
+
+  .tr-number-field-input {
+    min-width: 0;
+    width: var(--tr-number-field-input-width, var(--_tr-number-field-input-width));
+  }
+
+  .tr-number-field-scrub-area {
+    color: var(--tinyrack-text-muted);
+    cursor: ew-resize;
+    font-size: var(--tinyrack-text-sm);
+  }
+
+  .tr-number-field-increment:hover:not(:disabled),
+  .tr-number-field-decrement:hover:not(:disabled) {
+    background: var(--tinyrack-surface-hover);
+  }
+
+  .tr-number-field :focus-visible,
+  .tr-number-field:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-number-field :disabled,
+  .tr-number-field[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

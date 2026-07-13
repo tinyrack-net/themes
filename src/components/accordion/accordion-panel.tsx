@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type AccordionPanelProps = ComponentProps<typeof BaseAccordion.Panel>;
 export const AccordionPanel = createComponentPart(
   BaseAccordion.Panel,
-  'tr-accordion-content tr-disclosure-content',
+  'tr-accordion-content tr-collapsible-content',
 );

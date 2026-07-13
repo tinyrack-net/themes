@@ -1,6 +1,6 @@
 .tr-tabs {
   --_tr-tabs-seam-offset: -1px;
-  --_tr-tabs-list-gap: var(--tinyrack-space-xs);
+  --_tr-tabs-list-gap: 0;
   --_tr-tabs-tab-height: var(--tinyrack-control-height-md);
   --_tr-tabs-tab-padding-x: var(--tinyrack-control-padding-inline-md);
   --_tr-tabs-tab-gap: var(--tinyrack-control-gap-md);

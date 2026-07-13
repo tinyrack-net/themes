@@ -23,5 +23,6 @@ test('uses Base UI keyboard and selection semantics', async () => {
 
   const list = document.querySelector<HTMLElement>('.tr-tabs-list');
   expect(list).not.toBeNull();
+  expect(getComputedStyle(list as HTMLElement).gap).toBe('0px');
   expect(getComputedStyle(list as HTMLElement).overflowY).toBe('hidden');
 });

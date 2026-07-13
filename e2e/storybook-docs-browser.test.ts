@@ -409,6 +409,26 @@ describe('built React-only Storybook', () => {
     }
   });
 
+  it('keeps the Toggle docs examples interactive', async () => {
+    const page = await browser.newPage({ viewport: { height: 900, width: 1280 } });
+
+    try {
+      await page.goto(
+        iframeUrl(origin, 'components-toggle--docs', 'docs', 'tinyrack-dark'),
+      );
+      const example = page.locator('[data-component-example-id="toggle-basic"]');
+      const toggle = example.getByRole('button', { name: 'Bold' });
+
+      await expect(toggle.getAttribute('aria-pressed')).resolves.toBe('false');
+      await toggle.click();
+      await expect(toggle.getAttribute('aria-pressed')).resolves.toBe('true');
+      await toggle.click();
+      await expect(toggle.getAttribute('aria-pressed')).resolves.toBe('false');
+    } finally {
+      await page.close();
+    }
+  });
+
   it('contains every open portal surface inside the mobile viewport', async () => {
     const page = await browser.newPage({ viewport: { height: 844, width: 390 } });
 

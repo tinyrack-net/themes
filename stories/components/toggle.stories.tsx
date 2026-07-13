@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useEffect, useState } from 'react';
 import { Toggle } from '../../src/components/toggle/index.js';
 
 type StoryArgs = {
@@ -8,8 +9,18 @@ type StoryArgs = {
 };
 
 export function TogglePreview({ label, pressed, disabled }: StoryArgs) {
+  const [currentPressed, setCurrentPressed] = useState(pressed);
+
+  useEffect(() => {
+    setCurrentPressed(pressed);
+  }, [pressed]);
+
   return (
-    <Toggle disabled={disabled} pressed={pressed}>
+    <Toggle
+      disabled={disabled}
+      onPressedChange={setCurrentPressed}
+      pressed={currentPressed}
+    >
       {label}
     </Toggle>
   );

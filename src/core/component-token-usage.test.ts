@@ -172,8 +172,17 @@ describe('public CSS token usage', () => {
     expect(pinInput).toContain('border-color: var(--tinyrack-danger-border);');
   });
 
-  it('documents the three-layer color contract for component authors', () => {
-    const guidance = readFileSync(join(process.cwd(), 'AGENTS.md'), 'utf8');
+  it('documents the three-layer color contract in the component development skill', () => {
+    const guidance = readFileSync(
+      join(
+        process.cwd(),
+        '.agents',
+        'skills',
+        'tinyrack-component-development',
+        'SKILL.md',
+      ),
+      'utf8',
+    );
     expect(guidance).toContain(
       'base colors -> functional/semantic tokens -> component/pattern tokens',
     );

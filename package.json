@@ -1,9 +1,10 @@
 {
   "name": "@tinyrack/ui",
   "version": "0.1.0",
-  "description": "CSS-first Tinyrack UI tokens and components.",
+  "description": "React-only Tinyrack UI components and design tokens.",
   "keywords": [
     "design-system",
+    "react",
     "storybook",
     "tailwindcss",
     "theme",
@@ -27,109 +28,7 @@
     "url": "https://github.com/tinyrack-net/themes.git"
   },
   "files": [
-    "dist/components/accordion/accordion.css",
-    "dist/components/accordion/contract.*",
-    "dist/components/accordion/dom.*",
-    "dist/components/accordion/react.*",
-    "dist/components/alert/alert.css",
-    "dist/components/alert/contract.*",
-    "dist/components/alert/react.*",
-    "dist/components/avatar/avatar.css",
-    "dist/components/avatar/contract.*",
-    "dist/components/avatar/react.*",
-    "dist/components/badge/badge.css",
-    "dist/components/badge/contract.*",
-    "dist/components/badge/react.*",
-    "dist/components/button/button.css",
-    "dist/components/button/contract.*",
-    "dist/components/button/react.*",
-    "dist/components/combobox/combobox.css",
-    "dist/components/combobox/contract.*",
-    "dist/components/combobox/dom.*",
-    "dist/components/combobox/react.*",
-    "dist/components/card/card.css",
-    "dist/components/card/contract.*",
-    "dist/components/card/react.*",
-    "dist/components/code-block/code-block.css",
-    "dist/components/code-block/contract.*",
-    "dist/components/code-block/react.*",
-    "dist/components/code/code.css",
-    "dist/components/code/contract.*",
-    "dist/components/code/react.*",
-    "dist/components/divider/divider.css",
-    "dist/components/divider/contract.*",
-    "dist/components/divider/react.*",
-    "dist/components/disclosure/disclosure.css",
-    "dist/components/disclosure/contract.*",
-    "dist/components/disclosure/react.*",
-    "dist/components/form/choice-controls.*",
-    "dist/components/form/field.*",
-    "dist/components/form/form.css",
-    "dist/components/form/input-group.*",
-    "dist/components/form/contract.*",
-    "dist/components/form/react.*",
-    "dist/components/form/text-controls.*",
-    "dist/components/link/link.css",
-    "dist/components/link/contract.*",
-    "dist/components/link/react.*",
-    "dist/components/menu/menu.css",
-    "dist/components/menu/contract.*",
-    "dist/components/menu/dom.*",
-    "dist/components/menu/react.*",
-    "dist/components/modal/contract.*",
-    "dist/components/modal/context.*",
-    "dist/components/modal/dom.*",
-    "dist/components/modal/modal.css",
-    "dist/components/modal/react.*",
-    "dist/components/progress/contract.*",
-    "dist/components/progress/progress.css",
-    "dist/components/progress/react.*",
-    "dist/components/skeleton/contract.*",
-    "dist/components/skeleton/react.*",
-    "dist/components/skeleton/skeleton.css",
-    "dist/components/overlay/contract.*",
-    "dist/components/overlay/dom.*",
-    "dist/components/overlay/overlay.css",
-    "dist/components/overlay/react.*",
-    "dist/components/popover/contract.*",
-    "dist/components/popover/context.*",
-    "dist/components/popover/dom.*",
-    "dist/components/popover/popover.css",
-    "dist/components/popover/react.*",
-    "dist/components/pin-input/pin-input.css",
-    "dist/components/pin-input/contract.*",
-    "dist/components/pin-input/dom.*",
-    "dist/components/pin-input/react.*",
-    "dist/components/spinner/spinner.css",
-    "dist/components/spinner/contract.*",
-    "dist/components/spinner/react.*",
-    "dist/components/table/table.css",
-    "dist/components/table/contract.*",
-    "dist/components/table/react.*",
-    "dist/components/tabs/contract.*",
-    "dist/components/tabs/dom.*",
-    "dist/components/tabs/react.*",
-    "dist/components/tabs/tabs.css",
-    "dist/components/toast/toast.css",
-    "dist/components/toast/contract.*",
-    "dist/components/toast/dom.*",
-    "dist/components/toast/react.*",
-    "dist/components/tooltip/tooltip.css",
-    "dist/components/tooltip/contract.*",
-    "dist/components/tooltip/dom.*",
-    "dist/components/tooltip/react.*",
-    "dist/core/core.css",
-    "dist/core/index.*",
-    "dist/core/tokens",
-    "dist/internal/**",
-    "dist/mdx/astro.*",
-    "dist/mdx/astro-code.*",
-    "dist/mdx/astro-components/props.*",
-    "dist/mdx/astro-components/*.astro",
-    "dist/mdx/mdx.css",
-    "dist/mdx/react.*",
-    "dist/mdx/react-components/*",
-    "dist/mdx/shared.*",
+    "dist",
     "README.md"
   ],
   "scripts": {
@@ -137,19 +36,17 @@
     "build": "pnpm build:css",
     "build:types": "node scripts/clean-dist.ts && tsc -p tsconfig.build.json",
     "build:css": "pnpm build:types && node scripts/copy-css.ts",
-    "check:astro": "astro check --root . --tsconfig tsconfig.astro.json",
     "check:css": "node scripts/copy-css.ts --check",
-    "check:types": "tsc -p tsconfig.json --noEmit && pnpm check:astro && pnpm check:tests",
+    "check:types": "tsc -p tsconfig.json --noEmit && pnpm check:tests",
     "check:tests": "tsc -p tsconfig.test.json --noEmit",
     "check:scripts": "tsc -p tsconfig.scripts.json",
-    "verify": "pnpm biome && pnpm check:types && pnpm check:scripts && pnpm check:css && pnpm test && pnpm test:coverage && pnpm check:e2e && pnpm build && pnpm test:astro-overlay && pnpm test:dist",
+    "verify": "pnpm biome && pnpm check:types && pnpm check:scripts && pnpm check:css && pnpm test && pnpm test:coverage && pnpm check:e2e && pnpm build && pnpm test:dist",
     "verify:release": "pnpm verify && pnpm test:storybook",
     "test": "pnpm test:unit && pnpm test:component",
     "test:unit": "vitest run --project unit",
     "test:component": "vitest run --project browser",
     "test:coverage": "vitest run --mode component-coverage --project unit --project browser --coverage",
     "test:dist": "node e2e/dist-package-smoke.ts",
-    "test:astro-overlay": "astro build --root . --config astro.overlay.config.mjs && node e2e/astro-overlay-smoke.ts",
     "storybook": "storybook dev -p 0 --host 127.0.0.1 --no-open --ci",
     "storybook:build": "storybook build",
     "storybook:audit": "vitest run --project storybook-docs",
@@ -163,30 +60,11 @@
     "prepack": "pnpm build"
   },
   "peerDependencies": {
-    "@astrojs/mdx": "^7.0.0",
-    "astro": "^7.0.0",
     "react": ">=19.0.0",
     "react-dom": ">=19.0.0",
     "tailwindcss": ">=4.0.0"
   },
-  "peerDependenciesMeta": {
-    "@astrojs/mdx": {
-      "optional": true
-    },
-    "astro": {
-      "optional": true
-    },
-    "react": {
-      "optional": true
-    },
-    "react-dom": {
-      "optional": true
-    }
-  },
   "devDependencies": {
-    "@astrojs/check": "0.9.9",
-    "@astrojs/mdx": "7.0.2",
-    "@astrojs/ts-plugin": "1.10.10",
     "@biomejs/biome": "^2.5.2",
     "@fontsource/ibm-plex-sans": "5.2.8",
     "@fontsource/ibm-plex-sans-jp": "5.2.8",
@@ -204,7 +82,6 @@
     "@vitejs/plugin-react": "^6.0.2",
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "^4.1.10",
-    "astro": "7.0.7",
     "lucide-react": "^1.23.0",
     "playwright": "^1.61.0",
     "react": "^19.2.7",
@@ -222,192 +99,31 @@
     "**/*.css"
   ],
   "exports": {
-    "./components/accordion/dom": {
-      "types": "./dist/components/accordion/dom.d.ts",
-      "import": "./dist/components/accordion/dom.js"
+    "./components/*": {
+      "types": "./dist/components/*/index.d.ts",
+      "import": "./dist/components/*/index.js"
     },
-    "./components/accordion/react": {
-      "types": "./dist/components/accordion/react.d.ts",
-      "import": "./dist/components/accordion/react.js"
-    },
+    "./components/*.css": "./dist/components/*/*.css",
+    "./components/*/react": null,
+    "./components/*/dom": null,
+    "./components/overlay": null,
     "./core": {
       "types": "./dist/core/index.d.ts",
       "import": "./dist/core/index.js"
     },
-    "./components/alert/react": {
-      "types": "./dist/components/alert/react.d.ts",
-      "import": "./dist/components/alert/react.js"
+    "./core.css": "./dist/core.css",
+    "./mdx": {
+      "types": "./dist/mdx/index.d.ts",
+      "import": "./dist/mdx/index.js"
     },
-    "./components/avatar/react": {
-      "types": "./dist/components/avatar/react.d.ts",
-      "import": "./dist/components/avatar/react.js"
-    },
-    "./components/badge/react": {
-      "types": "./dist/components/badge/react.d.ts",
-      "import": "./dist/components/badge/react.js"
-    },
-    "./components/button/react": {
-      "types": "./dist/components/button/react.d.ts",
-      "import": "./dist/components/button/react.js"
-    },
-    "./components/combobox/dom": {
-      "types": "./dist/components/combobox/dom.d.ts",
-      "import": "./dist/components/combobox/dom.js"
-    },
-    "./components/combobox/react": {
-      "types": "./dist/components/combobox/react.d.ts",
-      "import": "./dist/components/combobox/react.js"
-    },
-    "./components/card/react": {
-      "types": "./dist/components/card/react.d.ts",
-      "import": "./dist/components/card/react.js"
-    },
-    "./components/code-block/react": {
-      "types": "./dist/components/code-block/react.d.ts",
-      "import": "./dist/components/code-block/react.js"
-    },
-    "./components/code/react": {
-      "types": "./dist/components/code/react.d.ts",
-      "import": "./dist/components/code/react.js"
-    },
-    "./components/divider/react": {
-      "types": "./dist/components/divider/react.d.ts",
-      "import": "./dist/components/divider/react.js"
-    },
-    "./components/disclosure/react": {
-      "types": "./dist/components/disclosure/react.d.ts",
-      "import": "./dist/components/disclosure/react.js"
-    },
-    "./components/form/react": {
-      "types": "./dist/components/form/react.d.ts",
-      "import": "./dist/components/form/react.js"
-    },
-    "./components/link/react": {
-      "types": "./dist/components/link/react.d.ts",
-      "import": "./dist/components/link/react.js"
-    },
-    "./components/menu/dom": {
-      "types": "./dist/components/menu/dom.d.ts",
-      "import": "./dist/components/menu/dom.js"
-    },
-    "./components/menu/react": {
-      "types": "./dist/components/menu/react.d.ts",
-      "import": "./dist/components/menu/react.js"
-    },
-    "./components/modal/dom": {
-      "types": "./dist/components/modal/dom.d.ts",
-      "import": "./dist/components/modal/dom.js"
-    },
-    "./components/modal/react": {
-      "types": "./dist/components/modal/react.d.ts",
-      "import": "./dist/components/modal/react.js"
-    },
-    "./components/progress/react": {
-      "types": "./dist/components/progress/react.d.ts",
-      "import": "./dist/components/progress/react.js"
-    },
-    "./components/skeleton/react": {
-      "types": "./dist/components/skeleton/react.d.ts",
-      "import": "./dist/components/skeleton/react.js"
-    },
-    "./components/spinner/react": {
-      "types": "./dist/components/spinner/react.d.ts",
-      "import": "./dist/components/spinner/react.js"
-    },
-    "./components/overlay/dom": {
-      "types": "./dist/components/overlay/dom.d.ts",
-      "import": "./dist/components/overlay/dom.js"
-    },
-    "./components/overlay/react": {
-      "types": "./dist/components/overlay/react.d.ts",
-      "import": "./dist/components/overlay/react.js"
-    },
-    "./components/popover/dom": {
-      "types": "./dist/components/popover/dom.d.ts",
-      "import": "./dist/components/popover/dom.js"
-    },
-    "./components/popover/react": {
-      "types": "./dist/components/popover/react.d.ts",
-      "import": "./dist/components/popover/react.js"
-    },
-    "./components/pin-input/dom": {
-      "types": "./dist/components/pin-input/dom.d.ts",
-      "import": "./dist/components/pin-input/dom.js"
-    },
-    "./components/pin-input/react": {
-      "types": "./dist/components/pin-input/react.d.ts",
-      "import": "./dist/components/pin-input/react.js"
-    },
-    "./components/table/react": {
-      "types": "./dist/components/table/react.d.ts",
-      "import": "./dist/components/table/react.js"
-    },
-    "./mdx/react": {
-      "types": "./dist/mdx/react.d.ts",
-      "import": "./dist/mdx/react.js"
-    },
-    "./mdx/astro": {
-      "types": "./dist/mdx/astro.d.ts",
-      "import": "./dist/mdx/astro.js"
-    },
-    "./components/accordion/accordion.css": "./dist/components/accordion/accordion.css",
-    "./components/alert/alert.css": "./dist/components/alert/alert.css",
-    "./components/avatar/avatar.css": "./dist/components/avatar/avatar.css",
-    "./components/badge/badge.css": "./dist/components/badge/badge.css",
-    "./components/button/button.css": "./dist/components/button/button.css",
-    "./components/combobox/combobox.css": "./dist/components/combobox/combobox.css",
-    "./components/card/card.css": "./dist/components/card/card.css",
-    "./components/code-block/code-block.css": "./dist/components/code-block/code-block.css",
-    "./components/code/code.css": "./dist/components/code/code.css",
-    "./components/divider/divider.css": "./dist/components/divider/divider.css",
-    "./components/disclosure/disclosure.css": "./dist/components/disclosure/disclosure.css",
-    "./components/form/form.css": "./dist/components/form/form.css",
-    "./components/link/link.css": "./dist/components/link/link.css",
-    "./components/menu/menu.css": "./dist/components/menu/menu.css",
-    "./components/modal/modal.css": "./dist/components/modal/modal.css",
-    "./components/progress/progress.css": "./dist/components/progress/progress.css",
-    "./components/skeleton/skeleton.css": "./dist/components/skeleton/skeleton.css",
-    "./components/overlay/overlay.css": "./dist/components/overlay/overlay.css",
-    "./components/popover/popover.css": "./dist/components/popover/popover.css",
-    "./components/pin-input/pin-input.css": "./dist/components/pin-input/pin-input.css",
-    "./components/spinner/spinner.css": "./dist/components/spinner/spinner.css",
-    "./mdx/mdx.css": "./dist/mdx/mdx.css",
-    "./components/table/table.css": "./dist/components/table/table.css",
-    "./components/tabs/react": {
-      "types": "./dist/components/tabs/react.d.ts",
-      "import": "./dist/components/tabs/react.js"
-    },
-    "./components/tabs/dom": {
-      "types": "./dist/components/tabs/dom.d.ts",
-      "import": "./dist/components/tabs/dom.js"
-    },
-    "./components/toast/dom": {
-      "types": "./dist/components/toast/dom.d.ts",
-      "import": "./dist/components/toast/dom.js"
-    },
-    "./components/toast/react": {
-      "types": "./dist/components/toast/react.d.ts",
-      "import": "./dist/components/toast/react.js"
-    },
-    "./components/tooltip/dom": {
-      "types": "./dist/components/tooltip/dom.d.ts",
-      "import": "./dist/components/tooltip/dom.js"
-    },
-    "./components/tooltip/react": {
-      "types": "./dist/components/tooltip/react.d.ts",
-      "import": "./dist/components/tooltip/react.js"
-    },
-    "./components/tabs/tabs.css": "./dist/components/tabs/tabs.css",
-    "./components/toast/toast.css": "./dist/components/toast/toast.css",
-    "./components/tooltip/tooltip.css": "./dist/components/tooltip/tooltip.css",
-    "./core/core.css": "./dist/core/core.css",
+    "./mdx.css": "./dist/mdx.css",
     "./package.json": "./package.json"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@floating-ui/dom": "1.7.6",
+    "@base-ui/react": "1.6.0",
     "shiki": "4.3.1"
   }
 }

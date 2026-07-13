@@ -23,10 +23,19 @@
   --_tr-card-padding: var(--tinyrack-space-lg);
 }
 
+.tr-card[data-padding="none"] {
+  --_tr-card-padding: 0;
+}
+
 .tr-card[data-variant="default"] {
   --_tr-card-background: var(--tinyrack-surface);
 }
 
-.tr-card[data-variant="muted"] {
-  --_tr-card-background: var(--tinyrack-surface-muted);
+.tr-card[data-variant="outlined"] {
+  --_tr-card-background: transparent;
+}
+
+.tr-card[data-variant="elevated"] {
+  border-color: transparent;
+  box-shadow: var(--tr-card-shadow, var(--tinyrack-shadow-raised));
 }

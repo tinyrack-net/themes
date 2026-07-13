@@ -1,191 +1,45 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Code } from '../../src/components/code/react.js';
+import { Code } from '../../src/components/code/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as CodeStories from './code.stories';
+import * as Stories from './code.stories';
 
-<Meta of={CodeStories} />
+<Meta of={Stories} />
 
 # Code
 
-Inline code styling for commands, paths, environment variables, and compact API names.
+Inline code tokens that stay readable inside prose, lists, and dense metadata.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `tr-code` on `<code>` | `<Code>` | Required component surface | Use for inline commands, paths, tokens, and API names. |
-| Behavior | Native inline text flow | `children` | Inline content; wraps at long strings | Move multiline examples to CodeBlock. |
-| Native | Native `<code>` attributes | `HTMLAttributes<HTMLElement>` | Passed through | Keep native code semantics within the surrounding sentence. |
+`Code` is a thin semantic `code` element. It has no visual variant axis and inherits surrounding text size.
 
 ## Install
 
-<ComponentInstall
-  surfaces={[
-    {
-      label: 'CSS / HTML',
-      install: 'pnpm add @tinyrack/ui tailwindcss',
-      imports: [
-        '@import "tailwindcss";',
-        '@import "@tinyrack/ui/core/core.css";',
-        '@import "@tinyrack/ui/components/code/code.css";',
-      ],
-    },
-    {
-      label: 'React',
-      install: 'pnpm add @tinyrack/ui react react-dom',
-      imports: ["import { Code } from '@tinyrack/ui/components/code/react';"],
-    },
-    {
-      label: 'React MDX',
-      install: 'pnpm add @tinyrack/ui @mdx-js/react',
-      imports: [
-        "import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';",
-      ],
-      note: 'Maps markdown inline code.',
-    },
-    {
-      label: 'Astro MDX',
-      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx',
-      imports: [
-        "import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';",
-      ],
-      note: 'Maps markdown inline code.',
-    },
-  ]}
-/>
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/code.css';", "import { Code } from '@tinyrack/ui/components/code';"] }]} />
 
 ## Usage
 
-<ComponentExampleTabs
-  id="code-basic"
-  title="Inline command"
-  description="Use inline code for commands, paths, environment variables, and compact API names."
-  preview={(
-    <p className="!m-0">
-      Run <Code>pnpm verify</Code> before publishing.
-    </p>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/code/code.css';
-import { Code } from '@tinyrack/ui/components/code/react';
-
-<p>
-  Run <Code>pnpm verify</Code> before publishing.
-</p>;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<p>Run <code class="tr-code">pnpm verify</code> before publishing.</p>`,
-    },
-  ]}
-/>
+<ComponentExampleTabs id="code-basic" title="Inline command" preview={<p className="m-0">Run <Code>pnpm verify</Code> before publishing.</p>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<p>Run <Code>pnpm verify</Code> before publishing.</p>` }]} />
 
 ## Examples
 
 <ComponentExampleTabs
-  id="code-inline-contexts"
-  title="Inline Contexts"
-  description="Inline code follows the surrounding sentence and allows long technical tokens to wrap inside narrow content."
-  previewLayout="stretch"
+  id="code-contexts"
+  title="Content contexts"
+  description="Inline code keeps its semantic surface in prose, configuration, and long tokens."
+  previewLayout="start"
   preview={(
-    <div className="grid gap-3">
-      <p>
-        Run <Code>pnpm verify</Code> before publishing.
-      </p>
-      <p>
-        Import <Code>@tinyrack/ui/core/core.css</Code> once near the app root.
-      </p>
-      <p>
-        Set <Code>data-theme="tinyrack-dark"</Code> on a scoped container.
-      </p>
+    <div className="grid max-w-full gap-3">
+      <p className="m-0">Import <Code>@tinyrack/ui/components/button</Code>.</p>
+      <p className="m-0">Set <Code>data-theme=&quot;tinyrack-dark&quot;</Code> on the root.</p>
+      <p className="m-0 max-w-full overflow-x-auto"><Code>very-long-rack-identifier-with-overflow-safe-scrolling-01</Code></p>
     </div>
   )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<p>
-  Run <Code>pnpm verify</Code> before publishing.
-</p>
-<p>
-  Import <Code>@tinyrack/ui/core/core.css</Code> once near the app root.
-</p>
-<p>
-  Set <Code>data-theme="tinyrack-dark"</Code> on a scoped container.
-</p>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<p>Run <code class="tr-code">pnpm verify</code> before publishing.</p>
-<p>Import <code class="tr-code">@tinyrack/ui/core/core.css</code> once near the app root.</p>
-<p>Set <code class="tr-code">data-theme="tinyrack-dark"</code> on a scoped container.</p>`,
-    },
-  ]}
-/>
-
-<ComponentExampleTabs
-  id="code-command-path-token"
-  title="Command, Path, and Token Names"
-  description="Use the same inline treatment for homelab commands, long configuration paths, tokens, and class names."
-  preview={(
-    <div className="flex flex-wrap items-center gap-2">
-      <Code>pnpm verify:release</Code>
-      <Code>/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</Code>
-      <Code>--tinyrack-primary</Code>
-      <Code>tr-btn</Code>
-    </div>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Code>pnpm verify:release</Code>
-<Code>/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</Code>
-<Code>--tinyrack-primary</Code>
-<Code>tr-btn</Code>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<code class="tr-code">pnpm verify:release</code>
-<code class="tr-code">/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</code>
-<code class="tr-code">--tinyrack-primary</code>
-<code class="tr-code">tr-btn</code>`,
-    },
-  ]}
-/>
-
-## Guidance
-
-<ComponentGuidance
-  whenToUse={[
-    'Identify a short command, file path, environment variable, token, or API name within prose.',
-    'Distinguish literal values from the sentence that explains how to use them.',
-  ]}
-  avoid={[
-    'Do not use inline code for multiline commands, logs, or source examples; use CodeBlock instead.',
-    'Do not apply code styling only for visual emphasis when the text is not a literal technical value.',
-  ]}
-  accessibility={[
-    'Keep the native code element so assistive technology and copy-and-paste preserve the literal value.',
-    'Write punctuation and instructions outside the Code component, and verify long paths wrap without obscuring nearby prose.',
-  ]}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<p>Import <Code>@tinyrack/ui/components/button</Code>.</p>
+<p>Set <Code>data-theme="tinyrack-dark"</Code> on the root.</p>` }]}
 />
 
 ## API
 
-| Prop | Values | Note |
-| --- | --- | --- |
-| `className` | `string` | Merged with `tr-code`. |
-| native code props | `HTMLAttributes<HTMLElement>` | Passed through to `<code>`. |
-
-<ComponentTokenTable component="code" />
+All native `code` props, `className`, `style`, and React 19 `ref` are forwarded.

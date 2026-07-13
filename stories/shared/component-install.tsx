@@ -2,14 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import type { BundledLanguage } from 'shiki/bundle/web';
-import { Button } from '../../src/components/button/react.js';
-import { CodeBlock } from '../../src/components/code-block/react.js';
-import {
-  Tabs,
-  TabsList,
-  TabsPanel,
-  TabsTrigger,
-} from '../../src/components/tabs/react.js';
+import { Button } from '../../src/components/button/index.js';
+import { CodeBlock } from '../../src/components/code-block/index.js';
+import { Tabs } from '../../src/components/tabs/index.js';
+import { copyDocsSource } from './copy-docs-source.js';
 
 export type ComponentInstallSurface = {
   imports: readonly string[];
@@ -84,16 +80,7 @@ function InstallCodeBlock({ code, label, language }: InstallCodeBlockProps) {
   }, [copyStatus]);
 
   async function copyCode() {
-    try {
-      if (navigator.clipboard?.writeText === undefined) {
-        throw new Error('Clipboard API is unavailable.');
-      }
-
-      await navigator.clipboard.writeText(code);
-      setCopyStatus('copied');
-    } catch {
-      setCopyStatus('unavailable');
-    }
+    setCopyStatus((await copyDocsSource(code)) ? 'copied' : 'unavailable');
   }
 
   const copyLabel = copyStatusLabels[copyStatus];
@@ -136,32 +123,32 @@ export function ComponentInstall({ surfaces }: ComponentInstallProps) {
   }
 
   return (
-    <Tabs
+    <Tabs.Root
       aria-label="Installation options"
       className="min-w-0"
       data-component-install=""
       defaultValue={surfaceValue(firstSurface.label)}
       size="sm"
     >
-      <TabsList
+      <Tabs.List
         aria-label="Installation target"
         className="!overflow-x-auto !overflow-y-hidden"
       >
         {surfaces.map((surface) => (
-          <TabsTrigger
+          <Tabs.Trigger
             key={`${surface.label}-${surface.install}`}
             value={surfaceValue(surface.label)}
           >
             {surface.label}
-          </TabsTrigger>
+          </Tabs.Trigger>
         ))}
-      </TabsList>
+      </Tabs.List>
       {surfaces.map((surface) => {
         const importCode = surface.imports.join('\n').replace(/\r\n?/g, '\n').trim();
         const value = surfaceValue(surface.label);
 
         return (
-          <TabsPanel
+          <Tabs.Panel
             className="!border-0 !bg-transparent !p-0"
             key={`${surface.label}-${surface.install}`}
             value={value}
@@ -193,9 +180,9 @@ export function ComponentInstall({ surfaces }: ComponentInstallProps) {
                 />
               </section>
             </div>
-          </TabsPanel>
+          </Tabs.Panel>
         );
       })}
-    </Tabs>
+    </Tabs.Root>
   );
 }

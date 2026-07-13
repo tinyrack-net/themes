@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from 'react';
-import { mergeClassNames } from '../shared.js';
+import { mergeClassNames } from '../mdx-markup.js';
 
 export function TinyrackMdxH6({
   className,

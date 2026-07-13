@@ -1,236 +1,55 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Badge } from '../../src/components/badge/react.js';
-import { badgeSizes, badgeVariants } from '../../src/components/badge/contract.js';
+import { Badge } from '../../src/components/badge/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as BadgeStories from './badge.stories';
+import * as Stories from './badge.stories';
 
-<Meta of={BadgeStories} />
+<Meta of={Stories} />
 
 # Badge
 
-Compact status text for operational metadata, health states, and dense labels.
+Compact status labels with semantic color and density axes.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `tr-badge` on `<span>` | `<Badge>` | Required component surface | Use for compact, inline status metadata. |
-| Size | `data-size` | `size` | `sm`, `md`; default `sm` | Use `sm` in dense tables and `md` near controls. |
-| Variant | `data-variant` | `variant` | `neutral`, `info`, `success`, `warning`, `danger`; default `neutral` | Communicate operational state rather than decoration. |
-| Native | Native `<span>` attributes | `HTMLAttributes<HTMLSpanElement>` | Passed through | Preserve inline semantics and add an accessible name only when surrounding text does not explain the status. |
+| Axis | Values | Default |
+| --- | --- | --- |
+| `variant` | `neutral`, `info`, `success`, `warning`, `danger` | `neutral` |
+| `size` | `sm`, `md`, `lg` | `md` |
 
 ## Install
 
-<ComponentInstall
-  surfaces={[
-    {
-      label: 'CSS / HTML',
-      install: 'pnpm add @tinyrack/ui tailwindcss',
-      imports: [
-        '@import "tailwindcss";',
-        '@import "@tinyrack/ui/core/core.css";',
-        '@import "@tinyrack/ui/components/badge/badge.css";',
-      ],
-    },
-    {
-      label: 'React',
-      install: 'pnpm add @tinyrack/ui react react-dom',
-      imports: ["import { Badge } from '@tinyrack/ui/components/badge/react';"],
-    },
-  ]}
-/>
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/badge.css';", "import { Badge } from '@tinyrack/ui/components/badge';"] }]} />
 
 ## Usage
 
-<ComponentExampleTabs
-  id="badge-basic"
-  title="Basic badge"
-  description="Use the React wrapper or the CSS-first class contract for compact status metadata."
-  preview={<Badge size="sm" variant="success">Healthy</Badge>}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/badge/badge.css';
-import { Badge } from '@tinyrack/ui/components/badge/react';
-
-<Badge size="sm" variant="success">
-  Healthy
-</Badge>;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<span class="tr-badge" data-size="sm" data-variant="success">
-  Healthy
-</span>`,
-    },
-  ]}
-/>
+<ComponentExampleTabs id="badge-basic" title="Status label" preview={<Badge variant="success">Healthy</Badge>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Badge variant="success">Healthy</Badge>` }]} />
 
 ## Examples
 
 <ComponentExampleTabs
-  id="badge-size-variant"
-  title="Size x Variant Matrix"
-  description="Scan every supported size and variant combination in one place."
-  preview={(
-    <div className="grid gap-4">
-      {badgeSizes.map((size) => (
-        <section key={size} className="grid gap-2">
-          <h3 className="text-tinyrack-sm font-semibold leading-tinyrack-sm">
-            size: {size}
-          </h3>
-          <div className="flex flex-wrap items-center gap-2">
-            {badgeVariants.map((variant) => (
-              <Badge key={variant} size={size} variant={variant}>
-                {variant}
-              </Badge>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<div className="grid gap-4">
-  <section className="grid gap-2">
-    <h3 className="text-tinyrack-sm font-semibold leading-tinyrack-sm">size: sm</h3>
-    <div className="flex flex-wrap items-center gap-2">
-      <Badge size="sm" variant="neutral">neutral</Badge>
-      <Badge size="sm" variant="success">success</Badge>
-      <Badge size="sm" variant="danger">danger</Badge>
-    </div>
-  </section>
-  <section className="grid gap-2">
-    <h3 className="text-tinyrack-sm font-semibold leading-tinyrack-sm">size: md</h3>
-    <div className="flex flex-wrap items-center gap-2">
-      <Badge size="md" variant="neutral">neutral</Badge>
-      <Badge size="md" variant="success">success</Badge>
-      <Badge size="md" variant="danger">danger</Badge>
-    </div>
-  </section>
-</div>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="grid gap-4">
-  <section class="grid gap-2">
-    <h3 class="text-tinyrack-sm font-semibold leading-tinyrack-sm">size: sm</h3>
-    <div class="flex flex-wrap items-center gap-2">
-      <span class="tr-badge" data-size="sm" data-variant="neutral">neutral</span>
-      <span class="tr-badge" data-size="sm" data-variant="success">success</span>
-      <span class="tr-badge" data-size="sm" data-variant="danger">danger</span>
-    </div>
-  </section>
-  <section class="grid gap-2">
-    <h3 class="text-tinyrack-sm font-semibold leading-tinyrack-sm">size: md</h3>
-    <div class="flex flex-wrap items-center gap-2">
-      <span class="tr-badge" data-size="md" data-variant="neutral">neutral</span>
-      <span class="tr-badge" data-size="md" data-variant="success">success</span>
-      <span class="tr-badge" data-size="md" data-variant="danger">danger</span>
-    </div>
-  </section>
-</div>`,
-    },
-  ]}
-/>
-
-<ComponentExampleTabs
-  id="badge-content"
-  title="Rack Health Content"
-  description="Pair short state labels with nearby context; longer rack names belong in the surrounding layout."
+  id="badge-size-variant-matrix"
+  title="Size × variant"
+  description="All fifteen supported combinations are grouped by size."
   previewLayout="stretch"
   preview={(
-    <div className="grid gap-3 sm:grid-cols-3">
-      <div className="grid gap-2 border border-tinyrack-border p-3">
-        <span className="text-tinyrack-xs font-semibold leading-tinyrack-xs text-tinyrack-text-muted uppercase">
-          backup-node-03
-        </span>
-        <Badge variant="neutral">queued</Badge>
-      </div>
-      <div className="grid gap-2 border border-tinyrack-border p-3">
-        <span className="text-tinyrack-xs font-semibold leading-tinyrack-xs text-tinyrack-text-muted uppercase">
-          media-server-01
-        </span>
-        <Badge variant="success">healthy</Badge>
-      </div>
-      <div className="grid gap-2 border border-tinyrack-border p-3">
-        <span className="text-tinyrack-xs font-semibold leading-tinyrack-xs text-tinyrack-text-muted uppercase">
-          garage-switch-02
-        </span>
-        <Badge variant="danger">blocked</Badge>
-      </div>
+    <div className="grid gap-5">
+      <div className="grid gap-2"><strong>Small</strong><div className="flex flex-wrap gap-2"><Badge size="sm" variant="neutral">Neutral</Badge><Badge size="sm" variant="info">Info</Badge><Badge size="sm" variant="success">Success</Badge><Badge size="sm" variant="warning">Warning</Badge><Badge size="sm" variant="danger">Danger</Badge></div></div>
+      <div className="grid gap-2"><strong>Medium</strong><div className="flex flex-wrap gap-2"><Badge size="md" variant="neutral">Neutral</Badge><Badge size="md" variant="info">Info</Badge><Badge size="md" variant="success">Success</Badge><Badge size="md" variant="warning">Warning</Badge><Badge size="md" variant="danger">Danger</Badge></div></div>
+      <div className="grid gap-2"><strong>Large</strong><div className="flex flex-wrap gap-2"><Badge size="lg" variant="neutral">Neutral</Badge><Badge size="lg" variant="info">Info</Badge><Badge size="lg" variant="success">Success</Badge><Badge size="lg" variant="warning">Warning</Badge><Badge size="lg" variant="danger">Danger</Badge></div></div>
     </div>
   )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<div>
-  <span>backup-node-03</span>
-  <Badge variant="neutral">queued</Badge>
-</div>
-<div>
-  <span>media-server-01</span>
-  <Badge variant="success">healthy</Badge>
-</div>
-<div>
-  <span>garage-switch-02</span>
-  <Badge variant="danger">blocked</Badge>
-</div>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div>
-  <span>backup-node-03</span>
-  <span class="tr-badge" data-variant="neutral">queued</span>
-</div>
-<div>
-  <span>media-server-01</span>
-  <span class="tr-badge" data-variant="success">healthy</span>
-</div>
-<div>
-  <span>garage-switch-02</span>
-  <span class="tr-badge" data-variant="danger">blocked</span>
-</div>`,
-    },
-  ]}
-/>
-
-## Guidance
-
-<ComponentGuidance
-  whenToUse={[
-    'Show compact rack health, queue, or deployment state beside a resource name.',
-    'Label dense metadata where a short word is easier to scan than explanatory prose.',
-  ]}
-  avoid={[
-    'Do not use a badge as a button, filter, or other interactive control.',
-    'Do not rely on color alone or place long resource names inside the badge.',
-  ]}
-  accessibility={[
-    'Use explicit state text such as "healthy" or "blocked" so meaning survives without color.',
-    'Keep the badge next to the resource or sentence it describes; add native span attributes only when extra context is required.',
-  ]}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`{(['sm', 'md', 'lg']).map((size) => (
+  <div key={size} className="flex flex-wrap gap-2">
+    <Badge size={size} variant="neutral">Neutral</Badge>
+    <Badge size={size} variant="info">Info</Badge>
+    <Badge size={size} variant="success">Success</Badge>
+    <Badge size={size} variant="warning">Warning</Badge>
+    <Badge size={size} variant="danger">Danger</Badge>
+  </div>
+))}` }]}
 />
 
 ## API
 
-| Prop | Values | Note |
-| --- | --- | --- |
-| `size` | `sm`, `md` | Default `sm`; sets `data-size`. |
-| `variant` | `neutral`, `info`, `success`, `warning`, `danger` | Default `neutral`; sets `data-variant`. |
-| `className` | `string` | Merged with `tr-badge`. |
-| native span props | `HTMLAttributes<HTMLSpanElement>` | Passed through to `<span>`. |
-
-<ComponentTokenTable component="badge" />
+`Badge` forwards native `span` props, events, styles, and React 19 `ref`.

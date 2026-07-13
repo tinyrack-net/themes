@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { htmlToPlainText, languageFromClassName, mergeClassNames } from './shared.js';
+import {
+  htmlToPlainText,
+  languageFromClassName,
+  mergeClassNames,
+} from './mdx-markup.js';
 
 describe('MDX shared helpers', () => {
   it('extracts fenced code languages from class names', () => {

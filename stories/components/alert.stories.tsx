@@ -1,31 +1,48 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { alertVariants } from '../../src/components/alert/contract.js';
-import { Alert, type AlertProps } from '../../src/components/alert/react.js';
+import { Alert } from '../../src/components/alert/index.js';
+import { Button } from '../../src/components/button/index.js';
 
-type ComponentStoryProps = Pick<AlertProps, 'children' | 'role' | 'variant'>;
-
-function AlertStory(controlValues: ComponentStoryProps) {
-  return <Alert {...controlValues} />;
-}
-
-AlertStory.displayName = 'AlertStory';
+type AlertVariant = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
+type AlertStoryArgs = {
+  action: boolean;
+  description: string;
+  title: string;
+  variant: AlertVariant;
+};
 
 const meta = {
   title: 'Components/Alert',
-  component: AlertStory,
+  parameters: { layout: 'centered' },
   args: {
-    children: 'Backup is scheduled.',
-    variant: 'neutral',
+    action: true,
+    description: 'The rollout will start shortly.',
+    title: 'Deployment queued',
+    variant: 'info',
   },
   argTypes: {
-    children: { control: 'text', description: 'Alert message.' },
-    role: { control: 'select', options: ['', 'status', 'alert'] },
-    variant: { control: 'select', options: alertVariants },
+    action: { control: 'boolean' },
+    description: { control: 'text' },
+    title: { control: 'text' },
+    variant: {
+      control: 'select',
+      options: ['neutral', 'info', 'success', 'warning', 'danger'],
+    },
   },
-} satisfies Meta<typeof AlertStory>;
+  render: ({ action, description, title, variant }) => (
+    <Alert.Root className="max-w-md" variant={variant}>
+      <Alert.Title>{title}</Alert.Title>
+      <Alert.Description>{description}</Alert.Description>
+      {action ? (
+        <Alert.Actions>
+          <Button appearance="outline" size="sm">
+            View details
+          </Button>
+        </Alert.Actions>
+      ) : null}
+    </Alert.Root>
+  ),
+} satisfies Meta<AlertStoryArgs>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
-
 export const Default: Story = {};

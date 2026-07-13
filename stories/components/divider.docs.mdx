@@ -1,130 +1,49 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { dividerOrientations } from '../../src/components/divider/contract.js';
-import { Divider } from '../../src/components/divider/react.js';
+import { Divider } from '../../src/components/divider/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as DividerStories from './divider.stories';
+import * as Stories from './divider.stories';
 
-<Meta of={DividerStories} />
+<Meta of={Stories} />
 
 # Divider
 
-A semantic separator for repeated rows, sections, and compact two-column operational layouts.
+Semantic separators for horizontal sections and vertical control groups.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `tr-divider` on `<hr>` | `Divider` | Required separator | Use between related groups, not as decoration in every gap. |
-| Orientation | `data-orientation` | `orientation` | `horizontal`, `vertical`; default `horizontal` | Vertical dividers need a parent with a meaningful height. |
-| Native | Native `<hr>` attributes | `HTMLAttributes<HTMLHRElement>` | Passed through | Vertical mode exposes `aria-orientation="vertical"`. |
+`orientation` accepts `horizontal` or `vertical` and defaults to `horizontal`.
 
 ## Install
 
-<ComponentInstall
-  surfaces={[
-    {
-      label: 'CSS / HTML',
-      install: 'pnpm add @tinyrack/ui tailwindcss',
-      imports: [
-        '@import "@tinyrack/ui/core/core.css";',
-        '@import "@tinyrack/ui/components/divider/divider.css";',
-      ],
-    },
-    {
-      label: 'React',
-      install: 'pnpm add @tinyrack/ui react react-dom',
-      imports: ["import { Divider } from '@tinyrack/ui/components/divider/react';"],
-    },
-  ]}
-/>
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/divider.css';", "import { Divider } from '@tinyrack/ui/components/divider';"] }]} />
 
 ## Usage
 
-<ComponentExampleTabs
-  id="divider-basic"
-  title="Basic divider"
-  description="Use the default horizontal separator between content groups."
-  preview={(
-    <div className="grid w-full gap-3">
-      <span>Rack overview</span>
-      <Divider />
-      <span>Rack events</span>
-    </div>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/divider/divider.css';
-import { Divider } from '@tinyrack/ui/components/divider/react';
-
-<Divider />;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<hr class="tr-divider" data-orientation="horizontal" />`,
-    },
-  ]}
-/>
+<ComponentExampleTabs id="divider-basic" title="Section separator" previewLayout="stretch" preview={<div className="grid w-full gap-3"><span>Overview</span><Divider /><span>Network</span></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<span>Overview</span>
+<Divider />
+<span>Network</span>` }]} />
 
 ## Examples
 
 <ComponentExampleTabs
-  id="divider-orientation"
-  title="Orientation Matrix"
-  description="Horizontal and vertical separators preserve the same semantic contract."
+  id="divider-orientations"
+  title="Orientations"
+  previewLayout="stretch"
   preview={(
-    <div className="flex min-h-16 w-full items-center justify-center gap-4">
-      {dividerOrientations.map((orientation) => (
-        <div key={orientation} className="flex min-h-16 flex-1 items-center justify-center gap-3">
-          <span>{orientation}</span>
-          <Divider orientation={orientation} />
-        </div>
-      ))}
+    <div className="grid gap-6">
+      <div className="grid gap-2"><strong>Horizontal</strong><Divider /></div>
+      <div className="grid gap-2"><strong>Vertical</strong><div className="flex h-12 items-center gap-4"><span>CPU</span><Divider orientation="vertical" /><span>Memory</span><Divider orientation="vertical" /><span>Storage</span></div></div>
     </div>
   )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Divider orientation="horizontal" />
-<Divider orientation="vertical" />`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<hr class="tr-divider" data-orientation="horizontal" />
-<hr class="tr-divider" data-orientation="vertical" aria-orientation="vertical" />`,
-    },
-  ]}
-/>
-
-## Guidance
-
-<ComponentGuidance
-  whenToUse={[
-    'Use Divider when a boundary needs to remain visible across dense operational content.',
-    'Use horizontal mode for stacked sections and vertical mode inside a row or toolbar.',
-  ]}
-  avoid={[
-    'Do not use Divider as a substitute for normal spacing.',
-    'Do not use vertical mode without a parent height that makes the separator meaningful.',
-  ]}
-  accessibility={[
-    'Keep the native separator semantics and provide a label only when the separator itself needs explanation.',
-    'Preserve the generated vertical aria-orientation attribute in custom markup.',
-  ]}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Divider orientation="horizontal" />
+<div className="flex h-12 items-center gap-4">
+  <span>CPU</span>
+  <Divider orientation="vertical" />
+  <span>Memory</span>
+</div>` }]}
 />
 
 ## API
 
-| Component | Main props | Note |
-| --- | --- | --- |
-| `Divider` | `orientation`, native hr props | Renders a native `<hr>` in both orientations. |
-
-<ComponentTokenTable component="divider" />
+Vertical dividers set separator semantics and `aria-orientation="vertical"` automatically.

@@ -1,80 +1,42 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Disclosure, DisclosureContent, DisclosureSummary } from '../../src/components/disclosure/react.js';
+import { Disclosure } from '../../src/components/disclosure/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as DisclosureStories from './disclosure.stories';
+import * as Stories from './disclosure.stories';
 
-<Meta of={DisclosureStories} />
+<Meta of={Stories} />
 
 # Disclosure
 
-Native expandable content with no JavaScript requirement.
+A single keyboard-accessible trigger and panel for optional detail.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `details.tr-disclosure` | `Disclosure` | Native closed state | Preserve native `open` and `toggle`. |
-| Part | `summary.tr-disclosure-summary` | `DisclosureSummary` | Required first summary | Use a concise visible label. |
-| Part | `tr-disclosure-content` | `DisclosureContent` | Flow content | Keep forms and headings semantically valid. |
-| Motion | `::details-content` | Native details transition | `--tr-disclosure-duration`; normal | Height and opacity animate progressively when supported. |
+Use controlled `open` or uncontrolled `defaultOpen`; `disabled` prevents expansion.
 
 ## Install
 
-<ComponentInstall surfaces={[
-  { label: 'CSS / HTML', install: 'pnpm add @tinyrack/ui tailwindcss', imports: ['@import "@tinyrack/ui/core/core.css";', '@import "@tinyrack/ui/components/disclosure/disclosure.css";'] },
-  { label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import { Disclosure, DisclosureContent, DisclosureSummary } from '@tinyrack/ui/components/disclosure/react';"] },
-]} />
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/disclosure.css';", "import { Disclosure } from '@tinyrack/ui/components/disclosure';"] }]} />
 
 ## Usage
 
-<ComponentExampleTabs id="disclosure-basic" title="Advanced settings" description="Use the native summary as the only toggle." preview={<div className="w-full max-w-md"><Disclosure><DisclosureSummary>Advanced settings</DisclosureSummary><DisclosureContent>Retry failed translations twice.</DisclosureContent></Disclosure></div>} sources={[
-  { label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/disclosure/disclosure.css';
-import { Disclosure, DisclosureContent, DisclosureSummary } from '@tinyrack/ui/components/disclosure/react';
-
-<div className="w-full max-w-md">
-  <Disclosure>
-    <DisclosureSummary>Advanced settings</DisclosureSummary>
-    <DisclosureContent>Retry failed translations twice.</DisclosureContent>
-  </Disclosure>
-</div>;` },
-  { label: 'HTML', language: 'html', code: String.raw`<div class="w-full max-w-md">
-  <details class="tr-disclosure">
-    <summary class="tr-disclosure-summary">Advanced settings</summary>
-    <div class="tr-disclosure-content">Retry failed translations twice.</div>
-  </details>
-</div>` },
-]} />
+<ComponentExampleTabs id="disclosure-basic" title="Optional details" previewLayout="stretch" preview={<Disclosure.Root><Disclosure.Trigger>Advanced settings</Disclosure.Trigger><Disclosure.Panel>Retry and timeout controls.</Disclosure.Panel></Disclosure.Root>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Disclosure.Root>
+  <Disclosure.Trigger>Advanced settings</Disclosure.Trigger>
+  <Disclosure.Panel>Retry and timeout controls.</Disclosure.Panel>
+</Disclosure.Root>` }]} />
 
 ## Examples
 
-<ComponentExampleTabs id="disclosure-open" title="Initially open" description="Set the native open attribute when the content should start expanded." preview={<div className="w-full max-w-md"><Disclosure open><DisclosureSummary>Recovery codes</DisclosureSummary><DisclosureContent>Store these codes in a secure location.</DisclosureContent></Disclosure></div>} sources={[
-  { label: 'React', language: 'tsx', code: String.raw`<div className="w-full max-w-md">
-  <Disclosure open>
-    <DisclosureSummary>Recovery codes</DisclosureSummary>
-    <DisclosureContent>Store these codes in a secure location.</DisclosureContent>
-  </Disclosure>
-</div>` },
-  { label: 'HTML', language: 'html', code: String.raw`<div class="w-full max-w-md">
-  <details class="tr-disclosure" open>
-    <summary class="tr-disclosure-summary">Recovery codes</summary>
-    <div class="tr-disclosure-content">Store these codes in a secure location.</div>
-  </details>
-</div>` },
-]} />
-
-## Guidance
-
-<ComponentGuidance whenToUse={['Use for optional content that remains understandable when collapsed.']} avoid={['Do not hide required validation or the primary action.']} accessibility={['Keep Summary as a native summary element, retain its keyboard behavior, and preserve the reduced-motion fallback.']} />
+<ComponentExampleTabs
+  id="disclosure-states"
+  title="Open, closed, and disabled"
+  previewLayout="stretch"
+  preview={<div className="grid gap-3"><Disclosure.Root defaultOpen><Disclosure.Trigger>Open by default</Disclosure.Trigger><Disclosure.Panel>Visible detail.</Disclosure.Panel></Disclosure.Root><Disclosure.Root><Disclosure.Trigger>Closed by default</Disclosure.Trigger><Disclosure.Panel>Hidden detail.</Disclosure.Panel></Disclosure.Root><Disclosure.Root disabled><Disclosure.Trigger>Unavailable</Disclosure.Trigger><Disclosure.Panel>Cannot open.</Disclosure.Panel></Disclosure.Root></div>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Disclosure.Root defaultOpen>...</Disclosure.Root>
+<Disclosure.Root>...</Disclosure.Root>
+<Disclosure.Root disabled>...</Disclosure.Root>` }]}
+/>
 
 ## API
 
-| Component | Main props | Note |
-| --- | --- | --- |
-| `Disclosure` | Native details props | Native `open` and `toggle` behavior. |
-| `DisclosureSummary`, `DisclosureContent` | Native element props | Stable public part classes. |
-
-<ComponentTokenTable component="disclosure" />
+Base UI supplies trigger semantics, focus, controlled state, and reduced-motion-friendly transition attributes.

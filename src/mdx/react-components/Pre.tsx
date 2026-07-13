@@ -5,10 +5,10 @@ import {
   type ReactNode,
 } from 'react';
 import type { BundledLanguage } from 'shiki/bundle/web';
-import { CodeBlock } from '../../components/code-block/react.js';
-import { languageFromClassName, mergeClassNames } from '../shared.js';
+import { CodeBlock } from '../../components/code-block/index.js';
+import { languageFromClassName, mergeClassNames } from '../mdx-markup.js';
 import { type MdxCodeElementProps, TinyrackMdxCode } from './Code.js';
-import { textFromReactNode } from './utils.js';
+import { textFromReactNode } from './react-node-text.js';
 
 function isCodeElement(node: ReactNode): node is ReactElement<MdxCodeElementProps> {
   return (

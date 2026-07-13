@@ -1,134 +1,80 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { cardPaddings, cardVariants } from '../../src/components/card/contract.js';
-import { Card } from '../../src/components/card/react.js';
+import { Card } from '../../src/components/card/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as CardStories from './card.stories';
+import * as Stories from './card.stories';
 
-<Meta of={CardStories} />
+<Meta of={Stories} />
 
 # Card
 
-An operational surface for grouping related content without adding layout-specific subcomponents.
+Structured content surfaces with semantic sections, elevation, and padding density.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `tr-card` on `<div>` | `Card` | Required surface; variant default `default` | Use for a bounded group of related content. |
-| Variant | `data-variant` | `variant` | `default`, `muted`; default `default` | Use muted surfaces for secondary operational context. |
-| Padding | `data-padding` | `padding` | `sm`, `md`, `lg`; default `md` | Match padding to content density. |
-| Native | Native `<div>` attributes | `HTMLAttributes<HTMLDivElement>` | Passed through | Keep card semantics supplied by the surrounding heading and content. |
+| Axis | Values | Default |
+| --- | --- | --- |
+| `variant` | `default`, `outlined`, `elevated` | `default` |
+| `padding` | `none`, `sm`, `md`, `lg` | `md` |
+| parts | `Root`, `Header`, `Title`, `Description`, `Content`, `Footer` | compound API |
 
 ## Install
 
-<ComponentInstall
-  surfaces={[
-    {
-      label: 'CSS / HTML',
-      install: 'pnpm add @tinyrack/ui tailwindcss',
-      imports: [
-        '@import "@tinyrack/ui/core/core.css";',
-        '@import "@tinyrack/ui/components/card/card.css";',
-      ],
-    },
-    {
-      label: 'React',
-      install: 'pnpm add @tinyrack/ui react react-dom',
-      imports: ["import { Card } from '@tinyrack/ui/components/card/react';"],
-    },
-  ]}
-/>
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/card.css';", "import { Card } from '@tinyrack/ui/components/card';"] }]} />
 
 ## Usage
 
 <ComponentExampleTabs
   id="card-basic"
-  title="Basic card"
-  description="Use Card as a bounded surface while keeping internal layout in application markup."
-  preview={<Card>Rack A is healthy.</Card>}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/card/card.css';
-import { Card } from '@tinyrack/ui/components/card/react';
-
-<Card padding="md">
-  Rack A is healthy.
-</Card>;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-card" data-padding="md" data-variant="default">
-  Rack A is healthy.
-</div>`,
-    },
-  ]}
+  title="Structured surface"
+  preview={<Card.Root className="w-full max-w-md" variant="elevated"><Card.Header><Card.Title>Rack A</Card.Title><Card.Description>12 nodes</Card.Description></Card.Header><Card.Content>All systems operational.</Card.Content><Card.Footer>Updated now</Card.Footer></Card.Root>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Card.Root variant="elevated">
+  <Card.Header>
+    <Card.Title>Rack A</Card.Title>
+    <Card.Description>12 nodes</Card.Description>
+  </Card.Header>
+  <Card.Content>All systems operational.</Card.Content>
+  <Card.Footer>Updated now</Card.Footer>
+</Card.Root>` }]}
 />
 
 ## Examples
 
 <ComponentExampleTabs
-  id="card-appearance"
-  title="Padding x Variant Matrix"
-  description="Compare every supported padding and surface variant combination."
+  id="card-variants"
+  title="Surface variants"
+  previewLayout="stretch"
   preview={(
-    <div className="grid gap-3">
-      {cardPaddings.map((padding) => (
-        <div key={padding} className="grid gap-2 md:grid-cols-2">
-          {cardVariants.map((variant) => (
-            <Card key={variant} padding={padding} variant={variant}>
-              {padding} / {variant}
-            </Card>
-          ))}
-        </div>
-      ))}
+    <div className="grid gap-4 md:grid-cols-3">
+      <Card.Root variant="default"><Card.Title>Default</Card.Title><Card.Content>Standard contained surface.</Card.Content></Card.Root>
+      <Card.Root variant="outlined"><Card.Title>Outlined</Card.Title><Card.Content>Transparent outlined surface.</Card.Content></Card.Root>
+      <Card.Root variant="elevated"><Card.Title>Elevated</Card.Title><Card.Content>Raised above its context.</Card.Content></Card.Root>
     </div>
   )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Card padding="sm" variant="default">sm / default</Card>
-<Card padding="md" variant="muted">md / muted</Card>
-<Card padding="lg" variant="default">lg / default</Card>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-card" data-padding="sm" data-variant="default">sm / default</div>
-<div class="tr-card" data-padding="md" data-variant="muted">md / muted</div>
-<div class="tr-card" data-padding="lg" data-variant="default">lg / default</div>`,
-    },
-  ]}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Card.Root variant="default">...</Card.Root>
+<Card.Root variant="outlined">...</Card.Root>
+<Card.Root variant="elevated">...</Card.Root>` }]}
 />
 
-## Guidance
-
-<ComponentGuidance
-  whenToUse={[
-    'Use Card for a bounded operational surface such as a resource summary or log block.',
-    'Keep headings, actions, and layout composition in the card content.',
-  ]}
-  avoid={[
-    'Do not use Card as a page-wide layout primitive; use Tailwind layout utilities for that.',
-    'Do not create nested cards when a spacing or divider relationship is enough.',
-  ]}
-  accessibility={[
-    'Give the content an appropriate heading when the card represents a distinct section.',
-    'Do not rely on the border or background alone to communicate status.',
-  ]}
+<ComponentExampleTabs
+  id="card-padding"
+  title="Padding"
+  description="Compare all four interior spacing values without changing content structure."
+  previewLayout="stretch"
+  preview={(
+    <div className="grid gap-4 sm:grid-cols-2">
+      <Card.Root padding="none"><Card.Content>None</Card.Content></Card.Root>
+      <Card.Root padding="sm"><Card.Content>Small</Card.Content></Card.Root>
+      <Card.Root padding="md"><Card.Content>Medium</Card.Content></Card.Root>
+      <Card.Root padding="lg"><Card.Content>Large</Card.Content></Card.Root>
+    </div>
+  )}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Card.Root padding="none">...</Card.Root>
+<Card.Root padding="sm">...</Card.Root>
+<Card.Root padding="md">...</Card.Root>
+<Card.Root padding="lg">...</Card.Root>` }]}
 />
 
 ## API
 
-| Component | Main props | Note |
-| --- | --- | --- |
-| `Card` | `padding`, `variant`, native div props | Presentational surface only; no built-in header or footer. |
-
-<ComponentTokenTable component="card" />
+Every part forwards native props and `ref`; keep headings in document order when composing cards.

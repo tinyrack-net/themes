@@ -5,12 +5,14 @@
 
   .tr-toast-viewport {
     inset: auto;
+    position: fixed;
+    box-sizing: border-box;
     display: grid;
     width: min(24rem, calc(100vw - var(--tinyrack-space-lg) * 2));
     max-height: calc(100vh - var(--tinyrack-space-lg) * 2);
     gap: var(--tinyrack-space-sm);
     margin: 0;
-    padding: var(--tinyrack-space-lg);
+    padding: 0;
     overflow: visible;
     border: 0;
     background: transparent;
@@ -18,19 +20,19 @@
   }
 
   .tr-toast-viewport[data-position^="block-start"] {
-    inset-block-start: 0;
+    inset-block-start: var(--tinyrack-space-lg);
   }
 
   .tr-toast-viewport[data-position^="block-end"] {
-    inset-block-end: 0;
+    inset-block-end: var(--tinyrack-space-lg);
   }
 
   .tr-toast-viewport[data-position$="inline-start"] {
-    inset-inline-start: 0;
+    inset-inline-start: var(--tinyrack-space-lg);
   }
 
   .tr-toast-viewport[data-position$="inline-end"] {
-    inset-inline-end: 0;
+    inset-inline-end: var(--tinyrack-space-lg);
   }
 
   .tr-toast-viewport[data-position$="center"] {

@@ -1,214 +1,49 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { CodeBlock } from '../../src/components/code-block/react.js';
+import { CodeBlock } from '../../src/components/code-block/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as CodeBlockStories from './code-block.stories';
+import * as Stories from './code-block.stories';
 
-<Meta of={CodeBlockStories} />
+<Meta of={Stories} />
 
-# CodeBlock
+# Code Block
 
-SSR-safe block code with client-side Shiki highlighting and a readable plain-text fallback.
+Block-level source display with optional Shiki highlighting and explicit wrapping.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `tr-code-block` on `<pre><code>` | `<CodeBlock>` | Shiki-backed block surface; SSR-safe | Keep code readable before hydration and when highlighting is unavailable. |
-| Behavior | Generated token spans | `code` | `string` source text | Pass the exact copyable source string. |
-| Behavior | `data-language` | `language` | Shiki bundled language; default unset | Provide a language when syntax coloring is useful. |
-| Behavior | `data-highlighted="true"` | `theme` | Bundled Shiki theme; default `github-dark` | Use a theme that matches the surrounding product surface. |
-| Behavior | `data-wrap="true"` | `wrap` | `boolean`; default `false` | Leave commands and source scrollable; wrap prose-like output deliberately. |
-| Native | Native `<pre>` attributes | `HTMLAttributes<HTMLPreElement>` | Passed through | Preserve whitespace and copyable source text. |
+| Axis | Values | Default |
+| --- | --- | --- |
+| `language` | Shiki bundled language | plain text |
+| `theme` | Shiki bundled theme | `github-dark` |
+| `wrap` | `true`, `false` | `false` |
 
 ## Install
 
-<ComponentInstall
-  surfaces={[
-    {
-      label: 'CSS / HTML',
-      install: 'pnpm add @tinyrack/ui tailwindcss',
-      imports: [
-        '@import "tailwindcss";',
-        '@import "@tinyrack/ui/core/core.css";',
-        '@import "@tinyrack/ui/components/code-block/code-block.css";',
-      ],
-    },
-    {
-      label: 'React CodeBlock',
-      install: 'pnpm add @tinyrack/ui react react-dom',
-      imports: [
-        "import { CodeBlock } from '@tinyrack/ui/components/code-block/react';",
-      ],
-      note: 'Shiki is installed transitively by @tinyrack/ui.',
-    },
-    {
-      label: 'React MDX',
-      install: 'pnpm add @tinyrack/ui @mdx-js/react',
-      imports: [
-        "import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';",
-      ],
-      note: 'Maps fenced code to the same CodeBlock contract.',
-    },
-    {
-      label: 'Astro MDX',
-      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx',
-      imports: [
-        "import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';",
-      ],
-      note: 'Maps fenced code and highlights it server-side.',
-    },
-  ]}
-/>
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/code-block.css';", "import { CodeBlock } from '@tinyrack/ui/components/code-block';"] }]} />
 
 ## Usage
 
-<ComponentExampleTabs
-  id="code-block-basic"
-  title="Highlighted block with plain fallback"
-  description="CodeBlock renders readable source during SSR, then applies Shiki tokens in the browser when the language is supported."
-  previewLayout="stretch"
-  preview={(
-    <CodeBlock code={'pnpm install\npnpm verify'} language="sh" />
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/code-block/code-block.css';
-import { CodeBlock } from '@tinyrack/ui/components/code-block/react';
-
-<CodeBlock
-  code={'pnpm install\npnpm verify'}
-  language="sh"
-  theme="github-dark"
-/>;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<pre class="tr-code-block" data-language="sh">
-  <code>pnpm install
-pnpm verify</code>
-</pre>`,
-    },
-  ]}
-/>
+<ComponentExampleTabs id="code-block-basic" title="Highlighted TypeScript" previewLayout="stretch" preview={<CodeBlock code={"const status = 'healthy';"} language="ts" />} sources={[{ label: 'React', language: 'tsx', code: String.raw`<CodeBlock code={"const status = 'healthy';"} language="ts" />` }]} />
 
 ## Examples
 
 <ComponentExampleTabs
-  id="code-block-languages"
-  title="Languages"
-  description="Set `language` to let Shiki tokenize the source. Missing or unsupported languages keep the same block readable as plain text."
+  id="code-block-modes"
+  title="Plain, highlighted, and wrapped"
   previewLayout="stretch"
   preview={(
-    <div className="grid gap-4 lg:grid-cols-2">
-      <CodeBlock code={'pnpm install\npnpm verify'} language="sh" />
-      <CodeBlock code={'const answer = 1;\nconsole.log(answer);'} language="typescript" />
+    <div className="grid min-w-0 gap-4">
+      <div><strong>Plain text</strong><CodeBlock code="rack-a: healthy" /></div>
+      <div><strong>Highlighted JSON</strong><CodeBlock code={'{\n  "status": "healthy"\n}'} language="json" /></div>
+      <div><strong>Wrapped</strong><CodeBlock code="const message = 'A deliberately long line that wraps inside narrow documentation layouts';" language="ts" wrap /></div>
     </div>
   )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<CodeBlock
-  code={'pnpm install\npnpm verify'}
-  language="sh"
-/>;
-
-<CodeBlock
-  code={'const answer = 1;\nconsole.log(answer);'}
-  language="typescript"
-/>;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<pre class="tr-code-block" data-language="sh"><code>pnpm install
-pnpm verify</code></pre>
-
-<pre class="tr-code-block" data-language="typescript"><code>const answer = 1;
-console.log(answer);</code></pre>`,
-    },
-  ]}
-/>
-
-<ComponentExampleTabs
-  id="code-block-wrapping"
-  title="Wrapped and Unwrapped"
-  description="Long paths stay locally scrollable by default; opt into wrapping only when reading the complete line matters more than preserving columns."
-  previewLayout="stretch"
-  preview={(
-    <div className="grid gap-4">
-      <CodeBlock
-        code="/srv/tinyrack/config/inventory/garage-switch-02.production.yaml"
-        language="txt"
-      />
-      <CodeBlock
-        code="/srv/tinyrack/config/inventory/garage-switch-02.production.yaml"
-        language="txt"
-        wrap
-      />
-    </div>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<CodeBlock
-  code="/srv/tinyrack/config/inventory/garage-switch-02.production.yaml"
-  language="txt"
-/>;
-
-<CodeBlock
-  code="/srv/tinyrack/config/inventory/garage-switch-02.production.yaml"
-  language="txt"
-  wrap
-/>;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<pre class="tr-code-block" data-language="txt">
-  <code>/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</code>
-</pre>
-
-<pre class="tr-code-block" data-language="txt" data-wrap="true">
-  <code>/srv/tinyrack/config/inventory/garage-switch-02.production.yaml</code>
-</pre>`,
-    },
-  ]}
-/>
-
-## Guidance
-
-<ComponentGuidance
-  whenToUse={[
-    'Present multiline commands, configuration, logs, or source that readers may copy.',
-    'Pass a supported language when syntax highlighting improves comprehension.',
-  ]}
-  avoid={[
-    'Do not use a block for a short literal embedded in prose; use Code instead.',
-    'Do not enable wrapping for source where indentation or aligned columns carry meaning.',
-  ]}
-  accessibility={[
-    'Keep the pre and code structure so whitespace, keyboard selection, and copied text remain predictable.',
-    'Treat syntax color as enhancement only; the plain SSR output must stay readable, and long unwrapped lines must scroll inside the block.',
-  ]}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<CodeBlock code="rack-a: healthy" />
+<CodeBlock code={'{\n  "status": "healthy"\n}'} language="json" />
+<CodeBlock code={longSource} language="ts" wrap />` }]}
 />
 
 ## API
 
-| Prop | Values | Note |
-| --- | --- | --- |
-| `code` | `string` | Source text to render and highlight. |
-| `language` | Shiki bundled language | Sets `data-language`; omitted languages remain plain text. |
-| `theme` | Shiki bundled theme | Default `github-dark`. |
-| `wrap` | `boolean` | Adds `data-wrap="true"`. |
-| `className` | `string` | Merged with `tr-code-block`. |
-
-<ComponentTokenTable component="code-block" />
+Highlighting happens after hydration; the original source remains SSR-safe and visible before Shiki loads.

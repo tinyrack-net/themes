@@ -1,15 +1,5 @@
 @layer components {
   .tr-layer {
-    color-scheme: inherit;
-  }
-
-  .tr-layer:focus-visible,
-  .tr-layer :focus-visible {
-    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
-    outline-offset: var(--tinyrack-focus-offset);
-  }
-
-  .tr-layer {
     --_tr-layer-motion-duration: var(--tinyrack-duration-normal);
     background-color: var(--tr-layer-background, var(--tinyrack-surface));
     border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
@@ -17,13 +7,13 @@
     box-shadow: var(--tr-layer-shadow, var(--tinyrack-shadow-raised));
     box-sizing: border-box;
     color: var(--tinyrack-text);
+    color-scheme: inherit;
     font-family: var(--tinyrack-font-body);
     font-size: var(--tinyrack-text-sm);
-    inset: auto;
     line-height: var(--tinyrack-leading-md);
     margin: 0;
-    max-height: var(--tr-layer-available-height, calc(100dvh - 1rem));
-    max-width: var(--tr-layer-available-width, calc(100vw - 1rem));
+    max-height: var(--available-height, calc(100dvh - 1rem));
+    max-width: var(--available-width, calc(100vw - 1rem));
     opacity: 0;
     overflow: auto;
     overscroll-behavior: contain;
@@ -40,34 +30,36 @@
     width: max-content;
   }
 
-  .tr-layer:popover-open {
+  .tr-layer[data-open] {
     opacity: 1;
     scale: 1;
     visibility: visible;
   }
 
-  .tr-layer:popover-open[data-positioned="false"] {
-    visibility: hidden;
-  }
-
-  .tr-layer[data-placement^="top"] {
+  .tr-layer[data-side="top"] {
     transform-origin: bottom center;
   }
 
-  .tr-layer[data-placement^="bottom"] {
+  .tr-layer[data-side="bottom"] {
     transform-origin: top center;
   }
 
-  .tr-layer[data-placement^="left"] {
+  .tr-layer[data-side="left"] {
     transform-origin: right center;
   }
 
-  .tr-layer[data-placement^="right"] {
+  .tr-layer[data-side="right"] {
     transform-origin: left center;
   }
 
+  .tr-layer:focus-visible,
+  .tr-layer :focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
   @starting-style {
-    .tr-layer:popover-open {
+    .tr-layer[data-open] {
       opacity: 0;
       scale: 0.98;
     }

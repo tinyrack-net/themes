@@ -30,7 +30,7 @@
   --_tr-spinner-size: 1.75rem;
 }
 
-.tr-spinner[data-variant="neutral"] {
+.tr-spinner[data-variant="muted"] {
   --_tr-spinner-color: var(--tinyrack-text-muted);
 }
 

@@ -16,7 +16,6 @@
       "!**/*.mdx",
       "!node_modules",
       "!**/node_modules",
-      "!**/*.astro",
       "!pnpm-lock.yaml",
       "!**/pnpm-lock.yaml"
     ]
@@ -30,7 +29,10 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "preset": "recommended"
+      "preset": "recommended",
+      "complexity": {
+        "useLiteralKeys": "off"
+      }
     }
   },
   "javascript": {

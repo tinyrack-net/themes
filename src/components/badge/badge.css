@@ -40,6 +40,13 @@
   --_tr-badge-padding-y: var(--tinyrack-space-xs);
 }
 
+.tr-badge[data-size="lg"] {
+  --_tr-badge-font-size: var(--tinyrack-text-md);
+  --_tr-badge-gap: var(--tinyrack-space-sm);
+  --_tr-badge-padding-x: var(--tinyrack-space-md);
+  --_tr-badge-padding-y: 0.375rem;
+}
+
 .tr-badge[data-variant="neutral"] {
   --_tr-badge-background: var(--tinyrack-surface-muted);
   --_tr-badge-border: var(--tinyrack-border);

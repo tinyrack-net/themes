@@ -1,82 +1,83 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { ToastProvider, ToastViewport } from '../../src/components/toast/react.js';
+import { Toast } from '../../src/components/toast/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import { ToastDemo } from '../shared/toast-demo.js';
-import * as ToastStories from './toast.stories';
+import { ToastDemo, ToastVariantGallery } from './toast.stories';
+import * as Stories from './toast.stories';
 
-<Meta of={ToastStories} />
+<Meta of={Stories} />
 
 # Toast
 
-Transient feedback with stable IDs, actions and pause-aware timers.
+Transient status notifications with semantic variants, actions, dismissal, and six viewport positions.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `createToastManager(root)` | `ToastProvider`, `useToast` | `show`, `update`, `dismiss` | Use stable IDs when feedback changes in place. |
-| Part | `tr-toast-viewport` | `ToastViewport` | Six logical viewport positions | Viewport stays inside the provided Document or ShadowRoot. |
-| Variant | `data-variant` | Toast option `variant` | `neutral`, `info`, `success`, `warning`, `danger` | Danger uses alert urgency; others use status. |
-| Behavior | Manager timer | Shared manager | Default 5000 ms | Hover, focus and inactive windows pause timeouts. |
+| Axis | Values | Default |
+| --- | --- | --- |
+| `variant` | `neutral`, `info`, `success`, `warning`, `danger` | toast `type` or `neutral` |
+| `position` | block start/end × inline start/center/end | `block-end-inline-end` |
+| parts | `Provider`, `Portal`, `Viewport`, `Root`, `Title`, `Description`, `Action`, `Close` | compound API |
 
 ## Install
 
-<ComponentInstall surfaces={[
-  { label: 'CSS / HTML', install: 'pnpm add @tinyrack/ui tailwindcss', imports: ['@import "@tinyrack/ui/core/core.css";', '@import "@tinyrack/ui/components/toast/toast.css";', "import { createToastManager } from '@tinyrack/ui/components/toast/dom';"] },
-  { label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import { ToastProvider, ToastViewport, useToast } from '@tinyrack/ui/components/toast/react';"] },
-]} />
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/toast.css';", "import { Toast, useToastManager } from '@tinyrack/ui/components/toast';"] }]} />
 
 ## Usage
 
-<ComponentExampleTabs id="toast-basic" title="Show feedback" description="Use the hook below a provider and render one logical viewport." preview={<div className="flex justify-center"><ToastProvider><ToastDemo variant="success" /><ToastViewport /></ToastProvider></div>} sources={[
-  { label: 'React', language: 'tsx', code: String.raw`import { ToastProvider, ToastViewport, useToast } from '@tinyrack/ui/components/toast/react';
-
-function SaveButton() {
-  const toast = useToast();
-  return <button onClick={() => toast.show({ title: 'Saved', variant: 'success' })}>Save</button>;
+<ComponentExampleTabs
+  id="toast-basic"
+  title="Managed notification"
+  preview={<Toast.Provider><ToastDemo /></Toast.Provider>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`function ToastButton() {
+  const manager = useToastManager();
+  return <Button onClick={() => manager.add({
+    title: 'Deployment complete',
+    description: 'Rack A is healthy.',
+    type: 'success',
+  })}>Show toast</Button>;
 }
 
-<ToastProvider>
-  <SaveButton />
-  <ToastViewport />
-</ToastProvider>;` },
-  { label: 'HTML', language: 'html', code: String.raw`<div class="tr-toast-viewport" data-tr-toast-viewport data-position="block-end-inline-end" popover="manual" aria-label="Notifications"></div>
-<script type="module">
-  import { createToastManager } from '@tinyrack/ui/components/toast/dom';
-  const toast = createToastManager(document);
-  toast.show({ title: 'Saved', variant: 'success' });
-</script>` },
-]} />
+<Toast.Provider>
+  <ToastButton />
+  <Toast.Portal>
+    <Toast.Viewport>
+      {manager.toasts.map((toast) => (
+        <Toast.Root key={toast.id} toast={toast}>...</Toast.Root>
+      ))}
+    </Toast.Viewport>
+  </Toast.Portal>
+</Toast.Provider>` }]}
+/>
 
 ## Examples
 
-<ComponentExampleTabs id="toast-action" title="Stable update and action" description="Update one notification by ID and provide a concise recovery action." preview={<div className="flex justify-center"><ToastProvider><ToastDemo variant="danger" /><ToastViewport position="block-start-inline-end" /></ToastProvider></div>} sources={[
-  { label: 'React', language: 'tsx', code: String.raw`const id = toast.show({ id: 'sync', title: 'Syncing', duration: 0 });
-toast.update(id, {
-  action: { label: 'Retry', onAction: () => retry() },
-  title: 'Sync failed',
-  variant: 'danger',
-});` },
-  { label: 'HTML', language: 'javascript', code: String.raw`const id = toast.show({ id: 'sync', title: 'Syncing', duration: 0 });
-toast.update(id, {
-  action: { label: 'Retry', onAction: retry },
-  title: 'Sync failed',
-  variant: 'danger',
-});` },
-]} />
+<ComponentExampleTabs
+  id="toast-variants"
+  title="Status variants"
+  description="The real toast manager publishes all five semantic variants together."
+  preview={<Toast.Provider><ToastVariantGallery /></Toast.Provider>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`manager.add({ title: 'Neutral update', type: 'neutral' });
+manager.add({ title: 'Maintenance scheduled', type: 'info' });
+manager.add({ title: 'Deployment complete', type: 'success' });
+manager.add({ title: 'Storage nearing capacity', type: 'warning' });
+manager.add({ title: 'Deployment failed', type: 'danger' });` }]}
+/>
 
-## Guidance
-
-<ComponentGuidance whenToUse={['Use for feedback that does not block the current task.']} avoid={['Do not use a toast for a decision that requires immediate confirmation.']} accessibility={['Pause timeouts during interaction and keep action labels concise.']} />
+<ComponentExampleTabs
+  id="toast-positions"
+  title="Viewport positions"
+  description="All logical positions work in left-to-right and right-to-left layouts. Select them directly from Storybook Controls."
+  previewLayout="stretch"
+  preview={<div className="grid min-h-48 grid-cols-3 gap-3 rounded-tinyrack-md border border-tinyrack-border p-4 text-center text-tinyrack-sm"><span>Start / Start</span><span>Start / Center</span><span>Start / End</span><span className="self-end">End / Start</span><span className="self-end">End / Center</span><span className="self-end">End / End</span></div>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Toast.Viewport position="block-start-inline-start" />
+<Toast.Viewport position="block-start-center" />
+<Toast.Viewport position="block-start-inline-end" />
+<Toast.Viewport position="block-end-inline-start" />
+<Toast.Viewport position="block-end-center" />
+<Toast.Viewport position="block-end-inline-end" />` }]}
+/>
 
 ## API
 
-| Component | Main props | Note |
-| --- | --- | --- |
-| `createToastManager` | `show`, `update`, `dismiss`, `destroy` | Root-scoped and ShadowRoot-safe. |
-| `ToastProvider`, `ToastViewport`, `useToast` | React context and logical position | React delegates rendering and timers to the DOM manager. |
-
-<ComponentTokenTable component="toast" />
+Create or consume a toast manager inside `Provider`; Base UI owns queueing, timers, swipe gestures, focus, and live-region semantics.

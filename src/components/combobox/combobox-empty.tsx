@@ -1,0 +1,11 @@
+'use client';
+
+import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
+import type { ComponentProps } from 'react';
+import { createComponentPart } from '../../internal/component-part.js';
+
+export type ComboboxEmptyProps = ComponentProps<typeof BaseCombobox.Empty>;
+export const ComboboxEmpty = createComponentPart(
+  BaseCombobox.Empty,
+  'tr-combobox-empty',
+);

@@ -1,50 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { badgeSizes, badgeVariants } from '../../src/components/badge/contract.js';
-import { Badge, type BadgeProps } from '../../src/components/badge/react.js';
+import {
+  Badge,
+  type BadgeSize,
+  type BadgeVariant,
+} from '../../src/components/badge/index.js';
 
-type ComponentStoryProps = Pick<BadgeProps, 'children' | 'size' | 'variant'>;
-
-function BadgeStory(controlValues: ComponentStoryProps) {
-  return <Badge {...controlValues} />;
-}
-
-BadgeStory.displayName = 'BadgeStory';
+type BadgeStoryArgs = { children: string; size: BadgeSize; variant: BadgeVariant };
 
 const meta = {
   title: 'Components/Badge',
-  component: BadgeStory,
-  args: {
-    children: 'healthy',
-    size: 'sm',
-    variant: 'success',
-  },
+  component: Badge,
+  parameters: { layout: 'centered' },
+  args: { children: 'Healthy', size: 'md', variant: 'success' },
   argTypes: {
-    children: {
-      control: 'text',
-      description: 'Badge label.',
-    },
-    size: {
-      control: 'select',
-      options: badgeSizes,
-      description: 'Tailwind scale-backed badge size.',
-    },
+    children: { control: 'text' },
+    size: { control: 'select', options: ['sm', 'md', 'lg'] },
     variant: {
       control: 'select',
-      options: badgeVariants,
-      description: 'Semantic badge variant.',
+      options: ['neutral', 'info', 'success', 'warning', 'danger'],
     },
   },
-  parameters: {
-    docs: {
-      description: {
-        component: 'CSS-first Tinyrack Badge rendered through the React wrapper.',
-      },
-    },
-  },
-} satisfies Meta<typeof BadgeStory>;
+  render: (args) => <Badge {...args} />,
+} satisfies Meta<BadgeStoryArgs>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
-
 export const Default: Story = {};

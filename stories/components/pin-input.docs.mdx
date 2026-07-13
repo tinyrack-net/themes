@@ -1,69 +1,49 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { PinInput } from '../../src/components/pin-input/react.js';
+import { PinInput } from '../../src/components/pin-input/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as PinInputStories from './pin-input.stories';
+import * as Stories from './pin-input.stories';
 
-<Meta of={PinInputStories} />
+<Meta of={Stories} />
 
-# PinInput
+# Pin Input
 
-Multi-digit verification input with paste normalization and deterministic focus movement.
+One-time-code entry with grouped keyboard input, validation, and form integration.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `data-tr-pin-input` | `PinInput` | Six digits by default | One input per digit. |
-| Part | `tr-pin-input-digit` | Generated digit inputs | Numeric text input | First input advertises one-time-code autocomplete. |
-| Behavior | `createPinInputManager` | Shared DOM manager | Input, paste, Backspace, Delete, arrows | Emits change and complete events. |
-| State | `data-invalid`, native disabled | `invalid`, `disabled`, controlled or uncontrolled value | Explicit | Pair invalid state with visible error text. |
+`length` must match the number of `Input` parts. Base UI provides paste, arrow-key, disabled, read-only, and controlled value behavior.
 
 ## Install
 
-<ComponentInstall surfaces={[
-  { label: 'CSS / HTML', install: 'pnpm add @tinyrack/ui tailwindcss', imports: ['@import "@tinyrack/ui/core/core.css";', '@import "@tinyrack/ui/components/pin-input/pin-input.css";', "import { createPinInputManager } from '@tinyrack/ui/components/pin-input/dom';"] },
-  { label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import { PinInput } from '@tinyrack/ui/components/pin-input/react';"] },
-]} />
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/pin-input.css';", "import { PinInput } from '@tinyrack/ui/components/pin-input';"] }]} />
 
 ## Usage
 
-<ComponentExampleTabs id="pin-input-basic" title="Six-digit verification" description="Typing advances focus; pasting strips non-digits." preview={<PinInput name="verificationCode" />} sources={[
-  { label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/pin-input/pin-input.css';
-import { PinInput } from '@tinyrack/ui/components/pin-input/react';
-
-<PinInput name="verificationCode" onComplete={(value) => verify(value)} />;` },
-  { label: 'HTML', language: 'html', code: String.raw`<fieldset class="tr-pin-input" data-tr-pin-input data-length="6">
-  <input class="tr-pin-input-digit" data-tr-pin-input-digit data-index="0" aria-label="Digit 1 of 6" inputmode="numeric" autocomplete="one-time-code" maxlength="1">
-  <input class="tr-pin-input-digit" data-tr-pin-input-digit data-index="1" aria-label="Digit 2 of 6" inputmode="numeric" maxlength="1">
-  <input data-tr-pin-input-hidden name="verificationCode" type="hidden">
-</fieldset>` },
-]} />
+<ComponentExampleTabs id="pin-input-basic" title="Four-digit code" preview={<PinInput.Root aria-label="Verification code" length={4}><PinInput.Input /><PinInput.Input /><PinInput.Input /><PinInput.Input /></PinInput.Root>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<PinInput.Root aria-label="Verification code" length={4} name="code">
+  <PinInput.Input /><PinInput.Input /><PinInput.Input /><PinInput.Input />
+</PinInput.Root>` }]} />
 
 ## Examples
 
-<ComponentExampleTabs id="pin-input-state" title="Invalid and disabled states" description="Keep validation copy outside the digit group." preview={<div className="grid gap-4"><PinInput invalid length={4} /><PinInput disabled length={4} /></div>} sources={[
-  { label: 'React', language: 'tsx', code: String.raw`<PinInput invalid length={4} />
-<PinInput disabled length={4} />` },
-  { label: 'HTML', language: 'html', code: String.raw`<fieldset class="tr-pin-input" data-tr-pin-input data-invalid="true" aria-invalid="true">
-  <input class="tr-pin-input-digit" data-tr-pin-input-digit aria-label="Digit 1 of 4">
-</fieldset>
-<fieldset class="tr-pin-input" data-tr-pin-input aria-disabled="true" disabled>
-  <input class="tr-pin-input-digit" data-tr-pin-input-digit aria-label="Digit 1 of 4" disabled>
-</fieldset>` },
-]} />
-
-## Guidance
-
-<ComponentGuidance whenToUse={['Use for fixed-length numeric verification and recovery codes.']} avoid={['Do not split ordinary numeric values across inputs.']} accessibility={['Label every digit position and provide visible validation text outside the group.']} />
+<ComponentExampleTabs
+  id="pin-input-length-states"
+  title="Length and validation states"
+  previewLayout="start"
+  preview={(
+    <div className="grid gap-5">
+      <div className="grid gap-2"><strong>Four digits</strong><PinInput.Root aria-label="Four digit code" length={4}><PinInput.Input /><PinInput.Input /><PinInput.Input /><PinInput.Input /></PinInput.Root></div>
+      <div className="grid gap-2"><strong>Six digits</strong><PinInput.Root aria-label="Six digit code" length={6}><PinInput.Input /><PinInput.Input /><PinInput.Input /><PinInput.Input /><PinInput.Input /><PinInput.Input /></PinInput.Root></div>
+      <div className="grid gap-2"><strong>Required</strong><PinInput.Root aria-label="Required code" length={4} required><PinInput.Input /><PinInput.Input /><PinInput.Input /><PinInput.Input /></PinInput.Root></div>
+      <div className="grid gap-2"><strong>Disabled</strong><PinInput.Root aria-label="Disabled code" disabled length={4}><PinInput.Input /><PinInput.Input /><PinInput.Input /><PinInput.Input /></PinInput.Root></div>
+    </div>
+  )}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<PinInput.Root length={4}>...</PinInput.Root>
+<PinInput.Root length={6}>...</PinInput.Root>
+<PinInput.Root required length={4}>...</PinInput.Root>
+<PinInput.Root disabled length={4}>...</PinInput.Root>` }]}
+/>
 
 ## API
 
-| Component | Main props | Note |
-| --- | --- | --- |
-| `PinInput` | `length`, `value`, `defaultValue`, `onChange`, `onComplete`, `invalid`, `disabled` | Ref exposes `focus()` and `clear()`. |
-
-<ComponentTokenTable component="pin-input" />
+Give the root an accessible label and `name` when its hidden input participates in form submission.

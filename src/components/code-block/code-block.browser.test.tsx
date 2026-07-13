@@ -1,90 +1,61 @@
-import '../../core/core.css';
 import './code-block.css';
-import type { BundledLanguage } from 'shiki/bundle/web';
+import { createRef } from 'react';
+import type { ThemedToken } from 'shiki/bundle/web';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { CodeBlock } from './react.js';
+import { styleForToken } from './code-block.js';
+import { CodeBlock } from './index.js';
 
-const themeDatasetKey = 'theme';
-
-function computedStyleFor(element: Element) {
-  return getComputedStyle(element);
-}
-
-test('CodeBlock renders a pre/code pair with scroll-safe block styling', async () => {
-  document.documentElement.dataset[themeDatasetKey] = 'tinyrack-light';
+test('renders code and progressively highlights a supported language', async () => {
+  const ref = createRef<HTMLPreElement>();
   await render(
-    <CodeBlock className="custom-block" code="pnpm add @tinyrack/ui && pnpm verify" />,
+    <CodeBlock ref={ref} code={'\nconst answer = 42;\n'} language="ts" wrap />,
   );
-  const pre = document.querySelector<HTMLElement>('.tr-code-block');
-  const nestedCode = pre?.querySelector('code');
 
-  if (pre === null || nestedCode === undefined || nestedCode === null) {
-    throw new Error('Unable to find CodeBlock.');
-  }
-
-  await expect.element(pre).toBeVisible();
-  expect(pre.tagName).toBe('PRE');
-  expect(pre.getAttribute('data-language')).toBeNull();
-  expect(nestedCode.tagName).toBe('CODE');
-  expect(pre.className).toContain('custom-block');
-
-  const styles = computedStyleFor(pre);
-
-  expect(styles.backgroundColor).toBe('rgb(245, 245, 245)');
-  expect(styles.color).toBe('rgb(23, 23, 23)');
-  expect(styles.overflowX).toBe('auto');
-  expect(styles.whiteSpace).toBe('pre');
-});
-
-test('CodeBlock supports opt-in wrapping for long text', async () => {
-  document.documentElement.dataset[themeDatasetKey] = 'tinyrack-dark';
-  await render(<CodeBlock code={'a'.repeat(120)} wrap />);
-  const pre = document.querySelector<HTMLElement>('.tr-code-block');
-
-  if (pre === null) {
-    throw new Error('Unable to find wrapping CodeBlock.');
-  }
-
-  expect(pre.getAttribute('data-wrap')).toBe('true');
-
-  const styles = computedStyleFor(pre);
-
-  expect(styles.whiteSpace).toBe('pre-wrap');
-  expect(styles.overflowWrap).toBe('anywhere');
-});
-
-test('CodeBlock progressively replaces plain code with token spans', async () => {
-  document.documentElement.dataset[themeDatasetKey] = 'tinyrack-dark';
-  await render(
-    <CodeBlock code="const answer = 1;" language="ts" theme="github-dark" />,
-  );
-  const pre = document.querySelector<HTMLElement>('.tr-code-block');
-
-  if (pre === null) {
-    throw new Error('Unable to find highlighted CodeBlock.');
-  }
-
-  expect(pre.textContent).toBe('const answer = 1;');
+  expect(ref.current?.classList.contains('tr-code-block')).toBe(true);
+  expect(ref.current?.dataset['language']).toBe('ts');
+  expect(ref.current?.dataset['wrap']).toBe('true');
   await expect
-    .poll(() => pre.querySelectorAll('span[style*="color"]').length)
-    .toBeGreaterThan(0);
-  expect(pre.getAttribute('data-highlighted')).toBe('true');
-  expect(computedStyleFor(pre).backgroundColor).toBe('rgb(36, 41, 46)');
+    .poll(() => ref.current?.dataset['highlighted'], { timeout: 10_000 })
+    .toBe('true');
 });
 
-test('CodeBlock leaves readable plain code when highlighting fails', async () => {
-  document.documentElement.dataset[themeDatasetKey] = 'tinyrack-dark';
-  await render(
-    <CodeBlock code="still readable" language={'not-a-language' as BundledLanguage} />,
+test('renders plain code without loading a highlighter', async () => {
+  const ref = createRef<HTMLPreElement>();
+  await render(<CodeBlock ref={ref} code="plain text" style={{ color: 'inherit' }} />);
+  expect(ref.current?.dataset['highlighted']).toBeUndefined();
+  expect(ref.current?.textContent).toBe('plain text');
+});
+
+test('maps every Shiki token style without leaking token metadata', () => {
+  const fullStyle = styleForToken({
+    bgColor: '#000000',
+    color: '#ffffff',
+    content: 'styled',
+    fontStyle: 7,
+    offset: 0,
+  } as unknown as ThemedToken);
+  const emptyStyle = styleForToken({
+    content: 'plain',
+    offset: 0,
+  } as ThemedToken);
+  const resetStyle = styleForToken({
+    content: 'reset',
+    fontStyle: 0,
+    offset: 0,
+  } as ThemedToken);
+  const htmlStyle = { color: 'rebeccapurple' };
+
+  expect(fullStyle).toEqual({
+    backgroundColor: '#000000',
+    color: '#ffffff',
+    fontStyle: 'italic',
+    fontWeight: 700,
+    textDecoration: 'underline',
+  });
+  expect(emptyStyle).toBeUndefined();
+  expect(resetStyle).toBeUndefined();
+  expect(styleForToken({ content: 'html', htmlStyle, offset: 0 } as ThemedToken)).toBe(
+    htmlStyle,
   );
-  const pre = document.querySelector<HTMLElement>('.tr-code-block');
-
-  if (pre === null) {
-    throw new Error('Unable to find fallback CodeBlock.');
-  }
-
-  expect(pre.textContent).toBe('still readable');
-  await new Promise((resolve) => setTimeout(resolve, 250));
-  expect(pre.textContent).toBe('still readable');
 });

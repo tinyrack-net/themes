@@ -1,113 +1,64 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button } from '../../src/components/button/react.js';
-import {
-  type ModalPlacement,
-  type ModalSize,
-  modalPlacements,
-  modalSizes,
-} from '../../src/components/modal/contract.js';
 import {
   Modal,
-  ModalAction,
-  ModalBody,
-  ModalBox,
-  ModalClose,
-  ModalContent,
-  ModalDescription,
-  ModalHeader,
-  ModalTitle,
-  ModalTrigger,
-} from '../../src/components/modal/react.js';
+  type ModalPlacement,
+  type ModalSize,
+} from '../../src/components/modal/index.js';
 
-type ModalStoryProps = {
-  closeOnBackdrop: boolean;
-  closeOnEscape: boolean;
+type ModalStoryArgs = {
+  description: string;
+  open: boolean;
   placement: ModalPlacement;
   size: ModalSize;
+  title: string;
 };
 
-function ModalStory({
-  closeOnBackdrop,
-  closeOnEscape,
-  placement,
-  size,
-}: ModalStoryProps) {
+export function ModalExample({
+  description = 'This restarts the service.',
+  open = false,
+  placement = 'middle',
+  size = 'md',
+  title = 'Deploy changes',
+}: Partial<ModalStoryArgs>) {
   return (
-    <Modal
-      closeOnBackdrop={closeOnBackdrop}
-      closeOnEscape={closeOnEscape}
-      key={`${closeOnBackdrop}-${closeOnEscape}-${placement}-${size}`}
-    >
-      <ModalTrigger asChild>
-        <Button>Open rack settings</Button>
-      </ModalTrigger>
-      <ModalContent placement={placement}>
-        <ModalBox size={size}>
-          <ModalHeader>
-            <ModalTitle>Rack settings</ModalTitle>
-            <ModalClose>Close</ModalClose>
-          </ModalHeader>
-          <ModalDescription>
-            Update this rack without leaving the current task.
-          </ModalDescription>
-          <ModalBody>
-            Node name, region, and maintenance settings belong here.
-          </ModalBody>
-          <ModalAction>
-            <ModalClose asChild>
-              <Button appearance="ghost">Cancel</Button>
-            </ModalClose>
-            <Button variant="primary">Save</Button>
-          </ModalAction>
-        </ModalBox>
-      </ModalContent>
-    </Modal>
+    <Modal.Root defaultOpen={open} key={`${open}-${placement}-${size}`}>
+      <Modal.Trigger>Open modal</Modal.Trigger>
+      <Modal.Portal>
+        <Modal.Backdrop />
+        <Modal.Popup placement={placement} size={size}>
+          <Modal.Title>{title}</Modal.Title>
+          <Modal.Description>{description}</Modal.Description>
+          <Modal.Close>Cancel</Modal.Close>
+        </Modal.Popup>
+      </Modal.Portal>
+    </Modal.Root>
   );
 }
 
-ModalStory.displayName = 'ModalStory';
-
 const meta = {
   title: 'Components/Modal',
-  component: ModalStory,
+  parameters: { layout: 'centered' },
   args: {
-    closeOnBackdrop: true,
-    closeOnEscape: true,
+    description: 'This restarts the service.',
+    open: false,
     placement: 'middle',
     size: 'md',
+    title: 'Deploy changes',
   },
   argTypes: {
-    closeOnBackdrop: {
-      control: 'boolean',
-      description: 'Allows the generated visual backdrop to dismiss the Modal.',
-    },
-    closeOnEscape: {
-      control: 'boolean',
-      description: 'Allows Escape to dismiss the topmost Modal.',
-    },
+    description: { control: 'text' },
+    open: { control: 'boolean' },
     placement: {
       control: 'select',
-      options: modalPlacements,
-      description: 'Viewport placement, including logical start and end sheets.',
+      options: ['middle', 'top', 'bottom', 'start', 'end'],
     },
-    size: {
-      control: 'select',
-      options: modalSizes,
-      description: 'Convenience maximum width applied to the Modal box.',
-    },
+    size: { control: 'select', options: ['sm', 'md', 'lg', 'full'] },
+    title: { control: 'text' },
   },
-  parameters: {
-    docs: {
-      description: {
-        component:
-          'Native dialog primitive with a zero-JavaScript HTML baseline and optional managed coordination.',
-      },
-    },
-  },
-} satisfies Meta<typeof ModalStory>;
+  render: (args) => <ModalExample {...args} />,
+} satisfies Meta<ModalStoryArgs>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
-
 export const Default: Story = {};
+export const Open: Story = { args: { open: true } };

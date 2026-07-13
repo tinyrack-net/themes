@@ -1,46 +1,58 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button } from '../../src/components/button/react.js';
-import {
-  type PopoverMode,
-  type PopoverPlacement,
-  popoverModes,
-  popoverPlacements,
-} from '../../src/components/popover/contract.js';
-import {
-  Popover,
-  PopoverClose,
-  PopoverContent,
-  PopoverTrigger,
-} from '../../src/components/popover/react.js';
+import { Popover } from '../../src/components/popover/index.js';
 
-type PopoverStoryProps = { mode: PopoverMode; placement: PopoverPlacement };
+type PopoverStoryArgs = {
+  align: 'start' | 'center' | 'end';
+  description: string;
+  open: boolean;
+  side: 'top' | 'right' | 'bottom' | 'left';
+  title: string;
+};
 
-function PopoverStory({ mode, placement }: PopoverStoryProps) {
+export function PopoverExample({
+  align = 'center',
+  description = 'All nodes online.',
+  open = false,
+  side = 'bottom',
+  title = 'Rack A',
+}: Partial<PopoverStoryArgs>) {
   return (
-    <Popover mode={mode} placement={placement}>
-      <PopoverTrigger asChild>
-        <Button>Open rack actions</Button>
-      </PopoverTrigger>
-      <PopoverContent>
-        <p>Restart or inspect this rack.</p>
-        <PopoverClose asChild>
-          <Button appearance="ghost">Close</Button>
-        </PopoverClose>
-      </PopoverContent>
-    </Popover>
+    <Popover.Root defaultOpen={open} key={`${open}-${side}-${align}`}>
+      <Popover.Trigger>Rack details</Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Positioner align={align} side={side}>
+          <Popover.Popup>
+            <Popover.Title>{title}</Popover.Title>
+            <Popover.Description>{description}</Popover.Description>
+            <Popover.Close>Close</Popover.Close>
+          </Popover.Popup>
+        </Popover.Positioner>
+      </Popover.Portal>
+    </Popover.Root>
   );
 }
 
 const meta = {
   title: 'Components/Popover',
-  component: PopoverStory,
-  args: { mode: 'manual', placement: 'bottom-start' },
-  argTypes: {
-    mode: { control: 'select', options: popoverModes },
-    placement: { control: 'select', options: popoverPlacements },
+  parameters: { layout: 'centered' },
+  args: {
+    align: 'center',
+    description: 'All nodes online.',
+    open: false,
+    side: 'bottom',
+    title: 'Rack A',
   },
-} satisfies Meta<typeof PopoverStory>;
+  argTypes: {
+    align: { control: 'select', options: ['start', 'center', 'end'] },
+    description: { control: 'text' },
+    open: { control: 'boolean' },
+    side: { control: 'select', options: ['top', 'right', 'bottom', 'left'] },
+    title: { control: 'text' },
+  },
+  render: (args) => <PopoverExample {...args} />,
+} satisfies Meta<PopoverStoryArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
+export const Open: Story = { args: { open: true } };

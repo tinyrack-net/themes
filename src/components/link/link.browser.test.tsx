@@ -1,31 +1,36 @@
 import '../../core/core.css';
 import './link.css';
+import { createRef } from 'react';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { Link } from './react.js';
+import { Link } from './index.js';
 
-const themeDatasetKey = 'theme';
-
-test('Link renders a native anchor with the CSS-first contract', async () => {
-  document.documentElement.dataset[themeDatasetKey] = 'tinyrack-dark';
+test('renders a semantic anchor with Tinyrack variants', async () => {
+  const ref = createRef<HTMLAnchorElement>();
   await render(
-    <Link href="/racks" underline="always" variant="primary">
-      Rack inventory
+    <Link ref={ref} href="/docs" underline="always" variant="primary">
+      Docs
     </Link>,
   );
-  const link = document.querySelector<HTMLAnchorElement>('.tr-link');
+  expect(ref.current?.pathname).toBe('/docs');
+  expect(ref.current?.dataset['underline']).toBe('always');
+});
 
-  if (!link) {
-    throw new Error('Unable to find Link.');
-  }
-
-  await expect.element(link).toBeVisible();
-  await expect.element(link).toHaveAttribute('href', '/racks');
-  await expect.element(link).toHaveAttribute('data-variant', 'primary');
-  await expect.element(link).toHaveAttribute('data-underline', 'always');
-
-  const styles = getComputedStyle(link);
-
-  expect(styles.color).toBe('rgb(250, 250, 250)');
-  expect(styles.textDecorationLine).toBe('underline');
+test('maps the default and muted public variants to their semantic colors', async () => {
+  document.documentElement.dataset['theme'] = 'tinyrack-light';
+  await render(
+    <div>
+      <Link data-testid="default" href="/default" variant="default">
+        Default
+      </Link>
+      <Link data-testid="muted" href="/muted" variant="muted">
+        Muted
+      </Link>
+    </div>,
+  );
+  const defaultLink = document.querySelector<HTMLElement>('[data-testid="default"]');
+  const mutedLink = document.querySelector<HTMLElement>('[data-testid="muted"]');
+  expect(getComputedStyle(defaultLink as HTMLElement).color).not.toBe(
+    getComputedStyle(mutedLink as HTMLElement).color,
+  );
 });

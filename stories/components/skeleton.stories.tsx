@@ -1,31 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { skeletonShapes } from '../../src/components/skeleton/contract.js';
-import { Skeleton, type SkeletonProps } from '../../src/components/skeleton/react.js';
+import { Skeleton, type SkeletonShape } from '../../src/components/skeleton/index.js';
 
-type ComponentStoryProps = Pick<SkeletonProps, 'animate' | 'shape'>;
-
-function SkeletonStory(controlValues: ComponentStoryProps) {
-  return (
-    <div className="grid w-full max-w-48 place-items-center">
-      <Skeleton {...controlValues} />
-    </div>
-  );
-}
-
-SkeletonStory.displayName = 'SkeletonStory';
+type SkeletonStoryArgs = {
+  height: number;
+  label: string;
+  shape: SkeletonShape;
+  width: number;
+};
 
 const meta = {
   title: 'Components/Skeleton',
-  component: SkeletonStory,
-  args: { animate: true, shape: 'text' },
+  component: Skeleton,
+  parameters: { layout: 'centered' },
+  args: { height: 48, label: 'Loading server', shape: 'rectangle', width: 240 },
   argTypes: {
-    animate: { control: 'boolean' },
-    shape: { control: 'select', options: skeletonShapes },
+    height: { control: { type: 'range', min: 12, max: 240, step: 4 } },
+    label: { control: 'text' },
+    shape: { control: 'select', options: ['text', 'rectangle', 'circle'] },
+    width: { control: { type: 'range', min: 12, max: 480, step: 4 } },
   },
-} satisfies Meta<typeof SkeletonStory>;
+  render: ({ height, label, shape, width }) => (
+    <Skeleton aria-label={label} shape={shape} style={{ height, width }} />
+  ),
+} satisfies Meta<SkeletonStoryArgs>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
-
 export const Default: Story = {};

@@ -1,81 +1,43 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { tableDensities } from '../../src/components/table/contract.js';
-import {
-  Table,
-  TableContainer,
-  type TableProps,
-} from '../../src/components/table/react.js';
+import { Table, type TableDensity } from '../../src/components/table/index.js';
 
-type ComponentStoryProps = Pick<TableProps, 'density' | 'striped'>;
-
-function TableStory(controlValues: ComponentStoryProps) {
-  return (
-    <TableContainer>
-      <Table {...controlValues}>
-        <thead>
-          <tr>
-            <th scope="col">Node</th>
-            <th scope="col">Region</th>
-            <th scope="col">Load</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>rack-a-01</td>
-            <td>Seoul</td>
-            <td>41%</td>
-            <td>Healthy</td>
-          </tr>
-          <tr>
-            <td>rack-b-03</td>
-            <td>Tokyo</td>
-            <td>58%</td>
-            <td>Review</td>
-          </tr>
-          <tr>
-            <td>rack-c-02</td>
-            <td>Singapore</td>
-            <td>29%</td>
-            <td>Healthy</td>
-          </tr>
-        </tbody>
-      </Table>
-    </TableContainer>
-  );
-}
-
-TableStory.displayName = 'TableStory';
+type TableStoryArgs = { caption: string; density: TableDensity; striped: boolean };
 
 const meta = {
   title: 'Components/Table',
-  component: TableStory,
-  args: {
-    density: 'normal',
-    striped: false,
-  },
+  parameters: { layout: 'centered' },
+  args: { caption: 'Rack status', density: 'comfortable', striped: true },
   argTypes: {
+    caption: { control: 'text' },
     density: {
       control: 'select',
-      options: tableDensities,
-      description: 'Cell spacing density.',
+      options: ['compact', 'comfortable', 'spacious'],
     },
-    striped: {
-      control: 'boolean',
-      description: 'Adds zebra striping to body rows.',
-    },
+    striped: { control: 'boolean' },
   },
-  parameters: {
-    docs: {
-      description: {
-        component: 'CSS-first Tinyrack Table rendered through native table markup.',
-      },
-    },
-  },
-} satisfies Meta<typeof TableStory>;
+  render: ({ caption, ...rootProps }) => (
+    <Table.Root className="min-w-96" {...rootProps}>
+      <Table.Caption>{caption}</Table.Caption>
+      <Table.Header>
+        <Table.Row>
+          <Table.Head>Name</Table.Head>
+          <Table.Head>Status</Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Rack A</Table.Cell>
+          <Table.Cell>Healthy</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Rack B</Table.Cell>
+          <Table.Cell>Maintenance</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table.Root>
+  ),
+} satisfies Meta<TableStoryArgs>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
-
 export const Default: Story = {};

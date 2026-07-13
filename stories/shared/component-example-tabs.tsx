@@ -3,15 +3,11 @@
 import { LinkIcon } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
 import type { BundledLanguage } from 'shiki/bundle/web';
-import { Button } from '../../src/components/button/react.js';
-import { CodeBlock } from '../../src/components/code-block/react.js';
-import {
-  Tabs,
-  TabsList,
-  TabsPanel,
-  TabsTrigger,
-} from '../../src/components/tabs/react.js';
-import { mergeClassNames } from '../../src/mdx/shared.js';
+import { Button } from '../../src/components/button/index.js';
+import { CodeBlock } from '../../src/components/code-block/index.js';
+import { Tabs } from '../../src/components/tabs/index.js';
+import { mergeClassNames } from '../../src/mdx/mdx-markup.js';
+import { copyDocsSource } from './copy-docs-source.js';
 
 export type ComponentExampleSource = {
   code: string;
@@ -30,10 +26,7 @@ export type ComponentExampleTabsProps = {
   title: string;
 };
 
-const sourceOrder = new Map([
-  ['HTML', 0],
-  ['React', 1],
-]);
+const sourceOrder = new Map([['React', 0]]);
 const formattableSourceLanguages = new Set<BundledLanguage>(['html', 'jsx', 'tsx']);
 const previewLayoutClassNames = {
   center: 'content-center items-center justify-items-center',
@@ -164,16 +157,7 @@ function ComponentExampleSourcePanel({
   }, [copyStatus]);
 
   async function copySource() {
-    try {
-      if (navigator.clipboard?.writeText === undefined) {
-        throw new Error('Clipboard API is unavailable.');
-      }
-
-      await navigator.clipboard.writeText(normalizedCode);
-      setCopyStatus('copied');
-    } catch {
-      setCopyStatus('unavailable');
-    }
+    setCopyStatus((await copyDocsSource(normalizedCode)) ? 'copied' : 'unavailable');
   }
 
   const copyLabel = copyStatusLabels[copyStatus];
@@ -255,28 +239,28 @@ export function ComponentExampleTabs({
           </p>
         )}
       </div>
-      <Tabs
+      <Tabs.Root
         aria-label={ariaLabel ?? `${title} example`}
         className="min-w-0"
         data-component-example-tabs=""
         defaultValue="preview"
         size="sm"
       >
-        <TabsList
+        <Tabs.List
           aria-label={ariaLabel ?? `${title} example tabs`}
           className="!overflow-hidden"
         >
-          <TabsTrigger value="preview">Preview</TabsTrigger>
+          <Tabs.Trigger value="preview">Preview</Tabs.Trigger>
           {sortedSources.map((source) => (
-            <TabsTrigger key={source.label} value={sourceValue(source.label)}>
+            <Tabs.Trigger key={source.label} value={sourceValue(source.label)}>
               {source.label}
-            </TabsTrigger>
+            </Tabs.Trigger>
           ))}
-        </TabsList>
-        <TabsPanel value="preview">
+        </Tabs.List>
+        <Tabs.Panel value="preview">
           <div
             className={mergeClassNames(
-              'grid min-h-40 min-w-0 gap-4 overflow-x-auto p-4 sm:p-6',
+              'grid min-h-40 min-w-0 gap-4 overflow-x-auto bg-tinyrack-canvas p-4 text-tinyrack-text sm:p-6',
               previewLayoutClassNames[previewLayout],
               previewClassName,
             )}
@@ -284,13 +268,13 @@ export function ComponentExampleTabs({
           >
             {preview}
           </div>
-        </TabsPanel>
+        </Tabs.Panel>
         {sortedSources.map((source) => (
-          <TabsPanel key={source.label} value={sourceValue(source.label)}>
+          <Tabs.Panel key={source.label} value={sourceValue(source.label)}>
             <ComponentExampleSourcePanel {...source} title={title} />
-          </TabsPanel>
+          </Tabs.Panel>
         ))}
-      </Tabs>
+      </Tabs.Root>
     </section>
   );
 }

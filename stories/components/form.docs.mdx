@@ -1,407 +1,65 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import {
-  Checkbox,
-  Field,
-  FieldDescription,
-  FormMessage,
-  Input,
-  InputAdornment,
-  InputGroup,
-  Label,
-  Radio,
-  RadioGroup,
-  Select,
-  Switch,
-  Textarea,
-} from '../../src/components/form/react.js';
-import { formControlSizes } from '../../src/components/form/contract.js';
+import { Form } from '../../src/components/form/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
+import * as Stories from './form.stories';
 
-<Meta title="Components/Form/Overview" />
+<Meta of={Stories} />
 
 # Form
 
-SSR-friendly field, text control, choice control, and message primitives over native form elements.
+Accessible field composition for labels, controls, descriptions, and validation errors.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `tr-field` | `Field` | `data-size`; `sm`, `md`, `lg`; default `md` | Groups a label, control, and associated message. |
-| Part | `tr-label`, `tr-field-description`, `tr-form-message` | `Label`, `FieldDescription`, `FormMessage` | description plus neutral or error message | Associate labels, descriptions and messages with the control they explain. |
-| Component | `tr-input-group`, `tr-input-adornment` | `InputGroup`, `InputAdornment` | leading or trailing adornment | Keep the native Input as the focusable value control. |
-| Component | `tr-input`, `tr-textarea`, `tr-select` | `Input`, `Textarea`, `Select` | `data-size`, `data-invalid`; size default `md` | Keeps native text-control behavior and validation semantics. |
-| Component | `tr-checkbox`, `tr-radio`, `tr-switch` | `Checkbox`, `Radio`, `Switch` | `data-size`, `data-invalid`; size default `md` | Keeps the native input focusable and keyboard operable. |
-| Behavior | `tr-radio-group[data-orientation]` | `RadioGroup.orientation` | `vertical`, `horizontal`; default `vertical` | Group related choices with a fieldset and an accessible name. |
-| State | `data-invalid`, `aria-invalid`, `required`, `disabled` | `invalid` and native props | invalid unset; native props default `false` | Expose state semantically instead of relying on color alone. |
+| Part | Responsibility |
+| --- | --- |
+| `Field` | disabled, invalid, and validation state |
+| `Label` | accessible control name |
+| `Control` | native input behavior through Base UI render |
+| `Description` | persistent supporting text |
+| `Error` | validation-specific feedback |
 
 ## Install
 
-<ComponentInstall
-  surfaces={[
-    {
-      label: 'CSS / HTML',
-      install: 'pnpm add @tinyrack/ui tailwindcss',
-      imports: [
-        '@import "@tinyrack/ui/core/core.css";',
-        '@import "@tinyrack/ui/components/form/form.css";',
-      ],
-    },
-    {
-      label: 'React',
-      install: 'pnpm add @tinyrack/ui react react-dom',
-      imports: [
-        'import {',
-        '  Checkbox,',
-        '  Field,',
-        '  FieldDescription,',
-        '  FormMessage,',
-        '  Input,',
-        '  InputAdornment,',
-        '  InputGroup,',
-        '  Label,',
-        '  Radio,',
-        '  RadioGroup,',
-        '  Select,',
-        '  Switch,',
-        '  Textarea,',
-        "} from '@tinyrack/ui/components/form/react';",
-      ],
-    },
-    {
-      label: 'React MDX',
-      install: 'pnpm add @tinyrack/ui @mdx-js/react',
-      imports: [
-        "import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';",
-      ],
-      note: 'Maps task-list checkboxes.',
-    },
-    {
-      label: 'Astro MDX',
-      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx',
-      imports: [
-        "import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';",
-      ],
-      note: 'Maps task-list checkboxes.',
-    },
-  ]}
-/>
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/form.css';", "import { Form } from '@tinyrack/ui/components/form';"] }]} />
 
 ## Usage
 
 <ComponentExampleTabs
   id="form-basic"
-  title="Basic field"
-  description="Compose a complete field with an explicit label and programmatically associated help text."
+  title="Labeled field"
   previewLayout="stretch"
-  preview={(
-    <Field>
-      <Label htmlFor="rack-name">Rack name</Label>
-      <Input aria-describedby="rack-name-help" id="rack-name" placeholder="rack-a-01" />
-      <FormMessage id="rack-name-help">Use a stable rack identifier.</FormMessage>
-    </Field>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/form/form.css';
-import { Field, FormMessage, Input, Label } from '@tinyrack/ui/components/form/react';
-
-<Field>
-  <Label htmlFor="rack-name">Rack name</Label>
-  <Input aria-describedby="rack-name-help" id="rack-name" placeholder="rack-a-01" />
-  <FormMessage id="rack-name-help">Use a stable rack identifier.</FormMessage>
-</Field>;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-field" data-size="md">
-  <label class="tr-label" for="rack-name">Rack name</label>
-  <input class="tr-input" data-size="md" id="rack-name" aria-describedby="rack-name-help" />
-  <p class="tr-form-message" data-variant="neutral" id="rack-name-help">
-    Use a stable rack identifier.
-  </p>
-</div>
-
-<label class="tr-checkbox" data-size="md">
-  <input class="tr-checkbox-input" type="checkbox" checked />
-  <span aria-hidden="true" class="tr-checkbox-control"></span>
-  <span class="tr-checkbox-label">Monitoring enabled</span>
-</label>`,
-    },
-  ]}
+  preview={<Form.Field><Form.Label>Email</Form.Label><Form.Control required type="email" placeholder="ops@example.com" /><Form.Description>Operational alerts are sent here.</Form.Description><Form.Error match="valueMissing">Email is required.</Form.Error></Form.Field>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Form.Field>
+  <Form.Label>Email</Form.Label>
+  <Form.Control required type="email" placeholder="ops@example.com" />
+  <Form.Description>Operational alerts are sent here.</Form.Description>
+  <Form.Error match="valueMissing">Email is required.</Form.Error>
+</Form.Field>` }]}
 />
 
 ## Examples
 
 <ComponentExampleTabs
-  id="form-primitive-gallery"
-  title="Primitive Gallery"
-  description="Complete fields and native choice controls share one responsive form stylesheet."
+  id="form-field-states"
+  title="Field states"
+  description="Default, invalid, disabled, and read-only fields are compared together."
   previewLayout="stretch"
   preview={(
-    <div className="grid gap-4 lg:grid-cols-2">
-      <Field>
-        <Label htmlFor="docs-form-rack">Rack name</Label>
-        <Input id="docs-form-rack" placeholder="rack-a-01" />
-        <FormMessage>Use a stable rack identifier.</FormMessage>
-      </Field>
-      <Field>
-        <Label htmlFor="docs-form-region">Region</Label>
-        <Select id="docs-form-region" defaultValue="seoul">
-          <option value="seoul">Seoul</option>
-          <option value="tokyo">Tokyo</option>
-          <option value="singapore">Singapore</option>
-        </Select>
-        <FormMessage>Routes deploy through the selected region.</FormMessage>
-      </Field>
-      <Field>
-        <Label htmlFor="docs-form-note">Maintenance note</Label>
-        <Textarea id="docs-form-note" rows={4} placeholder="Window, owner, or alert route." />
-      </Field>
-      <div className="grid content-start gap-3">
-        <Checkbox defaultChecked>Monitoring enabled</Checkbox>
-        <Switch defaultChecked>Auto deploy</Switch>
-        <RadioGroup aria-label="Rack role" orientation="horizontal">
-          <Radio defaultChecked name="docs-form-role" value="primary">Primary</Radio>
-          <Radio name="docs-form-role" value="replica">Replica</Radio>
-        </RadioGroup>
-      </div>
+    <div className="grid gap-5 sm:grid-cols-2">
+      <Form.Field><Form.Label>Default</Form.Label><Form.Control placeholder="rack-a" /><Form.Description>Editable value.</Form.Description></Form.Field>
+      <Form.Field invalid><Form.Label>Invalid</Form.Label><Form.Control aria-invalid="true" defaultValue="bad value" /><Form.Error match>Use a valid rack name.</Form.Error></Form.Field>
+      <Form.Field disabled><Form.Label>Disabled</Form.Label><Form.Control defaultValue="rack-b" /><Form.Description>Not available.</Form.Description></Form.Field>
+      <Form.Field><Form.Label>Read only</Form.Label><Form.Control readOnly value="rack-c" /><Form.Description>Managed by policy.</Form.Description></Form.Field>
     </div>
   )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Field>
-  <Label htmlFor="docs-form-rack">Rack name</Label>
-  <Input id="docs-form-rack" placeholder="rack-a-01" />
-  <FormMessage>Use a stable rack identifier.</FormMessage>
-</Field>
-
-<Select defaultValue="seoul">
-  <option value="seoul">Seoul</option>
-  <option value="tokyo">Tokyo</option>
-</Select>
-
-<Checkbox defaultChecked>Monitoring enabled</Checkbox>
-<Switch defaultChecked>Auto deploy</Switch>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-field">
-  <label class="tr-label" for="docs-form-rack">Rack name</label>
-  <input class="tr-input" id="docs-form-rack" placeholder="rack-a-01" />
-  <p class="tr-form-message">Use a stable rack identifier.</p>
-</div>
-
-<select class="tr-select">
-  <option value="seoul">Seoul</option>
-  <option value="tokyo">Tokyo</option>
-</select>
-
-<label class="tr-switch">
-  <input class="tr-switch-input" type="checkbox" role="switch" checked />
-  <span aria-hidden="true" class="tr-switch-track"><span class="tr-switch-thumb"></span></span>
-  <span class="tr-switch-label">Auto deploy</span>
-</label>`,
-    },
-  ]}
-/>
-
-<ComponentExampleTabs
-  id="form-size-matrix"
-  title="Size Matrix"
-  description="Apply the same size to field wrappers and nested controls."
-  previewLayout="stretch"
-  preview={(
-    <div className="grid gap-4">
-      {formControlSizes.map((size) => (
-        <section key={size} className="grid gap-3 border border-tinyrack-border p-3 lg:grid-cols-3">
-          <Field size={size}>
-            <Label htmlFor={`docs-form-size-${size}`}>size: {size}</Label>
-            <Input id={`docs-form-size-${size}`} size={size} placeholder="rack-a-01" />
-          </Field>
-          <Select aria-label={`Region ${size}`} size={size} defaultValue="seoul">
-            <option value="seoul">Seoul</option>
-            <option value="tokyo">Tokyo</option>
-          </Select>
-          <Checkbox size={size} defaultChecked>Monitoring enabled</Checkbox>
-        </section>
-      ))}
-    </div>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Field size="sm">
-  <Label htmlFor="docs-form-size-sm">size: sm</Label>
-  <Input id="docs-form-size-sm" size="sm" placeholder="rack-a-01" />
-</Field>
-<Field size="md">
-  <Label htmlFor="docs-form-size-md">size: md</Label>
-  <Input id="docs-form-size-md" size="md" placeholder="rack-a-01" />
-</Field>
-<Field size="lg">
-  <Label htmlFor="docs-form-size-lg">size: lg</Label>
-  <Input id="docs-form-size-lg" size="lg" placeholder="rack-a-01" />
-</Field>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-field" data-size="sm">
-  <label class="tr-label" for="rack-sm">size: sm</label>
-  <input class="tr-input" data-size="sm" id="rack-sm" />
-</div>
-<div class="tr-field" data-size="md">
-  <label class="tr-label" for="rack-md">size: md</label>
-  <input class="tr-input" data-size="md" id="rack-md" />
-</div>
-<div class="tr-field" data-size="lg">
-  <label class="tr-label" for="rack-lg">size: lg</label>
-  <input class="tr-input" data-size="lg" id="rack-lg" />
-</div>`,
-    },
-  ]}
-/>
-
-<ComponentExampleTabs
-  id="form-state-matrix"
-  title="State Matrix"
-  description="Invalid and disabled states are exposed through native attributes and Tinyrack data attributes."
-  previewLayout="stretch"
-  preview={(
-    <div className="grid gap-3 lg:grid-cols-3">
-      <Input placeholder="Normal input" />
-      <Input invalid defaultValue="invalid-route" />
-      <Input disabled defaultValue="disabled" />
-      <Checkbox defaultChecked>Checked</Checkbox>
-      <Checkbox invalid>Invalid</Checkbox>
-      <Switch disabled>Disabled switch</Switch>
-    </div>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Input placeholder="Normal input" />
-<Input invalid defaultValue="invalid-route" />
-<Input disabled defaultValue="disabled" />
-<Checkbox defaultChecked>Checked</Checkbox>
-<Checkbox invalid>Invalid</Checkbox>
-<Switch disabled>Disabled switch</Switch>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<input class="tr-input" placeholder="Normal input" />
-<input class="tr-input" data-invalid="true" aria-invalid="true" value="invalid-route" />
-<input class="tr-input" disabled value="disabled" />
-<label class="tr-checkbox" data-invalid="true">
-  <input class="tr-checkbox-input" type="checkbox" aria-invalid="true" />
-  <span aria-hidden="true" class="tr-checkbox-control"></span>
-  <span class="tr-checkbox-label">Invalid</span>
-</label>`,
-    },
-  ]}
-/>
-
-<ComponentExampleTabs
-  id="form-input-group"
-  title="Description and input adornments"
-  description="Compose icons, units or reveal actions around one native input."
-  previewLayout="stretch"
-  preview={(
-    <Field>
-      <Label htmlFor="docs-endpoint">API endpoint</Label>
-      <FieldDescription id="docs-endpoint-help">Use the provider host without a trailing slash.</FieldDescription>
-      <InputGroup>
-        <InputAdornment position="start">https://</InputAdornment>
-        <Input id="docs-endpoint" aria-describedby="docs-endpoint-help" defaultValue="api.example.com" />
-        <InputAdornment position="end">v1</InputAdornment>
-      </InputGroup>
-    </Field>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Field>
-  <Label htmlFor="endpoint">API endpoint</Label>
-  <FieldDescription id="endpoint-help">Use the provider host without a trailing slash.</FieldDescription>
-  <InputGroup>
-    <InputAdornment position="start">https://</InputAdornment>
-    <Input id="endpoint" aria-describedby="endpoint-help" />
-    <InputAdornment position="end">v1</InputAdornment>
-  </InputGroup>
-</Field>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-field">
-  <label class="tr-label" for="endpoint">API endpoint</label>
-  <p class="tr-field-description" id="endpoint-help">Use the provider host without a trailing slash.</p>
-  <div class="tr-input-group">
-    <span class="tr-input-adornment" data-position="start">https://</span>
-    <input class="tr-input" id="endpoint" aria-describedby="endpoint-help">
-    <span class="tr-input-adornment" data-position="end">v1</span>
-  </div>
-</div>`,
-    },
-  ]}
-/>
-
-## Guidance
-
-<ComponentGuidance
-  whenToUse={[
-    'Compose each control as a complete field with a visible label and associated help or error text.',
-    'Use the native control that matches the data and interaction: input, textarea, select, checkbox, radio, or switch.',
-  ]}
-  avoid={[
-    'Do not use placeholder text as the only label or validation color as the only error signal.',
-    'Do not replace native required, disabled, checked, or selected behavior with visual state alone.',
-  ]}
-  accessibility={[
-    'Connect labels with htmlFor/id and connect help or error text with aria-describedby.',
-    'Set required, disabled, and aria-invalid on the native control; keep invalid messages specific and visible.',
-    'Wrap related radio or checkbox choices in a fieldset with a legend, and preserve native Tab, Space, arrow-key, and select keyboard behavior.',
-  ]}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Form.Field>...</Form.Field>
+<Form.Field invalid>...</Form.Field>
+<Form.Field disabled>...</Form.Field>
+<Form.Field><Form.Control readOnly value="rack-c" /></Form.Field>` }]}
 />
 
 ## API
 
-| Component | Main props | Note |
-| --- | --- | --- |
-| `Field` | `size` | Field layout wrapper. |
-| `FieldDescription` | native paragraph props | Supporting text separate from validation status. |
-| `InputGroup`, `InputAdornment` | `invalid`, `size`, `position` | Leading and trailing content around one Input. |
-| `Label` | native label props | Use `htmlFor` or wrap the control. |
-| `Input`, `Textarea`, `Select` | `size`, `invalid`, native props | Text controls share sizing and validation styling. |
-| `Checkbox`, `Radio`, `Switch` | `size`, `invalid`, `disabled`, native input props | Native input remains focusable. |
-| `RadioGroup` | `orientation`, `appearance`, fieldset props | `appearance="segmented"` reuses native radio semantics. |
-| `FormMessage` | `variant` | Renders supporting or error text. |
-
-### Related pages
-
-| Page | Purpose |
-| --- | --- |
-| `Components/Form/Field` | Field, Label, and FormMessage composition. |
-| `Components/Form/Input` | Native input wrapper and `type` examples. |
-| `Components/Form/Textarea` | Multiline native textarea. |
-| `Components/Form/Select` | Native select. |
-| `Components/Form/Checkbox` | Boolean choice input. |
-| `Components/Form/Radio` | Mutually exclusive choice group. |
-| `Components/Form/Switch` | Boolean switch input. |
-
-<ComponentTokenTable component="form" />
+Parts are individually exported and forward Base UI or native props, events, styles, and React 19 refs.

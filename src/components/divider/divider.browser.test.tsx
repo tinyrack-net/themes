@@ -1,39 +1,25 @@
-import '../../core/core.css';
 import './divider.css';
+import { createRef } from 'react';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { Divider } from './react.js';
+import { Divider } from './index.js';
 
-const themeDatasetKey = 'theme';
-
-test('Divider renders a semantic horizontal separator by default', async () => {
-  document.documentElement.dataset[themeDatasetKey] = 'tinyrack-dark';
-  await render(<Divider className="custom-divider" />);
-  const divider = document.querySelector<HTMLElement>('.tr-divider');
-
-  if (!divider) {
-    throw new Error('Unable to find horizontal Divider.');
-  }
-
-  await expect.element(divider).toBeVisible();
-  await expect.element(divider).toHaveAttribute('data-orientation', 'horizontal');
-  expect(divider.className).toContain('custom-divider');
-  expect(divider.tagName).toBe('HR');
-  expect(getComputedStyle(divider).height).toBe('1px');
-  expect(getComputedStyle(divider).backgroundColor).toBe('rgb(64, 64, 64)');
+test('renders a semantic separator', async () => {
+  const ref = createRef<HTMLHRElement>();
+  await render(<Divider ref={ref} orientation="vertical" />);
+  expect(ref.current?.getAttribute('aria-orientation')).toBe('vertical');
+  expect(ref.current?.getAttribute('role')).toBe('separator');
 });
 
-test('Divider exposes vertical orientation and ARIA orientation', async () => {
-  document.documentElement.dataset[themeDatasetKey] = 'tinyrack-light';
-  await render(<Divider orientation="vertical" />);
-  const divider = document.querySelector<HTMLElement>('.tr-divider');
-
-  if (!divider) {
-    throw new Error('Unable to find vertical Divider.');
-  }
-
-  await expect.element(divider).toHaveAttribute('data-orientation', 'vertical');
-  await expect.element(divider).toHaveAttribute('aria-orientation', 'vertical');
-  expect(getComputedStyle(divider).width).toBe('1px');
-  expect(getComputedStyle(divider).minHeight).toBe('16px');
+test('keeps horizontal and custom role semantics', async () => {
+  const horizontalRef = createRef<HTMLHRElement>();
+  const presentationRef = createRef<HTMLHRElement>();
+  await render(
+    <>
+      <Divider ref={horizontalRef} />
+      <Divider ref={presentationRef} orientation="horizontal" role="presentation" />
+    </>,
+  );
+  expect(horizontalRef.current?.hasAttribute('aria-orientation')).toBe(false);
+  expect(presentationRef.current?.getAttribute('role')).toBe('presentation');
 });

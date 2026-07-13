@@ -28,14 +28,66 @@ Semantic data tables with responsive overflow, density, and optional row stripin
   id="table-basic"
   title="Rack status"
   previewLayout="stretch"
-  preview={<Table.Root striped><Table.Caption>Rack status</Table.Caption><Table.Header><Table.Row><Table.Head>Name</Table.Head><Table.Head>Status</Table.Head></Table.Row></Table.Header><Table.Body><Table.Row><Table.Cell>Rack A</Table.Cell><Table.Cell>Healthy</Table.Cell></Table.Row><Table.Row><Table.Cell>Rack B</Table.Cell><Table.Cell>Maintenance</Table.Cell></Table.Row></Table.Body></Table.Root>}
-  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Table.Root striped>
+  preview={(
+    <Table.Root className="min-w-3xl" striped>
+      <Table.Caption>Rack status</Table.Caption>
+      <Table.Header>
+        <Table.Row>
+          <Table.Head>Rack</Table.Head>
+          <Table.Head>Location</Table.Head>
+          <Table.Head align="right">Nodes</Table.Head>
+          <Table.Head align="right">Load</Table.Head>
+          <Table.Head>Status</Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {[
+          ['Rack A', 'Seoul · Zone 1', 12, '42%', 'Healthy'],
+          ['Rack B', 'Seoul · Zone 2', 10, '67%', 'Healthy'],
+          ['Rack C', 'Busan · Zone 1', 8, '81%', 'Degraded'],
+          ['Rack D', 'Daejeon · Zone 1', 6, '28%', 'Healthy'],
+          ['Rack E', 'Seoul · Zone 3', 12, '—', 'Maintenance'],
+        ].map(([rack, location, nodes, load, status]) => (
+          <Table.Row key={rack}>
+            <Table.Cell>{rack}</Table.Cell>
+            <Table.Cell>{location}</Table.Cell>
+            <Table.Cell align="right">{nodes}</Table.Cell>
+            <Table.Cell align="right">{load}</Table.Cell>
+            <Table.Cell>{status}</Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table.Root>
+  )}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`const racks = [
+  ['Rack A', 'Seoul · Zone 1', 12, '42%', 'Healthy'],
+  ['Rack B', 'Seoul · Zone 2', 10, '67%', 'Healthy'],
+  ['Rack C', 'Busan · Zone 1', 8, '81%', 'Degraded'],
+  ['Rack D', 'Daejeon · Zone 1', 6, '28%', 'Healthy'],
+  ['Rack E', 'Seoul · Zone 3', 12, '—', 'Maintenance'],
+] as const;
+
+<Table.Root className="min-w-3xl" striped>
   <Table.Caption>Rack status</Table.Caption>
   <Table.Header>
-    <Table.Row><Table.Head>Name</Table.Head><Table.Head>Status</Table.Head></Table.Row>
+    <Table.Row>
+      <Table.Head>Rack</Table.Head>
+      <Table.Head>Location</Table.Head>
+      <Table.Head align="right">Nodes</Table.Head>
+      <Table.Head align="right">Load</Table.Head>
+      <Table.Head>Status</Table.Head>
+    </Table.Row>
   </Table.Header>
   <Table.Body>
-    <Table.Row><Table.Cell>Rack A</Table.Cell><Table.Cell>Healthy</Table.Cell></Table.Row>
+    {racks.map(([rack, location, nodes, load, status]) => (
+      <Table.Row key={rack}>
+        <Table.Cell>{rack}</Table.Cell>
+        <Table.Cell>{location}</Table.Cell>
+        <Table.Cell align="right">{nodes}</Table.Cell>
+        <Table.Cell align="right">{load}</Table.Cell>
+        <Table.Cell>{status}</Table.Cell>
+      </Table.Row>
+    ))}
   </Table.Body>
 </Table.Root>` }]}
 />
@@ -49,25 +101,152 @@ Semantic data tables with responsive overflow, density, and optional row stripin
   previewLayout="stretch"
   preview={(
     <div className="grid gap-5">
-      <div className="grid gap-2"><strong>Compact</strong><Table.Root density="compact"><Table.Body><Table.Row><Table.Cell>Rack A</Table.Cell><Table.Cell>Healthy</Table.Cell></Table.Row></Table.Body></Table.Root></div>
-      <div className="grid gap-2"><strong>Comfortable</strong><Table.Root density="comfortable"><Table.Body><Table.Row><Table.Cell>Rack A</Table.Cell><Table.Cell>Healthy</Table.Cell></Table.Row></Table.Body></Table.Root></div>
-      <div className="grid gap-2"><strong>Spacious</strong><Table.Root density="spacious"><Table.Body><Table.Row><Table.Cell>Rack A</Table.Cell><Table.Cell>Healthy</Table.Cell></Table.Row></Table.Body></Table.Root></div>
+      {['compact', 'comfortable', 'spacious'].map((density) => (
+        <div className="grid gap-2" key={density}>
+          <strong>{density[0].toUpperCase() + density.slice(1)}</strong>
+          <Table.Root className="min-w-2xl" density={density}>
+            <Table.Header>
+              <Table.Row>
+                <Table.Head>Rack</Table.Head>
+                <Table.Head>Location</Table.Head>
+                <Table.Head align="right">Nodes</Table.Head>
+                <Table.Head>Status</Table.Head>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {[
+                ['Rack A', 'Seoul · Zone 1', 12, 'Healthy'],
+                ['Rack C', 'Busan · Zone 1', 8, 'Degraded'],
+                ['Rack E', 'Seoul · Zone 3', 12, 'Maintenance'],
+              ].map(([rack, location, nodes, status]) => (
+                <Table.Row key={rack}>
+                  <Table.Cell>{rack}</Table.Cell>
+                  <Table.Cell>{location}</Table.Cell>
+                  <Table.Cell align="right">{nodes}</Table.Cell>
+                  <Table.Cell>{status}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        </div>
+      ))}
     </div>
   )}
-  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Table.Root density="compact">...</Table.Root>
-<Table.Root density="comfortable">...</Table.Root>
-<Table.Root density="spacious">...</Table.Root>` }]}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`const densities = ['compact', 'comfortable', 'spacious'] as const;
+const racks = [
+  ['Rack A', 'Seoul · Zone 1', 12, 'Healthy'],
+  ['Rack C', 'Busan · Zone 1', 8, 'Degraded'],
+  ['Rack E', 'Seoul · Zone 3', 12, 'Maintenance'],
+] as const;
+
+<div className="grid gap-5">
+  {densities.map((density) => (
+    <div className="grid gap-2" key={density}>
+      <strong>{density[0].toUpperCase() + density.slice(1)}</strong>
+      <Table.Root className="min-w-2xl" density={density}>
+        <Table.Header>
+          <Table.Row>
+            <Table.Head>Rack</Table.Head>
+            <Table.Head>Location</Table.Head>
+            <Table.Head align="right">Nodes</Table.Head>
+            <Table.Head>Status</Table.Head>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {racks.map(([rack, location, nodes, status]) => (
+            <Table.Row key={rack}>
+              <Table.Cell>{rack}</Table.Cell>
+              <Table.Cell>{location}</Table.Cell>
+              <Table.Cell align="right">{nodes}</Table.Cell>
+              <Table.Cell>{status}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table.Root>
+    </div>
+  ))}
+</div>` }]}
 />
 
 <ComponentExampleTabs
   id="table-striped-footer"
   title="Striped rows and footer"
   previewLayout="stretch"
-  preview={<Table.Root density="compact" striped><Table.Header><Table.Row><Table.Head>Service</Table.Head><Table.Head align="right">Replicas</Table.Head></Table.Row></Table.Header><Table.Body><Table.Row><Table.Cell>API</Table.Cell><Table.Cell align="right">3</Table.Cell></Table.Row><Table.Row><Table.Cell>Worker</Table.Cell><Table.Cell align="right">6</Table.Cell></Table.Row></Table.Body><Table.Footer><Table.Row><Table.Cell>Total</Table.Cell><Table.Cell align="right">9</Table.Cell></Table.Row></Table.Footer></Table.Root>}
-  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Table.Root density="compact" striped>
-  <Table.Header>...</Table.Header>
-  <Table.Body>...</Table.Body>
-  <Table.Footer>...</Table.Footer>
+  preview={(
+    <Table.Root className="min-w-3xl" density="compact" striped>
+      <Table.Header>
+        <Table.Row>
+          <Table.Head>Service</Table.Head>
+          <Table.Head>Owner</Table.Head>
+          <Table.Head>Region</Table.Head>
+          <Table.Head align="right">Replicas</Table.Head>
+          <Table.Head align="right">Requests / min</Table.Head>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {[
+          ['API gateway', 'Platform', 'Global', 3, '18,420'],
+          ['Authentication', 'Identity', 'Seoul', 4, '9,870'],
+          ['Event worker', 'Data', 'Busan', 6, '7,310'],
+          ['Image proxy', 'Media', 'Global', 3, '5,640'],
+          ['Search indexer', 'Data', 'Seoul', 2, '2,180'],
+          ['Metrics collector', 'SRE', 'All regions', 5, '12,760'],
+        ].map(([service, owner, region, replicas, requests]) => (
+          <Table.Row key={service}>
+            <Table.Cell>{service}</Table.Cell>
+            <Table.Cell>{owner}</Table.Cell>
+            <Table.Cell>{region}</Table.Cell>
+            <Table.Cell align="right">{replicas}</Table.Cell>
+            <Table.Cell align="right">{requests}</Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+      <Table.Footer>
+        <Table.Row>
+          <Table.Cell colSpan={3}>Total</Table.Cell>
+          <Table.Cell align="right">23</Table.Cell>
+          <Table.Cell align="right">56,180</Table.Cell>
+        </Table.Row>
+      </Table.Footer>
+    </Table.Root>
+  )}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`const services = [
+  ['API gateway', 'Platform', 'Global', 3, '18,420'],
+  ['Authentication', 'Identity', 'Seoul', 4, '9,870'],
+  ['Event worker', 'Data', 'Busan', 6, '7,310'],
+  ['Image proxy', 'Media', 'Global', 3, '5,640'],
+  ['Search indexer', 'Data', 'Seoul', 2, '2,180'],
+  ['Metrics collector', 'SRE', 'All regions', 5, '12,760'],
+] as const;
+
+<Table.Root className="min-w-3xl" density="compact" striped>
+  <Table.Header>
+    <Table.Row>
+      <Table.Head>Service</Table.Head>
+      <Table.Head>Owner</Table.Head>
+      <Table.Head>Region</Table.Head>
+      <Table.Head align="right">Replicas</Table.Head>
+      <Table.Head align="right">Requests / min</Table.Head>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    {services.map(([service, owner, region, replicas, requests]) => (
+      <Table.Row key={service}>
+        <Table.Cell>{service}</Table.Cell>
+        <Table.Cell>{owner}</Table.Cell>
+        <Table.Cell>{region}</Table.Cell>
+        <Table.Cell align="right">{replicas}</Table.Cell>
+        <Table.Cell align="right">{requests}</Table.Cell>
+      </Table.Row>
+    ))}
+  </Table.Body>
+  <Table.Footer>
+    <Table.Row>
+      <Table.Cell colSpan={3}>Total</Table.Cell>
+      <Table.Cell align="right">23</Table.Cell>
+      <Table.Cell align="right">56,180</Table.Cell>
+    </Table.Row>
+  </Table.Footer>
 </Table.Root>` }]}
 />
 

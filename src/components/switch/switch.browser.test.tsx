@@ -39,6 +39,12 @@ test('preserves root, ref, form, and computed-style contracts', async () => {
   expect(label).not.toBeNull();
   expect(getComputedStyle(controlElement).width).toBe('40px');
   expect(getComputedStyle(controlElement).height).toBe('24px');
+  expect(getComputedStyle(controlElement).backgroundColor).toBe('rgb(23, 23, 23)');
+  expect(
+    getComputedStyle(
+      controlElement.querySelector<HTMLElement>('.tr-switch-thumb') as HTMLElement,
+    ).backgroundColor,
+  ).toBe('rgb(250, 250, 250)');
 });
 
 test('toggles from pointer and associated label input', async () => {

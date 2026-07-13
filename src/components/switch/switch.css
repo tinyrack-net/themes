@@ -50,7 +50,7 @@
   }
 
   .tr-switch-thumb {
-    background: var(--tr-switch-thumb-background, var(--tinyrack-surface));
+    background: var(--tr-switch-thumb-background, var(--tinyrack-text));
     border-radius: var(--tinyrack-radius-full);
     box-shadow: var(--tinyrack-shadow-raised);
     height: var(--tr-switch-thumb-size, var(--_tr-switch-thumb-size));

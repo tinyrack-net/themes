@@ -1,146 +1,45 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { skeletonShapes } from '../../src/components/skeleton/contract.js';
-import { Skeleton } from '../../src/components/skeleton/react.js';
+import { Skeleton } from '../../src/components/skeleton/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as SkeletonStories from './skeleton.stories';
+import * as Stories from './skeleton.stories';
 
-<Meta of={SkeletonStories} />
+<Meta of={Stories} />
 
 # Skeleton
 
-A loading placeholder that preserves layout shape while content is unavailable.
+Layout-preserving loading placeholders with text, rectangle, and circle shapes.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `tr-skeleton` on `<div>` | `Skeleton` | `aria-hidden="true"` by default | Pair with parent `aria-busy` while loading. |
-| Shape | `data-shape` | `shape` | `text`, `rectangle`, `circle`; default `text` | Match the placeholder to the content it replaces. |
-| Motion | `data-animate` | `animate` | `true`, `false`; default `true` | Respect `prefers-reduced-motion` or disable animation explicitly. |
-| Native | Native `<div>` attributes | `HTMLAttributes<HTMLDivElement>` | Passed through | Set dimensions with layout utilities or inline styles when needed. |
+`shape` accepts `text`, `rectangle`, or `circle` and defaults to `text`. Dimensions come from layout or `style`.
 
 ## Install
 
-<ComponentInstall
-  surfaces={[
-    {
-      label: 'CSS / HTML',
-      install: 'pnpm add @tinyrack/ui tailwindcss',
-      imports: [
-        '@import "@tinyrack/ui/core/core.css";',
-        '@import "@tinyrack/ui/components/skeleton/skeleton.css";',
-      ],
-    },
-    {
-      label: 'React',
-      install: 'pnpm add @tinyrack/ui react react-dom',
-      imports: ["import { Skeleton } from '@tinyrack/ui/components/skeleton/react';"],
-    },
-  ]}
-/>
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/skeleton.css';", "import { Skeleton } from '@tinyrack/ui/components/skeleton';"] }]} />
 
 ## Usage
 
-<ComponentExampleTabs
-  id="skeleton-basic"
-  title="Basic placeholder"
-  description="Use a text-shaped placeholder while a resource summary is loading."
-  preview={<Skeleton className="w-48" />}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/skeleton/skeleton.css';
-import { Skeleton } from '@tinyrack/ui/components/skeleton/react';
-
-<Skeleton className="w-48" />;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-skeleton" data-shape="text" data-animate="true" aria-hidden="true"></div>`,
-    },
-  ]}
-/>
+<ComponentExampleTabs id="skeleton-basic" title="Loading placeholder" previewLayout="stretch" preview={<Skeleton aria-label="Loading server" style={{ height: 48, width: '100%' }} />} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Skeleton aria-label="Loading server" style={{ height: 48, width: '100%' }} />` }]} />
 
 ## Examples
 
 <ComponentExampleTabs
-  id="skeleton-shape"
-  title="Shape Matrix"
-  description="Compare text, rectangle, and circle placeholders."
+  id="skeleton-shapes"
+  title="Shapes"
+  previewLayout="stretch"
   preview={(
-    <div className="flex w-full flex-wrap items-center justify-center gap-4">
-      {skeletonShapes.map((shape) => (
-        <div key={shape} className="grid min-w-24 justify-items-center gap-2">
-          <Skeleton animate={false} shape={shape} />
-          <span className="text-tinyrack-xs uppercase">{shape}</span>
-        </div>
-      ))}
+    <div className="grid gap-5">
+      <div className="grid gap-2"><strong>Text</strong><Skeleton shape="text" style={{ width: '70%' }} /><Skeleton shape="text" style={{ width: '45%' }} /></div>
+      <div className="grid gap-2"><strong>Rectangle</strong><Skeleton shape="rectangle" style={{ height: 72, width: '100%' }} /></div>
+      <div className="grid gap-2"><strong>Circle</strong><Skeleton shape="circle" style={{ height: 48, width: 48 }} /></div>
     </div>
   )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Skeleton animate={false} shape="text" />
-<Skeleton animate={false} shape="rectangle" />
-<Skeleton animate={false} shape="circle" />`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-skeleton" data-shape="text" data-animate="false" aria-hidden="true"></div>
-<div class="tr-skeleton" data-shape="rectangle" data-animate="false" aria-hidden="true"></div>
-<div class="tr-skeleton" data-shape="circle" data-animate="false" aria-hidden="true"></div>`,
-    },
-  ]}
-/>
-
-<ComponentExampleTabs
-  id="skeleton-motion"
-  title="Motion and reduced motion"
-  description="The shimmer uses a CSS animation and disables it under prefers-reduced-motion."
-  preview={<Skeleton animate={false} shape="rectangle" />}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Skeleton animate={false} shape="rectangle" />`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-skeleton" data-shape="rectangle" data-animate="false" aria-hidden="true"></div>`,
-    },
-  ]}
-/>
-
-## Guidance
-
-<ComponentGuidance
-  whenToUse={[
-    'Use Skeleton when the eventual content shape is known and preserving layout reduces shift.',
-    'Use a static skeleton when motion does not add useful feedback.',
-  ]}
-  avoid={[
-    'Do not expose placeholder text to assistive technology as if it were real content.',
-    'Do not use Skeleton for an operation whose progress should be communicated with Progress.',
-  ]}
-  accessibility={[
-    'Keep the default aria-hidden behavior and mark the loading region with aria-busy.',
-    'Respect prefers-reduced-motion and allow callers to disable animation.',
-  ]}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Skeleton shape="text" style={{ width: '70%' }} />
+<Skeleton shape="rectangle" style={{ height: 72, width: '100%' }} />
+<Skeleton shape="circle" style={{ height: 48, width: 48 }} />` }]}
 />
 
 ## API
 
-| Component | Main props | Note |
-| --- | --- | --- |
-| `Skeleton` | `shape`, `animate`, native div props | Presentational placeholder with reduced-motion support. |
-
-<ComponentTokenTable component="skeleton" />
+Provide `aria-label` only when the loading region needs an announced status; otherwise the visual placeholder remains unobtrusive.

@@ -15,8 +15,12 @@
     var(--tinyrack-ease-standard);
 }
 
-.tr-link[data-variant="neutral"] {
+.tr-link[data-variant="default"] {
   color: var(--tinyrack-text);
+}
+
+.tr-link[data-variant="muted"] {
+  color: var(--tinyrack-text-muted);
 }
 
 .tr-link[data-variant="primary"] {

@@ -1,28 +1,37 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { avatarShapes, avatarSizes } from '../../src/components/avatar/contract.js';
-import { Avatar, type AvatarProps } from '../../src/components/avatar/react.js';
+import {
+  Avatar,
+  type AvatarShape,
+  type AvatarSize,
+} from '../../src/components/avatar/index.js';
 
-type ComponentStoryProps = Pick<AvatarProps, 'children' | 'shape' | 'size'>;
-
-function AvatarStory(controlValues: ComponentStoryProps) {
-  return <Avatar {...controlValues} />;
-}
-
-AvatarStory.displayName = 'AvatarStory';
+type AvatarStoryArgs = {
+  fallback: string;
+  image: boolean;
+  shape: AvatarShape;
+  size: AvatarSize;
+};
 
 const meta = {
   title: 'Components/Avatar',
-  component: AvatarStory,
-  args: { children: 'RA', shape: 'circle', size: 'md' },
+  parameters: { layout: 'centered' },
+  args: { fallback: 'TR', image: true, shape: 'circle', size: 'md' },
   argTypes: {
-    children: { control: 'text', description: 'Initials or child content.' },
-    shape: { control: 'select', options: avatarShapes },
-    size: { control: 'select', options: avatarSizes },
+    fallback: { control: 'text' },
+    image: { control: 'boolean' },
+    shape: { control: 'select', options: ['circle', 'square'] },
+    size: { control: 'select', options: ['sm', 'md', 'lg'] },
   },
-} satisfies Meta<typeof AvatarStory>;
+  render: ({ fallback, image, ...rootProps }) => (
+    <Avatar.Root {...rootProps}>
+      {image ? (
+        <Avatar.Image alt="Tinyrack" src="https://github.com/tinyrack-net.png" />
+      ) : null}
+      <Avatar.Fallback>{fallback}</Avatar.Fallback>
+    </Avatar.Root>
+  ),
+} satisfies Meta<AvatarStoryArgs>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
-
 export const Default: Story = {};

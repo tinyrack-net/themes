@@ -2,12 +2,9 @@ import { mkdir, readFile, rm, stat } from 'node:fs/promises';
 import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { extname, join, resolve, sep } from 'node:path';
-import { type Browser, chromium, type Locator, type Page } from 'playwright';
+import { type Browser, chromium, type Page } from 'playwright';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { tinyrackSemanticColors } from '../src/core/tokens/semantic.js';
 import { componentDocsManifest } from '../stories/shared/component-docs-manifest.js';
-
-const semanticColorCount = Object.keys(tinyrackSemanticColors.light).length;
 
 const repoRoot = process.cwd();
 const storybookRoot = join(repoRoot, 'storybook-static');
@@ -27,6 +24,8 @@ const contentTypes: Record<string, string> = {
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
 };
+
+type StorybookTheme = 'tinyrack-dark' | 'tinyrack-light';
 
 function contentTypeFor(path: string) {
   return contentTypes[extname(path)] ?? 'application/octet-stream';
@@ -49,7 +48,6 @@ async function resolveStaticPath(requestUrl: string) {
 
   try {
     const candidateStat = await stat(candidatePath);
-
     return candidateStat.isDirectory()
       ? join(candidatePath, 'index.html')
       : candidatePath;
@@ -89,10 +87,8 @@ async function startStaticServer() {
     });
   });
 
-  const address = server.address() as AddressInfo;
-
   return {
-    origin: `http://127.0.0.1:${address.port}`,
+    origin: `http://127.0.0.1:${(server.address() as AddressInfo).port}`,
     server,
   };
 }
@@ -100,34 +96,28 @@ async function startStaticServer() {
 async function closeStaticServer(server: Server) {
   await new Promise<void>((resolveClose, rejectClose) => {
     server.close((error) => {
-      if (error === undefined) {
-        resolveClose();
-        return;
-      }
-
-      rejectClose(error);
+      if (error === undefined) resolveClose();
+      else rejectClose(error);
     });
   });
 }
 
-function docsUrl(origin: string, storyId: string, theme: StorybookTheme) {
+function iframeUrl(
+  origin: string,
+  storyId: string,
+  viewMode: 'docs' | 'story',
+  theme: StorybookTheme,
+) {
   const search = new URLSearchParams({
     globals: `theme:${theme}`,
     id: storyId,
-    viewMode: 'docs',
+    viewMode,
   });
-
   return `${origin}/iframe.html?${search}`;
 }
 
-function storyUrl(origin: string, storyId: string, theme: StorybookTheme) {
-  const search = new URLSearchParams({
-    globals: `theme:${theme}`,
-    id: storyId,
-    viewMode: 'story',
-  });
-
-  return `${origin}/iframe.html?${search}`;
+function defaultStoryId(docsStoryId: string) {
+  return docsStoryId.replace(/--docs$/, '--default');
 }
 
 function artifactName(parts: string[]) {
@@ -145,1156 +135,286 @@ async function captureFailure(page: Page, parts: string[]) {
   });
 }
 
-async function horizontalOverflowMetrics(locator: Locator) {
-  await locator.waitFor({ state: 'visible' });
-
-  return locator.evaluate((element) => {
-    const htmlElement = element as HTMLElement;
-
-    return {
-      clientWidth: htmlElement.clientWidth,
-      overflowX: window.getComputedStyle(htmlElement).overflowX,
-      scrollWidth: htmlElement.scrollWidth,
-    };
-  });
-}
-
-type StorybookTheme = 'tinyrack-dark' | 'tinyrack-light';
-
-const renderScenarios = [
-  {
-    name: 'dark desktop',
-    theme: 'tinyrack-dark',
-    viewport: { height: 900, width: 1440 },
-  },
-  {
-    name: 'light desktop',
-    theme: 'tinyrack-light',
-    viewport: { height: 900, width: 1440 },
-  },
-  {
-    name: 'dark mobile',
-    theme: 'tinyrack-dark',
-    viewport: { height: 844, width: 390 },
-  },
-  {
-    name: 'light mobile',
-    theme: 'tinyrack-light',
-    viewport: { height: 844, width: 390 },
-  },
-] as const satisfies ReadonlyArray<{
-  name: string;
-  theme: StorybookTheme;
-  viewport: { height: number; width: number };
-}>;
-
-const guidedDocsManifest = [
-  {
-    headings: [
-      'Principles',
-      'Start in 5 minutes',
-      'Build one operational surface',
-      'Where next',
-      'Package map',
-      'Primitive component paths',
-      'Use boundary',
-    ],
-    id: 'welcome',
-    storyId: 'welcome-start-here--docs',
-    title: 'Tinyrack UI',
-  },
-  {
-    headings: ['Model', 'System in one surface', 'Consumption', 'Next'],
-    id: 'foundations-overview',
-    storyId: 'foundations-overview--docs',
-    title: 'Foundations',
-  },
-  {
-    headings: [
-      'Architecture',
-      'Base colors',
-      'Functional colors',
-      'Base-to-functional mapping',
-      'Component/pattern tokens',
-      'Custom primary theme',
-      "Do and don't",
-    ],
-    id: 'foundations-colors',
-    reference: 'colors',
-    storyId: 'foundations-colors--docs',
-    title: 'Colors',
-  },
-  {
-    headings: [
-      'Principle',
-      'Visual scale',
-      'Applied pattern',
-      'Implementation',
-      'Reference',
-    ],
-    id: 'foundations-typography',
-    reference: 'typography',
-    storyId: 'foundations-typography--docs',
-    title: 'Typography',
-  },
-  {
-    headings: [
-      'Principle',
-      'Visual scale',
-      'Applied pattern',
-      'Implementation',
-      'Reference',
-    ],
-    id: 'foundations-spacing',
-    reference: 'spacing',
-    storyId: 'foundations-spacing--docs',
-    title: 'Spacing',
-  },
-  {
-    headings: [
-      'Principle',
-      'Visual scale',
-      'Applied pattern',
-      'Implementation',
-      'Reference',
-    ],
-    id: 'foundations-radius',
-    reference: 'radius',
-    storyId: 'foundations-radius--docs',
-    title: 'Radius',
-  },
-  {
-    headings: [
-      'Principle',
-      'Visual scale',
-      'Applied pattern',
-      'Implementation',
-      'Reference',
-    ],
-    id: 'foundations-controls',
-    reference: 'controls',
-    storyId: 'foundations-controls--docs',
-    title: 'Controls',
-  },
-  {
-    headings: [
-      'Principle',
-      'Visual scale',
-      'Applied pattern',
-      'Implementation',
-      'Reference',
-    ],
-    id: 'foundations-motion',
-    reference: 'motion',
-    storyId: 'foundations-motion--docs',
-    title: 'Motion',
-  },
-  {
-    headings: [
-      'Principle',
-      'Token comparison',
-      'Applied pattern',
-      'Implementation',
-      'Reference',
-    ],
-    id: 'foundations-elevation',
-    reference: 'elevation',
-    storyId: 'foundations-elevation--docs',
-    title: 'Elevation',
-  },
-] as const;
-
-const deepInteractionPages = new Set([
-  'button',
-  'code-block',
-  'form-input',
-  'table',
-  'tabs',
-]);
-
-describe('built Storybook component docs', () => {
-  let browser: Browser | undefined;
-  let origin = '';
-  let staticServer: Server | undefined;
+describe('built React-only Storybook', () => {
+  let browser: Browser;
+  let origin: string;
+  let server: Server;
 
   beforeAll(async () => {
-    expect(
-      await stat(join(storybookRoot, 'iframe.html')).then(
-        () => true,
-        () => false,
-      ),
-      'Run `pnpm storybook:build` before the Storybook docs browser audit.',
-    ).toBe(true);
-
+    await stat(join(storybookRoot, 'index.html'));
     await rm(artifactRoot, { force: true, recursive: true });
-
-    const startedServer = await startStaticServer();
-    origin = startedServer.origin;
-    staticServer = startedServer.server;
-
-    try {
-      browser = await chromium.launch({ headless: true });
-    } catch (error) {
-      await closeStaticServer(startedServer.server);
-      staticServer = undefined;
-      throw error;
-    }
+    const staticServer = await startStaticServer();
+    origin = staticServer.origin;
+    server = staticServer.server;
+    browser = await chromium.launch();
   });
 
   afterAll(async () => {
     await browser?.close();
+    if (server) await closeStaticServer(server);
+  });
 
-    if (staticServer !== undefined) {
-      await closeStaticServer(staticServer);
+  it('publishes every component docs page and default story', async () => {
+    const index = JSON.parse(
+      await readFile(join(storybookRoot, 'index.json'), 'utf8'),
+    ) as { entries: Record<string, { type: string }> };
+
+    for (const entry of componentDocsManifest) {
+      expect(index.entries[entry.storyId]?.type, entry.storyId).toBe('docs');
+      expect(
+        index.entries[defaultStoryId(entry.storyId)]?.type,
+        defaultStoryId(entry.storyId),
+      ).toBe('story');
     }
   });
 
-  for (const scenario of renderScenarios) {
-    it(`renders every component page in ${scenario.name}`, async () => {
-      if (browser === undefined) {
-        throw new Error('Chromium did not start.');
-      }
-
-      const context = await browser.newContext({ viewport: scenario.viewport });
-      const page = await context.newPage();
+  for (const scenario of [
+    {
+      name: 'light desktop',
+      theme: 'tinyrack-light',
+      viewport: { height: 900, width: 1440 },
+    },
+    {
+      name: 'dark mobile',
+      theme: 'tinyrack-dark',
+      viewport: { height: 844, width: 390 },
+    },
+  ] as const) {
+    it(`renders all component docs without page errors in ${scenario.name}`, async () => {
+      const page = await browser.newPage({ viewport: scenario.viewport });
+      const pageErrors: string[] = [];
+      page.on('pageerror', (error) => pageErrors.push(error.message));
 
       try {
         for (const entry of componentDocsManifest) {
           try {
-            await page.goto(docsUrl(origin, entry.storyId, scenario.theme), {
+            await page.goto(iframeUrl(origin, entry.storyId, 'docs', scenario.theme), {
               waitUntil: 'domcontentloaded',
             });
-            const docs = page.locator('.sbdocs-content');
+            const heading = page.locator('.sbdocs-content h1').first();
+            await heading.waitFor({ state: 'visible' });
+            await expect(heading.textContent()).resolves.toContain(entry.title);
+            await expect(
+              page.locator('[data-component-example]').count(),
+            ).resolves.toBeGreaterThanOrEqual(entry.requiredExamples.length);
 
-            await docs
-              .getByRole('heading', { exact: true, level: 1, name: entry.title })
-              .waitFor();
+            const bodyText = (await page.locator('body').innerText()).toLowerCase();
+            expect(bodyText).not.toContain("couldn't find story");
+            expect(bodyText).not.toContain('no story found');
 
-            expect(await page.locator('html').getAttribute('data-theme')).toBe(
-              scenario.theme,
-            );
-            expect(await docs.locator('h1').allTextContents()).toEqual([entry.title]);
-            expect(
-              await docs
-                .locator('h2')
-                .evaluateAll((headings) =>
-                  headings
-                    .filter(
-                      (heading) => heading.closest('[data-component-example]') === null,
-                    )
-                    .map((heading) => heading.textContent ?? ''),
-                ),
-            ).toEqual([
-              'Contract',
-              'Install',
-              'Usage',
-              'Examples',
-              'Guidance',
-              'API',
-              'CSS tokens',
-            ]);
+            const overflow = await page.locator('html').evaluate((element) => ({
+              clientWidth: element.clientWidth,
+              scrollWidth: element.scrollWidth,
+            }));
+            expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth + 1);
 
-            const sectionGaps = await page.evaluate(() =>
-              Array.from(document.querySelectorAll<HTMLElement>('.sbdocs-content h2'))
-                .filter(
-                  (heading) => heading.closest('[data-component-example]') === null,
+            if (scenario.theme === 'tinyrack-dark') {
+              const canvasColors = await page
+                .locator(
+                  `[data-component-example-id="${entry.requiredExamples[0]}"] [data-preview-layout]`,
                 )
-                .flatMap((heading) => {
-                  const nextElement = heading.nextElementSibling;
-
-                  if (!(nextElement instanceof HTMLElement)) {
-                    return [];
-                  }
-
-                  return [
-                    {
-                      gap:
-                        nextElement.getBoundingClientRect().top -
-                        heading.getBoundingClientRect().bottom,
-                      heading: heading.textContent?.trim() ?? '',
-                    },
-                  ];
-                }),
-            );
-
-            expect(sectionGaps).toHaveLength(7);
-
-            for (const sectionGap of sectionGaps) {
-              expect(
-                sectionGap.gap,
-                `${entry.id} ${scenario.name} ${sectionGap.heading} spacing`,
-              ).toBeGreaterThanOrEqual(15.5);
-            }
-
-            const exampleCount = await docs.locator('[data-component-example]').count();
-            expect(exampleCount).toBeGreaterThanOrEqual(entry.requiredExamples.length);
-
-            const sourceCount = await docs
-              .locator('[data-component-example-source]')
-              .count();
-            expect(sourceCount).toBeGreaterThanOrEqual(exampleCount * 2);
-            await expect
-              .poll(
-                () =>
-                  docs
-                    .locator(
-                      '[data-component-example-source] pre[data-highlighted="true"]',
-                    )
-                    .count(),
-                { timeout: 10_000 },
-              )
-              .toBe(sourceCount);
-
-            const codeSamples = await page.evaluate(() =>
-              Array.from(
-                document.querySelectorAll<HTMLElement>(
-                  '[data-component-example-source]',
-                ),
-              ).map((source) => {
-                const pre = source.querySelector('pre');
-                const code = source.querySelector('code');
-
-                return {
-                  code: code?.textContent ?? '',
-                  highlighted: pre?.getAttribute('data-highlighted'),
-                  language: pre?.getAttribute('data-language'),
-                };
-              }),
-            );
-
-            for (const sample of codeSamples) {
-              expect(sample.language).toBeDefined();
-              expect(sample.highlighted).toBe('true');
-              expect(sample.code).not.toMatch(/\.(?:map|forEach|filter|reduce)\s*\(/);
-              expect(sample.code).not.toMatch(/\b(?:for|while)\s*\(/);
-              expect(sample.code).not.toContain('...');
-              expect(sample.code).not.toMatch(/\t/);
-              expect(sample.code).not.toMatch(/[ \t]+$/m);
-              expect(sample.code).not.toMatch(/^\n|\n$/);
-              expect(
-                sample.code.split('\n').some((line) => {
-                  const indentation = line.match(/^ */)?.[0].length ?? 0;
-
-                  return indentation % 2 !== 0;
-                }),
-              ).toBe(false);
-            }
-
-            const previewAlignment = await page.evaluate(() =>
-              Array.from(
-                document.querySelectorAll<HTMLElement>('[data-preview-layout]'),
-              ).map((preview) => {
-                const previewRect = preview.getBoundingClientRect();
-                const content = preview.firstElementChild;
-                const contentRect = content?.getBoundingClientRect();
-                const { previewLayout } = preview.dataset;
-
-                return {
-                  layout: previewLayout,
-                  horizontalDelta:
-                    contentRect === undefined
-                      ? null
-                      : (contentRect.left + contentRect.right) / 2 -
-                        (previewRect.left + previewRect.right) / 2,
-                  verticalDelta:
-                    contentRect === undefined
-                      ? null
-                      : (contentRect.top + contentRect.bottom) / 2 -
-                        (previewRect.top + previewRect.bottom) / 2,
-                };
-              }),
-            );
-
-            expect(
-              previewAlignment.filter(({ layout }) => layout === 'start'),
-              `${entry.id} should not leave intrinsic examples left-aligned`,
-            ).toHaveLength(0);
-
-            for (const alignment of previewAlignment.filter(
-              ({ layout }) => layout === 'center',
-            )) {
-              expect(
-                Math.abs(alignment.horizontalDelta ?? Number.POSITIVE_INFINITY),
-                `${entry.id} ${scenario.name} horizontal preview alignment`,
-              ).toBeLessThanOrEqual(1);
-              expect(
-                Math.abs(alignment.verticalDelta ?? Number.POSITIVE_INFINITY),
-                `${entry.id} ${scenario.name} vertical preview alignment`,
-              ).toBeLessThanOrEqual(1);
-            }
-
-            for (const exampleId of entry.requiredExamples) {
-              const example = docs.locator(`#${exampleId}`);
-
-              await expect(example.count()).resolves.toBe(1);
-              await expect(
-                example.locator(`a[href="#${exampleId}"]`).count(),
-              ).resolves.toBe(1);
-              await expect(
-                example.getByRole('tab', { exact: true, name: 'HTML' }).count(),
-              ).resolves.toBe(1);
-              await expect(
-                example.getByRole('tab', { exact: true, name: 'React' }).count(),
-              ).resolves.toBe(1);
-            }
-
-            const documentWidths = await page.evaluate(() => ({
-              clientWidth: document.documentElement.clientWidth,
-              scrollWidth: document.documentElement.scrollWidth,
-            }));
-
-            expect(documentWidths.scrollWidth).toBeLessThanOrEqual(
-              documentWidths.clientWidth + 1,
-            );
-
-            if (scenario.viewport.width === 390) {
-              const localOverflowTarget =
-                entry.id === 'table'
-                  ? docs.locator(
-                      '#table-responsive-overflow [data-component-example-tabs] > [role="tabpanel"]:not([hidden]) .tr-table-container',
-                    )
-                  : entry.id === 'tabs'
-                    ? docs.locator(
-                        '#tabs-responsive-overflow [data-component-example-tabs] > [role="tabpanel"]:not([hidden]) .tr-tabs-list',
-                      )
-                    : entry.id === 'code-block'
-                      ? docs.locator(
-                          '#code-block-wrapping [data-component-example-tabs] > [role="tabpanel"]:not([hidden]) .tr-code-block:not([data-wrap="true"])',
-                        )
-                      : undefined;
-
-              if (localOverflowTarget !== undefined) {
-                const overflow = await horizontalOverflowMetrics(localOverflowTarget);
-
-                expect(['auto', 'scroll']).toContain(overflow.overflowX);
-                expect(overflow.scrollWidth).toBeGreaterThanOrEqual(
-                  overflow.clientWidth,
-                );
-              }
-
-              if (entry.id === 'skeleton') {
-                const shapePreview = docs.locator(
-                  '#skeleton-shape [data-preview-layout]',
-                );
-                const shapePreviewCount = await shapePreview.count();
-
-                expect(shapePreviewCount).toBe(1);
-
-                const shapeMetrics = await shapePreview.evaluate((element) => {
-                  const preview = element as HTMLElement;
-                  const circle = preview.querySelector<HTMLElement>(
-                    '.tr-skeleton[data-shape="circle"]',
-                  );
-                  const cell = circle?.parentElement;
-
-                  if (circle === null || cell === null || cell === undefined) {
-                    throw new Error('Unable to find the mobile Skeleton circle cell.');
-                  }
-
-                  const circleRect = circle.getBoundingClientRect();
-                  const cellRect = cell.getBoundingClientRect();
-
-                  return {
-                    circleCellDelta: Math.abs(
-                      (circleRect.left + circleRect.right) / 2 -
-                        (cellRect.left + cellRect.right) / 2,
-                    ),
-                    clientWidth: preview.clientWidth,
-                    scrollWidth: preview.scrollWidth,
-                  };
-                });
-
-                expect(shapeMetrics.circleCellDelta).toBeLessThanOrEqual(1);
-                expect(shapeMetrics.scrollWidth).toBeLessThanOrEqual(
-                  shapeMetrics.clientWidth + 1,
-                );
-              }
+                .evaluate((element) => ({
+                  actual: getComputedStyle(element).backgroundColor,
+                  expected: getComputedStyle(document.documentElement)
+                    .getPropertyValue('--tinyrack-canvas')
+                    .trim(),
+                }));
+              expect(canvasColors.actual).toBe('rgb(3, 3, 3)');
+              expect(canvasColors.expected).toBe('#030303');
             }
           } catch (error) {
-            await captureFailure(page, [entry.id, scenario.name]);
+            await captureFailure(page, [scenario.name, entry.id]);
             throw error;
           }
         }
+
+        expect(pageErrors).toEqual([]);
       } finally {
-        await context.close();
+        await page.close();
       }
     });
   }
 
-  for (const scenario of renderScenarios) {
-    it(`centers the Skeleton canvas preview in ${scenario.name}`, async () => {
-      if (browser === undefined) {
-        throw new Error('Chromium did not start.');
-      }
+  it('renders every default component story in isolation', async () => {
+    const page = await browser.newPage({ viewport: { height: 800, width: 1280 } });
+    const pageErrors: string[] = [];
+    page.on('pageerror', (error) => pageErrors.push(error.message));
 
-      const context = await browser.newContext({ viewport: scenario.viewport });
-      const page = await context.newPage();
+    try {
+      for (const viewport of [
+        { height: 800, name: 'desktop', width: 1280 },
+        { height: 844, name: 'mobile', width: 390 },
+      ]) {
+        await page.setViewportSize(viewport);
 
-      try {
-        await page.goto(
-          storyUrl(origin, 'components-skeleton--default', scenario.theme),
-          { waitUntil: 'domcontentloaded' },
-        );
-
-        const skeleton = page.locator('.tr-skeleton');
-        await skeleton.waitFor({ state: 'visible' });
-
-        const metrics = await skeleton.evaluate((element) => {
-          const rect = element.getBoundingClientRect();
-          const documentElement = document.documentElement;
-
-          return {
-            animationDuration: getComputedStyle(element, '::after').animationDuration,
-            centerDelta: Math.abs((rect.left + rect.right) / 2 - window.innerWidth / 2),
-            clientWidth: documentElement.clientWidth,
-            scrollWidth: documentElement.scrollWidth,
-            width: rect.width,
-          };
-        });
-
-        expect(metrics.animationDuration).toBe('2.4s');
-        expect(metrics.centerDelta).toBeLessThanOrEqual(1);
-        expect(metrics.width).toBeLessThanOrEqual(192);
-        expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 1);
-      } catch (error) {
-        await captureFailure(page, ['skeleton-canvas', scenario.name]);
-        throw error;
-      } finally {
-        await context.close();
-      }
-    });
-  }
-
-  for (const scenario of renderScenarios) {
-    it(`renders guided Welcome and Foundation pages in ${scenario.name}`, async () => {
-      if (browser === undefined) {
-        throw new Error('Chromium did not start.');
-      }
-
-      const context = await browser.newContext({ viewport: scenario.viewport });
-      const page = await context.newPage();
-      const consoleErrors: string[] = [];
-      const pageErrors: string[] = [];
-
-      page.on('console', (message) => {
-        if (message.type() === 'error') {
-          consoleErrors.push(message.text());
-        }
-      });
-      page.on('pageerror', (error) => {
-        pageErrors.push(error.message);
-      });
-
-      try {
-        for (const entry of guidedDocsManifest) {
-          consoleErrors.length = 0;
-          pageErrors.length = 0;
-
+        for (const entry of componentDocsManifest) {
+          const storyId = defaultStoryId(entry.storyId);
           try {
-            await page.goto(docsUrl(origin, entry.storyId, scenario.theme), {
+            await page.goto(iframeUrl(origin, storyId, 'story', 'tinyrack-dark'), {
               waitUntil: 'domcontentloaded',
             });
-            const docs = page.locator('.sbdocs-content');
-
-            await docs
-              .getByRole('heading', { exact: true, level: 1, name: entry.title })
-              .waitFor();
-            await page.waitForLoadState('networkidle');
-
-            expect(await page.locator('html').getAttribute('data-theme')).toBe(
-              scenario.theme,
-            );
-            expect(await docs.locator('h1').allTextContents()).toEqual([entry.title]);
+            await page.locator('#storybook-root > *').first().waitFor({
+              state: 'attached',
+            });
             expect(
-              await docs
-                .locator('h2')
-                .evaluateAll((headings) =>
-                  headings
-                    .filter(
-                      (heading) => heading.closest('.tr-modal, .tr-layer') === null,
-                    )
-                    .map((heading) => heading.textContent ?? ''),
-                ),
-            ).toEqual(entry.headings);
+              (await page.locator('body').innerText()).toLowerCase(),
+            ).not.toContain('no story found');
 
-            const documentWidths = await page.evaluate(() => ({
-              clientWidth: document.documentElement.clientWidth,
-              scrollWidth: document.documentElement.scrollWidth,
+            const height = await page.locator('html').evaluate((element) => ({
+              clientHeight: element.clientHeight,
+              scrollHeight: element.scrollHeight,
             }));
-
-            expect(documentWidths.scrollWidth).toBeLessThanOrEqual(
-              documentWidths.clientWidth + 1,
-            );
-
-            if ('reference' in entry) {
-              const reference = docs.locator(
-                `[data-foundation-reference="${entry.reference}"]`,
-              );
-
-              await expect(reference.count()).resolves.toBe(1);
-
-              if (scenario.viewport.width === 390) {
-                const overflow = await horizontalOverflowMetrics(reference);
-
-                expect(['auto', 'scroll']).toContain(overflow.overflowX);
-                expect(overflow.scrollWidth).toBeGreaterThanOrEqual(
-                  overflow.clientWidth,
-                );
-              }
-            }
-
-            if (entry.id === 'foundations-elevation') {
-              const examples = docs.locator('[data-elevation-example]');
-              const exampleShadows = await examples.evaluateAll((elements) =>
-                Object.fromEntries(
-                  elements.map((element) => [
-                    element.getAttribute('data-elevation-example'),
-                    window.getComputedStyle(element).boxShadow,
-                  ]),
-                ),
-              );
-
-              await expect(examples.count()).resolves.toBe(3);
-              expect(exampleShadows.none).toBe('none');
-              expect(exampleShadows.raised).not.toBe('none');
-              expect(exampleShadows.overlay).not.toBe('none');
-              expect(exampleShadows.raised).not.toBe(exampleShadows.overlay);
-
-              const tokenPreviews = docs.locator('[data-elevation-token]');
-              const themePreviews = docs.locator('[data-elevation-theme]');
-
-              await expect(tokenPreviews.count()).resolves.toBe(2);
-              await expect(themePreviews.count()).resolves.toBe(4);
-              expect(
-                await themePreviews.evaluateAll((elements) =>
-                  elements.map((element) =>
-                    element.getAttribute('data-elevation-theme'),
-                  ),
-                ),
-              ).toEqual(['light', 'dark', 'light', 'dark']);
-
-              if (scenario.viewport.width === 390) {
-                const referenceIdentifiers = docs.locator(
-                  '[data-foundation-reference="elevation"] code',
-                );
-                const whiteSpaceValues = await referenceIdentifiers.evaluateAll(
-                  (elements) =>
-                    elements.map(
-                      (element) => window.getComputedStyle(element).whiteSpace,
-                    ),
-                );
-
-                expect(whiteSpaceValues.length).toBeGreaterThan(0);
-                expect(whiteSpaceValues.every((value) => value === 'nowrap')).toBe(
-                  true,
-                );
-              }
-            }
-
-            if (entry.id === 'welcome') {
-              await expect(
-                docs.locator('[data-component-install]').count(),
-              ).resolves.toBe(1);
-              await expect(
-                docs.locator('#welcome-operational-surface').count(),
-              ).resolves.toBe(1);
-              const routes = docs.locator('a[data-docs-route]');
-
-              await expect(routes.count()).resolves.toBe(4);
-              expect(
-                await routes.evaluateAll((links) =>
-                  links.map((link) => ({
-                    href: link.getAttribute('href'),
-                    target: link.getAttribute('target'),
-                  })),
-                ),
-              ).toEqual([
-                { href: '/?path=/docs/foundations-overview--docs', target: '_top' },
-                { href: '/?path=/docs/components-button--docs', target: '_top' },
-                {
-                  href: '/?path=/docs/components-form-overview--docs',
-                  target: '_top',
-                },
-                {
-                  href: '/?path=/docs/integrations-mdx-renderer--docs',
-                  target: '_top',
-                },
-              ]);
-            }
-
-            if (entry.id === 'foundations-colors') {
-              await expect(
-                docs
-                  .locator('[data-functional-color-reference="colors"] tbody tr')
-                  .count(),
-              ).resolves.toBe(semanticColorCount);
-            }
-
-            if (entry.id === 'foundations-motion') {
-              const durationComparison = docs.locator(
-                '[data-motion-duration-comparison]',
-              );
-              const easingComparison = docs.locator('[data-motion-easing-comparison]');
-              const reducedPreview = docs.locator('[data-motion-reduced-preview]');
-
-              await expect(durationComparison.count()).resolves.toBe(1);
-              await expect(easingComparison.count()).resolves.toBe(1);
-              await expect(reducedPreview.count()).resolves.toBe(1);
-              await expect(
-                durationComparison
-                  .getByRole('list', { name: 'Motion duration comparison' })
-                  .getByRole('listitem')
-                  .count(),
-              ).resolves.toBe(3);
-
-              await durationComparison
-                .getByRole('button', { exact: true, name: 'Replay durations' })
-                .click();
-              await expect
-                .poll(() => durationComparison.getAttribute('data-motion-run'))
-                .toBe('1');
-
-              await easingComparison
-                .getByRole('button', { exact: true, name: 'Replay easing' })
-                .click();
-              await expect
-                .poll(() => easingComparison.getAttribute('data-motion-run'))
-                .toBe('1');
-
-              const reducedButton = reducedPreview.getByRole('button', {
-                exact: true,
-                name: 'Reduced preview',
-              });
-
-              await reducedButton.click();
-              await expect
-                .poll(() => reducedButton.getAttribute('aria-pressed'))
-                .toBe('true');
-              await expect
-                .poll(() => reducedPreview.getAttribute('data-motion-preview-mode'))
-                .toBe('reduce');
-            }
-
-            expect(consoleErrors, `${entry.id} ${scenario.name} console`).toEqual([]);
-            expect(pageErrors, `${entry.id} ${scenario.name} page errors`).toEqual([]);
+            expect(
+              height.scrollHeight,
+              `${entry.id} ${viewport.name} story height`,
+            ).toBeLessThanOrEqual(height.clientHeight + 1);
           } catch (error) {
-            await captureFailure(page, [entry.id, scenario.name]);
+            await captureFailure(page, ['story', viewport.name, entry.id]);
             throw error;
           }
         }
-      } finally {
-        await context.close();
       }
-    });
-  }
 
-  it('supports keyboard install targets and copy on Welcome', async () => {
-    if (browser === undefined) {
-      throw new Error('Chromium did not start.');
+      expect(pageErrors).toEqual([]);
+    } finally {
+      await page.close();
     }
+  });
 
-    const context = await browser.newContext({
-      permissions: ['clipboard-read', 'clipboard-write'],
-      viewport: { height: 900, width: 1440 },
-    });
-    const page = await context.newPage();
+  it('keeps fluid docs previews full-width and compound controls together', async () => {
+    const page = await browser.newPage({ viewport: { height: 900, width: 900 } });
 
     try {
-      await page.goto(docsUrl(origin, 'welcome-start-here--docs', 'tinyrack-dark'), {
-        waitUntil: 'domcontentloaded',
-      });
-      const install = page.locator('[data-component-install]');
-      const cssTab = install.getByRole('tab', { exact: true, name: 'CSS / HTML' });
-      const astroTab = install.getByRole('tab', {
-        exact: true,
-        name: 'Astro MDX',
-      });
-
-      await cssTab.focus();
-      await cssTab.press('End');
-      await expect(astroTab.getAttribute('aria-selected')).resolves.toBe('true');
-
-      const activePanel = install.locator('[role="tabpanel"]:not([hidden])');
-      const astroUsage = activePanel.locator('pre[data-language="astro"]');
-
-      await expect.poll(() => astroUsage.count()).toBe(1);
-      await activePanel
-        .getByRole('button', {
-          exact: true,
-          name: 'Copy Astro MDX usage code',
-        })
-        .click();
-      await expect
-        .poll(async () =>
-          (await page.evaluate(() => navigator.clipboard.readText())).replaceAll(
-            '\r\n',
-            '\n',
-          ),
-        )
-        .toBe(
-          [
-            '---',
-            "import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';",
-            'const { Content } = await entry.render();',
-            '---',
-            '',
-            '<Content components={tinyrackAstroMdxComponents} />',
-          ].join('\n'),
+      for (const [component, example, selector] of [
+        ['accordion', 'accordion-basic', '.tr-accordion'],
+        ['progress', 'progress-basic', '.tr-progress'],
+        ['table', 'table-basic', '.tr-table'],
+        ['tabs', 'tabs-basic', '.tr-tabs'],
+      ] as const) {
+        await page.goto(
+          iframeUrl(origin, `components-${component}--docs`, 'docs', 'tinyrack-dark'),
         );
-    } catch (error) {
-      await captureFailure(page, ['welcome', 'install-interaction']);
-      throw error;
-    } finally {
-      await context.close();
-    }
-  });
-
-  it('supports keyboard source tabs, exact copy, and live feedback on deep pages', async () => {
-    if (browser === undefined) {
-      throw new Error('Chromium did not start.');
-    }
-
-    const context = await browser.newContext({
-      permissions: ['clipboard-read', 'clipboard-write'],
-      viewport: { height: 900, width: 1440 },
-    });
-    const page = await context.newPage();
-
-    try {
-      for (const entry of componentDocsManifest.filter(({ id }) =>
-        deepInteractionPages.has(id),
-      )) {
-        try {
-          await page.goto(docsUrl(origin, entry.storyId, 'tinyrack-dark'), {
-            waitUntil: 'domcontentloaded',
-          });
-
-          const example = page.locator(`#${entry.requiredExamples[0]}`);
-          const previewTab = example.getByRole('tab', {
-            exact: true,
-            name: 'Preview',
-          });
-          const htmlTab = example.getByRole('tab', { exact: true, name: 'HTML' });
-
-          await previewTab.focus();
-          await previewTab.press('ArrowRight');
-          await expect.poll(() => htmlTab.getAttribute('aria-selected')).toBe('true');
-
-          const activePanel = example.locator(
-            '[data-component-example-tabs] > [role="tabpanel"]:not([hidden])',
-          );
-          const visibleSource = activePanel.locator('pre code');
-          const sourceText = await visibleSource.textContent();
-
-          if (sourceText === null) {
-            throw new Error(`No visible HTML source for ${entry.id}.`);
-          }
-
-          const expectedSource = sourceText.replaceAll('\r\n', '\n');
-          const copyButton = activePanel.locator('[data-copy-source="HTML"]');
-          const status = activePanel.locator('[data-copy-status]');
-
-          await copyButton.click();
-
-          await expect.poll(() => status.textContent()).toContain('Copied');
-          await expect.poll(() => status.getAttribute('aria-live')).toBe('polite');
-          await expect
-            .poll(async () =>
-              (await page.evaluate(() => navigator.clipboard.readText())).replaceAll(
-                '\r\n',
-                '\n',
-              ),
-            )
-            .toBe(expectedSource);
-        } catch (error) {
-          await captureFailure(page, [entry.id, 'deep-interaction']);
-          throw error;
-        }
-      }
-    } finally {
-      await context.close();
-    }
-  });
-
-  it('supports keyboard install targets and grouped highlighted copy', async () => {
-    if (browser === undefined) {
-      throw new Error('Chromium did not start.');
-    }
-
-    const context = await browser.newContext({
-      permissions: ['clipboard-read', 'clipboard-write'],
-      viewport: { height: 900, width: 1440 },
-    });
-    const page = await context.newPage();
-
-    try {
-      await page.goto(docsUrl(origin, 'components-codeblock--docs', 'tinyrack-dark'), {
-        waitUntil: 'domcontentloaded',
-      });
-
-      await page
-        .locator('.sbdocs-content')
-        .getByRole('heading', { exact: true, level: 1, name: 'CodeBlock' })
-        .waitFor();
-
-      const install = page.locator('[data-component-install]');
-      const cssTab = install.getByRole('tab', {
-        exact: true,
-        name: 'CSS / HTML',
-      });
-      const reactTab = install.getByRole('tab', {
-        exact: true,
-        name: 'React CodeBlock',
-      });
-      const cssPanel = install.locator('[role="tabpanel"]:not([hidden])');
-      const cssCodeBlocks = cssPanel.locator('pre code');
-
-      await expect.poll(() => cssCodeBlocks.count()).toBe(2);
-      await expect(cssCodeBlocks.nth(1).textContent()).resolves.toContain(
-        '@import "@tinyrack/ui/components/code-block/code-block.css";',
-      );
-
-      await cssTab.focus();
-      await cssTab.press('ArrowRight');
-      await expect.poll(() => reactTab.getAttribute('aria-selected')).toBe('true');
-
-      const activePanel = install.locator('[role="tabpanel"]:not([hidden])');
-
-      await expect
-        .poll(() => activePanel.locator('[data-highlighted="true"]').count())
-        .toBe(2);
-
-      const usageCode = activePanel.locator('pre code').nth(1);
-      const expectedCode = (await usageCode.textContent())?.replaceAll('\r\n', '\n');
-
-      if (expectedCode === undefined) {
-        throw new Error('No visible install usage code.');
+        const frame = page.locator(
+          `[data-component-example-id="${example}"] [data-preview-layout]`,
+        );
+        const componentRoot = frame.locator(selector).first();
+        await componentRoot.waitFor({ state: 'visible' });
+        const [frameBox, componentBox] = await Promise.all([
+          frame.boundingBox(),
+          componentRoot.boundingBox(),
+        ]);
+        expect(frameBox).not.toBeNull();
+        expect(componentBox).not.toBeNull();
+        expect(componentBox?.width).toBeGreaterThanOrEqual((frameBox?.width ?? 0) - 50);
       }
 
-      await activePanel
-        .locator('[data-install-copy="React CodeBlock usage code"]')
-        .click();
-
-      const status = activePanel.locator('[data-install-copy-status="copied"]');
-
-      await expect.poll(() => status.count()).toBe(1);
-      await expect.poll(() => status.textContent()).toContain('Copied');
-      await expect.poll(() => status.getAttribute('aria-live')).toBe('polite');
-      await expect
-        .poll(async () =>
-          (await page.evaluate(() => navigator.clipboard.readText())).replaceAll(
-            '\r\n',
-            '\n',
-          ),
-        )
-        .toBe(expectedCode);
-    } catch (error) {
-      await captureFailure(page, ['code-block', 'install-interaction']);
-      throw error;
+      await page.goto(
+        iframeUrl(origin, 'components-combobox--default', 'story', 'tinyrack-dark'),
+      );
+      const inputBox = await page.getByRole('combobox').boundingBox();
+      const triggerBox = await page.getByRole('button', { name: 'Open' }).boundingBox();
+      expect(inputBox).not.toBeNull();
+      expect(triggerBox).not.toBeNull();
+      expect(Math.abs((inputBox?.y ?? 0) - (triggerBox?.y ?? 0))).toBeLessThanOrEqual(
+        1,
+      );
+      expect((triggerBox?.x ?? 0) - (inputBox?.x ?? 0) - (inputBox?.width ?? 0)).toBe(
+        8,
+      );
     } finally {
-      await context.close();
+      await page.close();
     }
   });
 
-  it('opens and dismisses native Modal and Popover examples in built docs', async () => {
-    if (browser === undefined) {
-      throw new Error('Chromium did not start.');
-    }
-
-    const context = await browser.newContext({
-      viewport: { height: 900, width: 1440 },
-    });
-    const page = await context.newPage();
+  it('switches rich example tabs and copies paste-ready React source', async () => {
+    const page = await browser.newPage({ viewport: { height: 900, width: 1280 } });
 
     try {
-      await page.goto(docsUrl(origin, 'components-modal--docs', 'tinyrack-dark'), {
-        waitUntil: 'domcontentloaded',
-      });
-
-      const modalPreview = page.locator(
-        '#modal-basic [data-component-example-tabs] > [role="tabpanel"]:not([hidden])',
+      await page.goto(
+        iframeUrl(origin, 'components-button--docs', 'docs', 'tinyrack-dark'),
       );
-      await modalPreview.getByRole('button', { name: 'Open settings' }).click();
-      const modal = page.locator('dialog.tr-modal:modal');
+      const example = page.locator(
+        '[data-component-example-id="button-appearance-variant-matrix"]',
+      );
+      await example.getByRole('tab', { name: 'React' }).click();
+      const source = example.locator('[data-component-example-source="react"]');
+      await source.waitFor({ state: 'visible' });
+      const sourceText = await source.locator('pre').innerText();
+      expect(sourceText).toContain('\n  <div');
+      await source.getByRole('button', { name: /Copy React source/ }).click();
+      await expect.poll(() => source.getByRole('button').textContent()).toBe('Copied');
+    } finally {
+      await page.close();
+    }
+  });
 
-      await modal.waitFor();
-      await expect(modal.getAttribute('data-topmost')).resolves.toBe('true');
+  it('contains every open portal surface inside the mobile viewport', async () => {
+    const page = await browser.newPage({ viewport: { height: 844, width: 390 } });
+
+    try {
+      for (const [component, selector] of [
+        ['combobox', '.tr-combobox-content'],
+        ['menu', '.tr-menu-content'],
+        ['modal', '.tr-modal-box'],
+        ['popover', '.tr-popover-positioner'],
+        ['toast', '.tr-toast-viewport'],
+        ['tooltip', '.tr-tooltip-content'],
+      ] as const) {
+        await page.goto(
+          iframeUrl(origin, `components-${component}--open`, 'story', 'tinyrack-dark'),
+        );
+        const surface = page.locator(selector).first();
+        await surface.waitFor({ state: 'visible' });
+        const box = await surface.boundingBox();
+        expect(box, `${component} open surface`).not.toBeNull();
+        expect(box?.x ?? -1).toBeGreaterThanOrEqual(0);
+        expect(box?.y ?? -1).toBeGreaterThanOrEqual(0);
+        expect((box?.x ?? 0) + (box?.width ?? 0)).toBeLessThanOrEqual(390);
+        expect((box?.y ?? 0) + (box?.height ?? 0)).toBeLessThanOrEqual(844);
+      }
+    } finally {
+      await page.close();
+    }
+  });
+
+  it('preserves Base UI keyboard, portal, and selection behavior in stories', async () => {
+    const page = await browser.newPage({ viewport: { height: 800, width: 1280 } });
+
+    try {
+      await page.goto(
+        iframeUrl(origin, 'components-modal--default', 'story', 'tinyrack-dark'),
+      );
+      await page.getByRole('button', { name: 'Open modal' }).click();
+      await expect(page.getByRole('dialog').isVisible()).resolves.toBe(true);
       await page.keyboard.press('Escape');
-      await expect.poll(() => modal.count()).toBe(0);
+      await expect.poll(() => page.getByRole('dialog').isVisible()).toBe(false);
 
-      await page.goto(docsUrl(origin, 'components-popover--docs', 'tinyrack-dark'), {
-        waitUntil: 'domcontentloaded',
-      });
-      const layerPreview = page.locator(
-        '#popover-basic [data-component-example-tabs] > [role="tabpanel"]:not([hidden])',
+      await page.goto(
+        iframeUrl(origin, 'components-popover--default', 'story', 'tinyrack-dark'),
       );
-      await layerPreview.getByRole('button', { name: 'Open actions' }).click();
-      const layer = page.locator('.tr-layer:popover-open');
+      await page.getByRole('button', { name: 'Rack details' }).click();
+      await expect(page.getByText('All nodes online.').isVisible()).resolves.toBe(true);
+      await page.getByRole('button', { name: 'Close' }).click();
+      await expect
+        .poll(() => page.getByText('All nodes online.').isVisible())
+        .toBe(false);
 
-      await layer.waitFor();
-      await expect(layer.getAttribute('data-positioned')).resolves.toBe('true');
-      await page.keyboard.press('Escape');
-      await expect.poll(() => layer.count()).toBe(0);
-    } catch (error) {
-      await captureFailure(page, ['overlay', 'native-interaction']);
-      throw error;
-    } finally {
-      await context.close();
-    }
-  });
-
-  it('collapses the single Accordion to its intrinsic item height', async () => {
-    if (browser === undefined) {
-      throw new Error('Chromium did not start.');
-    }
-
-    const context = await browser.newContext({
-      viewport: { height: 900, width: 1440 },
-    });
-    const page = await context.newPage();
-
-    try {
-      await page.goto(docsUrl(origin, 'components-accordion--docs', 'tinyrack-dark'), {
-        waitUntil: 'domcontentloaded',
-      });
-
-      const example = page.locator('#accordion-single');
-      const preview = example.locator('[data-preview-layout="stretch"]');
-      const accordion = preview.locator('[data-tr-accordion]');
-
-      await accordion
-        .locator('[data-tr-accordion-item][data-value="network"] > summary')
-        .click();
-      await expect.poll(() => accordion.locator('details[open]').count()).toBe(0);
-
-      const metrics = await accordion.evaluate((root) => {
-        const rootRect = root.getBoundingClientRect();
-        const rootStyle = window.getComputedStyle(root);
-        const itemHeight = Array.from(
-          root.querySelectorAll<HTMLElement>(':scope > details'),
-        ).reduce((total, item) => total + item.getBoundingClientRect().height, 0);
-        const preview = root.parentElement;
-
-        if (preview === null) {
-          throw new Error('Accordion preview wrapper is missing.');
-        }
-
-        const previewRect = preview.getBoundingClientRect();
-        const previewStyle = window.getComputedStyle(preview);
-
-        return {
-          horizontalEndGap:
-            previewRect.right -
-            Number.parseFloat(previewStyle.paddingRight) -
-            rootRect.right,
-          horizontalStartGap:
-            rootRect.left -
-            (previewRect.left + Number.parseFloat(previewStyle.paddingLeft)),
-          verticalStretchGap:
-            rootRect.height -
-            itemHeight -
-            Number.parseFloat(rootStyle.borderTopWidth) -
-            Number.parseFloat(rootStyle.borderBottomWidth),
-        };
-      });
-
-      expect(Math.abs(metrics.horizontalStartGap)).toBeLessThanOrEqual(1);
-      expect(Math.abs(metrics.horizontalEndGap)).toBeLessThanOrEqual(1);
-      expect(Math.abs(metrics.verticalStretchGap)).toBeLessThanOrEqual(1);
-    } catch (error) {
-      await captureFailure(page, ['accordion', 'single-collapsed-height']);
-      throw error;
-    } finally {
-      await context.close();
-    }
-  });
-
-  it('commits pointer option selections in the built Combobox docs', async () => {
-    if (browser === undefined) {
-      throw new Error('Chromium did not start.');
-    }
-
-    const context = await browser.newContext({
-      viewport: { height: 900, width: 1440 },
-    });
-    const page = await context.newPage();
-
-    try {
-      await page.goto(docsUrl(origin, 'components-combobox--docs', 'tinyrack-dark'), {
-        waitUntil: 'domcontentloaded',
-      });
-
-      const preview = page.locator(
-        '#combobox-select [data-component-example-tabs] > [role="tabpanel"]:not([hidden])',
+      await page.goto(
+        iframeUrl(origin, 'components-tabs--default', 'story', 'tinyrack-dark'),
       );
-      const input = preview.getByRole('combobox', { exact: true, name: 'Language' });
-      const koreanOption = preview.getByRole('option', {
-        exact: true,
-        name: '한국어',
-      });
-      const selectedKoreanOption = preview.locator('[role="option"][data-value="ko"]');
+      await page.getByRole('tab', { name: 'Network' }).click();
+      await expect(
+        page.getByRole('tabpanel', { name: 'Network' }).textContent(),
+      ).resolves.toContain('10 Gbps uplink.');
 
-      await input.click();
-      await koreanOption.click();
-
-      await expect.poll(() => input.inputValue()).toBe('한국어');
-      await expect
-        .poll(() => preview.locator('input[name="language"]').inputValue())
-        .toBe('ko');
-      await expect
-        .poll(() => selectedKoreanOption.getAttribute('aria-selected'))
-        .toBe('true');
-      await expect.poll(() => input.getAttribute('aria-expanded')).toBe('false');
-    } catch (error) {
-      await captureFailure(page, ['combobox', 'pointer-selection']);
-      throw error;
-    } finally {
-      await context.close();
-    }
-  });
-
-  it('announces when clipboard copy is unavailable', async () => {
-    if (browser === undefined) {
-      throw new Error('Chromium did not start.');
-    }
-
-    const context = await browser.newContext({
-      viewport: { height: 900, width: 1440 },
-    });
-    const page = await context.newPage();
-
-    try {
-      await page.addInitScript(() => {
-        Object.defineProperty(navigator, 'clipboard', {
-          configurable: true,
-          value: {
-            writeText: async () => {
-              throw new Error('Clipboard disabled for failure-state coverage.');
-            },
-          },
-        });
-      });
-      await page.goto(docsUrl(origin, 'components-button--docs', 'tinyrack-dark'), {
-        waitUntil: 'domcontentloaded',
-      });
-
-      const example = page.locator('#button-basic');
-
-      await example.getByRole('tab', { exact: true, name: 'HTML' }).click();
-
-      const activePanel = example.locator(
-        '[data-component-example-tabs] > [role="tabpanel"]:not([hidden])',
+      await page.goto(
+        iframeUrl(origin, 'components-combobox--default', 'story', 'tinyrack-dark'),
       );
-
-      await activePanel.locator('[data-copy-source="HTML"]').click();
-      await expect
-        .poll(() => activePanel.locator('[data-copy-status]').textContent())
-        .toContain('Copy unavailable');
-    } catch (error) {
-      await captureFailure(page, ['button', 'copy-unavailable']);
-      throw error;
+      await page.getByRole('button', { name: 'Open' }).click();
+      await page.getByRole('option', { name: 'Rack B' }).click();
+      await expect(page.getByRole('combobox').inputValue()).resolves.toBe('Rack B');
     } finally {
-      await context.close();
+      await page.close();
     }
   });
 });

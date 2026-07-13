@@ -1,3 +1,5 @@
+@import "../popover/popover.css";
+
 @layer components {
   .tr-menu {
     display: inline-flex;
@@ -30,7 +32,7 @@
     cursor: pointer;
   }
 
-  .tr-menu-item:is(:hover, :focus-visible) {
+  .tr-menu-item:is(:hover, :focus-visible, [data-highlighted]) {
     background: var(--tinyrack-surface-hover);
     outline: none;
   }

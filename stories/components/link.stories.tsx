@@ -1,58 +1,48 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { linkUnderlines, linkVariants } from '../../src/components/link/contract.js';
-import { Link, type LinkProps } from '../../src/components/link/react.js';
+import {
+  Link,
+  type LinkUnderline,
+  type LinkVariant,
+} from '../../src/components/link/index.js';
 
-type ComponentStoryProps = Pick<
-  LinkProps,
-  'children' | 'href' | 'underline' | 'variant'
->;
-
-function LinkStory(controlValues: ComponentStoryProps) {
-  return <Link {...controlValues} />;
-}
-
-LinkStory.displayName = 'LinkStory';
+type LinkStoryArgs = {
+  children: string;
+  newTab: boolean;
+  underline: LinkUnderline;
+  variant: LinkVariant;
+};
 
 const meta = {
   title: 'Components/Link',
-  component: LinkStory,
+  component: Link,
+  parameters: { layout: 'centered' },
   args: {
-    children: 'Rack inventory',
-    href: '#',
-    underline: 'hover',
+    children: 'Open Tinyrack',
+    newTab: false,
+    underline: 'always',
     variant: 'primary',
   },
   argTypes: {
-    children: {
-      control: 'text',
-      description: 'Link label.',
-    },
-    href: {
-      control: 'text',
-      description: 'Native anchor href.',
-    },
-    underline: {
-      control: 'select',
-      options: linkUnderlines,
-      description: 'Underline behavior.',
-    },
+    children: { control: 'text' },
+    newTab: { control: 'boolean' },
+    underline: { control: 'select', options: ['always', 'hover', 'none'] },
     variant: {
       control: 'select',
-      options: linkVariants,
-      description: 'Semantic link color.',
+      options: ['default', 'muted', 'primary', 'danger'],
     },
   },
-  parameters: {
-    docs: {
-      description: {
-        component: 'CSS-first Tinyrack Link rendered as a native anchor.',
-      },
-    },
-  },
-} satisfies Meta<typeof LinkStory>;
+  render: ({ children, newTab, ...props }) => (
+    <Link
+      {...props}
+      href="https://tinyrack.net"
+      rel={newTab ? 'noreferrer' : undefined}
+      target={newTab ? '_blank' : undefined}
+    >
+      {children}
+    </Link>
+  ),
+} satisfies Meta<LinkStoryArgs>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
-
 export const Default: Story = {};

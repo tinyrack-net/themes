@@ -1,3 +1,5 @@
+@import "../popover/popover.css";
+
 @layer components {
   .tr-tooltip {
     display: inline-flex;

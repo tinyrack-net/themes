@@ -1,27 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import {
-  Disclosure,
-  DisclosureContent,
-  DisclosureSummary,
-} from '../../src/components/disclosure/react.js';
+import { Disclosure } from '../../src/components/disclosure/index.js';
 
-function DisclosureStory({ open }: { open: boolean }) {
-  return (
-    <Disclosure key={String(open)} open={open}>
-      <DisclosureSummary>Advanced translator settings</DisclosureSummary>
-      <DisclosureContent>
-        Configure retry and request timeout behavior.
-      </DisclosureContent>
-    </Disclosure>
-  );
-}
+type DisclosureStoryArgs = { disabled: boolean; open: boolean; trigger: string };
 
 const meta = {
   title: 'Components/Disclosure',
-  component: DisclosureStory,
-  args: { open: false },
-  argTypes: { open: { control: 'boolean' } },
-} satisfies Meta<typeof DisclosureStory>;
+  parameters: { layout: 'centered' },
+  args: { disabled: false, open: false, trigger: 'Advanced settings' },
+  argTypes: {
+    disabled: { control: 'boolean' },
+    open: { control: 'boolean' },
+    trigger: { control: 'text' },
+  },
+  render: ({ disabled, open, trigger }) => (
+    <Disclosure.Root
+      className="w-96 max-w-full"
+      defaultOpen={open}
+      disabled={disabled}
+      key={`${open}-${disabled}`}
+    >
+      <Disclosure.Trigger>{trigger}</Disclosure.Trigger>
+      <Disclosure.Panel>Retry and timeout controls.</Disclosure.Panel>
+    </Disclosure.Root>
+  ),
+} satisfies Meta<DisclosureStoryArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

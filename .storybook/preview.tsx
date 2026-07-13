@@ -91,6 +91,10 @@ const preview: Preview = {
       document.body.classList.add('m-0', 'min-h-full', 'overflow-auto');
       document.body.classList.toggle('tinyrack-storybook-docs', isDocs);
       document.body.classList.toggle('tinyrack-storybook-canvas', !isDocs);
+      document.body.classList.toggle(
+        'tinyrack-storybook-component-canvas',
+        !isDocs && isComponentStory,
+      );
 
       document
         .getElementById('storybook-root')
@@ -98,8 +102,10 @@ const preview: Preview = {
 
       const canvasClassName =
         !isDocs && isComponentStory
-          ? 'grid min-h-screen w-full min-w-0 box-border place-items-center overflow-auto bg-tinyrack-surface p-6 text-tinyrack-text max-sm:p-3'
-          : 'min-h-full w-full min-w-0 overflow-visible bg-tinyrack-surface text-tinyrack-text';
+          ? 'tinyrack-component-story-frame grid min-h-screen w-full min-w-0 box-border place-items-center overflow-auto bg-tinyrack-surface p-6 text-tinyrack-text max-sm:p-3'
+          : isDocs && isComponentStory
+            ? 'tinyrack-docs-story-frame min-h-full w-full min-w-0 bg-tinyrack-canvas text-tinyrack-text'
+            : 'min-h-full w-full min-w-0 overflow-visible bg-tinyrack-surface text-tinyrack-text';
 
       return (
         <div className={canvasClassName}>

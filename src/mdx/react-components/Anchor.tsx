@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react';
-import { Link } from '../../components/link/react.js';
-import { mergeClassNames } from '../shared.js';
+import { Link } from '../../components/link/index.js';
+import { mergeClassNames } from '../mdx-markup.js';
 
 export function TinyrackMdxAnchor({
   className,

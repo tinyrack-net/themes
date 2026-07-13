@@ -1,129 +1,69 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { alertVariants } from '../../src/components/alert/contract.js';
-import { Alert } from '../../src/components/alert/react.js';
+import { Alert } from '../../src/components/alert/index.js';
+import { Button } from '../../src/components/button/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as AlertStories from './alert.stories';
+import * as Stories from './alert.stories';
 
-<Meta of={AlertStories} />
+<Meta of={Stories} />
 
 # Alert
 
-An operational message surface for neutral guidance and semantic status feedback.
+Persistent status messaging with semantic titles, descriptions, and optional actions.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `tr-alert` on `<div>` | `Alert` | Required message surface | Keep the message short and actionable. |
-| Variant | `data-variant` | `variant` | `neutral`, `info`, `success`, `warning`, `danger`; default `neutral` | Match the status meaning and reserve danger for errors. |
-| Native | Native `<div>` attributes | `HTMLAttributes<HTMLDivElement>` | Passed through | Caller chooses `role="status"` or `role="alert"` when announcement is needed. |
+| Axis | Values | Default |
+| --- | --- | --- |
+| `variant` | `neutral`, `info`, `success`, `warning`, `danger` | `neutral` |
+| parts | `Root`, `Title`, `Description`, `Actions` | compound API |
 
 ## Install
 
-<ComponentInstall
-  surfaces={[
-    {
-      label: 'CSS / HTML',
-      install: 'pnpm add @tinyrack/ui tailwindcss',
-      imports: [
-        '@import "@tinyrack/ui/core/core.css";',
-        '@import "@tinyrack/ui/components/alert/alert.css";',
-      ],
-    },
-    {
-      label: 'React',
-      install: 'pnpm add @tinyrack/ui react react-dom',
-      imports: ["import { Alert } from '@tinyrack/ui/components/alert/react';"],
-    },
-  ]}
-/>
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/alert.css';", "import { Alert } from '@tinyrack/ui/components/alert';"] }]} />
 
 ## Usage
 
 <ComponentExampleTabs
   id="alert-basic"
-  title="Basic alert"
-  description="Use the visual surface independently from the live-region decision."
-  preview={<Alert>Backup is scheduled.</Alert>}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/alert/alert.css';
-import { Alert } from '@tinyrack/ui/components/alert/react';
+  title="Status message"
+  previewLayout="stretch"
+  preview={<Alert.Root variant="info"><Alert.Title>Deployment queued</Alert.Title><Alert.Description>The rollout will start shortly.</Alert.Description></Alert.Root>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`import { Alert } from '@tinyrack/ui/components/alert';
 
-<Alert>
-  Backup is scheduled.
-</Alert>;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-alert" data-variant="neutral">
-  Backup is scheduled.
-</div>`,
-    },
-  ]}
+<Alert.Root variant="info">
+  <Alert.Title>Deployment queued</Alert.Title>
+  <Alert.Description>The rollout will start shortly.</Alert.Description>
+</Alert.Root>` }]}
 />
 
 ## Examples
 
 <ComponentExampleTabs
-  id="alert-variant"
-  title="Variant Matrix"
-  description="Compare all semantic alert variants and explicit announcement roles."
+  id="alert-variants"
+  title="Status variants"
+  description="All semantic status colors are visible in one vertical scan."
+  previewLayout="stretch"
   preview={(
     <div className="grid gap-3">
-      {alertVariants.map((variant) => (
-        <Alert key={variant} role={variant === 'danger' ? 'alert' : 'status'} variant={variant}>
-          {variant === 'danger' ? 'Node is offline.' : `${variant} operational update.`}
-        </Alert>
-      ))}
+      <Alert.Root variant="neutral"><Alert.Title>Neutral</Alert.Title><Alert.Description>No status has been assigned.</Alert.Description></Alert.Root>
+      <Alert.Root variant="info"><Alert.Title>Info</Alert.Title><Alert.Description>Maintenance starts at 02:00.</Alert.Description></Alert.Root>
+      <Alert.Root variant="success"><Alert.Title>Success</Alert.Title><Alert.Description>All nodes are healthy.</Alert.Description></Alert.Root>
+      <Alert.Root variant="warning"><Alert.Title>Warning</Alert.Title><Alert.Description>Storage is nearing capacity.</Alert.Description></Alert.Root>
+      <Alert.Root variant="danger"><Alert.Title>Danger</Alert.Title><Alert.Description>Deployment failed.</Alert.Description><Alert.Actions><Button appearance="outline" size="sm" variant="danger">Retry</Button></Alert.Actions></Alert.Root>
     </div>
   )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Alert variant="neutral" role="status">Maintenance begins soon.</Alert>
-<Alert variant="info" role="status">Deployment is queued.</Alert>
-<Alert variant="danger" role="alert">Node is offline.</Alert>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-alert" data-variant="neutral" role="status">Maintenance begins soon.</div>
-<div class="tr-alert" data-variant="info" role="status">Deployment is queued.</div>
-<div class="tr-alert" data-variant="danger" role="alert">Node is offline.</div>`,
-    },
-  ]}
-/>
-
-## Guidance
-
-<ComponentGuidance
-  whenToUse={[
-    'Use Alert when a message belongs to the current operational context and needs a bounded surface.',
-    'Choose role="status" for informative updates and role="alert" for urgent errors.',
-  ]}
-  avoid={[
-    'Do not announce every static message as an alert.',
-    'Do not choose success, warning, info, or danger only for visual emphasis; match the message meaning.',
-  ]}
-  accessibility={[
-    'Choose the live-region role based on urgency rather than visual variant alone.',
-    'Make the message understandable without relying on border or text color.',
-  ]}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Alert.Root variant="neutral">...</Alert.Root>
+<Alert.Root variant="info">...</Alert.Root>
+<Alert.Root variant="success">...</Alert.Root>
+<Alert.Root variant="warning">...</Alert.Root>
+<Alert.Root variant="danger">
+  <Alert.Title>Deployment failed</Alert.Title>
+  <Alert.Description>Review the logs and retry.</Alert.Description>
+  <Alert.Actions><Button variant="danger">Retry</Button></Alert.Actions>
+</Alert.Root>` }]}
 />
 
 ## API
 
-| Component | Main props | Note |
-| --- | --- | --- |
-| `Alert` | `variant`, native div props | Does not force a live-region role. |
-
-<ComponentTokenTable component="alert" />
+`Alert.Root` forwards native `div` props and React 19 `ref`; every part is also exported individually.

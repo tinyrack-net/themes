@@ -67,6 +67,30 @@ body[data-theme] {
   color: var(--tinyrack-text);
 }
 
+body.tinyrack-storybook-component-canvas.sb-main-centered #storybook-root {
+  padding: 0;
+}
+
+body[data-theme].tinyrack-storybook-docs .sbdocs.sbdocs-preview,
+body[data-theme].tinyrack-storybook-docs .sbdocs.sbdocs-preview .docs-story {
+  background: var(--tinyrack-canvas);
+  color: var(--tinyrack-text);
+}
+
+body[data-theme] .docs-story > div,
+body[data-theme] .docs-story > div > div,
+.tinyrack-docs-story-frame {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.tinyrack-docs-story-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .sbdocs.sbdocs-content {
   max-width: none;
 }

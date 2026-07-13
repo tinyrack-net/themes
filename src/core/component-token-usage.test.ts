@@ -140,11 +140,11 @@ describe('public CSS token usage', () => {
     expect(tooltip).toContain('--_tr-tooltip-color: var(--tinyrack-surface);');
 
     const alertContract = readFileSync(
-      join(process.cwd(), 'src/components/alert/contract.ts'),
+      join(process.cwd(), 'src/components/alert/alert-root.tsx'),
       'utf8',
     );
     const badgeContract = readFileSync(
-      join(process.cwd(), 'src/components/badge/contract.ts'),
+      join(process.cwd(), 'src/components/badge/badge.tsx'),
       'utf8',
     );
     const form = readFileSync(
@@ -169,7 +169,7 @@ describe('public CSS token usage', () => {
       }
       expect(contract).not.toContain("'primary'");
     }
-    expect(form).toContain('--_tr-form-control-border: var(--tinyrack-danger-border);');
+    expect(form).toContain('border-color: var(--tinyrack-danger-border);');
     expect(pinInput).toContain('border-color: var(--tinyrack-danger-border);');
   });
 

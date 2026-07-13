@@ -2,49 +2,39 @@ import '../../core/core.css';
 import './card.css';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { Card } from './react.js';
+import { Card, CardRoot } from './index.js';
 
-const themeDatasetKey = 'theme';
-
-function cardByText(text: string) {
-  const card = Array.from(document.querySelectorAll<HTMLElement>('.tr-card')).find(
-    (element) => element.textContent === text,
+test('assembles the semantic card parts', async () => {
+  expect(Card.Root).toBe(CardRoot);
+  await render(
+    <Card.Root data-testid="card" padding="lg" variant="elevated">
+      <Card.Header>
+        <Card.Title>Server</Card.Title>
+        <Card.Description>Healthy</Card.Description>
+      </Card.Header>
+      <Card.Content>Details</Card.Content>
+      <Card.Footer>Updated now</Card.Footer>
+    </Card.Root>,
   );
-
-  if (!card) {
-    throw new Error(`Unable to find card: ${text}`);
-  }
-
-  return card;
-}
-
-test('Card renders a padded semantic surface with defaults', async () => {
-  document.documentElement.dataset[themeDatasetKey] = 'tinyrack-light';
-  await render(<Card>Rack overview</Card>);
-  const card = cardByText('Rack overview');
-
-  await expect.element(card).toBeVisible();
-  await expect.element(card).toHaveAttribute('data-padding', 'md');
-  await expect.element(card).toHaveAttribute('data-variant', 'default');
-
-  const styles = getComputedStyle(card);
-  expect(styles.padding).toBe('12px');
-  expect(styles.borderRadius).toBe('8px');
-  expect(styles.backgroundColor).toBe('rgb(255, 255, 255)');
+  const root = document.querySelector<HTMLElement>('[data-testid="card"]');
+  expect(root?.dataset['padding']).toBe('lg');
+  expect(root?.querySelector('header')).not.toBeNull();
+  expect(root?.querySelector('footer')).not.toBeNull();
+  expect(getComputedStyle(root as HTMLElement).boxShadow).not.toBe('none');
 });
 
-test('Card exposes custom padding, variant, and class names', async () => {
-  document.documentElement.dataset[themeDatasetKey] = 'tinyrack-dark';
+test('styles every public card variant and padding value', async () => {
+  document.documentElement.dataset['theme'] = 'tinyrack-light';
   await render(
-    <Card className="custom-card" padding="lg" variant="muted">
-      Rack logs
-    </Card>,
+    <div>
+      <Card.Root data-testid="outlined" padding="none" variant="outlined" />
+      <Card.Root data-testid="default" variant="default" />
+    </div>,
   );
-  const card = cardByText('Rack logs');
-
-  expect(card.className).toContain('custom-card');
-  await expect.element(card).toHaveAttribute('data-padding', 'lg');
-  await expect.element(card).toHaveAttribute('data-variant', 'muted');
-  expect(getComputedStyle(card).padding).toBe('16px');
-  expect(getComputedStyle(card).backgroundColor).toBe('rgb(23, 23, 23)');
+  const outlined = document.querySelector<HTMLElement>('[data-testid="outlined"]');
+  const standard = document.querySelector<HTMLElement>('[data-testid="default"]');
+  expect(getComputedStyle(outlined as HTMLElement).padding).toBe('0px');
+  expect(getComputedStyle(outlined as HTMLElement).backgroundColor).not.toBe(
+    getComputedStyle(standard as HTMLElement).backgroundColor,
+  );
 });

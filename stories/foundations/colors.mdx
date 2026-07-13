@@ -1,8 +1,8 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Badge } from '../../src/components/badge/react.js';
-import { Button } from '../../src/components/button/react.js';
-import { Code } from '../../src/components/code/react.js';
-import { Table, TableContainer } from '../../src/components/table/react.js';
+import { Badge } from '../../src/components/badge/index.js';
+import { Button } from '../../src/components/button/index.js';
+import { Code } from '../../src/components/code/index.js';
+import { Table } from '../../src/components/table/index.js';
 import { tinyrackPalettes, tinyrackSemanticColors } from '../../src/core/index.js';
 
 <Meta title="Foundations/Colors" />
@@ -61,8 +61,7 @@ Base ramps are exported from `@tinyrack/ui/core` for token authors and tooling. 
 
 Functional colors are the default product API. Choose them by meaning rather than by whichever value happens to look correct in the current theme.
 
-<TableContainer className="mt-4" data-functional-color-reference="colors">
-  <Table>
+<Table.Root className="mt-4" data-functional-color-reference="colors">
     <thead><tr><th scope="col">Role</th><th scope="col">Light</th><th scope="col">Dark</th></tr></thead>
     <tbody>
       {Object.entries(tinyrackSemanticColors.light).map(([token, lightValue], index) => (
@@ -83,13 +82,11 @@ Functional colors are the default product API. Choose them by meaning rather tha
         </tr>
       ))}
     </tbody>
-  </Table>
-</TableContainer>
+  </Table.Root>
 
 ## Base-to-functional mapping
 
-<TableContainer className="mt-4" data-foundation-reference="colors">
-  <Table>
+<Table.Root className="mt-4" data-foundation-reference="colors">
     <thead><tr><th scope="col">Role</th><th scope="col">Light</th><th scope="col">Dark</th></tr></thead>
     <tbody>
       {[
@@ -106,8 +103,7 @@ Functional colors are the default product API. Choose them by meaning rather tha
         <tr key={role}><th scope="row">{role}</th><td><Code>{light}</Code></td><td><Code>{dark}</Code></td></tr>
       ))}
     </tbody>
-  </Table>
-</TableContainer>
+  </Table.Root>
 
 ## Component/pattern tokens
 

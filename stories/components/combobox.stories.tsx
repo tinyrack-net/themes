@@ -1,49 +1,77 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxList,
-  type ComboboxMode,
-  ComboboxOption,
-} from '../../src/components/combobox/react.js';
+import { Combobox } from '../../src/components/combobox/index.js';
 
-function ComboboxStory({
-  disabled,
-  invalid,
-  mode,
-}: {
+type ComboboxStoryArgs = {
   disabled: boolean;
-  invalid: boolean;
-  mode: ComboboxMode;
-}) {
+  disabledOption: boolean;
+  open: boolean;
+  placeholder: string;
+  selected: 'none' | 'Rack A' | 'Rack B';
+};
+
+export function ComboboxExample({
+  disabled = false,
+  disabledOption = false,
+  open = false,
+  placeholder = 'Choose a rack',
+  selected = 'none',
+}: Partial<ComboboxStoryArgs>) {
+  const selectionProps = selected === 'none' ? {} : { defaultValue: selected };
+
   return (
-    <Combobox disabled={disabled} invalid={invalid} mode={mode} name="language">
-      <ComboboxInput aria-label="Language" placeholder="Search languages" />
-      <ComboboxContent>
-        <ComboboxList>
-          <ComboboxOption value="en">English</ComboboxOption>
-          <ComboboxOption value="ko">한국어</ComboboxOption>
-          <ComboboxOption value="ja">日本語</ComboboxOption>
-        </ComboboxList>
-        <ComboboxEmpty>No language found</ComboboxEmpty>
-      </ComboboxContent>
-    </Combobox>
+    <Combobox.Root
+      {...selectionProps}
+      defaultOpen={open}
+      disabled={disabled}
+      items={['Rack A', 'Rack B']}
+      key={`${open}-${selected}`}
+    >
+      <div className="tinyrack-combobox-story-layout flex w-full max-w-md items-stretch gap-2">
+        <Combobox.Input
+          aria-label="Rack"
+          className="min-w-0 flex-1"
+          placeholder={placeholder}
+        />
+        <Combobox.Trigger>Open</Combobox.Trigger>
+      </div>
+      <Combobox.Portal>
+        <Combobox.Positioner>
+          <Combobox.Popup>
+            <Combobox.List>
+              <Combobox.Item value="Rack A">Rack A</Combobox.Item>
+              <Combobox.Item disabled={disabledOption} value="Rack B">
+                Rack B
+              </Combobox.Item>
+              <Combobox.Empty>No racks</Combobox.Empty>
+            </Combobox.List>
+          </Combobox.Popup>
+        </Combobox.Positioner>
+      </Combobox.Portal>
+    </Combobox.Root>
   );
 }
 
 const meta = {
   title: 'Components/Combobox',
-  component: ComboboxStory,
-  args: { disabled: false, invalid: false, mode: 'select' },
+  parameters: { layout: 'centered' },
+  args: {
+    disabled: false,
+    disabledOption: false,
+    open: false,
+    placeholder: 'Choose a rack',
+    selected: 'none',
+  },
   argTypes: {
     disabled: { control: 'boolean' },
-    invalid: { control: 'boolean' },
-    mode: { control: 'select', options: ['select', 'freeform'] },
+    disabledOption: { control: 'boolean' },
+    open: { control: 'boolean' },
+    placeholder: { control: 'text' },
+    selected: { control: 'select', options: ['none', 'Rack A', 'Rack B'] },
   },
-} satisfies Meta<typeof ComboboxStory>;
+  render: (args) => <ComboboxExample {...args} />,
+} satisfies Meta<ComboboxStoryArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
+export const Open: Story = { args: { open: true } };

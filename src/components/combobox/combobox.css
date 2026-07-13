@@ -1,3 +1,5 @@
+@import "../popover/popover.css";
+
 @layer components {
   .tr-combobox {
     position: relative;
@@ -30,7 +32,7 @@
     cursor: pointer;
   }
 
-  .tr-combobox-option:is([data-active="true"], :hover) {
+  .tr-combobox-option:is([data-highlighted], :hover) {
     background: var(--tinyrack-surface-hover);
   }
 

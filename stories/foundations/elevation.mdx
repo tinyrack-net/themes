@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Code } from '../../src/components/code/react.js';
-import { Table, TableContainer } from '../../src/components/table/react.js';
+import { Code } from '../../src/components/code/index.js';
+import { Table } from '../../src/components/table/index.js';
 import { tinyrackShadows } from '../../src/core/index.js';
 
 <Meta title="Foundations/Elevation" />
@@ -115,8 +115,7 @@ Use `tinyrackShadows.raised` and `tinyrackShadows.overlay` when tooling or gener
 
 ## Reference
 
-<TableContainer className="mt-4" data-foundation-reference="elevation">
-  <Table>
+<Table.Root className="mt-4" data-foundation-reference="elevation">
     <thead><tr><th scope="col">Token</th><th scope="col">Purpose</th><th scope="col">Used by</th><th scope="col">Value</th><th scope="col">CSS variable</th><th scope="col">Utility</th></tr></thead>
     <tbody>
       {[
@@ -133,5 +132,4 @@ Use `tinyrackShadows.raised` and `tinyrackShadows.overlay` when tooling or gener
         </tr>
       ))}
     </tbody>
-  </Table>
-</TableContainer>
+  </Table.Root>

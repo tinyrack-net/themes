@@ -1,150 +1,76 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { progressSizes, progressVariants } from '../../src/components/progress/contract.js';
-import { Progress } from '../../src/components/progress/react.js';
+import { Progress } from '../../src/components/progress/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as ProgressStories from './progress.stories';
+import * as Stories from './progress.stories';
 
-<Meta of={ProgressStories} />
+<Meta of={Stories} />
 
 # Progress
 
-A native progress indicator for determinate work and indeterminate activity.
+Determinate and indeterminate task progress with size and semantic status axes.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `tr-progress` on `<progress>` | `Progress` | Native progress semantics | Supply an accessible label for the operation. |
-| Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Use size to match the surrounding density. |
-| Variant | `data-variant` | `variant` | `neutral`, `primary`, `danger`; default `primary` | Use danger when progress represents a failed or destructive operation. |
-| State | Native `value` and `max` | Native progress props | Omit `value` for indeterminate | Keep the browser's native determinate and indeterminate semantics. |
+| Axis | Values | Default |
+| --- | --- | --- |
+| `variant` | `neutral`, `info`, `success`, `warning`, `danger` | `neutral` |
+| `size` | `sm`, `md`, `lg` | `md` |
+| parts | `Root`, `Label`, `Track`, `Indicator`, `Value` | compound API |
 
 ## Install
 
-<ComponentInstall
-  surfaces={[
-    {
-      label: 'CSS / HTML',
-      install: 'pnpm add @tinyrack/ui tailwindcss',
-      imports: [
-        '@import "@tinyrack/ui/core/core.css";',
-        '@import "@tinyrack/ui/components/progress/progress.css";',
-      ],
-    },
-    {
-      label: 'React',
-      install: 'pnpm add @tinyrack/ui react react-dom',
-      imports: ["import { Progress } from '@tinyrack/ui/components/progress/react';"],
-    },
-  ]}
-/>
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/progress.css';", "import { Progress } from '@tinyrack/ui/components/progress';"] }]} />
 
 ## Usage
 
 <ComponentExampleTabs
   id="progress-basic"
   title="Determinate progress"
-  description="Use native value and max attributes for measurable work."
-  preview={<Progress aria-label="Deployment progress" max={100} value={42} />}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/progress/progress.css';
-import { Progress } from '@tinyrack/ui/components/progress/react';
-
-<Progress aria-label="Deployment progress" max={100} value={42} />;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<progress class="tr-progress" data-size="md" data-variant="primary" max="100" value="42">
-  42%
-</progress>`,
-    },
-  ]}
+  previewLayout="stretch"
+  preview={<Progress.Root value={68} variant="success"><Progress.Label>Deployment</Progress.Label><Progress.Track><Progress.Indicator /></Progress.Track><Progress.Value /></Progress.Root>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Progress.Root value={68} variant="success">
+  <Progress.Label>Deployment</Progress.Label>
+  <Progress.Track><Progress.Indicator /></Progress.Track>
+  <Progress.Value />
+</Progress.Root>` }]}
 />
 
 ## Examples
 
 <ComponentExampleTabs
-  id="progress-size-variant"
-  title="Size x Variant Matrix"
-  description="Compare every supported size and semantic variant."
+  id="progress-size-variant-matrix"
+  title="Size × variant"
+  description="All fifteen visual combinations use the same 68% value."
+  previewLayout="stretch"
   preview={(
-    <div className="grid gap-4">
-      {progressSizes.map((size) => (
-        <div key={size} className="grid gap-2">
-          <span className="text-tinyrack-xs uppercase">size: {size}</span>
-          {progressVariants.map((variant) => (
-            <Progress key={variant} aria-label={`${size} ${variant}`} max={100} size={size} value={42} variant={variant} />
-          ))}
-        </div>
-      ))}
+    <div className="grid gap-5">
+      <div className="grid gap-3"><strong>Small</strong><Progress.Root size="sm" value={68} variant="neutral"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="sm" value={68} variant="info"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="sm" value={68} variant="success"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="sm" value={68} variant="warning"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="sm" value={68} variant="danger"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root></div>
+      <div className="grid gap-3"><strong>Medium</strong><Progress.Root size="md" value={68} variant="neutral"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="md" value={68} variant="info"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="md" value={68} variant="success"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="md" value={68} variant="warning"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="md" value={68} variant="danger"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root></div>
+      <div className="grid gap-3"><strong>Large</strong><Progress.Root size="lg" value={68} variant="neutral"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="lg" value={68} variant="info"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="lg" value={68} variant="success"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="lg" value={68} variant="warning"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root><Progress.Root size="lg" value={68} variant="danger"><Progress.Track><Progress.Indicator /></Progress.Track></Progress.Root></div>
     </div>
   )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Progress aria-label="Neutral" max={100} size="sm" value={42} variant="neutral" />
-<Progress aria-label="Primary" max={100} size="md" value={42} variant="primary" />
-<Progress aria-label="Danger" max={100} size="lg" value={42} variant="danger" />`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<progress class="tr-progress" data-size="sm" data-variant="neutral" max="100" value="42"></progress>
-<progress class="tr-progress" data-size="md" data-variant="primary" max="100" value="42"></progress>
-<progress class="tr-progress" data-size="lg" data-variant="danger" max="100" value="42"></progress>`,
-    },
-  ]}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Progress.Root size="sm" value={68} variant="info">...</Progress.Root>
+<Progress.Root size="md" value={68} variant="success">...</Progress.Root>
+<Progress.Root size="lg" value={68} variant="danger">...</Progress.Root>` }]}
 />
 
 <ComponentExampleTabs
-  id="progress-indeterminate"
-  title="Indeterminate"
-  description="Omit value while work is active but its completion percentage is unknown."
-  preview={<Progress aria-label="Synchronizing" size="md" />}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Progress aria-label="Synchronizing" />`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<progress class="tr-progress" data-size="md" data-variant="primary" aria-label="Synchronizing"></progress>`,
-    },
-  ]}
-/>
-
-## Guidance
-
-<ComponentGuidance
-  whenToUse={[
-    'Use determinate progress when the operation exposes a meaningful value and maximum.',
-    'Use indeterminate progress when the operation is active but the completion amount is unknown.',
-  ]}
-  avoid={[
-    'Do not use progress as a decorative loading animation without an operation label.',
-    'Do not communicate failure only through color; pair danger progress with text or an Alert.',
-  ]}
-  accessibility={[
-    'Provide an accessible label through aria-label or an associated visible label.',
-    'Keep native value, max, and indeterminate behavior intact.',
-  ]}
+  id="progress-values"
+  title="Value states"
+  previewLayout="stretch"
+  preview={(
+    <div className="grid gap-4">
+      <Progress.Root value={0}><Progress.Label>Queued</Progress.Label><Progress.Track><Progress.Indicator /></Progress.Track><Progress.Value /></Progress.Root>
+      <Progress.Root value={48} variant="info"><Progress.Label>Running</Progress.Label><Progress.Track><Progress.Indicator /></Progress.Track><Progress.Value /></Progress.Root>
+      <Progress.Root value={100} variant="success"><Progress.Label>Complete</Progress.Label><Progress.Track><Progress.Indicator /></Progress.Track><Progress.Value /></Progress.Root>
+    </div>
+  )}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Progress.Root value={0}>...</Progress.Root>
+<Progress.Root value={48} variant="info">...</Progress.Root>
+<Progress.Root value={100} variant="success">...</Progress.Root>` }]}
 />
 
 ## API
 
-| Component | Main props | Note |
-| --- | --- | --- |
-| `Progress` | `size`, `variant`, native progress props | Native `<progress>`; omit `value` for indeterminate state. |
-
-<ComponentTokenTable component="progress" />
+Base UI supplies value semantics; label the task and keep `value` between `min` and `max`.

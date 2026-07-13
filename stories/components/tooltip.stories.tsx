@@ -1,33 +1,59 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button } from '../../src/components/button/react.js';
-import {
-  type PopoverPlacement,
-  popoverPlacements,
-} from '../../src/components/popover/contract.js';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '../../src/components/tooltip/react.js';
+import { Tooltip } from '../../src/components/tooltip/index.js';
 
-function TooltipStory({ placement }: { placement: PopoverPlacement }) {
+type TooltipStoryArgs = {
+  align: 'start' | 'center' | 'end';
+  content: string;
+  open: boolean;
+  side: 'top' | 'right' | 'bottom' | 'left';
+  trigger: string;
+};
+
+export function TooltipExample({
+  align = 'center',
+  content = 'Rack temperature: 24°C',
+  open = false,
+  side = 'top',
+  trigger = 'Hover for details',
+}: Partial<TooltipStoryArgs>) {
   return (
-    <Tooltip openDelay={0} placement={placement}>
-      <TooltipTrigger>
-        <Button>Rack status</Button>
-      </TooltipTrigger>
-      <TooltipContent>All health checks passed</TooltipContent>
-    </Tooltip>
+    <Tooltip.Provider>
+      <Tooltip.Root defaultOpen={open} key={`${open}-${side}-${align}`}>
+        <Tooltip.Trigger>{trigger}</Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Positioner align={align} side={side}>
+            <Tooltip.Popup>
+              {content}
+              <Tooltip.Arrow />
+            </Tooltip.Popup>
+          </Tooltip.Positioner>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    </Tooltip.Provider>
   );
 }
 
 const meta = {
   title: 'Components/Tooltip',
-  component: TooltipStory,
-  args: { placement: 'top' },
-  argTypes: { placement: { control: 'select', options: popoverPlacements } },
-} satisfies Meta<typeof TooltipStory>;
+  parameters: { layout: 'centered' },
+  args: {
+    align: 'center',
+    content: 'Rack temperature: 24°C',
+    open: false,
+    side: 'top',
+    trigger: 'Hover for details',
+  },
+  argTypes: {
+    align: { control: 'select', options: ['start', 'center', 'end'] },
+    content: { control: 'text' },
+    open: { control: 'boolean' },
+    side: { control: 'select', options: ['top', 'right', 'bottom', 'left'] },
+    trigger: { control: 'text' },
+  },
+  render: (args) => <TooltipExample {...args} />,
+} satisfies Meta<TooltipStoryArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
+export const Open: Story = { args: { open: true } };

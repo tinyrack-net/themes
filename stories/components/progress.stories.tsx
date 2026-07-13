@@ -1,61 +1,41 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
+  Progress,
   type ProgressSize,
   type ProgressVariant,
-  progressSizes,
-  progressVariants,
-} from '../../src/components/progress/contract.js';
-import { Progress } from '../../src/components/progress/react.js';
+} from '../../src/components/progress/index.js';
 
-type ComponentStoryProps = {
-  indeterminate?: boolean;
-  max: number;
+type ProgressStoryArgs = {
+  label: string;
   size: ProgressSize;
   value: number;
   variant: ProgressVariant;
 };
 
-function ProgressStory({
-  indeterminate = false,
-  max = 100,
-  size = 'md',
-  value = 42,
-  variant = 'primary',
-}: ComponentStoryProps) {
-  return (
-    <Progress
-      aria-label="Deploy progress"
-      max={max}
-      size={size}
-      value={indeterminate ? undefined : value}
-      variant={variant}
-    />
-  );
-}
-
-ProgressStory.displayName = 'ProgressStory';
-
 const meta = {
   title: 'Components/Progress',
-  component: ProgressStory,
-  args: {
-    indeterminate: false,
-    max: 100,
-    size: 'md',
-    value: 42,
-    variant: 'primary',
-  },
+  parameters: { layout: 'centered' },
+  args: { label: 'Deployment', size: 'md', value: 68, variant: 'success' },
   argTypes: {
-    indeterminate: { control: 'boolean' },
-    max: { control: 'number' },
-    size: { control: 'select', options: progressSizes },
-    value: { control: 'number' },
-    variant: { control: 'select', options: progressVariants },
+    label: { control: 'text' },
+    size: { control: 'select', options: ['sm', 'md', 'lg'] },
+    value: { control: { type: 'range', min: 0, max: 100, step: 1 } },
+    variant: {
+      control: 'select',
+      options: ['neutral', 'info', 'success', 'warning', 'danger'],
+    },
   },
-} satisfies Meta<typeof ProgressStory>;
+  render: ({ label, ...props }) => (
+    <Progress.Root className="w-96 max-w-full" {...props}>
+      <Progress.Label>{label}</Progress.Label>
+      <Progress.Track>
+        <Progress.Indicator />
+      </Progress.Track>
+      <Progress.Value />
+    </Progress.Root>
+  ),
+} satisfies Meta<ProgressStoryArgs>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
-
 export const Default: Story = {};

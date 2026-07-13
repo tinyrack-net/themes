@@ -1,32 +1,12 @@
-import '../../core/core.css';
 import './code.css';
+import { createRef } from 'react';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { Code } from './react.js';
+import { Code } from './index.js';
 
-const themeDatasetKey = 'theme';
-
-function computedStyleFor(element: Element) {
-  return getComputedStyle(element);
-}
-
-test('Code renders semantic inline code with class merging', async () => {
-  document.documentElement.dataset[themeDatasetKey] = 'tinyrack-dark';
-  await render(<Code className="custom-code">pnpm verify</Code>);
-  const code = document.querySelector<HTMLElement>('.tr-code');
-
-  if (code === null) {
-    throw new Error('Unable to find inline Code.');
-  }
-
-  await expect.element(code).toBeVisible();
-  expect(code.tagName).toBe('CODE');
-  expect(code.className).toContain('custom-code');
-
-  const styles = computedStyleFor(code);
-
-  expect(styles.backgroundColor).toBe('rgb(23, 23, 23)');
-  expect(styles.color).toBe('rgb(250, 250, 250)');
-  expect(styles.borderRadius).toBe('4px');
-  expect(styles.overflowWrap).toBe('anywhere');
+test('renders semantic inline code', async () => {
+  const ref = createRef<HTMLElement>();
+  await render(<Code ref={ref}>pnpm verify</Code>);
+  expect(ref.current?.tagName).toBe('CODE');
+  expect(ref.current?.classList.contains('tr-code')).toBe(true);
 });

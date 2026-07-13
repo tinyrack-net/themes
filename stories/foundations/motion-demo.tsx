@@ -1,5 +1,5 @@
 import { type CSSProperties, useEffect, useRef, useState } from 'react';
-import { Button } from '../../src/components/button/react.js';
+import { Button } from '../../src/components/button/index.js';
 import { tinyrackMotion } from '../../src/core/index.js';
 import './motion-demo.css';
 

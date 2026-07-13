@@ -30,7 +30,7 @@
     outline-offset: var(--tinyrack-focus-offset);
   }
 
-  .tr-pin-input[data-invalid="true"] .tr-pin-input-digit {
+  .tr-pin-input[data-invalid] .tr-pin-input-digit {
     border-color: var(--tinyrack-danger-border);
   }
 

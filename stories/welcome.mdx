@@ -1,251 +1,67 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Badge } from '../src/components/badge/react.js';
-import { Button } from '../src/components/button/react.js';
-import { ComponentExampleTabs } from './shared/component-example-tabs.js';
+import { Badge } from '../src/components/badge/index.js';
+import { Button } from '../src/components/button/index.js';
 import { ComponentInstall } from './shared/component-install.js';
 
 <Meta title="Welcome/Start Here" />
 
 # Tinyrack UI
 
-A CSS-first design system for compact operational interfaces. Start with semantic foundations, import only the component CSS you render, and keep native markup at the center of every implementation.
+A React-only component system for compact operational interfaces. Accessible
+interactive behavior is built on Base UI, while Tinyrack owns the visual tokens,
+component defaults, and public compound APIs.
 
-## Principles
-
-<div className="grid gap-3 md:grid-cols-3" role="list">
-  <section className="grid content-start gap-2 border border-tinyrack-border bg-tinyrack-surface p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">CSS-first</h3>
-    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Core CSS supplies theme variables and prefixed utilities. Each component owns a separate CSS contract.</div>
-  </section>
-  <section className="grid content-start gap-2 border border-tinyrack-border bg-tinyrack-surface p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Semantic roles</h3>
-    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Choose canvas, surface, text, action, and state roles before reaching for raw values.</div>
-  </section>
-  <section className="grid content-start gap-2 border border-tinyrack-border bg-tinyrack-surface p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Explicit composition</h3>
-    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Use Tailwind for layout, Tinyrack CSS for owned contracts, and native HTML or isolated React wrappers for behavior.</div>
-  </section>
-</div>
-
-## Start in 5 minutes
-
-Choose the surface your app actually renders. Every path starts with `@tinyrack/ui`; optional peers stay explicit.
+## Start in five minutes
 
 <ComponentInstall
   surfaces={[
     {
-      label: 'CSS / HTML',
-      install: 'pnpm add @tinyrack/ui tailwindcss',
-      imports: [
-        '@import "tailwindcss";',
-        '@import "@tinyrack/ui/core/core.css";',
-        '@import "@tinyrack/ui/components/button/button.css";',
-      ],
-      note: 'Use prefixed Tinyrack utilities for foundation roles and class contracts for owned components.',
-    },
-    {
       label: 'React',
-      install: 'pnpm add @tinyrack/ui tailwindcss react react-dom',
+      install: 'pnpm add @tinyrack/ui react react-dom',
       imports: [
-        "import '@tinyrack/ui/core/core.css';",
-        "import '@tinyrack/ui/components/button/button.css';",
-        "import { Button } from '@tinyrack/ui/components/button/react';",
+        "import '@tinyrack/ui/core.css';",
+        "import '@tinyrack/ui/components/button.css';",
+        "import { Button } from '@tinyrack/ui/components/button';",
       ],
-      note: 'React wrappers preserve native element props and require the same explicit CSS imports.',
-    },
-    {
-      label: 'React MDX',
-      install: 'pnpm add @tinyrack/ui react react-dom @mdx-js/react',
-      imports: [
-        "import '@tinyrack/ui/core/core.css';",
-        "import '@tinyrack/ui/mdx/mdx.css';",
-        "import { MDXProvider } from '@mdx-js/react';",
-        "import { tinyrackMdxComponents } from '@tinyrack/ui/mdx/react';",
-      ],
-      note: 'Use the React component map for Markdown content; CodeBlock includes Shiki highlighting with a plain fallback.',
-    },
-    {
-      label: 'Astro MDX',
-      install: 'pnpm add @tinyrack/ui astro @astrojs/mdx',
-      language: 'astro',
-      imports: [
-        '---',
-        "import { tinyrackAstroMdxComponents } from '@tinyrack/ui/mdx/astro';",
-        'const { Content } = await entry.render();',
-        '---',
-        '',
-        '<Content components={tinyrackAstroMdxComponents} />',
-      ],
-      note: 'Pass the Astro component map to rendered content; highlighting remains server-side.',
+      note: 'Import each component and its CSS from the same suffix-free component subpath.',
     },
   ]}
 />
 
-## Build one operational surface
-
-This example combines semantic colors, type hierarchy, spacing relationships, component radius, and explicit Button and Badge CSS.
-
-<ComponentExampleTabs
-  id="welcome-operational-surface"
-  title="Rack health summary"
-  previewLayout="stretch"
-  preview={(
-    <section className="grid w-full gap-4 border border-tinyrack-border bg-tinyrack-surface p-4 text-tinyrack-text">
-      <header className="flex flex-wrap items-start justify-between gap-3">
-        <div className="grid gap-1">
-          <div className="text-tinyrack-xs font-bold leading-tinyrack-xs tracking-tinyrack-lg text-tinyrack-text-muted uppercase">Rack A</div>
-          <div className="text-tinyrack-2xl font-semibold leading-tinyrack-sm" role="heading" aria-level={3}>Node health</div>
-        </div>
-        <Badge variant="success">healthy</Badge>
-      </header>
-      <dl className="grid gap-2 border-y border-tinyrack-border py-3 sm:grid-cols-3">
-        <div className="grid gap-1"><dt className="text-tinyrack-xs text-tinyrack-text-muted">Load</dt><dd className="m-0 text-tinyrack-xl font-semibold">41%</dd></div>
-        <div className="grid gap-1"><dt className="text-tinyrack-xs text-tinyrack-text-muted">Nodes</dt><dd className="m-0 text-tinyrack-xl font-semibold">12 / 12</dd></div>
-        <div className="grid gap-1"><dt className="text-tinyrack-xs text-tinyrack-text-muted">Backup</dt><dd className="m-0 text-tinyrack-xl font-semibold">03:18</dd></div>
-      </dl>
-      <div className="flex flex-wrap gap-2">
-        <Button variant="primary">Deploy</Button>
-        <Button appearance="outline">Review logs</Button>
-      </div>
-    </section>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/badge/badge.css';
-import '@tinyrack/ui/components/button/button.css';
-import { Badge } from '@tinyrack/ui/components/badge/react';
-import { Button } from '@tinyrack/ui/components/button/react';
+## Example
 
 <section className="grid gap-4 border border-tinyrack-border bg-tinyrack-surface p-4 text-tinyrack-text">
   <header className="flex items-start justify-between gap-3">
     <div>
-      <div className="text-tinyrack-xs tracking-tinyrack-lg text-tinyrack-text-muted uppercase">Rack A</div>
-      <h2 className="text-tinyrack-2xl font-semibold">Node health</h2>
+      <div className="text-tinyrack-xs uppercase text-tinyrack-text-muted">Rack A</div>
+      <h2 className="m-0 text-tinyrack-2xl">Node health</h2>
     </div>
     <Badge variant="success">healthy</Badge>
   </header>
-  <dl className="grid gap-2 border-y border-tinyrack-border py-3 sm:grid-cols-3">
-    <div><dt>Load</dt><dd>41%</dd></div>
-    <div><dt>Nodes</dt><dd>12 / 12</dd></div>
-    <div><dt>Backup</dt><dd>03:18</dd></div>
-  </dl>
   <div className="flex gap-2">
     <Button variant="primary">Deploy</Button>
     <Button appearance="outline">Review logs</Button>
   </div>
-</section>;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<section class="grid gap-4 border border-tinyrack-border bg-tinyrack-surface p-4 text-tinyrack-text">
-  <header class="flex items-start justify-between gap-3">
-    <div>
-      <div class="text-tinyrack-xs tracking-tinyrack-lg text-tinyrack-text-muted uppercase">Rack A</div>
-      <h2 class="text-tinyrack-2xl font-semibold">Node health</h2>
-    </div>
-    <span class="tr-badge" data-variant="primary">healthy</span>
-  </header>
-  <dl class="grid gap-2 border-y border-tinyrack-border py-3 sm:grid-cols-3">
-    <div><dt>Load</dt><dd>41%</dd></div>
-    <div><dt>Nodes</dt><dd>12 / 12</dd></div>
-    <div><dt>Backup</dt><dd>03:18</dd></div>
-  </dl>
-  <div class="flex gap-2">
-    <button class="tr-btn" data-variant="primary">Deploy</button>
-    <button class="tr-btn" data-appearance="outline">Review logs</button>
-  </div>
-</section>`,
-    },
-  ]}
-/>
+</section>
 
-## Where next
+```tsx
+import '@tinyrack/ui/core.css';
+import '@tinyrack/ui/components/badge.css';
+import '@tinyrack/ui/components/button.css';
+import { Badge } from '@tinyrack/ui/components/badge';
+import { Button } from '@tinyrack/ui/components/button';
+```
 
-<nav aria-label="Tinyrack documentation paths" className="grid gap-3 md:grid-cols-2">
-  <a className="grid gap-2 border border-tinyrack-border p-4 text-inherit no-underline" data-docs-route="foundations" href="/?path=/docs/foundations-overview--docs" target="_top">
-    <strong>Understand the foundations</strong>
-    <span className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Learn how color, typography, spacing, and radius work as one decision system.</span>
-  </a>
-  <a className="grid gap-2 border border-tinyrack-border p-4 text-inherit no-underline" data-docs-route="button" href="/?path=/docs/components-button--docs" target="_top">
-    <strong>Build an action</strong>
-    <span className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Use Button and IconButton contracts, including optional Lucide installation.</span>
-  </a>
-  <a className="grid gap-2 border border-tinyrack-border p-4 text-inherit no-underline" data-docs-route="form" href="/?path=/docs/components-form-overview--docs" target="_top">
-    <strong>Build a form</strong>
-    <span className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Compose native labels, controls, messages, and accessible states.</span>
-  </a>
-  <a className="grid gap-2 border border-tinyrack-border p-4 text-inherit no-underline" data-docs-route="mdx" href="/?path=/docs/integrations-mdx-renderer--docs" target="_top">
-    <strong>Render documentation</strong>
-    <span className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Apply the same document system to React or Astro MDX content.</span>
-  </a>
-</nav>
+## Public package map
 
-## Package map
+| Surface | Import |
+| --- | --- |
+| Component JavaScript | `@tinyrack/ui/components/<component>` |
+| Component CSS | `@tinyrack/ui/components/<component>.css` |
+| Foundation tokens | `@tinyrack/ui/core` |
+| Foundation CSS | `@tinyrack/ui/core.css` |
+| React MDX map | `@tinyrack/ui/mdx` |
+| React MDX CSS | `@tinyrack/ui/mdx.css` |
 
-<div className="grid gap-3 lg:grid-cols-3" role="list">
-  <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Core</h3>
-    <code>@tinyrack/ui/core</code>
-    <code>@tinyrack/ui/core/core.css</code>
-    <div className="text-tinyrack-sm text-tinyrack-text-muted">Token metadata, theme variables, and prefixed foundation utilities.</div>
-  </section>
-  <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Components</h3>
-    <code>{'@tinyrack/ui/components/*/react'}</code>
-    <code>{'@tinyrack/ui/components/*/*.css'}</code>
-    <div className="text-tinyrack-sm text-tinyrack-text-muted">Isolated React wrappers and framework-neutral CSS contracts.</div>
-  </section>
-  <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">MDX</h3>
-    <code>@tinyrack/ui/mdx/react</code>
-    <code>@tinyrack/ui/mdx/astro</code>
-    <div className="text-tinyrack-sm text-tinyrack-text-muted">Renderer-specific Markdown component maps with shared document CSS.</div>
-  </section>
-</div>
-
-## Primitive component paths
-
-Use Tailwind utilities directly for layout and spacing, then import only the
-Tinyrack CSS and React entry points for the components rendered by the page.
-
-| Component | React entry | CSS entry |
-| --- | --- | --- |
-| Alert | `@tinyrack/ui/components/alert/react` | `@tinyrack/ui/components/alert/alert.css` |
-| Avatar | `@tinyrack/ui/components/avatar/react` | `@tinyrack/ui/components/avatar/avatar.css` |
-| Card | `@tinyrack/ui/components/card/react` | `@tinyrack/ui/components/card/card.css` |
-| Code | `@tinyrack/ui/components/code/react` | `@tinyrack/ui/components/code/code.css` |
-| CodeBlock | `@tinyrack/ui/components/code-block/react` | `@tinyrack/ui/components/code-block/code-block.css` |
-| Divider | `@tinyrack/ui/components/divider/react` | `@tinyrack/ui/components/divider/divider.css` |
-| Progress | `@tinyrack/ui/components/progress/react` | `@tinyrack/ui/components/progress/progress.css` |
-| Skeleton | `@tinyrack/ui/components/skeleton/react` | `@tinyrack/ui/components/skeleton/skeleton.css` |
-| Modal | `@tinyrack/ui/components/modal/react` | `@tinyrack/ui/components/modal/modal.css` |
-| Popover | `@tinyrack/ui/components/popover/react` | `@tinyrack/ui/components/popover/popover.css` |
-| Form | `@tinyrack/ui/components/form/react` | `@tinyrack/ui/components/form/form.css` |
-| Link | `@tinyrack/ui/components/link/react` | `@tinyrack/ui/components/link/link.css` |
-| Table | `@tinyrack/ui/components/table/react` | `@tinyrack/ui/components/table/table.css` |
-| Tabs | `@tinyrack/ui/components/tabs/react` | `@tinyrack/ui/components/tabs/tabs.css` |
-
-## Use boundary
-
-<div className="grid gap-3 md:grid-cols-2">
-  <section className="grid content-start gap-2 border border-tinyrack-border p-4">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Use Tinyrack UI when</h3>
-    <ul className="m-0 grid gap-2 pl-5 text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">
-      <li>The product needs compact operational hierarchy and durable light/dark roles.</li>
-      <li>The app can compose explicit CSS imports and native markup.</li>
-      <li>Owned component behavior benefits from small isolated React wrappers.</li>
-    </ul>
-  </section>
-  <section className="grid content-start gap-2 border border-tinyrack-border p-4">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Choose another layer when</h3>
-    <ul className="m-0 grid gap-2 pl-5 text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">
-      <li>The goal is to wrap another component system or expose root-level React exports.</li>
-      <li>The app expects visual primitives that are not part of the public Tinyrack contract.</li>
-      <li>A framework adapter would hide the native element behavior the workflow depends on.</li>
-    </ul>
-  </section>
-</div>
+There is no root component barrel, `/react` or `/dom` suffix, Astro renderer, or
+framework-neutral DOM manager API.

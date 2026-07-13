@@ -1,89 +1,66 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxList, ComboboxOption } from '../../src/components/combobox/react.js';
+import { Combobox } from '../../src/components/combobox/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as ComboboxStories from './combobox.stories';
+import * as Stories from './combobox.stories';
 
-<Meta of={ComboboxStories} />
+<Meta of={Stories} />
 
 # Combobox
 
-Searchable single-value selection and freeform autocomplete.
+Filterable selection with keyboard navigation, empty state, disabled options, and a positioned popup.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `data-tr-combobox` | `Combobox` | `select` or `freeform`; default `select` | One value only. |
-| Part | `data-tr-combobox-input`, `role="combobox"` | `ComboboxInput` | Search input | Owns active descendant and open state. |
-| Part | `tr-combobox-content` | `ComboboxContent` | Native popover | Matches the input width. |
-| Part | `role="listbox"`, `role="option"` | `ComboboxList`, `ComboboxOption` | Custom option content | Supply `textValue` for non-text content. |
-| State | Hidden input, data attributes | Controlled or uncontrolled value, inputValue and open | Optional form `name` | Invalid and disabled state remain explicit. |
+| State | Contract |
+| --- | --- |
+| value | controlled `value` or uncontrolled `defaultValue` |
+| popup | controlled `open` or uncontrolled `defaultOpen` |
+| items | `items` on `Root`, matching `value` on each `Item` |
+| parts | `Root`, `Input`, `Trigger`, `Portal`, `Positioner`, `Popup`, `List`, `Item`, `Empty` |
 
 ## Install
 
-<ComponentInstall surfaces={[
-  { label: 'CSS / HTML', install: 'pnpm add @tinyrack/ui tailwindcss', imports: ['@import "@tinyrack/ui/core/core.css";', '@import "@tinyrack/ui/components/form/form.css";', '@import "@tinyrack/ui/components/popover/popover.css";', '@import "@tinyrack/ui/components/combobox/combobox.css";', "import { createComboboxManager } from '@tinyrack/ui/components/combobox/dom';"] },
-  { label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import { Combobox, ComboboxContent, ComboboxInput, ComboboxList, ComboboxOption } from '@tinyrack/ui/components/combobox/react';"] },
-]} />
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/combobox.css';", "import { Combobox } from '@tinyrack/ui/components/combobox';"] }]} />
 
 ## Usage
 
-<ComponentExampleTabs id="combobox-select" title="Searchable selection" description="Filter options and submit the selected option value." preview={<Combobox name="language"><ComboboxInput aria-label="Language" placeholder="Search languages" /><ComboboxContent><ComboboxList><ComboboxOption value="en">English</ComboboxOption><ComboboxOption value="ko">한국어</ComboboxOption></ComboboxList><ComboboxEmpty>No language found</ComboboxEmpty></ComboboxContent></Combobox>} sources={[
-  { label: 'React', language: 'tsx', code: String.raw`import { Combobox, ComboboxContent, ComboboxInput, ComboboxList, ComboboxOption } from '@tinyrack/ui/components/combobox/react';
-
-<Combobox name="language">
-  <ComboboxInput aria-label="Language" />
-  <ComboboxContent>
-    <ComboboxList>
-      <ComboboxOption value="en">English</ComboboxOption>
-      <ComboboxOption value="ko">한국어</ComboboxOption>
-    </ComboboxList>
-  </ComboboxContent>
-</Combobox>;` },
-  { label: 'HTML', language: 'html', code: String.raw`<div class="tr-combobox" data-tr-combobox data-mode="select">
-  <input class="tr-input tr-combobox-input" data-tr-combobox-input role="combobox" aria-controls="language-list">
-  <input data-tr-combobox-hidden name="language" type="hidden">
-  <div class="tr-layer tr-combobox-content" data-tr-combobox-content data-tr-overlay="layer" popover="auto">
-    <div id="language-list" class="tr-combobox-list" role="listbox">
-      <div class="tr-combobox-option" role="option" data-value="en">English</div>
-    </div>
-  </div>
-</div>` },
-]} />
+<ComponentExampleTabs
+  id="combobox-basic"
+  title="Rack selection"
+  previewLayout="stretch"
+  preview={<Combobox.Root items={['Rack A', 'Rack B']}><div className="flex w-full items-stretch gap-2"><Combobox.Input aria-label="Rack" className="min-w-0 flex-1" placeholder="Choose a rack" /><Combobox.Trigger>Open</Combobox.Trigger></div><Combobox.Portal><Combobox.Positioner><Combobox.Popup><Combobox.List><Combobox.Item value="Rack A">Rack A</Combobox.Item><Combobox.Item value="Rack B">Rack B</Combobox.Item><Combobox.Empty>No racks</Combobox.Empty></Combobox.List></Combobox.Popup></Combobox.Positioner></Combobox.Portal></Combobox.Root>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Combobox.Root items={['Rack A', 'Rack B']}>
+  <Combobox.Input aria-label="Rack" placeholder="Choose a rack" />
+  <Combobox.Trigger>Open</Combobox.Trigger>
+  <Combobox.Portal>
+    <Combobox.Positioner><Combobox.Popup><Combobox.List>
+      <Combobox.Item value="Rack A">Rack A</Combobox.Item>
+      <Combobox.Item value="Rack B">Rack B</Combobox.Item>
+      <Combobox.Empty>No racks</Combobox.Empty>
+    </Combobox.List></Combobox.Popup></Combobox.Positioner>
+  </Combobox.Portal>
+</Combobox.Root>` }]}
+/>
 
 ## Examples
 
-<ComponentExampleTabs id="combobox-freeform" title="Freeform autocomplete" description="Allow an arbitrary provider or model name while still suggesting options." preview={<Combobox mode="freeform" name="model"><ComboboxInput aria-label="Model" placeholder="Model name" /><ComboboxContent><ComboboxList><ComboboxOption value="gpt">GPT</ComboboxOption><ComboboxOption value="gemini">Gemini</ComboboxOption></ComboboxList></ComboboxContent></Combobox>} sources={[
-  { label: 'React', language: 'tsx', code: String.raw`<Combobox mode="freeform" name="model">
-  <ComboboxInput aria-label="Model" />
-  <ComboboxContent>
-    <ComboboxList>
-      <ComboboxOption value="gpt">GPT</ComboboxOption>
-      <ComboboxOption value="gemini">Gemini</ComboboxOption>
-    </ComboboxList>
-  </ComboboxContent>
-</Combobox>` },
-  { label: 'HTML', language: 'html', code: String.raw`<div class="tr-combobox" data-tr-combobox data-mode="freeform">
-  <input class="tr-input tr-combobox-input" data-tr-combobox-input role="combobox">
-  <input data-tr-combobox-hidden name="model" type="hidden">
-  <div class="tr-layer tr-combobox-content" data-tr-combobox-content data-tr-overlay="layer" popover="auto">
-    <div class="tr-combobox-list" role="listbox"></div>
-  </div>
-</div>` },
-]} />
-
-## Guidance
-
-<ComponentGuidance whenToUse={['Use select mode for a known set and freeform mode for autocomplete.']} avoid={['Do not use for multiple selection.']} accessibility={['Keep the input label, listbox relationship and active descendant intact.']} />
+<ComponentExampleTabs
+  id="combobox-option-states"
+  title="Selected, disabled, and empty states"
+  description="Open the examples to inspect keyboard highlight and empty-result behavior."
+  previewLayout="stretch"
+  preview={(
+    <div className="grid gap-4 sm:grid-cols-2">
+      <Combobox.Root defaultValue="Rack A" items={['Rack A', 'Rack B', 'Rack C']}><Combobox.Input aria-label="Selected rack" /><Combobox.Trigger>Options</Combobox.Trigger><Combobox.Portal><Combobox.Positioner><Combobox.Popup><Combobox.List><Combobox.Item value="Rack A">Rack A</Combobox.Item><Combobox.Item disabled value="Rack B">Rack B unavailable</Combobox.Item><Combobox.Item value="Rack C">Rack C</Combobox.Item></Combobox.List></Combobox.Popup></Combobox.Positioner></Combobox.Portal></Combobox.Root>
+      <Combobox.Root items={[]}><Combobox.Input aria-label="Empty rack list" placeholder="No racks" /><Combobox.Trigger>Empty</Combobox.Trigger><Combobox.Portal><Combobox.Positioner><Combobox.Popup><Combobox.List><Combobox.Empty>No matching racks</Combobox.Empty></Combobox.List></Combobox.Popup></Combobox.Positioner></Combobox.Portal></Combobox.Root>
+    </div>
+  )}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Combobox.Root defaultValue="Rack A" items={racks}>...</Combobox.Root>
+<Combobox.Item disabled value="Rack B">Rack B unavailable</Combobox.Item>
+<Combobox.Empty>No matching racks</Combobox.Empty>` }]}
+/>
 
 ## API
 
-| Component | Main props | Note |
-| --- | --- | --- |
-| `Combobox` | `mode`, `value`, `inputValue`, `open`, `name`, `autoSelectOnBlur` | Every state supports controlled and uncontrolled use. |
-| `ComboboxOption` | `value`, `textValue`, `disabled` | Custom visual content remains searchable. |
-
-<ComponentTokenTable component="combobox" />
+Base UI owns text filtering, active descendant focus, keyboard selection, popup positioning, portal, and dismissal.

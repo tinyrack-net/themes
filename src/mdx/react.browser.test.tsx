@@ -8,7 +8,7 @@ import './mdx.css';
 import type { ComponentType, ReactNode } from 'react';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
-import { createTinyrackMdxComponents, tinyrackMdxComponents } from './react.js';
+import { createTinyrackMdxComponents, tinyrackMdxComponents } from './index.js';
 
 type MdxComponentProps = {
   children?: ReactNode;
@@ -112,7 +112,7 @@ test('React MDX renderer maps inline code, fenced code, and tables to Tinyrack c
   expect(codeBlock?.getAttribute('data-language')).toBe('ts');
   expect(tableContainer?.classList.contains('tr-mdx-table-container')).toBe(true);
   expect(table?.classList.contains('tr-mdx-table')).toBe(true);
-  expect(table?.getAttribute('data-density')).toBe('normal');
+  expect(table?.getAttribute('data-density')).toBe('compact');
   expect(rightAlignedHeader?.textContent).toBe('Value');
   await expect
     .poll(() => codeBlock?.querySelectorAll('span[style*="color"]').length ?? 0)
@@ -196,13 +196,9 @@ test('React MDX renderer maps prose, links, images, task lists, and footnotes', 
   );
   expect(document.querySelector('ul.tr-mdx-task-list')).not.toBeNull();
   expect(document.querySelector('li.tr-mdx-task-item')).not.toBeNull();
+  expect(document.querySelector('input.tr-mdx-task-checkbox')).not.toBeNull();
   expect(
-    document.querySelector('label.tr-checkbox.tr-mdx-task-checkbox'),
-  ).not.toBeNull();
-  expect(
-    document.querySelector<HTMLInputElement>(
-      'label.tr-mdx-task-checkbox input.tr-checkbox-input',
-    )?.checked,
+    document.querySelector<HTMLInputElement>('input.tr-mdx-task-checkbox')?.checked,
   ).toBe(true);
   expect(document.querySelector('.tr-mdx-footnote-ref')).not.toBeNull();
   expect(document.querySelector('section.tr-mdx-footnotes')).not.toBeNull();

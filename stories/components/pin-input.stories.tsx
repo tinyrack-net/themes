@@ -1,28 +1,38 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { PinInput } from '../../src/components/pin-input/react.js';
+import { PinInput } from '../../src/components/pin-input/index.js';
 
-function PinInputStory({
-  disabled,
-  invalid,
-  length,
-}: {
+type PinInputStoryArgs = {
   disabled: boolean;
-  invalid: boolean;
   length: number;
-}) {
-  return <PinInput disabled={disabled} invalid={invalid} length={length} />;
-}
+  readOnly: boolean;
+  required: boolean;
+};
 
 const meta = {
-  title: 'Components/PinInput',
-  component: PinInputStory,
-  args: { disabled: false, invalid: false, length: 6 },
+  title: 'Components/Pin Input',
+  parameters: { layout: 'centered' },
+  args: { disabled: false, length: 4, readOnly: false, required: true },
   argTypes: {
     disabled: { control: 'boolean' },
-    invalid: { control: 'boolean' },
-    length: { control: { min: 4, max: 8, step: 1, type: 'number' } },
+    length: { control: { type: 'range', min: 3, max: 8, step: 1 } },
+    readOnly: { control: 'boolean' },
+    required: { control: 'boolean' },
   },
-} satisfies Meta<typeof PinInputStory>;
+  render: ({ disabled, length, readOnly, required }) => (
+    <PinInput.Root
+      aria-label="Verification code"
+      disabled={disabled}
+      key={`${length}-${disabled}-${readOnly}`}
+      length={length}
+      readOnly={readOnly}
+      required={required}
+    >
+      {Array.from({ length }, (_, index) => `slot-${index + 1}`).map((slot) => (
+        <PinInput.Input key={slot} />
+      ))}
+    </PinInput.Root>
+  ),
+} satisfies Meta<PinInputStoryArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

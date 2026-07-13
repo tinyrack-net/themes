@@ -1,9 +1,9 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import type { BundledLanguage } from 'shiki/bundle/web';
-import { Code } from '../../components/code/react.js';
-import { CodeBlock } from '../../components/code-block/react.js';
-import { languageFromClassName } from '../shared.js';
-import { textFromReactNode } from './utils.js';
+import { Code } from '../../components/code/index.js';
+import { CodeBlock } from '../../components/code-block/index.js';
+import { languageFromClassName } from '../mdx-markup.js';
+import { textFromReactNode } from './react-node-text.js';
 
 export type MdxCodeElementProps = {
   children?: ReactNode;

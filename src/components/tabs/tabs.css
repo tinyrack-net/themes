@@ -60,6 +60,7 @@
 
 .tr-tabs[data-orientation="horizontal"] .tr-tabs-list {
   overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .tr-tabs[data-orientation="vertical"] .tr-tabs-list {
@@ -119,7 +120,7 @@
 }
 
 .tr-tabs-trigger[aria-selected="true"],
-.tr-tabs-trigger[data-active="true"] {
+.tr-tabs-trigger[data-active] {
   background-color: var(--tr-tabs-selected-background, var(--tinyrack-surface));
   border-color: var(--tinyrack-border);
   border-bottom-color: var(--tr-tabs-selected-background, var(--tinyrack-surface));
@@ -129,7 +130,7 @@
 }
 
 .tr-tabs[data-orientation="vertical"] .tr-tabs-trigger[aria-selected="true"],
-.tr-tabs[data-orientation="vertical"] .tr-tabs-trigger[data-active="true"] {
+.tr-tabs[data-orientation="vertical"] .tr-tabs-trigger[data-active] {
   border-right-color: var(--tr-tabs-selected-background, var(--tinyrack-surface));
   border-bottom-color: var(--tinyrack-border);
 }
@@ -164,7 +165,7 @@
     var(--tr-tabs-radius, var(--tinyrack-radius-md)) 0;
 }
 
-.tr-tabs-panel[data-active="true"] {
+.tr-tabs-panel[data-active] {
   display: block;
 }
 

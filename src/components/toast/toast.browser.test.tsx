@@ -1,79 +1,93 @@
 import '../../core/core.css';
 import './toast.css';
-import { afterEach, expect, test, vi } from 'vitest';
-import { createToastManager } from './dom.js';
+import { useEffect, useRef } from 'react';
+import { expect, test } from 'vitest';
+import { render } from 'vitest-browser-react';
+import { createToastManager, Toast, ToastProvider, useToastManager } from './index.js';
 
-afterEach(() => document.body.replaceChildren());
+function ToastExample() {
+  const manager = useToastManager();
+  const added = useRef(false);
 
-test('Toast supports fixed ids, update, actions and dismiss', () => {
-  const root = document.createElement('div');
-  document.body.append(root);
-  const manager = createToastManager(root);
-  const action = vi.fn();
-  const id = manager.show({
-    action: { label: 'Retry', onAction: action },
-    duration: 0,
-    id: 'sync-error',
-    title: 'Sync failed',
-    variant: 'danger',
-  });
+  useEffect(() => {
+    if (added.current) return;
+    added.current = true;
+    manager.add({
+      description: 'Deployment completed.',
+      title: 'Success',
+      type: 'success',
+      timeout: 0,
+    });
+    manager.add({
+      description: 'No status was supplied.',
+      title: 'Neutral',
+      timeout: 0,
+    });
+    manager.add({
+      description: 'The wrapper overrides this status.',
+      title: 'Explicit',
+      timeout: 0,
+      type: 'info',
+    });
+  }, [manager]);
 
-  expect(id).toBe('sync-error');
-  expect(root.querySelector('[role="alert"]')?.textContent).toContain('Sync failed');
-  expect(manager.update(id, { description: 'Network unavailable' })).toBe(true);
-  expect(root.textContent).toContain('Network unavailable');
+  return (
+    <Toast.Portal>
+      <Toast.Viewport position="block-end-inline-end">
+        {manager.toasts.map((toast) => (
+          <Toast.Root
+            key={toast.id}
+            toast={toast}
+            variant={toast.title === 'Explicit' ? 'danger' : undefined}
+          >
+            <div>
+              <Toast.Title>{toast.title}</Toast.Title>
+              <Toast.Description>{toast.description}</Toast.Description>
+            </div>
+            <Toast.Action>Undo</Toast.Action>
+            <Toast.Close>Close</Toast.Close>
+          </Toast.Root>
+        ))}
+      </Toast.Viewport>
+    </Toast.Portal>
+  );
+}
 
-  root.querySelector<HTMLButtonElement>('[data-tr-toast-action]')?.click();
-  expect(action).toHaveBeenCalledWith(id);
-  expect(root.querySelector('[data-toast-id="sync-error"]')).toBeNull();
-  manager.destroy();
-});
+test('assembles Base UI toast management and parts', async () => {
+  expect(Toast.Provider).toBe(ToastProvider);
+  expect(typeof createToastManager().add).toBe('function');
+  await render(
+    <Toast.Provider>
+      <ToastExample />
+    </Toast.Provider>,
+  );
+  await expect.poll(() => document.querySelectorAll('.tr-toast').length).toBe(3);
+  expect(
+    Array.from(document.querySelectorAll<HTMLElement>('.tr-toast')).map(
+      (toast) => toast.dataset['variant'],
+    ),
+  ).toEqual(['danger', 'neutral', 'success']);
+  expect(
+    Array.from(
+      document.querySelectorAll('.tr-toast-title'),
+      (title) => title.textContent,
+    ),
+  ).toContain('Success');
 
-test('Toast pauses its timer while hovered and resumes afterward', async () => {
-  const root = document.createElement('div');
-  document.body.append(root);
-  const manager = createToastManager(root);
-  manager.show({ duration: 40, id: 'timer', title: 'Working' });
-  const toast = root.querySelector<HTMLElement>('[data-toast-id="timer"]')!;
-  toast.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
-  await new Promise((resolve) => setTimeout(resolve, 70));
-  expect(root.querySelector('[data-toast-id="timer"]')).not.toBeNull();
-
-  toast.dispatchEvent(new PointerEvent('pointerout', { bubbles: true }));
-  await new Promise((resolve) => setTimeout(resolve, 70));
-  expect(root.querySelector('[data-toast-id="timer"]')).toBeNull();
-  manager.destroy();
-});
-
-test('Toast creates its viewport inside the provided ShadowRoot', () => {
-  const host = document.createElement('div');
-  document.body.append(host);
-  const shadow = host.attachShadow({ mode: 'open' });
-  const manager = createToastManager(shadow);
-  manager.show({ duration: 0, title: 'Translated' });
-
-  const viewport = shadow.querySelector('[data-tr-toast-viewport]');
+  const viewport = document.querySelector<HTMLElement>('.tr-toast-viewport');
   expect(viewport).not.toBeNull();
-  expect(viewport?.getRootNode()).toBe(shadow);
-  manager.destroy();
-});
-
-test.each([
-  ['info', 'rgb(37, 99, 235)'],
-  ['success', 'rgb(22, 163, 74)'],
-  ['warning', 'rgb(217, 119, 6)'],
-  ['danger', 'rgb(220, 38, 38)'],
-] as const)('Toast %s uses the matching semantic border role', (variant, accent) => {
-  document.documentElement.dataset.theme = 'tinyrack-light';
-  const root = document.createElement('div');
-  document.body.append(root);
-  const manager = createToastManager(root);
-  manager.show({ duration: 0, id: variant, title: variant, variant });
-
-  const toast = root.querySelector<HTMLElement>(`[data-toast-id="${variant}"]`);
-  if (toast === null) {
-    throw new Error(`Unable to find ${variant} toast.`);
-  }
-  expect(getComputedStyle(toast).borderInlineStartColor).toBe(accent);
-  manager.destroy();
+  const viewportStyle = getComputedStyle(viewport as HTMLElement);
+  const viewportRect = (viewport as HTMLElement).getBoundingClientRect();
+  expect(viewportStyle.position).toBe('fixed');
+  expect(viewportStyle.boxSizing).toBe('border-box');
+  expect(viewportRect.right).toBeLessThanOrEqual(document.documentElement.clientWidth);
+  expect(viewportRect.bottom).toBeLessThanOrEqual(
+    document.documentElement.clientHeight,
+  );
+  expect(Math.round(document.documentElement.clientWidth - viewportRect.right)).toBe(
+    16,
+  );
+  expect(Math.round(document.documentElement.clientHeight - viewportRect.bottom)).toBe(
+    16,
+  );
 });

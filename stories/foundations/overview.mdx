@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Badge } from '../../src/components/badge/react.js';
-import { Button } from '../../src/components/button/react.js';
+import { Badge } from '../../src/components/badge/index.js';
+import { Button } from '../../src/components/button/index.js';
 import {
   tinyrackRadii,
   tinyrackSemanticColors,
@@ -73,7 +73,7 @@ Tinyrack foundations turn a small set of roles into compact, predictable operati
   <section className="grid content-start gap-3 border border-tinyrack-border p-4">
     <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Runtime foundation tokens</h3>
     <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Colors, typography, spacing, radius, and elevation are available as CSS variables and prefixed Tailwind utilities after importing core CSS.</div>
-    <code>@import "@tinyrack/ui/core/core.css";</code>
+    <code>@import "@tinyrack/ui/core.css";</code>
     <div className="text-tinyrack-xs text-tinyrack-text-muted">{Object.keys(tinyrackSemanticColors.light).length} semantic color roles · {Object.keys(tinyrackTypography.textStyle).length} text styles</div>
   </section>
   <section className="grid content-start gap-3 border border-tinyrack-border p-4">

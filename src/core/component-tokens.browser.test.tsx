@@ -4,9 +4,9 @@ import '../components/tabs/tabs.css';
 import './core.css';
 import { afterEach, expect, test } from 'vitest';
 import { cleanup, render } from 'vitest-browser-react';
-import { Button } from '../components/button/react.js';
-import { Input } from '../components/form/react.js';
-import { Tabs, TabsList, TabsPanel, TabsTrigger } from '../components/tabs/react.js';
+import { Button } from '../components/button/index.js';
+import { Form } from '../components/form/index.js';
+import { Tabs } from '../components/tabs/index.js';
 
 afterEach(() => {
   cleanup();
@@ -17,13 +17,15 @@ function renderSharedControls() {
   return render(
     <div>
       <Button size="md">Deploy</Button>
-      <Input aria-label="Rack" size="md" />
-      <Tabs defaultValue="overview" size="md">
-        <TabsList aria-label="Sections">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-        </TabsList>
-        <TabsPanel value="overview">Overview panel</TabsPanel>
-      </Tabs>
+      <Form.Field>
+        <Form.Control aria-label="Rack" />
+      </Form.Field>
+      <Tabs.Root defaultValue="overview" size="md">
+        <Tabs.List aria-label="Sections">
+          <Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Panel value="overview">Overview panel</Tabs.Panel>
+      </Tabs.Root>
     </div>,
   );
 }

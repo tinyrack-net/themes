@@ -2,9 +2,9 @@ import { MDXProvider } from '@mdx-js/react';
 import { DocsContainer, type DocsContainerProps } from '@storybook/addon-docs/blocks';
 import { type ComponentPropsWithoutRef, useEffect, useState } from 'react';
 import { themes } from 'storybook/theming';
-import { createTinyrackMdxComponents } from '../src/mdx/react.js';
+import { createTinyrackMdxComponents } from '../src/mdx/index.js';
+import { mergeClassNames } from '../src/mdx/mdx-markup.js';
 import { TinyrackMdxWrapper } from '../src/mdx/react-components/Wrapper.js';
-import { mergeClassNames } from '../src/mdx/shared.js';
 
 const defaultTinyrackTheme = 'tinyrack-dark' as const;
 

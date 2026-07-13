@@ -1,59 +1,37 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { RefreshCw } from 'lucide-react';
-import { buttonSizes, buttonVariants } from '../../src/components/button/contract.js';
-import { Button, ButtonGroup, IconButton } from '../../src/components/button/react.js';
+import { Button } from '../../src/components/button/index.js';
+import { Spinner } from '../../src/components/spinner/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
-import { ComponentGuidance } from '../shared/component-guidance.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ComponentTokenTable } from '../shared/component-token-table.js';
-import * as ButtonStories from './button.stories';
+import * as Stories from './button.stories';
 
-<Meta of={ButtonStories} />
+<Meta of={Stories} />
 
 # Button
 
-Native button behavior with Tinyrack size, variant, and appearance axes.
+Commands and form actions with three levels of intent, three visual treatments, and three densities.
 
 ## Contract
 
-| Category | CSS / HTML | React | Values & default | Guidance |
-| --- | --- | --- | --- | --- |
-| Component | `tr-btn` on `<button>` | `<Button>` | Required text-button surface | Use for commands with visible text. |
-| Component | `tr-icon-btn` on `<button>` | `<IconButton>` | Icon-only button surface | Provide an accessible name for every icon action. |
-| Component | `tr-btn-group` | `<ButtonGroup>` | Horizontal; optionally attached | Group related actions without creating a new command semantic. |
-| Size | `data-size` | `size` | `sm`, `md`, `lg`; default `md` | Use `md` for routine actions and change size only for layout density. |
-| Variant | `data-variant` | `variant` | `secondary`, `primary`, `danger`; default `secondary` | Reserve `primary` for the main action and `danger` for destructive intent. |
-| Variant | `data-appearance` | `appearance` | `solid`, `outline`, `ghost`; default `solid` | Tune emphasis without changing action semantics. |
-| Behavior | `aria-label` | `label` on `IconButton` | Required for `IconButton` | Name the command, not the icon artwork. |
-| State | Native `disabled` attribute | `disabled` | Default `false` | Use native disabled behavior when an action is unavailable. |
-| State | `aria-busy`, disabled and Spinner | `loading`, `loadingLabel` | Default `false` | Keep the visible action text and label the busy operation. |
-| Native | Native `<button>` attributes | `ButtonHTMLAttributes<HTMLButtonElement>` | Passed through; `type` defaults to `button` | Set `type="submit"` explicitly for form submission. |
+| Axis | Values | Default | Use |
+| --- | --- | --- | --- |
+| `variant` | `secondary`, `primary`, `danger` | `secondary` | Communicates action intent. |
+| `appearance` | `solid`, `outline`, `ghost` | `solid` | Changes emphasis without changing intent. |
+| `size` | `sm`, `md`, `lg` | `md` | Matches the surrounding control density. |
+| state | `disabled`, `loading` | interactive | Uses native disabled behavior and `aria-busy`. |
 
 ## Install
 
 <ComponentInstall
   surfaces={[
     {
-      label: 'CSS / HTML',
-      install: 'pnpm add @tinyrack/ui tailwindcss',
-      imports: [
-        '@import "tailwindcss";',
-        '@import "@tinyrack/ui/core/core.css";',
-        '@import "@tinyrack/ui/components/button/button.css";',
-      ],
-    },
-    {
       label: 'React',
       install: 'pnpm add @tinyrack/ui react react-dom',
       imports: [
-        "import { Button, ButtonGroup, IconButton } from '@tinyrack/ui/components/button/react';",
+        "import '@tinyrack/ui/core.css';",
+        "import '@tinyrack/ui/components/button.css';",
+        "import { Button } from '@tinyrack/ui/components/button';",
       ],
-    },
-    {
-      label: 'Icons',
-      install: 'pnpm add lucide-react',
-      imports: ["import { RefreshCw } from 'lucide-react';"],
-      note: 'Optional for IconButton examples.',
     },
   ]}
 />
@@ -63,49 +41,19 @@ Native button behavior with Tinyrack size, variant, and appearance axes.
 <ComponentExampleTabs
   id="button-basic"
   title="Basic action"
-  description="Use a native button contract for commands, with an icon-only button only when the label names the action."
-  preview={(
-    <div className="flex flex-wrap items-center gap-2">
-      <Button size="md" variant="primary" appearance="solid">
-        Deploy
-      </Button>
-      <IconButton label="Refresh rack">
-        <RefreshCw aria-hidden="true" size={18} />
-      </IconButton>
-    </div>
-  )}
+  description="Use primary for the main action and keep native button semantics."
+  preview={<Button variant="primary">Deploy changes</Button>}
   sources={[
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`import '@tinyrack/ui/core/core.css';
-import '@tinyrack/ui/components/button/button.css';
-import { RefreshCw } from 'lucide-react';
-import { Button, IconButton } from '@tinyrack/ui/components/button/react';
+      code: String.raw`import '@tinyrack/ui/core.css';
+import '@tinyrack/ui/components/button.css';
+import { Button } from '@tinyrack/ui/components/button';
 
-<Button size="md" variant="primary" appearance="solid">
-  Deploy
-</Button>;
-
-<IconButton label="Refresh rack">
-  <RefreshCw aria-hidden="true" size={18} />
-</IconButton>;`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<button
-  class="tr-btn"
-  data-size="md"
-  data-variant="primary"
-  data-appearance="solid"
->
-  Deploy
-</button>
-
-<button class="tr-icon-btn" aria-label="Refresh rack">
-  <!-- icon svg -->
-</button>`,
+export function DeployAction() {
+  return <Button variant="primary">Deploy changes</Button>;
+}`,
     },
   ]}
 />
@@ -113,271 +61,114 @@ import { Button, IconButton } from '@tinyrack/ui/components/button/react';
 ## Examples
 
 <ComponentExampleTabs
-  id="button-size"
-  title="Size"
-  description="All sizes keep the same action semantics and only change density."
+  id="button-appearance-variant-matrix"
+  title="Appearance × variant"
+  description="Every supported emphasis and intent combination is shown together."
+  previewLayout="stretch"
   preview={(
-    <div className="flex flex-wrap items-center gap-2">
-      {buttonSizes.map((size) => (
-        <Button key={size} size={size} variant="primary">
-          {size}
-        </Button>
-      ))}
+    <div className="grid gap-5">
+      <div className="grid gap-2">
+        <strong>Solid</strong>
+        <div className="flex flex-wrap gap-2">
+          <Button appearance="solid" variant="secondary">Secondary</Button>
+          <Button appearance="solid" variant="primary">Primary</Button>
+          <Button appearance="solid" variant="danger">Danger</Button>
+        </div>
+      </div>
+      <div className="grid gap-2">
+        <strong>Outline</strong>
+        <div className="flex flex-wrap gap-2">
+          <Button appearance="outline" variant="secondary">Secondary</Button>
+          <Button appearance="outline" variant="primary">Primary</Button>
+          <Button appearance="outline" variant="danger">Danger</Button>
+        </div>
+      </div>
+      <div className="grid gap-2">
+        <strong>Ghost</strong>
+        <div className="flex flex-wrap gap-2">
+          <Button appearance="ghost" variant="secondary">Secondary</Button>
+          <Button appearance="ghost" variant="primary">Primary</Button>
+          <Button appearance="ghost" variant="danger">Danger</Button>
+        </div>
+      </div>
     </div>
   )}
   sources={[
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<Button size="sm" variant="primary">sm</Button>
-<Button size="md" variant="primary">md</Button>
-<Button size="lg" variant="primary">lg</Button>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<button class="tr-btn" data-size="sm" data-variant="primary">sm</button>
-<button class="tr-btn" data-size="md" data-variant="primary">md</button>
-<button class="tr-btn" data-size="lg" data-variant="primary">lg</button>`,
+      code: String.raw`<div className="grid gap-5">
+  <div className="flex flex-wrap gap-2">
+    <Button appearance="solid" variant="secondary">Secondary</Button>
+    <Button appearance="solid" variant="primary">Primary</Button>
+    <Button appearance="solid" variant="danger">Danger</Button>
+  </div>
+  <div className="flex flex-wrap gap-2">
+    <Button appearance="outline" variant="secondary">Secondary</Button>
+    <Button appearance="outline" variant="primary">Primary</Button>
+    <Button appearance="outline" variant="danger">Danger</Button>
+  </div>
+  <div className="flex flex-wrap gap-2">
+    <Button appearance="ghost" variant="secondary">Secondary</Button>
+    <Button appearance="ghost" variant="primary">Primary</Button>
+    <Button appearance="ghost" variant="danger">Danger</Button>
+  </div>
+</div>`,
     },
   ]}
 />
 
 <ComponentExampleTabs
-  id="button-variant"
-  title="Variant"
-  description="Variants communicate action intent without changing the element type."
+  id="button-sizes"
+  title="Sizes"
+  description="Choose density from the surrounding layout, not from action importance."
   preview={(
-    <div className="flex flex-wrap items-center gap-2">
-      {buttonVariants.map((variant) => (
-        <Button key={variant} variant={variant}>
-          {variant}
-        </Button>
-      ))}
+    <div className="flex flex-wrap items-center gap-3">
+      <Button size="sm" variant="primary">Small</Button>
+      <Button size="md" variant="primary">Medium</Button>
+      <Button size="lg" variant="primary">Large</Button>
     </div>
   )}
   sources={[
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<Button variant="secondary">secondary</Button>
-<Button variant="primary">primary</Button>
-<Button variant="danger">danger</Button>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<button class="tr-btn" data-variant="secondary">secondary</button>
-<button class="tr-btn" data-variant="primary">primary</button>
-<button class="tr-btn" data-variant="danger">danger</button>`,
+      code: String.raw`<div className="flex flex-wrap items-center gap-3">
+  <Button size="sm" variant="primary">Small</Button>
+  <Button size="md" variant="primary">Medium</Button>
+  <Button size="lg" variant="primary">Large</Button>
+</div>`,
     },
   ]}
 />
 
 <ComponentExampleTabs
-  id="button-appearance-solid"
-  title="Solid Appearance"
-  description="Solid is the default high-emphasis surface; compare its three intent variants."
+  id="button-states"
+  title="States"
+  description="Disabled and loading are explicit, perceivable states of the same action."
   preview={(
-    <div className="flex flex-wrap items-center gap-2">
-      {buttonVariants.map((variant) => (
-        <Button key={variant} appearance="solid" variant={variant}>
-          {variant}
-        </Button>
-      ))}
+    <div className="flex flex-wrap items-center gap-3">
+      <Button>Ready</Button>
+      <Button disabled>Unavailable</Button>
+      <Button loading loadingLabel="Deploying changes" variant="primary">Deploying</Button>
+      <Button appearance="outline" variant="danger"><Spinner size="sm" /> Retry</Button>
     </div>
   )}
   sources={[
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<div className="flex flex-wrap items-center gap-2">
-  <Button appearance="solid" variant="secondary">secondary</Button>
-  <Button appearance="solid" variant="primary">primary</Button>
-  <Button appearance="solid" variant="danger">danger</Button>
-</div>`,
+      code: String.raw`<Button>Ready</Button>
+<Button disabled>Unavailable</Button>
+<Button loading loadingLabel="Deploying changes" variant="primary">
+  Deploying
+</Button>`,
     },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="flex flex-wrap items-center gap-2">
-  <button class="tr-btn" data-appearance="solid" data-variant="secondary">secondary</button>
-  <button class="tr-btn" data-appearance="solid" data-variant="primary">primary</button>
-  <button class="tr-btn" data-appearance="solid" data-variant="danger">danger</button>
-</div>`,
-    },
-  ]}
-/>
-
-<ComponentExampleTabs
-  id="button-appearance-outline"
-  title="Outline Appearance"
-  description="Outline keeps the same intents with less visual weight than solid."
-  preview={(
-    <div className="flex flex-wrap items-center gap-2">
-      {buttonVariants.map((variant) => (
-        <Button key={variant} appearance="outline" variant={variant}>
-          {variant}
-        </Button>
-      ))}
-    </div>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<div className="flex flex-wrap items-center gap-2">
-  <Button appearance="outline" variant="secondary">secondary</Button>
-  <Button appearance="outline" variant="primary">primary</Button>
-  <Button appearance="outline" variant="danger">danger</Button>
-</div>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="flex flex-wrap items-center gap-2">
-  <button class="tr-btn" data-appearance="outline" data-variant="secondary">secondary</button>
-  <button class="tr-btn" data-appearance="outline" data-variant="primary">primary</button>
-  <button class="tr-btn" data-appearance="outline" data-variant="danger">danger</button>
-</div>`,
-    },
-  ]}
-/>
-
-<ComponentExampleTabs
-  id="button-appearance-ghost"
-  title="Ghost Appearance"
-  description="Ghost provides the lightest emphasis for secondary and compact actions."
-  preview={(
-    <div className="flex flex-wrap items-center gap-2">
-      {buttonVariants.map((variant) => (
-        <Button key={variant} appearance="ghost" variant={variant}>
-          {variant}
-        </Button>
-      ))}
-    </div>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<div className="flex flex-wrap items-center gap-2">
-  <Button appearance="ghost" variant="secondary">secondary</Button>
-  <Button appearance="ghost" variant="primary">primary</Button>
-  <Button appearance="ghost" variant="danger">danger</Button>
-</div>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="flex flex-wrap items-center gap-2">
-  <button class="tr-btn" data-appearance="ghost" data-variant="secondary">secondary</button>
-  <button class="tr-btn" data-appearance="ghost" data-variant="primary">primary</button>
-  <button class="tr-btn" data-appearance="ghost" data-variant="danger">danger</button>
-</div>`,
-    },
-  ]}
-/>
-
-<ComponentExampleTabs
-  id="button-states-icons"
-  title="States and Icon Actions"
-  description="Build a rack action group with one primary command, lower-emphasis alternatives, native disabled state, and a named icon action."
-  preview={(
-    <div className="flex flex-wrap items-center gap-2">
-      <Button variant="primary">Deploy changes</Button>
-      <Button appearance="outline">Review diff</Button>
-      <Button disabled>Restart unavailable</Button>
-      <Button appearance="ghost" variant="danger">Remove node</Button>
-      <IconButton appearance="outline" label="Refresh rack">
-        <RefreshCw aria-hidden="true" size={18} />
-      </IconButton>
-    </div>
-  )}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<Button variant="primary">Deploy changes</Button>
-<Button appearance="outline">Review diff</Button>
-<Button disabled>Restart unavailable</Button>
-<Button appearance="ghost" variant="danger">Remove node</Button>
-<IconButton appearance="outline" label="Refresh rack">
-  <RefreshCw aria-hidden="true" size={18} />
-</IconButton>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<button class="tr-btn" data-variant="primary">Deploy changes</button>
-<button class="tr-btn" data-appearance="outline">Review diff</button>
-<button class="tr-btn" disabled>Restart unavailable</button>
-<button class="tr-btn" data-appearance="ghost" data-variant="danger">Remove node</button>
-<button class="tr-icon-btn" data-appearance="outline" aria-label="Refresh rack">
-  <!-- icon svg -->
-</button>`,
-    },
-  ]}
-/>
-
-<ComponentExampleTabs
-  id="button-loading-group"
-  title="Loading and attached actions"
-  description="Loading disables the active command while ButtonGroup keeps related actions aligned."
-  preview={<ButtonGroup attached><Button loading loadingLabel="Saving settings">Save</Button><Button>Cancel</Button></ButtonGroup>}
-  sources={[
-    {
-      label: 'React',
-      language: 'tsx',
-      code: String.raw`<ButtonGroup attached>
-  <Button loading loadingLabel="Saving settings">Save</Button>
-  <Button>Cancel</Button>
-</ButtonGroup>`,
-    },
-    {
-      label: 'HTML',
-      language: 'html',
-      code: String.raw`<div class="tr-btn-group" data-attached="true" data-orientation="horizontal" role="group">
-  <button class="tr-btn" aria-busy="true" aria-label="Saving settings" disabled>
-    <span class="tr-spinner" data-size="sm" aria-hidden="true"></span>
-    Save
-  </button>
-  <button class="tr-btn">Cancel</button>
-</div>`,
-    },
-  ]}
-/>
-
-## Guidance
-
-<ComponentGuidance
-  whenToUse={[
-    'Trigger an immediate command such as deploy, refresh, retry, or remove.',
-    'Use IconButton for familiar compact actions when the visible layout cannot accommodate text.',
-  ]}
-  avoid={[
-    'Do not use a button for navigation; use Link so browser link behavior remains available.',
-    'Do not show several primary buttons in one action group or use danger styling for harmless actions.',
-  ]}
-  accessibility={[
-    'Keep native button semantics, keyboard focus, and disabled behavior; set type="submit" only for intentional form submission.',
-    'Give IconButton a concise action label such as "Refresh rack" and mark a decorative icon aria-hidden="true".',
   ]}
 />
 
 ## API
 
-| Prop | Values | Note |
-| --- | --- | --- |
-| `size` | `sm`, `md`, `lg` | Default `md`; sets `data-size`. |
-| `variant` | `secondary`, `primary`, `danger` | Default `secondary`; sets `data-variant`. |
-| `appearance` | `solid`, `outline`, `ghost` | Default `solid`; sets `data-appearance`. |
-| `label` | `string` | Required for `IconButton` accessible names. |
-| Icon child | `ReactNode` | Use `aria-hidden="true"` when `label` names the action. |
-| `disabled` | `boolean` | Native disabled state. |
-| `loading`, `loadingLabel` | `boolean`, `string` | Adds a Spinner, busy state and native disabled behavior. |
-| `ButtonGroup` | `attached`, `orientation` | Renders a semantic `role="group"` wrapper. |
-| `type` | `button`, `submit`, `reset` | Default `button`. |
-| native button props | `ButtonHTMLAttributes<HTMLButtonElement>` | Passed through to `<button>`. |
-
-<ComponentTokenTable component="button" />
+- `Button` forwards Base UI button props, native events, `className`, `style`, and React 19 `ref`.
+- `type` defaults to `button`; set `type="submit"` intentionally inside forms.
+- `loading` disables the control, renders a spinner, and sets `aria-busy`.

@@ -12,6 +12,13 @@ export const Progress = {
   Value: ProgressValue,
 } as const;
 
+export type {
+  ProgressIndicatorState,
+  ProgressLabelState,
+  ProgressRootState,
+  ProgressTrackState,
+  ProgressValueState,
+} from '@base-ui/react/progress';
 export type { ProgressIndicatorProps } from './progress-indicator.js';
 export type { ProgressLabelProps } from './progress-label.js';
 export type {

@@ -1,0 +1,19 @@
+.tr-separator {
+  --_tr-separator-thickness: var(--tinyrack-border-width-default);
+  display: block;
+  flex: none;
+  margin: 0;
+  border: 0;
+  background-color: var(--tr-separator-color, var(--tinyrack-border));
+}
+
+.tr-separator[data-orientation="horizontal"] {
+  width: 100%;
+  height: var(--tr-separator-thickness, var(--_tr-separator-thickness));
+}
+
+.tr-separator[data-orientation="vertical"] {
+  width: var(--tr-separator-thickness, var(--_tr-separator-thickness));
+  min-height: var(--tr-separator-min-length, var(--tinyrack-space-lg));
+  height: 100%;
+}

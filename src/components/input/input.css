@@ -1,0 +1,39 @@
+@layer components {
+  .tr-input {
+    background: var(--tr-input-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-md);
+    box-sizing: border-box;
+    color: var(--tr-input-color, var(--tinyrack-text));
+    font: inherit;
+    min-height: var(--tinyrack-control-height-md);
+    min-width: 0;
+    padding-inline: var(--tinyrack-control-padding-inline-md);
+    transition:
+      border-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard),
+      background-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard);
+  }
+
+  .tr-input:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-input::placeholder {
+    color: var(--tinyrack-text-placeholder);
+  }
+
+  .tr-input:hover:not(:disabled, [data-disabled], [readonly]) {
+    border-color: var(--tinyrack-border-strong);
+  }
+
+  .tr-input:read-only {
+    background: var(--tinyrack-surface-muted);
+  }
+
+  .tr-input:disabled,
+  .tr-input[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

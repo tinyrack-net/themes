@@ -1,65 +1,42 @@
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Form } from '../../src/components/form/index.js';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentInstall } from '../shared/component-install.js';
+import { baseUiExampleSources } from '../shared/base-ui-example-sources.js';
 import * as Stories from './form.stories';
 
 <Meta of={Stories} />
 
 # Form
 
-Accessible field composition for labels, controls, descriptions, and validation errors.
+A native form wrapper that integrates Base UI validation errors.
 
 ## Contract
 
-| Part | Responsibility |
-| --- | --- |
-| `Field` | disabled, invalid, and validation state |
-| `Label` | accessible control name |
-| `Control` | native input behavior through Base UI render |
-| `Description` | persistent supporting text |
-| `Error` | validation-specific feedback |
+This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, events, and the `render` contract. Storybook controls cover `label`, `required`, `submitLabel`.
 
 ## Install
 
-<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/form.css';", "import { Form } from '@tinyrack/ui/components/form';"] }]} />
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/form.css';", "import '@tinyrack/ui/components/input.css';", "import '@tinyrack/ui/components/button.css';", "import { Form } from '@tinyrack/ui/components/form';", "import { Input } from '@tinyrack/ui/components/input';", "import { Button } from '@tinyrack/ui/components/button';"] }]} />
 
 ## Usage
 
 <ComponentExampleTabs
   id="form-basic"
-  title="Labeled field"
-  previewLayout="stretch"
-  preview={<Form.Field><Form.Label>Email</Form.Label><Form.Control required type="email" placeholder="ops@example.com" /><Form.Description>Operational alerts are sent here.</Form.Description><Form.Error match="valueMissing">Email is required.</Form.Error></Form.Field>}
-  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Form.Field>
-  <Form.Label>Email</Form.Label>
-  <Form.Control required type="email" placeholder="ops@example.com" />
-  <Form.Description>Operational alerts are sent here.</Form.Description>
-  <Form.Error match="valueMissing">Email is required.</Form.Error>
-</Form.Field>` }]}
+  title="Default"
+  preview={<Stories.FormPreview label={'Rack name'} required={true} submitLabel={'Save'} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['form'] }]}
 />
 
 ## Examples
 
 <ComponentExampleTabs
-  id="form-field-states"
-  title="Field states"
-  description="Default, invalid, disabled, and read-only fields are compared together."
-  previewLayout="stretch"
-  preview={(
-    <div className="grid gap-5 sm:grid-cols-2">
-      <Form.Field><Form.Label>Default</Form.Label><Form.Control placeholder="rack-a" /><Form.Description>Editable value.</Form.Description></Form.Field>
-      <Form.Field invalid><Form.Label>Invalid</Form.Label><Form.Control aria-invalid="true" defaultValue="bad value" /><Form.Error match>Use a valid rack name.</Form.Error></Form.Field>
-      <Form.Field disabled><Form.Label>Disabled</Form.Label><Form.Control defaultValue="rack-b" /><Form.Description>Not available.</Form.Description></Form.Field>
-      <Form.Field><Form.Label>Read only</Form.Label><Form.Control readOnly value="rack-c" /><Form.Description>Managed by policy.</Form.Description></Form.Field>
-    </div>
-  )}
-  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Form.Field>...</Form.Field>
-<Form.Field invalid>...</Form.Field>
-<Form.Field disabled>...</Form.Field>
-<Form.Field><Form.Control readOnly value="rack-c" /></Form.Field>` }]}
+  id="form-states"
+  title="State comparison"
+  description="Use Controls above to inspect every supported public state."
+  preview={<Stories.FormPreview label={'Rack name'} required={false} submitLabel={'Save'} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['form'] }]}
 />
 
 ## API
 
-Parts are individually exported and forward Base UI or native props, events, styles, and React 19 refs.
+Every compound part and prop/state type is exported from `@tinyrack/ui/components/form`; styles remain opt-in through the matching CSS subpath.

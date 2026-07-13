@@ -36,6 +36,7 @@
 
 .tr-btn,
 .tr-icon-btn {
+  --_tr-btn-press-distance: 1px;
   --_tr-btn-height: var(--tinyrack-control-height-md);
   --_tr-btn-padding-x: var(--tinyrack-control-padding-inline-md);
   --_tr-btn-gap: var(--tinyrack-control-gap-md);
@@ -181,7 +182,7 @@
 
 .tr-btn:active:not(:disabled):not([aria-disabled="true"]),
 .tr-icon-btn:active:not(:disabled):not([aria-disabled="true"]) {
-  transform: translateY(var(--tr-btn-press-distance, 1px));
+  transform: translateY(var(--tr-btn-press-distance, var(--_tr-btn-press-distance)));
 }
 
 .tr-btn:focus-visible,

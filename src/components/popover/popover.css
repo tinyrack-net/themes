@@ -1,6 +1,8 @@
 @layer components {
   .tr-layer {
+    --_tr-layer-closed-scale: 0.98;
     --_tr-layer-motion-duration: var(--tinyrack-duration-normal);
+    --_tr-layer-viewport-inset: var(--tinyrack-space-lg);
     background-color: var(--tr-layer-background, var(--tinyrack-surface));
     border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
     border-radius: var(--tr-layer-radius, var(--tinyrack-radius-lg));
@@ -12,13 +14,13 @@
     font-size: var(--tinyrack-text-sm);
     line-height: var(--tinyrack-leading-md);
     margin: 0;
-    max-height: var(--available-height, calc(100dvh - 1rem));
-    max-width: var(--available-width, calc(100vw - 1rem));
+    max-height: var(--available-height, calc(100dvh - var(--_tr-layer-viewport-inset)));
+    max-width: var(--available-width, calc(100vw - var(--_tr-layer-viewport-inset)));
     opacity: 0;
     overflow: auto;
     overscroll-behavior: contain;
     padding: var(--tr-layer-padding, var(--tinyrack-space-md));
-    scale: 0.98;
+    scale: var(--_tr-layer-closed-scale);
     transition:
       opacity var(--tr-layer-motion-duration, var(--_tr-layer-motion-duration))
       var(--tinyrack-ease-out),
@@ -61,7 +63,7 @@
   @starting-style {
     .tr-layer[data-open] {
       opacity: 0;
-      scale: 0.98;
+      scale: var(--_tr-layer-closed-scale);
     }
   }
 

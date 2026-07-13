@@ -1,0 +1,45 @@
+@layer components {
+  .tr-checkbox {
+    align-items: center;
+    appearance: none;
+    background: var(--tr-checkbox-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-strong) solid var(--tinyrack-border-strong);
+    border-radius: var(--tinyrack-radius-sm);
+    box-sizing: border-box;
+    color: var(--tr-checkbox-color, var(--tinyrack-text));
+    cursor: pointer;
+    display: inline-grid;
+    flex: none;
+    font: inherit;
+    height: var(--tr-checkbox-size, var(--tinyrack-space-lg));
+    justify-content: center;
+    padding: 0;
+    transition:
+      background-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard),
+      border-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard);
+    width: var(--tr-checkbox-size, var(--tinyrack-space-lg));
+  }
+
+  .tr-checkbox[data-checked] {
+    background: var(--tr-checkbox-checked-background, var(--tinyrack-primary));
+    border-color: var(--tr-checkbox-checked-border, var(--tinyrack-primary));
+  }
+
+  .tr-checkbox-indicator {
+    color: var(--tr-checkbox-indicator-color, var(--tinyrack-on-primary));
+    font-size: var(--tinyrack-text-xs);
+    font-weight: var(--tinyrack-weight-bold);
+    line-height: 1;
+  }
+
+  .tr-checkbox:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-checkbox:disabled,
+  .tr-checkbox[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

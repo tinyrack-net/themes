@@ -1,0 +1,41 @@
+@layer components {
+  .tr-radio {
+    align-items: center;
+    appearance: none;
+    background: var(--tr-radio-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-strong) solid var(--tinyrack-border-strong);
+    border-radius: var(--tinyrack-radius-full);
+    box-sizing: border-box;
+    color: var(--tr-radio-color, var(--tinyrack-text));
+    cursor: pointer;
+    display: inline-grid;
+    flex: none;
+    font: inherit;
+    height: var(--tr-radio-size, var(--tinyrack-space-lg));
+    justify-content: center;
+    padding: var(--tinyrack-space-xs);
+    width: var(--tr-radio-size, var(--tinyrack-space-lg));
+  }
+
+  .tr-radio[data-checked] {
+    border-color: var(--tr-radio-checked-border, var(--tinyrack-primary));
+  }
+
+  .tr-radio-indicator {
+    background: var(--tr-radio-indicator-background, var(--tinyrack-primary));
+    border-radius: var(--tinyrack-radius-full);
+    height: 100%;
+    width: 100%;
+  }
+
+  .tr-radio:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-radio:disabled,
+  .tr-radio[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

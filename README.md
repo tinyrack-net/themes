@@ -37,8 +37,8 @@ export function Settings() {
   return (
     <Tabs.Root defaultValue="general">
       <Tabs.List>
-        <Tabs.Trigger value="general">General</Tabs.Trigger>
-        <Tabs.Trigger value="network">Network</Tabs.Trigger>
+        <Tabs.Tab value="general">General</Tabs.Tab>
+        <Tabs.Tab value="network">Network</Tabs.Tab>
       </Tabs.List>
       <Tabs.Panel value="general">General settings</Tabs.Panel>
       <Tabs.Panel value="network">Network settings</Tabs.Panel>
@@ -57,13 +57,21 @@ export function Settings() {
 | Foundation CSS | `@tinyrack/ui/core.css` |
 | React MDX map | `@tinyrack/ui/mdx` |
 | React MDX CSS | `@tinyrack/ui/mdx.css` |
+| CSP provider | `@tinyrack/ui/providers/csp` |
+| Direction provider | `@tinyrack/ui/providers/direction` |
 
-Supported component modules:
+Supported Base UI modules:
 
-`accordion`, `alert`, `avatar`, `badge`, `button`, `card`, `code`,
-`code-block`, `combobox`, `disclosure`, `divider`, `form`, `link`, `menu`,
-`modal`, `pin-input`, `popover`, `progress`, `skeleton`, `spinner`, `table`,
-`tabs`, `toast`, and `tooltip`.
+`accordion`, `alert-dialog`, `autocomplete`, `avatar`, `button`, `checkbox`,
+`checkbox-group`, `collapsible`, `combobox`, `context-menu`, `dialog`, `drawer`,
+`field`, `fieldset`, `form`, `input`, `menu`, `menubar`, `meter`,
+`navigation-menu`, `number-field`, `otp-field`, `popover`, `preview-card`,
+`progress`, `radio`, `radio-group`, `scroll-area`, `select`, `separator`,
+`slider`, `switch`, `tabs`, `toast`, `toggle`, `toggle-group`, `toolbar`, and
+`tooltip`.
+
+Tinyrack-native modules are `alert`, `badge`, `card`, `code`, `code-block`,
+`link`, `skeleton`, `spinner`, and `table`.
 
 There is no component root barrel, `/react` or `/dom` compatibility suffix,
 public overlay manager, or Astro renderer.

@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import { baseUiExampleSources } from '../shared/base-ui-example-sources.js';
+import * as Stories from './navigation-menu.stories';
+
+<Meta of={Stories} />
+
+# NavigationMenu
+
+Site-level navigation with links and optional rich popup content.
+
+## Contract
+
+This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, events, and the `render` contract. Storybook controls cover `label`, `disabled`.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/navigation-menu.css';", "import { NavigationMenu } from '@tinyrack/ui/components/navigation-menu';"] }]} />
+
+## Usage
+
+<ComponentExampleTabs
+  id="navigation-menu-basic"
+  title="Default"
+  preview={<Stories.NavigationMenuPreview label={'Documentation'} disabled={false} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['navigation-menu'] }]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  id="navigation-menu-states"
+  title="State comparison"
+  description="Use Controls above to inspect every supported public state."
+  preview={<Stories.NavigationMenuPreview label={'Documentation'} disabled={true} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['navigation-menu'] }]}
+/>
+
+## API
+
+Every compound part and prop/state type is exported from `@tinyrack/ui/components/navigation-menu`; styles remain opt-in through the matching CSS subpath.

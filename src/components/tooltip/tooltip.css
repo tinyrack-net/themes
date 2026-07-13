@@ -9,7 +9,13 @@
     --_tr-tooltip-background: var(--tinyrack-text);
     --_tr-tooltip-border: var(--tinyrack-text);
     --_tr-tooltip-color: var(--tinyrack-surface);
-    max-width: min(20rem, var(--tr-layer-available-width, calc(100vw - 1rem)));
+    --_tr-tooltip-line-height: 1.4;
+    --_tr-tooltip-max-width: 20rem;
+    --_tr-tooltip-viewport-inset: var(--tinyrack-space-lg);
+    max-width: min(
+      var(--tr-tooltip-max-width, var(--_tr-tooltip-max-width)),
+      var(--tr-layer-available-width, calc(100vw - var(--_tr-tooltip-viewport-inset)))
+    );
     padding: var(--tinyrack-space-xs) var(--tinyrack-space-sm);
     border-color: var(--tr-tooltip-border, var(--_tr-tooltip-border));
     border-radius: var(--tinyrack-radius-sm);
@@ -17,7 +23,7 @@
     color: var(--tr-tooltip-color, var(--_tr-tooltip-color));
     font-size: var(--tinyrack-text-xs);
     font-weight: var(--tinyrack-weight-medium);
-    line-height: 1.4;
+    line-height: var(--tr-tooltip-line-height, var(--_tr-tooltip-line-height));
     pointer-events: none;
   }
 }

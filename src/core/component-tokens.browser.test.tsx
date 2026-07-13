@@ -1,11 +1,11 @@
 import '../components/button/button.css';
-import '../components/form/form.css';
+import '../components/field/field.css';
 import '../components/tabs/tabs.css';
 import './core.css';
 import { afterEach, expect, test } from 'vitest';
 import { cleanup, render } from 'vitest-browser-react';
 import { Button } from '../components/button/index.js';
-import { Form } from '../components/form/index.js';
+import { Field } from '../components/field/index.js';
 import { Tabs } from '../components/tabs/index.js';
 
 afterEach(() => {
@@ -17,12 +17,12 @@ function renderSharedControls() {
   return render(
     <div>
       <Button size="md">Deploy</Button>
-      <Form.Field>
-        <Form.Control aria-label="Rack" />
-      </Form.Field>
+      <Field.Root>
+        <Field.Control aria-label="Rack" />
+      </Field.Root>
       <Tabs.Root defaultValue="overview" size="md">
         <Tabs.List aria-label="Sections">
-          <Tabs.Trigger value="overview">Overview</Tabs.Trigger>
+          <Tabs.Tab value="overview">Overview</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="overview">Overview panel</Tabs.Panel>
       </Tabs.Root>
@@ -36,7 +36,7 @@ test('Button, Form, and Tabs share the medium control recipe', async () => {
 
   const button = document.querySelector('.tr-btn');
   const input = document.querySelector('.tr-input');
-  const tab = document.querySelector('.tr-tabs-trigger');
+  const tab = document.querySelector('.tr-tabs-tab');
 
   for (const control of [button, input, tab]) {
     if (control === null) {
@@ -62,7 +62,7 @@ test('global foundation overrides flow through every control', async () => {
     getComputedStyle(document.querySelector('.tr-input') as Element).borderRadius,
   ).toBe('14px');
   expect(
-    getComputedStyle(document.querySelector('.tr-tabs-trigger') as Element)
+    getComputedStyle(document.querySelector('.tr-tabs-tab') as Element)
       .borderTopLeftRadius,
   ).toBe('14px');
 });

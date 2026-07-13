@@ -1,6 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { componentNames } from '../scripts/component-catalog.js';
+import { baseUiExampleSources } from '../stories/shared/base-ui-example-sources.js';
 import { componentDocsManifest } from '../stories/shared/component-docs-manifest.js';
 
 const repoRoot = process.cwd();
@@ -11,8 +13,13 @@ function readText(path: string) {
 
 describe('React-only Storybook contract', () => {
   it('documents every public component exactly once', () => {
-    expect(componentDocsManifest).toHaveLength(24);
-    expect(new Set(componentDocsManifest.map((entry) => entry.id)).size).toBe(24);
+    expect(componentDocsManifest).toHaveLength(componentNames.length);
+    expect(new Set(componentDocsManifest.map((entry) => entry.id)).size).toBe(
+      componentNames.length,
+    );
+    expect(componentDocsManifest.map((entry) => entry.id).sort()).toEqual(
+      [...componentNames].sort(),
+    );
 
     for (const entry of componentDocsManifest) {
       expect(existsSync(join(repoRoot, entry.file))).toBe(true);
@@ -78,6 +85,17 @@ describe('React-only Storybook contract', () => {
     expect(exampleTabs).toContain('defaultValue="preview"');
   });
 
+  it('keeps generated Base UI examples paste-ready', () => {
+    for (const [component, source] of Object.entries(baseUiExampleSources)) {
+      expect(readText(`stories/components/${component}.docs.mdx`)).toContain(
+        `baseUiExampleSources['${component}']`,
+      );
+      expect(source).toContain('<');
+      expect(source).not.toContain('placeholder=Content');
+      expect(source).not.toMatch(/<\w+\.Root\s+>/);
+    }
+  });
+
   it('teaches only the React-only package map on the welcome page', () => {
     const welcome = readText('stories/welcome.mdx');
 
@@ -124,10 +142,16 @@ describe('React-only Storybook contract', () => {
 
   it('publishes dedicated open-state stories for portal components', () => {
     for (const component of [
+      'alert-dialog',
+      'autocomplete',
       'combobox',
+      'context-menu',
+      'drawer',
       'menu',
-      'modal',
+      'dialog',
       'popover',
+      'preview-card',
+      'select',
       'toast',
       'tooltip',
     ]) {

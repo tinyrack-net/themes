@@ -13,9 +13,9 @@ test('assembles an accessible Base UI menu', async () => {
           <Menu.Popup>
             <Menu.Item>Restart</Menu.Item>
             <Menu.Separator />
-            <Menu.Submenu>
+            <Menu.SubmenuRoot>
               <span>Nested menu context</span>
-            </Menu.Submenu>
+            </Menu.SubmenuRoot>
           </Menu.Popup>
         </Menu.Positioner>
       </Menu.Portal>

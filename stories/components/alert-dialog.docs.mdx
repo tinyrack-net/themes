@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import { baseUiExampleSources } from '../shared/base-ui-example-sources.js';
+import * as Stories from './alert-dialog.stories';
+
+<Meta of={Stories} />
+
+# AlertDialog
+
+A modal confirmation surface for destructive or irreversible actions.
+
+## Contract
+
+This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, events, and the `render` contract. Storybook controls cover `label`, `open`, `disabled`.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/alert-dialog.css';", "import { AlertDialog } from '@tinyrack/ui/components/alert-dialog';"] }]} />
+
+## Usage
+
+<ComponentExampleTabs
+  id="alert-dialog-basic"
+  title="Default"
+  preview={<Stories.AlertDialogPreview label={'Delete rack'} open={false} disabled={false} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['alert-dialog'] }]}
+/>
+
+## Examples
+
+<ComponentExampleTabs
+  id="alert-dialog-states"
+  title="State comparison"
+  description="Use Controls above to inspect every supported public state."
+  preview={<Stories.AlertDialogPreview label={'Delete rack'} open={false} disabled={false} />}
+  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['alert-dialog'] }]}
+/>
+
+## API
+
+Every compound part and prop/state type is exported from `@tinyrack/ui/components/alert-dialog`; styles remain opt-in through the matching CSS subpath.

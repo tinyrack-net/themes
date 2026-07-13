@@ -1,0 +1,39 @@
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { OTPField } from '../../src/components/otp-field/index.js';
+
+type OTPFieldStoryArgs = {
+  disabled: boolean;
+  length: number;
+  readOnly: boolean;
+  required: boolean;
+};
+
+const meta = {
+  title: 'Components/OTP Field',
+  parameters: { layout: 'centered' },
+  args: { disabled: false, length: 4, readOnly: false, required: true },
+  argTypes: {
+    disabled: { control: 'boolean' },
+    length: { control: { type: 'range', min: 3, max: 8, step: 1 } },
+    readOnly: { control: 'boolean' },
+    required: { control: 'boolean' },
+  },
+  render: ({ disabled, length, readOnly, required }) => (
+    <OTPField.Root
+      aria-label="Verification code"
+      disabled={disabled}
+      key={`${length}-${disabled}-${readOnly}`}
+      length={length}
+      readOnly={readOnly}
+      required={required}
+    >
+      {Array.from({ length }, (_, index) => `slot-${index + 1}`).map((slot) => (
+        <OTPField.Input key={slot} />
+      ))}
+    </OTPField.Root>
+  ),
+} satisfies Meta<OTPFieldStoryArgs>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Default: Story = {};

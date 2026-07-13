@@ -28,11 +28,11 @@ Keyboard-navigable views with three densities and horizontal or vertical orienta
   id="tabs-basic"
   title="Horizontal tabs"
   previewLayout="stretch"
-  preview={<Tabs.Root defaultValue="overview"><Tabs.List><Tabs.Trigger value="overview">Overview</Tabs.Trigger><Tabs.Trigger value="network">Network</Tabs.Trigger></Tabs.List><Tabs.Panel value="overview">All systems operational.</Tabs.Panel><Tabs.Panel value="network">10 Gbps uplink.</Tabs.Panel></Tabs.Root>}
+  preview={<Tabs.Root defaultValue="overview"><Tabs.List><Tabs.Tab value="overview">Overview</Tabs.Tab><Tabs.Tab value="network">Network</Tabs.Tab></Tabs.List><Tabs.Panel value="overview">All systems operational.</Tabs.Panel><Tabs.Panel value="network">10 Gbps uplink.</Tabs.Panel></Tabs.Root>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`<Tabs.Root defaultValue="overview">
   <Tabs.List>
-    <Tabs.Trigger value="overview">Overview</Tabs.Trigger>
-    <Tabs.Trigger value="network">Network</Tabs.Trigger>
+    <Tabs.Tab value="overview">Overview</Tabs.Tab>
+    <Tabs.Tab value="network">Network</Tabs.Tab>
   </Tabs.List>
   <Tabs.Panel value="overview">All systems operational.</Tabs.Panel>
   <Tabs.Panel value="network">10 Gbps uplink.</Tabs.Panel>
@@ -47,9 +47,9 @@ Keyboard-navigable views with three densities and horizontal or vertical orienta
   previewLayout="stretch"
   preview={(
     <div className="grid gap-5">
-      <Tabs.Root defaultValue="one" size="sm"><Tabs.List><Tabs.Trigger value="one">Small</Tabs.Trigger><Tabs.Trigger value="two">Details</Tabs.Trigger></Tabs.List><Tabs.Panel value="one">Small density</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root>
-      <Tabs.Root defaultValue="one" size="md"><Tabs.List><Tabs.Trigger value="one">Medium</Tabs.Trigger><Tabs.Trigger value="two">Details</Tabs.Trigger></Tabs.List><Tabs.Panel value="one">Medium density</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root>
-      <Tabs.Root defaultValue="one" size="lg"><Tabs.List><Tabs.Trigger value="one">Large</Tabs.Trigger><Tabs.Trigger value="two">Details</Tabs.Trigger></Tabs.List><Tabs.Panel value="one">Large density</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root>
+      <Tabs.Root defaultValue="one" size="sm"><Tabs.List><Tabs.Tab value="one">Small</Tabs.Tab><Tabs.Tab value="two">Details</Tabs.Tab></Tabs.List><Tabs.Panel value="one">Small density</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root>
+      <Tabs.Root defaultValue="one" size="md"><Tabs.List><Tabs.Tab value="one">Medium</Tabs.Tab><Tabs.Tab value="two">Details</Tabs.Tab></Tabs.List><Tabs.Panel value="one">Medium density</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root>
+      <Tabs.Root defaultValue="one" size="lg"><Tabs.List><Tabs.Tab value="one">Large</Tabs.Tab><Tabs.Tab value="two">Details</Tabs.Tab></Tabs.List><Tabs.Panel value="one">Large density</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root>
     </div>
   )}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`<Tabs.Root defaultValue="one" size="sm">...</Tabs.Root>
@@ -61,12 +61,12 @@ Keyboard-navigable views with three densities and horizontal or vertical orienta
   id="tabs-orientations"
   title="Orientations and disabled state"
   previewLayout="stretch"
-  preview={<Tabs.Root defaultValue="overview" orientation="vertical"><Tabs.List><Tabs.Trigger value="overview">Overview</Tabs.Trigger><Tabs.Trigger value="network">Network</Tabs.Trigger><Tabs.Trigger disabled value="logs">Logs</Tabs.Trigger></Tabs.List><Tabs.Panel value="overview">All systems operational.</Tabs.Panel><Tabs.Panel value="network">10 Gbps uplink.</Tabs.Panel><Tabs.Panel value="logs">Unavailable</Tabs.Panel></Tabs.Root>}
+  preview={<Tabs.Root defaultValue="overview" orientation="vertical"><Tabs.List><Tabs.Tab value="overview">Overview</Tabs.Tab><Tabs.Tab value="network">Network</Tabs.Tab><Tabs.Tab disabled value="logs">Logs</Tabs.Tab></Tabs.List><Tabs.Panel value="overview">All systems operational.</Tabs.Panel><Tabs.Panel value="network">10 Gbps uplink.</Tabs.Panel><Tabs.Panel value="logs">Unavailable</Tabs.Panel></Tabs.Root>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`<Tabs.Root defaultValue="overview" orientation="vertical">
   <Tabs.List>
-    <Tabs.Trigger value="overview">Overview</Tabs.Trigger>
-    <Tabs.Trigger value="network">Network</Tabs.Trigger>
-    <Tabs.Trigger disabled value="logs">Logs</Tabs.Trigger>
+    <Tabs.Tab value="overview">Overview</Tabs.Tab>
+    <Tabs.Tab value="network">Network</Tabs.Tab>
+    <Tabs.Tab disabled value="logs">Logs</Tabs.Tab>
   </Tabs.List>
   <Tabs.Panel value="overview">All systems operational.</Tabs.Panel>
 </Tabs.Root>` }]}

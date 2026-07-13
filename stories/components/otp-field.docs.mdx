@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { OTPField } from '../../src/components/otp-field/index.js';
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import * as Stories from './otp-field.stories';
+
+<Meta of={Stories} />
+
+# OTP Field
+
+One-time-code entry with grouped keyboard input, validation, and form integration.
+
+## Contract
+
+`length` must match the number of `Input` parts. Base UI provides paste, arrow-key, disabled, read-only, and controlled value behavior.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/otp-field.css';", "import { OTPField } from '@tinyrack/ui/components/otp-field';"] }]} />
+
+## Usage
+
+<ComponentExampleTabs id="otp-field-basic" title="Four-digit code" preview={<OTPField.Root aria-label="Verification code" length={4}><OTPField.Input /><OTPField.Input /><OTPField.Input /><OTPField.Input /></OTPField.Root>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<OTPField.Root aria-label="Verification code" length={4} name="code">
+  <OTPField.Input /><OTPField.Input /><OTPField.Input /><OTPField.Input />
+</OTPField.Root>` }]} />
+
+## Examples
+
+<ComponentExampleTabs
+  id="otp-field-length-states"
+  title="Length and validation states"
+  previewLayout="start"
+  preview={(
+    <div className="grid gap-5">
+      <div className="grid gap-2"><strong>Four digits</strong><OTPField.Root aria-label="Four digit code" length={4}><OTPField.Input /><OTPField.Input /><OTPField.Input /><OTPField.Input /></OTPField.Root></div>
+      <div className="grid gap-2"><strong>Six digits</strong><OTPField.Root aria-label="Six digit code" length={6}><OTPField.Input /><OTPField.Input /><OTPField.Input /><OTPField.Input /><OTPField.Input /><OTPField.Input /></OTPField.Root></div>
+      <div className="grid gap-2"><strong>Required</strong><OTPField.Root aria-label="Required code" length={4} required><OTPField.Input /><OTPField.Input /><OTPField.Input /><OTPField.Input /></OTPField.Root></div>
+      <div className="grid gap-2"><strong>Disabled</strong><OTPField.Root aria-label="Disabled code" disabled length={4}><OTPField.Input /><OTPField.Input /><OTPField.Input /><OTPField.Input /></OTPField.Root></div>
+    </div>
+  )}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<OTPField.Root length={4}>...</OTPField.Root>
+<OTPField.Root length={6}>...</OTPField.Root>
+<OTPField.Root required length={4}>...</OTPField.Root>
+<OTPField.Root disabled length={4}>...</OTPField.Root>` }]}
+/>
+
+## API
+
+Give the root an accessible label and `name` when its hidden input participates in form submission.

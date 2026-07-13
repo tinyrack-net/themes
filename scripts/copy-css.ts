@@ -1,37 +1,11 @@
 import { cp, mkdir, readFile } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
+import { componentNames } from './component-catalog.ts';
 
 const root = resolve(import.meta.dirname, '..');
 const srcRoot = resolve(root, 'src');
 const distRoot = resolve(root, 'dist');
 const checkMode = process.argv.includes('--check');
-
-const componentNames = [
-  'accordion',
-  'alert',
-  'avatar',
-  'badge',
-  'button',
-  'card',
-  'code',
-  'code-block',
-  'combobox',
-  'disclosure',
-  'divider',
-  'form',
-  'link',
-  'menu',
-  'modal',
-  'pin-input',
-  'popover',
-  'progress',
-  'skeleton',
-  'spinner',
-  'table',
-  'tabs',
-  'toast',
-  'tooltip',
-] as const;
 
 const publicAssets = [
   ...componentNames.map((componentName) => ({

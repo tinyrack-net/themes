@@ -6,7 +6,11 @@
   width: var(--tr-spinner-size, var(--_tr-spinner-size));
   height: var(--tr-spinner-size, var(--_tr-spinner-size));
   flex: 0 0 auto;
-  border: max(0.125rem, calc(var(--tr-spinner-size, var(--_tr-spinner-size)) / 8)) solid
+  border: max(
+      var(--tinyrack-radius-xs),
+      calc(var(--tr-spinner-size, var(--_tr-spinner-size)) / 8)
+    )
+    solid
     color-mix(
       in srgb,
       var(--tr-spinner-color, var(--_tr-spinner-color)) 24%,

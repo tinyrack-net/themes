@@ -107,6 +107,10 @@
     "./components/*/react": null,
     "./components/*/dom": null,
     "./components/overlay": null,
+    "./providers/*": {
+      "types": "./dist/providers/*/index.d.ts",
+      "import": "./dist/providers/*/index.js"
+    },
     "./core": {
       "types": "./dist/core/index.d.ts",
       "import": "./dist/core/index.js"

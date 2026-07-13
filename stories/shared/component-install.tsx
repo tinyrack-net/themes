@@ -135,12 +135,12 @@ export function ComponentInstall({ surfaces }: ComponentInstallProps) {
         className="!overflow-x-auto !overflow-y-hidden"
       >
         {surfaces.map((surface) => (
-          <Tabs.Trigger
+          <Tabs.Tab
             key={`${surface.label}-${surface.install}`}
             value={surfaceValue(surface.label)}
           >
             {surface.label}
-          </Tabs.Trigger>
+          </Tabs.Tab>
         ))}
       </Tabs.List>
       {surfaces.map((surface) => {

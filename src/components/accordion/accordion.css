@@ -1,4 +1,4 @@
-@import "../disclosure/disclosure.css";
+@import "../collapsible/collapsible.css";
 
 .tr-accordion {
   overflow: clip;

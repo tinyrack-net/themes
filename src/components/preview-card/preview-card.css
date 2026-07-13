@@ -1,0 +1,69 @@
+@layer components {
+  .tr-preview-card {
+    --_tr-preview-card-popup-max-width: 20rem;
+    box-sizing: border-box;
+    color: var(--tr-preview-card-color, var(--tinyrack-text));
+    font-family: var(--tinyrack-font-body);
+  }
+
+  .tr-preview-card-trigger {
+    align-items: center;
+    background: var(--tr-preview-card-control-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-md);
+    color: var(--tinyrack-text);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    gap: var(--tinyrack-control-gap-md);
+    min-height: var(--tinyrack-control-height-md);
+    padding-inline: var(--tinyrack-control-padding-inline-md);
+  }
+
+  .tr-preview-card-popup {
+    background: var(--tr-preview-card-popup-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-lg);
+    box-shadow: var(--tinyrack-shadow-overlay);
+    color: var(--tinyrack-text);
+    max-width: min(
+      90vw,
+      var(--tr-preview-card-popup-max-width, var(--_tr-preview-card-popup-max-width))
+    );
+    padding: var(--tinyrack-space-md);
+  }
+
+  .tr-preview-card-positioner {
+    z-index: var(--tinyrack-layer-popover);
+  }
+
+  .tr-preview-card-popup[data-open] {
+    animation: tr-preview-card-enter var(--tinyrack-duration-slow)
+      var(--tinyrack-ease-out);
+  }
+
+  @keyframes tr-preview-card-enter {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .tr-preview-card-backdrop {
+    background: var(--tr-preview-card-backdrop, var(--tinyrack-scrim));
+    inset: 0;
+    position: fixed;
+    z-index: var(--tinyrack-layer-backdrop);
+  }
+
+  .tr-preview-card :focus-visible,
+  .tr-preview-card:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-preview-card :disabled,
+  .tr-preview-card[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

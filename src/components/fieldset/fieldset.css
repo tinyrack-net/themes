@@ -1,0 +1,32 @@
+@layer components {
+  .tr-fieldset {
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-lg);
+    box-sizing: border-box;
+    color: var(--tr-fieldset-color, var(--tinyrack-text));
+    display: grid;
+    font-family: var(--tinyrack-font-body);
+    gap: var(--tinyrack-space-md);
+    margin: 0;
+    min-width: 0;
+    padding: var(--tinyrack-space-lg);
+  }
+
+  .tr-fieldset-legend {
+    color: var(--tinyrack-text);
+    font-weight: var(--tinyrack-weight-medium);
+    padding-inline: var(--tinyrack-space-xs);
+  }
+
+  .tr-fieldset :focus-visible,
+  .tr-fieldset:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-fieldset :disabled,
+  .tr-fieldset[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

@@ -42,6 +42,9 @@ const forbiddenDeclarations = {
   'literal default border': /border(?:-(?:top|right|bottom|left))?:\s*1px/,
 } as const;
 
+const directDesignLiteral =
+  /(?:#[0-9a-f]{3,8}\b|rgb\(|\b\d*\.?\d+(?:px|rem|em|ch|ms|s)\b|\b0?\.\d+(?!%)\b)/i;
+
 const coreCss = readFileSync(join(process.cwd(), 'src/core/core.css'), 'utf8');
 const declaredGlobalTokens = new Set(
   Array.from(coreCss.matchAll(/^\s*(--tinyrack-[a-z0-9-]+):/gm), ([, token]) => token),
@@ -58,6 +61,30 @@ describe('public CSS token usage', () => {
 
       for (const [label, pattern] of Object.entries(forbiddenDeclarations)) {
         expect(css, `${stylePath} contains ${label}`).not.toMatch(pattern);
+      }
+    }
+  });
+
+  it('keeps design literals inside token declarations', () => {
+    for (const stylePath of publicStylePaths) {
+      const css = readFileSync(join(process.cwd(), stylePath), 'utf8');
+
+      for (const [index, line] of css.split(/\r?\n/).entries()) {
+        const declaration = line.trim();
+        if (
+          declaration.length === 0 ||
+          declaration.startsWith('--') ||
+          declaration.startsWith('@') ||
+          declaration.startsWith('/*') ||
+          declaration.startsWith('*')
+        ) {
+          continue;
+        }
+
+        expect(
+          declaration,
+          `${stylePath}:${index + 1} must use a Tinyrack or component token`,
+        ).not.toMatch(directDesignLiteral);
       }
     }
   });
@@ -147,12 +174,12 @@ describe('public CSS token usage', () => {
       join(process.cwd(), 'src/components/badge/badge.tsx'),
       'utf8',
     );
-    const form = readFileSync(
-      join(process.cwd(), 'src/components/form/form.css'),
+    const field = readFileSync(
+      join(process.cwd(), 'src/components/field/field.css'),
       'utf8',
     );
     const pinInput = readFileSync(
-      join(process.cwd(), 'src/components/pin-input/pin-input.css'),
+      join(process.cwd(), 'src/components/otp-field/otp-field.css'),
       'utf8',
     );
     const statusVariants = [
@@ -169,7 +196,7 @@ describe('public CSS token usage', () => {
       }
       expect(contract).not.toContain("'primary'");
     }
-    expect(form).toContain('border-color: var(--tinyrack-danger-border);');
+    expect(field).toContain('border-color: var(--tinyrack-danger-border);');
     expect(pinInput).toContain('border-color: var(--tinyrack-danger-border);');
   });
 

@@ -1,0 +1,61 @@
+@layer components {
+  .tr-scroll-area {
+    background: var(--tr-scroll-area-background, var(--tinyrack-surface));
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border-radius: var(--tinyrack-radius-lg);
+    box-sizing: border-box;
+    color: var(--tr-scroll-area-color, var(--tinyrack-text));
+    font-family: var(--tinyrack-font-body);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .tr-scroll-area-viewport {
+    height: 100%;
+    width: 100%;
+  }
+
+  .tr-scroll-area-content {
+    color: var(--tinyrack-text);
+    padding: var(--tinyrack-space-md);
+  }
+
+  .tr-scroll-area-scrollbar {
+    background: var(--tr-scroll-area-track-background, var(--tinyrack-surface-muted));
+    border-radius: var(--tinyrack-radius-full);
+    display: flex;
+    padding: var(--tinyrack-space-xs);
+    touch-action: none;
+  }
+
+  .tr-scroll-area-scrollbar[data-orientation="vertical"] {
+    width: var(--tinyrack-space-sm);
+  }
+
+  .tr-scroll-area-scrollbar[data-orientation="horizontal"] {
+    flex-direction: column;
+    height: var(--tinyrack-space-sm);
+  }
+
+  .tr-scroll-area-thumb {
+    background: var(--tr-scroll-area-indicator-background, var(--tinyrack-primary));
+    border-radius: var(--tinyrack-radius-full);
+    flex: 1;
+  }
+
+  .tr-scroll-area-corner {
+    background: var(--tinyrack-surface-muted);
+  }
+
+  .tr-scroll-area :focus-visible,
+  .tr-scroll-area:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-scroll-area :disabled,
+  .tr-scroll-area[data-disabled] {
+    cursor: not-allowed;
+    opacity: var(--tinyrack-opacity-disabled);
+  }
+}

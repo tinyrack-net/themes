@@ -17,6 +17,8 @@ const clipboardTimeout = 1_000;
 type CopyButtonClickEvent = Parameters<NonNullable<ButtonProps['onClick']>>[0];
 
 function writeWithSelection(value: string) {
+  const activeElement =
+    document.activeElement instanceof HTMLElement ? document.activeElement : null;
   const selection = document.getSelection();
   const ranges = selection
     ? Array.from({ length: selection.rangeCount }, (_, index) =>
@@ -35,6 +37,7 @@ function writeWithSelection(value: string) {
     return typeof document.execCommand === 'function' && document.execCommand('copy');
   } finally {
     textarea.remove();
+    if (activeElement?.isConnected) activeElement.focus({ preventScroll: true });
     selection?.removeAllRanges();
     for (const range of ranges) selection?.addRange(range);
   }
@@ -107,7 +110,26 @@ export function CopyButton({
 
   return (
     <Button {...props} data-copy-status={status} onClick={handleClick}>
-      <span aria-hidden={status === 'idle' ? undefined : true}>{label}</span>
+      <span className="tr-copy-button-label-stack">
+        <span
+          aria-hidden={status === 'idle' ? undefined : true}
+          data-copy-label-active={status === 'idle' ? 'true' : undefined}
+        >
+          {idleLabel}
+        </span>
+        <span
+          aria-hidden="true"
+          data-copy-label-active={status === 'copied' ? 'true' : undefined}
+        >
+          {copiedLabel}
+        </span>
+        <span
+          aria-hidden="true"
+          data-copy-label-active={status === 'unavailable' ? 'true' : undefined}
+        >
+          {unavailableLabel}
+        </span>
+      </span>
       <span aria-live="polite" className="tr-copy-button-announcement">
         {status === 'idle' ? '' : label}
       </span>

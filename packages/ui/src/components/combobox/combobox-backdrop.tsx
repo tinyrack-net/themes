@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type ComboboxBackdropProps = ComponentProps<typeof BaseCombobox.Backdrop>;
 export const ComboboxBackdrop = createComponentPart(
   BaseCombobox.Backdrop,
-  'tr-combobox-backdrop',
+  'tr-layer-backdrop tr-combobox-backdrop',
 );

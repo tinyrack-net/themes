@@ -9,6 +9,7 @@ export type SkeletonProps = ComponentProps<'div'> & {
 
 export function Skeleton({
   'aria-busy': ariaBusy,
+  'aria-hidden': _ariaHidden,
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledby,
   'aria-live': ariaLive,

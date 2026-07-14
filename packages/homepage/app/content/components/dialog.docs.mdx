@@ -14,7 +14,7 @@ Focus-trapped dialog surfaces with four sizes and five placements.
 
 | Axis | Values | Default |
 | --- | --- | --- |
-| `size` on `Popup` | `sm`, `md`, `lg`, `full` | `md` |
+| `size` on `Popup` | `sm`, `md`, `lg`, `full`; only for `middle`, `start`, and `end` | `md` |
 | `placement` on `Popup` | `middle`, `top`, `bottom`, `start`, `end` | `middle` |
 | `modal` on `Root` | focus trap and scroll lock when true | `true` |
 | state | controlled `open` or uncontrolled `defaultOpen` | closed |
@@ -84,6 +84,32 @@ Focus-trapped dialog surfaces with four sizes and five placements.
 />
 
 <ComponentExampleTabs
+  id="dialog-handle"
+  title="Detached trigger handle"
+  description="A stable handle connects a trigger and root that do not share an ancestor while Viewport owns mobile containment."
+  preview={<Stories.DialogHandleExample />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`const handle = Dialog.createHandle<void>();
+
+export function DetachedDialog() {
+  return <>
+    <Dialog.Trigger handle={handle}>Open detached dialog</Dialog.Trigger>
+    <Dialog.Root handle={handle}>
+      <Dialog.Portal>
+        <Dialog.Backdrop />
+        <Dialog.Viewport>
+          <Dialog.Popup placement="middle" size="sm">
+            <Dialog.Title>Detached trigger</Dialog.Title>
+            <Dialog.Description>A shared handle connects this surface.</Dialog.Description>
+            <Dialog.Close>Close</Dialog.Close>
+          </Dialog.Popup>
+        </Dialog.Viewport>
+      </Dialog.Portal>
+    </Dialog.Root>
+  </>;
+}` }]}
+/>
+
+<ComponentExampleTabs
   id="dialog-task-form"
   title="Long modal task with a form"
   description="The modal traps focus while open, keeps long content inside the viewport, submits a real form, and restores focus to Open dialog after dismissal."
@@ -129,4 +155,4 @@ Focus-trapped dialog surfaces with four sizes and five placements.
 
 ## API
 
-Base UI owns focus trapping, scroll lock, portal, backdrop interaction, restoration, and Escape dismissal. Put long task content in a `tr-dialog-body` container between Description and the action row so the popup's `minmax(0, 1fr)` body scrolls while its title and actions remain visible.
+Base UI owns focus trapping, scroll lock, portal, backdrop interaction, restoration, and Escape dismissal. `top` and `bottom` are full-edge placements and intentionally reject `size`; `middle`, `start`, and `end` accept it. Put long task content in a `tr-dialog-body` container between Description and the action row so the popup's `minmax(0, 1fr)` body scrolls while its title and actions remain visible.

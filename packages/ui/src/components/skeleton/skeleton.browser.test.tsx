@@ -36,6 +36,28 @@ test('uses aria-labelledby and explicit status semantics for one announced regio
   expect(document.querySelectorAll('[role="status"]')).toHaveLength(1);
 });
 
+test('removes aria-hidden when announced semantics are requested', async () => {
+  const ref = createRef<HTMLDivElement>();
+  await render(
+    <Skeleton
+      aria-hidden="true"
+      aria-label="Loading records"
+      ref={ref}
+      role="status"
+    />,
+  );
+  expect(ref.current?.getAttribute('role')).toBe('status');
+  expect(ref.current?.hasAttribute('aria-hidden')).toBe(false);
+  expect(ref.current?.getAttribute('aria-label')).toBe('Loading records');
+});
+
+test('lets explicit dimensions override shape defaults', async () => {
+  const ref = createRef<HTMLDivElement>();
+  await render(<Skeleton ref={ref} shape="circle" style={{ height: 72, width: 96 }} />);
+  expect(getComputedStyle(ref.current as HTMLElement).height).toBe('72px');
+  expect(getComputedStyle(ref.current as HTMLElement).width).toBe('96px');
+});
+
 test('preserves an explicit non-status role without adding live-region state', async () => {
   const ref = createRef<HTMLDivElement>();
   await render(

@@ -85,3 +85,90 @@ test('coordinates named options, native FormData, reset, and disabled state', as
   expect(new FormData(form).getAll('features')).toEqual(['metrics']);
   await screen.unmount();
 });
+
+test('resets from the form actually owned by descendant checkbox inputs', async () => {
+  await render(
+    <>
+      <form id="external-feature-form" />
+      <CheckboxGroup aria-label="External rack features" defaultValue={['metrics']}>
+        <Checkbox.Root
+          aria-label="External metrics"
+          form="external-feature-form"
+          name="features"
+          value="metrics"
+        />
+        <Checkbox.Root
+          aria-label="External alerts"
+          form="external-feature-form"
+          name="features"
+          value="alerts"
+        />
+      </CheckboxGroup>
+    </>,
+  );
+
+  const form = document.querySelector<HTMLFormElement>('#external-feature-form');
+  const group = document.querySelector<HTMLElement>(
+    '[role="group"][aria-label="External rack features"]',
+  );
+  expect(
+    Array.from(group?.querySelectorAll<HTMLInputElement>('input') ?? []).map(
+      (input) => input.form?.id,
+    ),
+  ).toEqual(['external-feature-form', 'external-feature-form']);
+  const currentAlerts = () =>
+    document.querySelector<HTMLElement>(
+      '[role="checkbox"][aria-label="External alerts"]',
+    );
+  const alerts = currentAlerts();
+  alerts?.click();
+  await expect.poll(() => alerts?.getAttribute('aria-checked')).toBe('true');
+  expect(new FormData(form as HTMLFormElement).getAll('features')).toEqual([
+    'metrics',
+    'alerts',
+  ]);
+
+  form?.reset();
+  await expect.poll(() => currentAlerts()?.getAttribute('aria-checked')).toBe('false');
+  expect(new FormData(form as HTMLFormElement).getAll('features')).toEqual(['metrics']);
+});
+
+test('ignores reset events from targets that do not own descendant inputs', async () => {
+  await render(
+    <>
+      <form aria-label="Unrelated form" />
+      <CheckboxGroup aria-label="Standalone features" defaultValue={['metrics']}>
+        <Checkbox.Root aria-label="Standalone metrics" value="metrics" />
+        <Checkbox.Root aria-label="Standalone alerts" value="alerts" />
+      </CheckboxGroup>
+    </>,
+  );
+
+  const currentAlerts = () =>
+    document.querySelector<HTMLElement>(
+      '[role="checkbox"][aria-label="Standalone alerts"]',
+    );
+  currentAlerts()?.click();
+  await expect.poll(() => currentAlerts()?.getAttribute('aria-checked')).toBe('true');
+
+  document.querySelector<HTMLFormElement>('form')?.reset();
+  document.body.dispatchEvent(new Event('reset', { bubbles: true }));
+
+  expect(currentAlerts()?.getAttribute('aria-checked')).toBe('true');
+});
+
+test('stays safe when a polymorphic renderer does not produce a host node', async () => {
+  function EmptyRender() {
+    return null;
+  }
+
+  await render(
+    <>
+      <form id="hostless-render-form" />
+      <CheckboxGroup aria-label="Hostless features" render={<EmptyRender />} />
+    </>,
+  );
+
+  const form = document.querySelector<HTMLFormElement>('#hostless-render-form');
+  expect(() => form?.reset()).not.toThrow();
+});

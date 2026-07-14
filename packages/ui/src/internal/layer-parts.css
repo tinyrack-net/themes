@@ -1,0 +1,58 @@
+@layer components {
+  .tr-layer-backdrop {
+    background: var(--tr-layer-backdrop, var(--tinyrack-scrim));
+    inset: 0;
+    position: fixed;
+    z-index: var(--tinyrack-layer-backdrop);
+  }
+
+  .tr-layer-positioner {
+    z-index: var(--tr-layer-z-index, var(--tinyrack-layer-popover));
+  }
+
+  .tr-layer-viewport {
+    box-sizing: border-box;
+    max-block-size: 100dvh;
+    max-inline-size: 100vw;
+  }
+
+  .tr-layer-arrow {
+    background: var(--tr-layer-background, var(--tinyrack-surface));
+    box-sizing: border-box;
+    height: var(--tr-layer-arrow-size, var(--tinyrack-space-sm));
+    rotate: 45deg;
+    width: var(--tr-layer-arrow-size, var(--tinyrack-space-sm));
+  }
+
+  .tr-layer-arrow[data-side="bottom"] {
+    border-block-start: var(--tinyrack-border-width-default) solid
+      var(--tinyrack-control-border);
+    border-inline-start: var(--tinyrack-border-width-default) solid
+      var(--tinyrack-control-border);
+    inset-block-start: calc(var(--tr-layer-arrow-size, var(--tinyrack-space-sm)) / -2);
+  }
+
+  .tr-layer-arrow[data-side="top"] {
+    border-block-end: var(--tinyrack-border-width-default) solid
+      var(--tinyrack-control-border);
+    border-inline-end: var(--tinyrack-border-width-default) solid
+      var(--tinyrack-control-border);
+    inset-block-end: calc(var(--tr-layer-arrow-size, var(--tinyrack-space-sm)) / -2);
+  }
+
+  .tr-layer-arrow[data-side="left"] {
+    border-block-end: var(--tinyrack-border-width-default) solid
+      var(--tinyrack-control-border);
+    border-inline-start: var(--tinyrack-border-width-default) solid
+      var(--tinyrack-control-border);
+    inset-inline-end: calc(var(--tr-layer-arrow-size, var(--tinyrack-space-sm)) / -2);
+  }
+
+  .tr-layer-arrow[data-side="right"] {
+    border-block-start: var(--tinyrack-border-width-default) solid
+      var(--tinyrack-control-border);
+    border-inline-end: var(--tinyrack-border-width-default) solid
+      var(--tinyrack-control-border);
+    inset-inline-start: calc(var(--tr-layer-arrow-size, var(--tinyrack-space-sm)) / -2);
+  }
+}

@@ -2,12 +2,24 @@
 
 import { NavigationMenu as BaseNavigationMenu } from '@base-ui/react/navigation-menu';
 import type { ComponentProps } from 'react';
-import { createComponentPart } from '../../internal/component-part.js';
+import { mergeComponentClassName } from '../../internal/component-class-name.js';
 
 export type NavigationMenuPositionerProps = ComponentProps<
   typeof BaseNavigationMenu.Positioner
 >;
-export const NavigationMenuPositioner = createComponentPart(
-  BaseNavigationMenu.Positioner,
-  'tr-navigation-menu-positioner',
-);
+export function NavigationMenuPositioner({
+  className,
+  collisionAvoidance = { align: 'shift', side: 'flip' },
+  ...props
+}: NavigationMenuPositionerProps) {
+  return (
+    <BaseNavigationMenu.Positioner
+      {...props}
+      className={mergeComponentClassName(
+        'tr-layer-positioner tr-navigation-menu-positioner',
+        className,
+      )}
+      collisionAvoidance={collisionAvoidance}
+    />
+  );
+}

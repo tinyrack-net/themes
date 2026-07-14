@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type ToastPositionerProps = ComponentProps<typeof BaseToast.Positioner>;
 export const ToastPositioner = createComponentPart(
   BaseToast.Positioner,
-  'tr-toast-positioner',
+  'tr-layer-positioner tr-toast-positioner',
 );

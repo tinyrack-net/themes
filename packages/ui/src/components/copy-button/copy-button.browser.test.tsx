@@ -21,10 +21,12 @@ test('copies with Clipboard API, announces success, and resets', async () => {
     />,
   );
   const button = document.querySelector<HTMLButtonElement>('.tr-btn');
+  const idleWidth = button?.getBoundingClientRect().width;
   button?.click();
   await vi.waitFor(() => expect(button?.dataset['copyStatus']).toBe('copied'));
   expect(writeText).toHaveBeenCalledWith('pnpm add @tinyrack/ui');
   expect(button?.textContent).toContain('Copied source');
+  expect(button?.getBoundingClientRect().width).toBe(idleWidth);
   expect(onStatusChange).toHaveBeenCalledWith('copied');
   await vi.advanceTimersByTimeAsync(50);
   expect(button?.dataset['copyStatus']).toBe('idle');
@@ -73,9 +75,10 @@ test('falls back to selection copying after Clipboard API rejection', async () =
       return Promise.reject(new Error('denied'));
     });
   await render(<CopyButton value="fallback value" />);
-  await userEvent.click(
-    document.querySelector<HTMLButtonElement>('.tr-btn') as HTMLButtonElement,
-  );
+  const button = document.querySelector<HTMLButtonElement>(
+    '.tr-btn',
+  ) as HTMLButtonElement;
+  await userEvent.click(button);
   await expect
     .poll(
       () => document.querySelector<HTMLButtonElement>('.tr-btn')?.dataset['copyStatus'],
@@ -84,6 +87,7 @@ test('falls back to selection copying after Clipboard API rejection', async () =
   expect(execCommand).toHaveBeenCalledWith('copy');
   expect(document.querySelector('body > textarea')).toBeNull();
   expect(selection?.toString()).toBe('Existing selection');
+  expect(document.activeElement).toBe(button);
   selection?.removeAllRanges();
   selected.remove();
   writeText.mockRestore();
@@ -128,6 +132,45 @@ test('handles an unavailable Clipboard API without a document selection', async 
       () => document.querySelector<HTMLButtonElement>('.tr-btn')?.dataset['copyStatus'],
     )
     .toBe('unavailable');
+  getSelection.mockRestore();
+  Object.defineProperty(navigator, 'clipboard', {
+    configurable: true,
+    value: clipboard,
+  });
+});
+
+test('falls back safely when the document has no active HTML element', async () => {
+  const clipboard = navigator.clipboard;
+  Object.defineProperty(navigator, 'clipboard', {
+    configurable: true,
+    value: undefined,
+  });
+  const getSelection = vi.spyOn(document, 'getSelection').mockReturnValue(null);
+  Object.defineProperty(document, 'execCommand', {
+    configurable: true,
+    value: undefined,
+  });
+
+  await render(
+    <>
+      <svg aria-label="SVG focus container" role="img">
+        <a aria-label="SVG focus target" href="#svg-focus-target">
+          <text>SVG focus target</text>
+        </a>
+      </svg>
+      <CopyButton value="no active element" />
+    </>,
+  );
+  const svgLink = document.querySelector<SVGAElement>('svg a');
+  svgLink?.focus();
+  expect(document.activeElement).toBe(svgLink);
+  document.querySelector<HTMLButtonElement>('.tr-btn')?.click();
+  await expect
+    .poll(
+      () => document.querySelector<HTMLButtonElement>('.tr-btn')?.dataset['copyStatus'],
+    )
+    .toBe('unavailable');
+
   getSelection.mockRestore();
   Object.defineProperty(navigator, 'clipboard', {
     configurable: true,

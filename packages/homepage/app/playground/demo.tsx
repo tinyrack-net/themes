@@ -11,6 +11,7 @@ export type DemoControl =
   | 'range'
   | 'select'
   | 'radio'
+  | 'textarea'
   | 'checklist'
   | 'json'
   | {
@@ -23,6 +24,7 @@ export type DemoControl =
 export type DemoArgType = {
   control: DemoControl;
   options?: readonly unknown[];
+  when?: (args: DemoArgs) => boolean;
   validate?: (value: unknown) => boolean;
   validationMessage?: string;
 };

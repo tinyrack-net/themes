@@ -64,23 +64,54 @@ Structured content surfaces with semantic sections, elevation, and padding densi
 
 <ComponentExampleTabs
   id="card-padding"
-  title="Padding"
-  description="Compare all four interior spacing values without changing content structure."
+  title="Variant × padding"
+  description="Every surface variant is shown with every supported interior spacing recipe."
   previewLayout="stretch"
   preview={(
-    <div className="grid gap-4 sm:grid-cols-2">
-      <Card.Root padding="none"><Card.Content>None</Card.Content></Card.Root>
-      <Card.Root padding="sm"><Card.Content>Small</Card.Content></Card.Root>
-      <Card.Root padding="md"><Card.Content>Medium</Card.Content></Card.Root>
-      <Card.Root padding="lg"><Card.Content>Large</Card.Content></Card.Root>
+    <div className="grid gap-4 md:grid-cols-3">
+      {['default', 'outlined', 'elevated'].map((variant) => (
+        <div className="grid gap-3" key={variant}>
+          <strong>{variant}</strong>
+          {['none', 'sm', 'md', 'lg'].map((padding) => <Card.Root key={padding} padding={padding} variant={variant}><Card.Content>{padding}</Card.Content></Card.Root>)}
+        </div>
+      ))}
     </div>
   )}
-  sources={[{ label: 'React', language: 'tsx', code: String.raw`<div className="grid gap-4 sm:grid-cols-2">
-  <Card.Root padding="none"><Card.Content>None</Card.Content></Card.Root>
-  <Card.Root padding="sm"><Card.Content>Small</Card.Content></Card.Root>
-  <Card.Root padding="md"><Card.Content>Medium</Card.Content></Card.Root>
-  <Card.Root padding="lg"><Card.Content>Large</Card.Content></Card.Root>
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<div className="grid gap-4 md:grid-cols-3">
+  {['default', 'outlined', 'elevated'].map((variant) => (
+    <div className="grid gap-3" key={variant}>
+      <strong>{variant}</strong>
+      {['none', 'sm', 'md', 'lg'].map((padding) => (
+        <Card.Root key={padding} padding={padding} variant={variant}>
+          <Card.Content>{padding}</Card.Content>
+        </Card.Root>
+      ))}
+    </div>
+  ))}
 </div>` }]}
+/>
+
+<ComponentExampleTabs
+  id="card-edge-to-edge"
+  title="Edge-to-edge media"
+  description="Use padding none for the outer card and put spacing on semantic sections when media must meet the card boundary."
+  preview={(
+    <Card.Root className="w-full max-w-md overflow-hidden" padding="none" variant="outlined">
+      <div className="grid min-h-32 place-items-center bg-tinyrack-surface-muted text-tinyrack-muted">Rack topology preview</div>
+      <Card.Header className="px-4 pt-4"><Card.Title render={<h4>Rack Alpha</h4>} /><Card.Description>Edge-to-edge topology</Card.Description></Card.Header>
+      <Card.Content className="px-4">All systems operational.</Card.Content>
+      <Card.Footer className="px-4 pb-4">Updated now</Card.Footer>
+    </Card.Root>
+  )}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Card.Root className="overflow-hidden" padding="none" variant="outlined">
+  <div className="min-h-32">Rack topology preview</div>
+  <Card.Header className="px-4 pt-4">
+    <Card.Title render={<h4>Rack Alpha</h4>} />
+    <Card.Description>Edge-to-edge topology</Card.Description>
+  </Card.Header>
+  <Card.Content className="px-4">All systems operational.</Card.Content>
+  <Card.Footer className="px-4 pb-4">Updated now</Card.Footer>
+</Card.Root>` }]}
 />
 
 <ComponentExampleTabs

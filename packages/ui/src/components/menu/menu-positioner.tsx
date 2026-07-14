@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type MenuPositionerProps = ComponentProps<typeof BaseMenu.Positioner>;
 export const MenuPositioner = createComponentPart(
   BaseMenu.Positioner,
-  'tr-menu-positioner',
+  'tr-layer-positioner tr-menu-positioner',
 );

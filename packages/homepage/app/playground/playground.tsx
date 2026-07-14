@@ -34,6 +34,7 @@ type ControlKind =
   | 'radio'
   | 'range'
   | 'select'
+  | 'textarea'
   | 'text';
 
 function controlKind(control: DemoControl): ControlKind {
@@ -296,6 +297,14 @@ function ControlField({
         </Slider.Control>
       </Slider.Root>
     );
+  } else if (kind === 'textarea') {
+    control = (
+      <Textarea
+        id={`playground-${name}`}
+        onChange={(event) => onChange(event.currentTarget.value)}
+        value={typeof value === 'string' ? value : ''}
+      />
+    );
   } else {
     control = (
       <Input
@@ -389,7 +398,7 @@ export function ComponentPlayground<TArgs extends DemoArgs>({
           </Button>
         </div>
         {Object.entries(definition.argTypes).map(([name, spec]) =>
-          spec === undefined ? null : (
+          spec === undefined || (spec.when && !spec.when(args)) ? null : (
             <ControlField
               key={name}
               name={name}

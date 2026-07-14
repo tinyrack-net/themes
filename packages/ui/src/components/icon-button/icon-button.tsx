@@ -16,8 +16,21 @@ export type IconButtonProps = Omit<
     children: ReactNode;
   };
 
-export function IconButton({ className, ...props }: IconButtonProps) {
+export function IconButton({
+  'aria-labelledby': ariaLabelledBy,
+  children,
+  className,
+  loading,
+  ...props
+}: IconButtonProps) {
   return (
-    <Button {...props} className={mergeComponentClassName('tr-icon-btn', className)} />
+    <Button
+      {...props}
+      {...(!loading && ariaLabelledBy ? { 'aria-labelledby': ariaLabelledBy } : {})}
+      {...(loading === undefined ? {} : { loading })}
+      className={mergeComponentClassName('tr-icon-btn', className)}
+    >
+      {loading ? null : children}
+    </Button>
   );
 }

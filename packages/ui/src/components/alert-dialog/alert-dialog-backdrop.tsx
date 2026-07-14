@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type AlertDialogBackdropProps = ComponentProps<typeof BaseAlertDialog.Backdrop>;
 export const AlertDialogBackdrop = createComponentPart(
   BaseAlertDialog.Backdrop,
-  'tr-alert-dialog-backdrop',
+  'tr-layer-backdrop tr-alert-dialog-backdrop',
 );

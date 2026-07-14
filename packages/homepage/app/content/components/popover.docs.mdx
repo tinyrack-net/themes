@@ -24,9 +24,10 @@ Use controlled `open` or uncontrolled `defaultOpen`; `Positioner` accepts Base U
 
 ## Usage
 
-<ComponentExampleTabs id="popover-basic" title="Rack details" preview={<Popover.Root><Popover.Trigger>Rack details</Popover.Trigger><Popover.Portal><Popover.Positioner><Popover.Popup><Popover.Title>Rack A</Popover.Title><Popover.Description>All nodes online.</Popover.Description><Popover.Close>Close</Popover.Close></Popover.Popup></Popover.Positioner></Popover.Portal></Popover.Root>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Popover.Root>
+<ComponentExampleTabs id="popover-basic" title="Rack details" preview={<Popover.Root><Popover.Trigger>Rack details</Popover.Trigger><Popover.Portal><Popover.Positioner sideOffset={8}><Popover.Popup><Popover.Arrow /><Popover.Title>Rack A</Popover.Title><Popover.Description>All nodes online.</Popover.Description><Popover.Close>Close</Popover.Close></Popover.Popup></Popover.Positioner></Popover.Portal></Popover.Root>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Popover.Root>
   <Popover.Trigger>Rack details</Popover.Trigger>
-  <Popover.Portal><Popover.Positioner><Popover.Popup>
+  <Popover.Portal><Popover.Positioner sideOffset={8}><Popover.Popup>
+    <Popover.Arrow />
     <Popover.Title>Rack A</Popover.Title>
     <Popover.Description>All nodes online.</Popover.Description>
     <Popover.Close>Close</Popover.Close>
@@ -39,13 +40,14 @@ Use controlled `open` or uncontrolled `defaultOpen`; `Positioner` accepts Base U
   id="popover-sides"
   title="Positioning sides"
   description="Each trigger opens an actual anchored popup on the requested side, with collision handling."
-  preview={<div className="flex flex-wrap gap-3">{['top', 'right', 'bottom', 'left'].map((side) => <Popover.Root key={side}><Popover.Trigger>{side}</Popover.Trigger><Popover.Portal><Popover.Positioner side={side}><Popover.Popup><Popover.Title>{side}</Popover.Title><Popover.Description>Anchored content.</Popover.Description><Popover.Close>Close</Popover.Close></Popover.Popup></Popover.Positioner></Popover.Portal></Popover.Root>)}</div>}
+  preview={<div className="flex flex-wrap gap-3">{['top', 'right', 'bottom', 'left'].map((side) => <Popover.Root key={side}><Popover.Trigger>{side}</Popover.Trigger><Popover.Portal><Popover.Positioner side={side} sideOffset={8}><Popover.Popup><Popover.Arrow /><Popover.Title>{side}</Popover.Title><Popover.Description>Anchored content.</Popover.Description><Popover.Close>Close</Popover.Close></Popover.Popup></Popover.Positioner></Popover.Portal></Popover.Root>)}</div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`{['top', 'right', 'bottom', 'left'].map((side) => (
   <Popover.Root key={side}>
     <Popover.Trigger>{side}</Popover.Trigger>
     <Popover.Portal>
-      <Popover.Positioner side={side}>
+      <Popover.Positioner side={side} sideOffset={8}>
         <Popover.Popup>
+          <Popover.Arrow />
           <Popover.Title>{side}</Popover.Title>
           <Popover.Description>Anchored content.</Popover.Description>
           <Popover.Close>Close</Popover.Close>
@@ -54,6 +56,39 @@ Use controlled `open` or uncontrolled `defaultOpen`; `Positioner` accepts Base U
     </Popover.Portal>
   </Popover.Root>
 ))}` }]}
+/>
+
+<ComponentExampleTabs
+  id="popover-collision-offset"
+  title="Controlled lifecycle, collision, and offsets"
+  description="The live state mirrors controlled open changes while side and alignment offsets remain collision-aware near the inline edge."
+  previewLayout="stretch"
+  preview={<Stories.PopoverControlledLifecycle />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`function ControlledPopover() {
+  const [open, setOpen] = useState(false);
+  return <>
+    <Popover.Root onOpenChange={setOpen} open={open}>
+      <Popover.Trigger>Rack details</Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Positioner
+          align="end"
+          alignOffset={12}
+          collisionAvoidance={{ align: 'flip', side: 'flip' }}
+          side="right"
+          sideOffset={16}
+        >
+          <Popover.Popup>
+            <Popover.Arrow />
+            <Popover.Title>Controlled edge popover</Popover.Title>
+            <Popover.Description>Collision-aware content.</Popover.Description>
+            <Popover.Close>Close</Popover.Close>
+          </Popover.Popup>
+        </Popover.Positioner>
+      </Popover.Portal>
+    </Popover.Root>
+    <output aria-live="polite">Popover is {open ? 'open' : 'closed'}.</output>
+  </>;
+}` }]}
 />
 
 ## API

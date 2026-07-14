@@ -1,6 +1,6 @@
 @layer components {
   .tr-fieldset {
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-lg);
     box-sizing: border-box;
     color: var(--tr-fieldset-color, var(--tinyrack-text));

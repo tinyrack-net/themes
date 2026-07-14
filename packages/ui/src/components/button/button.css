@@ -1,41 +1,7 @@
 @import "../spinner/spinner.css";
 
-.tr-btn-group {
-  display: inline-flex;
-  align-items: stretch;
-  gap: var(--tr-btn-group-gap, var(--tinyrack-control-gap-sm));
-}
-
-.tr-btn-group[data-orientation="vertical"] {
-  flex-direction: column;
-}
-
-.tr-btn-group[data-attached="true"] {
-  gap: 0;
-}
-
-.tr-btn-group[data-attached="true"][data-orientation="horizontal"]
-  > :not(:first-child) {
-  margin-inline-start: calc(var(--tinyrack-border-width-default) * -1);
-}
-
-.tr-btn-group[data-attached="true"][data-orientation="horizontal"] > :first-child {
-  border-start-end-radius: 0;
-  border-end-end-radius: 0;
-}
-
-.tr-btn-group[data-attached="true"][data-orientation="horizontal"] > :last-child {
-  border-start-start-radius: 0;
-  border-end-start-radius: 0;
-}
-
-.tr-btn-group[data-attached="true"][data-orientation="horizontal"]
-  > :not(:first-child, :last-child) {
-  border-radius: 0;
-}
-
 .tr-btn {
-  --_tr-btn-press-distance: 1px;
+  --_tr-btn-press-distance: var(--tinyrack-control-press-distance);
   --_tr-btn-height: var(--tinyrack-control-height-md);
   --_tr-btn-padding-x: var(--tinyrack-control-padding-inline-md);
   --_tr-btn-gap: var(--tinyrack-control-gap-md);
@@ -43,7 +9,7 @@
   --_tr-btn-line-height: var(--tinyrack-control-line-height-md);
   --_tr-btn-variant-fill: var(--tinyrack-surface-muted);
   --_tr-btn-variant-fill-hover: var(--tinyrack-surface-hover);
-  --_tr-btn-variant-border: var(--tinyrack-border);
+  --_tr-btn-variant-border: var(--tinyrack-control-border);
   --_tr-btn-variant-foreground: var(--tinyrack-text);
   --_tr-btn-variant-text: var(--tinyrack-text);
   align-items: center;
@@ -112,7 +78,7 @@
 .tr-btn[data-variant="secondary"] {
   --_tr-btn-variant-fill: var(--tinyrack-surface-muted);
   --_tr-btn-variant-fill-hover: var(--tinyrack-surface-hover);
-  --_tr-btn-variant-border: var(--tinyrack-border);
+  --_tr-btn-variant-border: var(--tinyrack-control-border);
   --_tr-btn-variant-foreground: var(--tinyrack-text);
   --_tr-btn-variant-text: var(--tinyrack-text);
 }

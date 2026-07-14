@@ -1,7 +1,7 @@
 import '../../core/core.css';
 import '../field/field.css';
 import './slider.css';
-import { useId, useRef, useState } from 'react';
+import { type CSSProperties, useId, useRef, useState } from 'react';
 import { expect, test } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
@@ -76,6 +76,46 @@ test('renders the Tinyrack Slider wrapper', async () => {
     </Slider.Root>,
   );
   expect(document.querySelector('.tr-slider')).not.toBeNull();
+});
+
+test('uses theme-aware track contrast and preserves the component override', async () => {
+  await render(
+    <div>
+      {(['tinyrack-light', 'tinyrack-dark'] as const).map((theme) => (
+        <div data-theme={theme} key={theme}>
+          <Slider.Root defaultValue={[50]}>
+            <Slider.Label>{theme}</Slider.Label>
+            <Slider.Control>
+              <Slider.Track data-testid={theme} />
+            </Slider.Control>
+          </Slider.Root>
+        </div>
+      ))}
+      <Slider.Root
+        defaultValue={[50]}
+        style={{ '--tr-slider-track-background': 'rgb(1, 2, 3)' } as CSSProperties}
+      >
+        <Slider.Label>Override</Slider.Label>
+        <Slider.Control>
+          <Slider.Track data-testid="override" />
+        </Slider.Control>
+      </Slider.Root>
+    </div>,
+  );
+
+  const light = getComputedStyle(
+    document.querySelector('[data-testid="tinyrack-light"]') as Element,
+  ).backgroundColor;
+  const dark = getComputedStyle(
+    document.querySelector('[data-testid="tinyrack-dark"]') as Element,
+  ).backgroundColor;
+  expect(light).not.toBe('rgba(0, 0, 0, 0)');
+  expect(dark).not.toBe('rgba(0, 0, 0, 0)');
+  expect(light).not.toBe(dark);
+  expect(
+    getComputedStyle(document.querySelector('[data-testid="override"]') as Element)
+      .backgroundColor,
+  ).toBe('rgb(1, 2, 3)');
 });
 
 test('keeps each thumb centered inside its control', async () => {

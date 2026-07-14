@@ -1,19 +1,63 @@
 import '../../core/core.css';
 import './link.css';
 import { createRef } from 'react';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
+import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { Link } from './index.js';
 
 test('renders a semantic anchor with Tinyrack variants', async () => {
   const ref = createRef<HTMLAnchorElement>();
   await render(
-    <Link ref={ref} href="/docs" underline="always" variant="primary">
+    <Link ref={ref} href="/docs" underline="always" variant="danger">
       Docs
     </Link>,
   );
   expect(ref.current?.pathname).toBe('/docs');
   expect(ref.current?.dataset['underline']).toBe('always');
+});
+
+test('blocks pointer and keyboard navigation when disabled', async () => {
+  const onClick = vi.fn();
+  const onKeyDown = vi.fn();
+  await render(
+    <Link disabled href="#disabled-destination" onClick={onClick} onKeyDown={onKeyDown}>
+      Disabled destination
+    </Link>,
+  );
+  const link = document.querySelector<HTMLAnchorElement>('.tr-link');
+  expect(link?.hasAttribute('href')).toBe(false);
+  expect(link?.getAttribute('aria-disabled')).toBe('true');
+  link?.focus();
+  await userEvent.keyboard('{Escape}');
+  await userEvent.keyboard('{Enter}');
+  link?.click();
+  expect(onClick).not.toHaveBeenCalled();
+  expect(onKeyDown).toHaveBeenCalledOnce();
+  expect(onKeyDown.mock.calls[0]?.[0].key).toBe('Escape');
+  expect(window.location.hash).not.toBe('#disabled-destination');
+});
+
+test('forwards pointer and keyboard interactions when enabled', async () => {
+  const onClick = vi.fn((event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+  });
+  const onKeyDown = vi.fn();
+  await render(
+    <Link href="#enabled-destination" onClick={onClick} onKeyDown={onKeyDown}>
+      Enabled destination
+    </Link>,
+  );
+  const link = document.querySelector<HTMLAnchorElement>('.tr-link');
+
+  await userEvent.click(link as HTMLAnchorElement);
+  link?.focus();
+  await userEvent.keyboard('{ArrowRight}');
+
+  expect(onClick).toHaveBeenCalledOnce();
+  expect(onKeyDown).toHaveBeenCalledOnce();
+  expect(onKeyDown.mock.calls[0]?.[0].key).toBe('ArrowRight');
+  expect(window.location.hash).not.toBe('#enabled-destination');
 });
 
 test('maps the default and muted public variants to their semantic colors', async () => {

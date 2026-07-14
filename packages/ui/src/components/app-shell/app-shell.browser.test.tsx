@@ -38,7 +38,13 @@ function CloseIcon() {
   return <svg aria-hidden="true" viewBox="0 0 24 24" />;
 }
 
-function ShellFixture({ controlled = false }: { controlled?: boolean }) {
+function ShellFixture({
+  controlled = false,
+  forceControlVisibility = true,
+}: {
+  controlled?: boolean;
+  forceControlVisibility?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   return (
     <AppShell.Root
@@ -50,7 +56,7 @@ function ShellFixture({ controlled = false }: { controlled?: boolean }) {
       <AppShell.Header>
         <AppShell.Trigger
           aria-label="Open navigation"
-          style={{ display: 'inline-flex' }}
+          style={forceControlVisibility ? { display: 'inline-flex' } : undefined}
         >
           <MenuIcon />
         </AppShell.Trigger>
@@ -68,7 +74,7 @@ function ShellFixture({ controlled = false }: { controlled?: boolean }) {
 
 test('renders a static desktop sidebar landmark and both layout contracts', async () => {
   setMobileMatch(false);
-  const view = await render(<ShellFixture />);
+  const view = await render(<ShellFixture forceControlVisibility={false} />);
   expect(document.querySelector('aside.tr-app-shell-sidebar')).not.toBeNull();
   expect(
     document.querySelector('.tr-app-shell-scroll-area')?.getAttribute('data-variant'),
@@ -77,6 +83,16 @@ test('renders a static desktop sidebar landmark and both layout contracts', asyn
   expect(document.querySelector('.tr-app-shell')?.getAttribute('data-layout')).toBe(
     'sidebar-first',
   );
+  const desktopTrigger = document.querySelector<HTMLElement>(
+    '[aria-label="Open navigation"]',
+  );
+  const desktopClose = document.querySelector<HTMLElement>(
+    '[aria-label="Close navigation"]',
+  );
+  expect(desktopTrigger).not.toBeNull();
+  expect(desktopClose).not.toBeNull();
+  expect(desktopTrigger).toHaveClass('tr-app-shell-trigger');
+  expect(desktopClose).toHaveClass('tr-app-shell-close');
   await view.unmount();
 
   const alternateView = await render(
@@ -190,6 +206,11 @@ test('opens a controlled mobile modal, traps focus, and supports modal dismissal
   expect(
     document.querySelector('.tr-app-shell-drawer-popup')?.getAttribute('aria-label'),
   ).toBe('Documentation sidebar');
+  expect(
+    document
+      .querySelector<HTMLElement>('.tr-app-shell-drawer-popup')
+      ?.getBoundingClientRect().width,
+  ).toBe(288);
   expect(document.body.style.overflow).not.toBe('');
   await expect
     .poll(() =>

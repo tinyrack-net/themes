@@ -1,4 +1,5 @@
 import { AlertDialog } from '@tinyrack/ui/components/alert-dialog';
+import { Button } from '@tinyrack/ui/components/button';
 import { useState } from 'react';
 import type {
   DemoMeta as Meta,
@@ -13,7 +14,10 @@ type StoryArgs = {
   label: string;
   open: boolean;
   disabled: boolean;
+  handleMode: boolean;
 };
+
+const alertDialogHandle = AlertDialog.createHandle<void>();
 
 type AlertDialogPreviewProps = StoryArgs & {
   onOpenChange?: (open: boolean) => void;
@@ -23,6 +27,7 @@ export function AlertDialogPreview({
   label,
   open,
   disabled,
+  handleMode,
   onOpenChange,
 }: AlertDialogPreviewProps) {
   const [result, setResult] = useState('Rack not deleted');
@@ -31,8 +36,16 @@ export function AlertDialogPreview({
 
   return (
     <div>
-      <AlertDialog.Root {...stateProps}>
-        <AlertDialog.Trigger disabled={disabled}>{label}</AlertDialog.Trigger>
+      <AlertDialog.Root
+        {...stateProps}
+        handle={handleMode ? alertDialogHandle : undefined}
+      >
+        <AlertDialog.Trigger
+          disabled={disabled}
+          handle={handleMode ? alertDialogHandle : undefined}
+        >
+          {label}
+        </AlertDialog.Trigger>
         <AlertDialog.Portal>
           <AlertDialog.Backdrop />
           <AlertDialog.Viewport>
@@ -42,8 +55,13 @@ export function AlertDialogPreview({
                 This action cannot be undone.
               </AlertDialog.Description>
               <div className="tr-alert-dialog-actions">
-                <AlertDialog.Close>Cancel</AlertDialog.Close>
-                <AlertDialog.Close onClick={() => setResult('Rack deleted')}>
+                <AlertDialog.Close render={<Button variant="secondary" />}>
+                  Cancel
+                </AlertDialog.Close>
+                <AlertDialog.Close
+                  onClick={() => setResult('Rack deleted')}
+                  render={<Button variant="danger" />}
+                >
                   Delete rack
                 </AlertDialog.Close>
               </div>
@@ -66,11 +84,13 @@ const meta = {
     label: 'Delete rack',
     open: false,
     disabled: false,
+    handleMode: false,
   },
   argTypes: {
     label: { control: 'text' },
     open: { control: 'boolean' },
     disabled: { control: 'boolean' },
+    handleMode: { control: 'boolean' },
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs<StoryArgs>();

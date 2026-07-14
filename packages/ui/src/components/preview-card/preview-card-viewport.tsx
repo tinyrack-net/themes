@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type PreviewCardViewportProps = ComponentProps<typeof BasePreviewCard.Viewport>;
 export const PreviewCardViewport = createComponentPart(
   BasePreviewCard.Viewport,
-  'tr-preview-card-viewport',
+  'tr-layer-viewport tr-preview-card-viewport',
 );

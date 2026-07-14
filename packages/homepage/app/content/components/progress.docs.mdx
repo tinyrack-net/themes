@@ -96,6 +96,51 @@ const variants = ['neutral', 'info', 'success', 'warning', 'danger'];
 </div>` }]}
 />
 
+<ComponentExampleTabs
+  id="progress-custom-range"
+  title="Custom range and formatting"
+  description="The visual fill, visible value, and accessible value text all share the same 0–64 GiB range."
+  previewLayout="stretch"
+  preview={(
+    <Progress.Root
+      aria-valuetext="42 of 64 gibibytes used"
+      format={{ maximumFractionDigits: 0, style: 'unit', unit: 'gigabyte' }}
+      max={64}
+      min={0}
+      value={42}
+      variant="info"
+    >
+      <Progress.Label>Image cache</Progress.Label>
+      <Progress.Track><Progress.Indicator /></Progress.Track>
+      <Progress.Value />
+    </Progress.Root>
+  )}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Progress.Root
+  aria-valuetext="42 of 64 gibibytes used"
+  format={{ maximumFractionDigits: 0, style: 'unit', unit: 'gigabyte' }}
+  max={64}
+  min={0}
+  value={42}
+  variant="info"
+>
+  <Progress.Label>Image cache</Progress.Label>
+  <Progress.Track><Progress.Indicator /></Progress.Track>
+  <Progress.Value />
+</Progress.Root>` }]}
+/>
+
 ## API
 
 Base UI supplies value semantics. Pass `null` for indeterminate progress so `aria-valuenow` is omitted; the moving indicator is disabled under reduced motion.
+
+| CSS token | Default | Purpose |
+| --- | --- | --- |
+| `--tr-progress-background` | `--tinyrack-surface-muted` | Track surface |
+| `--tr-progress-fill` | semantic variant color | Indicator fill |
+| `--tr-progress-height` | size recipe | Track thickness |
+| `--tr-progress-radius` | `--tinyrack-radius-full` | Track radius |
+| `--tr-progress-duration` | `--tinyrack-duration-normal` | Determinate width transition |
+| `--tr-progress-easing` | `--tinyrack-ease-out` | Determinate easing |
+| `--tr-progress-indeterminate-duration` | `--tinyrack-duration-loading` | Indeterminate cycle |
+| `--tr-progress-indeterminate-easing` | `--tinyrack-ease-linear` | Indeterminate easing |
+| `--tr-progress-indeterminate-width` | `40%` | Moving indicator measure |

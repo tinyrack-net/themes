@@ -1,0 +1,18 @@
+export const tinyrackMeasurements = {
+  'measure-xs': '4rem',
+  'measure-sm': '8rem',
+  'measure-md': '12rem',
+  'measure-lg': '16rem',
+  'measure-xl': '24rem',
+  'measure-2xl': '32rem',
+  'control-width-md': '20rem',
+  'control-press-distance': '0.0625rem',
+  'overlay-width-sm': '20rem',
+  'overlay-width-md': '32rem',
+  'overlay-width-lg': '48rem',
+  'overlay-width-xl': '64rem',
+  'overlay-inline-inset': '1.5rem',
+  'overlay-closed-scale': '0.98',
+  'text-decoration-thickness': '0.08em',
+  'text-underline-offset': '0.18em',
+} as const;

@@ -5,4 +5,7 @@ import type { ComponentProps } from 'react';
 import { createComponentPart } from '../../internal/component-part.js';
 
 export type MenuBackdropProps = ComponentProps<typeof BaseMenu.Backdrop>;
-export const MenuBackdrop = createComponentPart(BaseMenu.Backdrop, 'tr-menu-backdrop');
+export const MenuBackdrop = createComponentPart(
+  BaseMenu.Backdrop,
+  'tr-layer-backdrop tr-menu-backdrop',
+);

@@ -25,7 +25,7 @@
 
   .tr-menu-trigger:is(:hover, [data-popup-open]) {
     background: var(--tinyrack-surface-hover);
-    border-color: var(--tinyrack-border);
+    border-color: var(--tinyrack-control-border);
   }
 
   .tr-menu-trigger:focus-visible {
@@ -39,9 +39,12 @@
   }
 
   .tr-menu-content {
-    --_tr-menu-content-max-height: 24rem;
-    --_tr-menu-content-max-width: 22rem;
-    --_tr-menu-content-min-width: 12rem;
+    --_tr-menu-content-max-height: var(--tinyrack-measure-xl);
+    --_tr-menu-content-max-width: calc(
+      var(--tinyrack-overlay-width-sm) +
+      var(--tinyrack-space-2xl)
+    );
+    --_tr-menu-content-min-width: var(--tinyrack-measure-md);
     --_tr-menu-viewport-inset: var(--tinyrack-space-lg);
     display: grid;
     min-width: var(--tr-menu-content-min-width, var(--_tr-menu-content-min-width));
@@ -61,8 +64,27 @@
     overflow: auto;
   }
 
+  .tr-menu-viewport {
+    block-size: var(--popup-height, auto);
+    inline-size: var(--popup-width, auto);
+    min-width: 0;
+    overflow: hidden;
+    transition:
+      height var(--tinyrack-duration-fast) var(--tinyrack-ease-standard),
+      width var(--tinyrack-duration-fast) var(--tinyrack-ease-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tr-menu-viewport {
+      transition: none;
+    }
+  }
+
   .tr-menu-item {
-    --_tr-menu-item-min-height: 2.25rem;
+    --_tr-menu-item-min-height: calc(
+      var(--tinyrack-control-height-sm) +
+      var(--tinyrack-space-xs)
+    );
     display: flex;
     width: 100%;
     min-height: var(--tr-menu-item-min-height, var(--_tr-menu-item-min-height));
@@ -79,9 +101,14 @@
     cursor: pointer;
   }
 
-  .tr-menu-item:is(:hover, :focus-visible, [data-highlighted]) {
+  .tr-menu-item:hover {
     background: var(--tinyrack-surface-hover);
-    outline: none;
+  }
+
+  .tr-menu-item:is(:focus-visible, [data-highlighted]) {
+    background: var(--tinyrack-surface-hover);
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: calc(var(--tinyrack-focus-width) * -1);
   }
 
   .tr-menu-item:is(:disabled, [aria-disabled="true"]) {
@@ -115,6 +142,6 @@
     height: var(--tinyrack-border-width-default);
     margin: var(--tinyrack-space-xs) calc(var(--tinyrack-space-xs) * -1);
     border: 0;
-    background: var(--tinyrack-border);
+    background: var(--tinyrack-control-border);
   }
 }

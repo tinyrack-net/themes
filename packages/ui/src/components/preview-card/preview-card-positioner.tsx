@@ -9,5 +9,5 @@ export type PreviewCardPositionerProps = ComponentProps<
 >;
 export const PreviewCardPositioner = createComponentPart(
   BasePreviewCard.Positioner,
-  'tr-preview-card-positioner',
+  'tr-layer-positioner tr-preview-card-positioner',
 );

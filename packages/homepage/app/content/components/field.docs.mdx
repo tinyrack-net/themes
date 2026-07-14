@@ -24,7 +24,7 @@ Accessible composition for labels, controls, descriptions, native validity, and 
 
 ## Install
 
-<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/field.css';", "import '@tinyrack/ui/components/form.css';", "import '@tinyrack/ui/components/button.css';", "import { Field } from '@tinyrack/ui/components/field';", "import { Form } from '@tinyrack/ui/components/form';", "import { Button } from '@tinyrack/ui/components/button';"] }]} />
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/field.css';", "import '@tinyrack/ui/components/form.css';", "import '@tinyrack/ui/components/button.css';", "import '@tinyrack/ui/components/checkbox.css';", "import { Field } from '@tinyrack/ui/components/field';", "import { Form } from '@tinyrack/ui/components/form';", "import { Button } from '@tinyrack/ui/components/button';", "import { Checkbox } from '@tinyrack/ui/components/checkbox';"] }]} />
 
 ## Playground
 
@@ -113,6 +113,28 @@ Accessible composition for labels, controls, descriptions, native validity, and 
     </Form>
   );
 }` }]}
+/>
+
+<ComponentExampleTabs
+  id="field-item-validity"
+  title="Collection item and native validity"
+  description="Item groups an option label and description, while Validity exposes the current native validity state without duplicating validation rules."
+  preview={<Stories.FieldItemValidityPreview />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Field.Root>
+  <Field.Label>Notification channels</Field.Label>
+  <Field.Item>
+    <Checkbox.Root defaultChecked name="channel" value="email">
+      <Checkbox.Indicator aria-hidden="true">✓</Checkbox.Indicator>
+    </Checkbox.Root>
+    <div>
+      <Field.Label>Email</Field.Label>
+      <Field.Description>Send deployment results by email.</Field.Description>
+    </div>
+  </Field.Item>
+  <Field.Validity>
+    {(state) => <output>Native field state: {state.validity.valid ? 'valid' : 'invalid'}</output>}
+  </Field.Validity>
+</Field.Root>` }]}
 />
 
 ## API

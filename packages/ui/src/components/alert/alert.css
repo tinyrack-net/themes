@@ -1,6 +1,6 @@
 .tr-alert {
   --_tr-alert-background: var(--tinyrack-surface-muted);
-  --_tr-alert-border: var(--tinyrack-border);
+  --_tr-alert-border: var(--tinyrack-control-border);
   --_tr-alert-color: var(--tinyrack-text);
   --_tr-alert-radius: var(--tinyrack-radius-md);
   --_tr-alert-padding-x: var(--tinyrack-space-lg);
@@ -20,7 +20,7 @@
 }
 
 .tr-alert[data-variant="neutral"] {
-  --_tr-alert-border: var(--tinyrack-border);
+  --_tr-alert-border: var(--tinyrack-control-border);
   --_tr-alert-color: var(--tinyrack-text);
 }
 
@@ -46,4 +46,25 @@
   --_tr-alert-background: var(--tinyrack-danger-surface);
   --_tr-alert-border: var(--tinyrack-danger-border);
   --_tr-alert-color: var(--tinyrack-danger);
+}
+
+.tr-alert-title {
+  color: inherit;
+  font-size: var(--tinyrack-text-sm);
+  font-weight: var(--tinyrack-weight-strong);
+  line-height: var(--tinyrack-leading-sm);
+  margin: 0;
+}
+
+.tr-alert-description {
+  color: var(--tinyrack-text);
+  margin: var(--tinyrack-space-xs) 0 0;
+}
+
+.tr-alert-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tinyrack-space-sm);
+  margin-block-start: var(--tinyrack-space-md);
 }

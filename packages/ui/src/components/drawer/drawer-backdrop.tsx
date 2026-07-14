@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type DrawerBackdropProps = ComponentProps<typeof BaseDrawer.Backdrop>;
 export const DrawerBackdrop = createComponentPart(
   BaseDrawer.Backdrop,
-  'tr-drawer-backdrop',
+  'tr-layer-backdrop tr-drawer-backdrop',
 );

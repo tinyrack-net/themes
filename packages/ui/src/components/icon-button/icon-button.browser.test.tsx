@@ -45,6 +45,25 @@ test('supports aria-labelledby and Button loading behavior', async () => {
   const button = document.querySelector<HTMLButtonElement>('.tr-icon-btn');
   expect(button?.disabled).toBe(true);
   expect(button?.getAttribute('aria-label')).toBe('Saving rack');
+  expect(button?.hasAttribute('aria-labelledby')).toBe(false);
+  expect(button?.querySelectorAll('svg')).toHaveLength(0);
+  expect(button?.querySelector('.tr-spinner')).not.toBeNull();
+});
+
+test('preserves aria-labelledby while explicitly not loading', async () => {
+  await render(
+    <div>
+      <span id="inspect-label">Inspect rack</span>
+      <IconButton aria-labelledby="inspect-label" loading={false}>
+        <svg aria-hidden="true" />
+      </IconButton>
+    </div>,
+  );
+
+  const button = document.querySelector<HTMLButtonElement>('.tr-icon-btn');
+  expect(button?.getAttribute('aria-labelledby')).toBe('inspect-label');
+  expect(button?.disabled).toBe(false);
+  expect(button?.querySelectorAll('svg')).toHaveLength(1);
 });
 
 test('keeps a large icon square without shrinking it inside the touch target', async () => {

@@ -1,3 +1,4 @@
+import { Toggle } from '@tinyrack/ui/components/toggle';
 import { Toolbar } from '@tinyrack/ui/components/toolbar';
 import { useState } from 'react';
 import type {
@@ -20,37 +21,90 @@ export function ToolbarPreview({ label, disabled, loopFocus, orientation }: Stor
     <div>
       <Toolbar.Root
         aria-label={label}
-        className="max-w-full flex-wrap"
+        className="max-w-full"
         disabled={disabled}
         loopFocus={loopFocus}
         orientation={orientation}
       >
         <Toolbar.Group aria-label="Text style">
-          <Toolbar.Button onClick={() => setResult('Bold selected')}>
+          <Toolbar.Button
+            render={
+              <Toggle
+                defaultPressed
+                onPressedChange={(pressed) =>
+                  setResult(`Bold ${pressed ? 'on' : 'off'}`)
+                }
+              />
+            }
+          >
             Bold
           </Toolbar.Button>
           <Toolbar.Button onClick={() => setResult('Italic selected')}>
             Italic
           </Toolbar.Button>
-          <Toolbar.Button
-            aria-label="Underline unavailable"
-            disabled
-            focusableWhenDisabled
-          >
-            Underline
-          </Toolbar.Button>
         </Toolbar.Group>
-        <Toolbar.Separator />
-        <Toolbar.Input
-          aria-label="Document title"
-          className="min-w-0 w-32 max-w-full"
-          placeholder="Document title"
+        <Toolbar.Separator
+          orientation={orientation === 'horizontal' ? 'vertical' : 'horizontal'}
         />
         <Toolbar.Link href="#help">Help</Toolbar.Link>
+        <Toolbar.Input
+          aria-label="Document title"
+          className="w-20 max-w-full shrink-0"
+          placeholder="Document title"
+        />
       </Toolbar.Root>
       <output aria-live="polite" className="mt-3 block text-sm">
         {result}
       </output>
+    </div>
+  );
+}
+
+export function ToolbarStateComparisonPreview() {
+  return (
+    <div className="grid max-w-full gap-6 sm:grid-cols-2">
+      <section className="sm:col-span-2">
+        <strong className="mb-2 block text-sm">Horizontal</strong>
+        <Toolbar.Root aria-label="Horizontal editor controls" className="max-w-full">
+          <Toolbar.Group aria-label="Text formatting">
+            <Toolbar.Button>Bold</Toolbar.Button>
+            <Toolbar.Button>Italic</Toolbar.Button>
+          </Toolbar.Group>
+          <Toolbar.Separator />
+          <Toolbar.Link href="#help">Help</Toolbar.Link>
+        </Toolbar.Root>
+      </section>
+
+      <section>
+        <strong className="mb-2 block text-sm">Vertical</strong>
+        <Toolbar.Root aria-label="Vertical editor controls" orientation="vertical">
+          <Toolbar.Group aria-label="Text formatting">
+            <Toolbar.Button>Bold</Toolbar.Button>
+            <Toolbar.Button>Italic</Toolbar.Button>
+          </Toolbar.Group>
+          <Toolbar.Separator />
+          <Toolbar.Link href="#help">Help</Toolbar.Link>
+          <Toolbar.Input
+            aria-label="Document title"
+            className="max-w-full"
+            placeholder="Document title"
+          />
+        </Toolbar.Root>
+      </section>
+
+      <section>
+        <strong className="mb-2 block text-sm">Disabled group</strong>
+        <Toolbar.Root aria-label="Save history controls" orientation="vertical">
+          <Toolbar.Group aria-label="Available commands">
+            <Toolbar.Button>Save</Toolbar.Button>
+          </Toolbar.Group>
+          <Toolbar.Separator />
+          <Toolbar.Group aria-label="Unavailable history commands" disabled>
+            <Toolbar.Button>Undo</Toolbar.Button>
+            <Toolbar.Button>Redo</Toolbar.Button>
+          </Toolbar.Group>
+        </Toolbar.Root>
+      </section>
     </div>
   );
 }

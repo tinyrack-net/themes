@@ -105,6 +105,33 @@ function RackSelectForm() {
 }` }]}
 />
 
+<ComponentExampleTabs
+  id="select-long-collection"
+  title="Long scrolling collection"
+  description="Open the popup to verify constrained height, scroll arrows, long labels, and highlighted focus treatment."
+  preview={<Stories.SelectLongCollection />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Select.Root defaultValue="rack-1" items={racks}>
+  <Select.Label>Long rack collection</Select.Label>
+  <Select.Trigger aria-label="Long rack collection">
+    <Select.Value /><Select.Icon aria-hidden="true"><ChevronDown /></Select.Icon>
+  </Select.Trigger>
+  <Select.Portal>
+    <Select.Positioner>
+      <Select.Popup>
+        <Select.Arrow />
+        <Select.ScrollUpArrow aria-label="Scroll up">↑</Select.ScrollUpArrow>
+        <Select.List>
+          {Object.entries(racks).map(([value, label]) => (
+            <Select.Item key={value} value={value}><Select.ItemText>{label}</Select.ItemText></Select.Item>
+          ))}
+        </Select.List>
+        <Select.ScrollDownArrow aria-label="Scroll down">↓</Select.ScrollDownArrow>
+      </Select.Popup>
+    </Select.Positioner>
+  </Select.Portal>
+</Select.Root>` }]}
+/>
+
 ## API
 
 The complete trigger, popup, collection, item, arrow, backdrop, and scroll-arrow anatomy is exported from `@tinyrack/ui/components/select` with corresponding prop and state types. Give `Trigger` an accessible name, keep `value` and `open` controlled independently when needed, and use `disabled` for unavailable controls versus `readOnly` for focusable values that cannot change.

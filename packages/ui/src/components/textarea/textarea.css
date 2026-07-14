@@ -1,7 +1,7 @@
 @layer components {
   .tr-textarea {
     background: var(--tr-textarea-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-md);
     box-sizing: border-box;
     color: var(--tr-textarea-color, var(--tinyrack-text));
@@ -40,6 +40,12 @@
 
   .tr-textarea[aria-invalid="true"],
   .tr-textarea:invalid {
-    border-color: var(--tinyrack-danger);
+    border-color: var(--tinyrack-danger-border);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tr-textarea {
+      transition: none;
+    }
   }
 }

@@ -279,11 +279,22 @@ describe('built React Router documentation', () => {
           );
           await expect(page.locator('main').count()).resolves.toBe(1);
           if (scenario.name === 'dark mobile') {
-            await page
-              .locator('.tr-app-shell-header')
-              .first()
-              .getByRole('button', { name: 'Open navigation' })
-              .click();
+            await page.keyboard.press('Escape');
+            await expect
+              .poll(() => page.locator('.tr-site-header').getAttribute('aria-hidden'), {
+                message: documentRoute.path,
+              })
+              .toBeNull();
+            const siteNavigationTrigger = page
+              .locator('.tr-site-header')
+              .getByRole('button', { name: 'Open navigation' });
+            await expect
+              .poll(() => siteNavigationTrigger.count(), {
+                message: documentRoute.path,
+                timeout: 10_000,
+              })
+              .toBe(1);
+            await siteNavigationTrigger.click();
           }
           const currentNavigationLink = page.locator(
             'nav[aria-label="Documentation"] [aria-current="page"]',
@@ -549,20 +560,30 @@ describe('built React Router documentation', () => {
 
       await page.keyboard.press('Control+k');
       await search.fill('getAriaValueText');
+      const resultOptions = dialog.getByRole('option');
+      const sliderResult = dialog.getByRole('option', { name: /Slider/ });
       await expect(
-        dialog.locator('.tr-site-search-result-heading strong').first().textContent(),
+        sliderResult.locator('.tr-site-search-result-heading strong').textContent(),
       ).resolves.toBe('Slider');
       await expect(
-        dialog.locator('.tr-site-search-result-excerpt mark').first().textContent(),
+        sliderResult
+          .locator('.tr-site-search-result-excerpt mark')
+          .first()
+          .textContent(),
       ).resolves.toBe('getAriaValueText');
-      await page.keyboard.press('ArrowDown');
+      const sliderIndex = await resultOptions.evaluateAll((options) =>
+        options.findIndex((option) =>
+          option
+            .querySelector('.tr-site-search-result-heading')
+            ?.textContent?.includes('Slider'),
+        ),
+      );
+      expect(sliderIndex).toBeGreaterThanOrEqual(0);
+      for (let index = 0; index <= sliderIndex; index += 1) {
+        await page.keyboard.press('ArrowDown');
+      }
       await expect
-        .poll(() =>
-          dialog
-            .locator('.tr-site-search-result')
-            .first()
-            .getAttribute('data-highlighted'),
-        )
+        .poll(() => sliderResult.getAttribute('data-highlighted'))
         .not.toBeNull();
       await page.keyboard.press('Enter');
       await page.getByRole('heading', { level: 1, name: 'Slider' }).waitFor();
@@ -596,8 +617,9 @@ describe('built React Router documentation', () => {
       const search = dialog.getByRole('combobox', { name: 'Search documentation' });
 
       await search.fill('getAriaValueText');
-      const excerpt = dialog.locator('.tr-site-search-result-excerpt');
-      const match = excerpt.locator('mark');
+      const sliderResult = dialog.getByRole('option', { name: /Slider/ });
+      const excerpt = sliderResult.locator('.tr-site-search-result-excerpt');
+      const match = excerpt.locator('mark').first();
       await expect.poll(() => match.textContent()).toBe('getAriaValueText');
       await expectVerticallyContained(excerpt, match);
     } finally {
@@ -677,8 +699,8 @@ describe('built React Router documentation', () => {
         .poll(() => codeBlock.getAttribute('data-highlighted'), { timeout: 10_000 })
         .toBe('true');
       expect(await highlightedCodeColors(codeBlock)).toEqual({
-        background: 'rgb(36, 41, 46)',
-        token: 'rgb(249, 117, 131)',
+        background: 'rgb(10, 12, 16)',
+        token: 'rgb(255, 148, 146)',
       });
       const highlightedMarkup = await codeBlock.innerHTML();
 
@@ -688,7 +710,7 @@ describe('built React Router documentation', () => {
         .poll(() => highlightedCodeColors(codeBlock))
         .toEqual({
           background: 'rgb(255, 255, 255)',
-          token: 'rgb(215, 58, 73)',
+          token: 'rgb(160, 17, 31)',
         });
       expect(await codeBlock.innerHTML()).toBe(highlightedMarkup);
     } finally {
@@ -773,17 +795,21 @@ describe('built React Router documentation', () => {
     ];
     const expectPreviewGeometry = async (page: Page) => {
       for (const selector of previewSelectors) {
-        const metrics = await page.locator(selector).evaluate((element) => {
-          const box = element.getBoundingClientRect();
-          const parentBox = element.parentElement?.getBoundingClientRect();
-          return {
-            height: box.height,
-            parentWidth: parentBox?.width ?? 0,
-            width: box.width,
-          };
-        });
-        expect(metrics.height, selector).toBe(320);
-        expect(metrics.width, selector).toBeLessThanOrEqual(metrics.parentWidth + 1);
+        const previews = await page.locator(selector).all();
+        expect(previews.length, selector).toBeGreaterThan(0);
+        for (const preview of previews) {
+          const metrics = await preview.evaluate((element) => {
+            const box = element.getBoundingClientRect();
+            const parentBox = element.parentElement?.getBoundingClientRect();
+            return {
+              height: box.height,
+              parentWidth: parentBox?.width ?? 0,
+              width: box.width,
+            };
+          });
+          expect(metrics.height, selector).toBe(320);
+          expect(metrics.width, selector).toBeLessThanOrEqual(metrics.parentWidth + 1);
+        }
       }
       await expectNoLocalOverflow(page.locator('html'), 'AppShell document');
     };
@@ -829,6 +855,9 @@ describe('built React Router documentation', () => {
     try {
       await desktopPage.goto(`${origin}/components/app-shell`);
       await desktopPage.getByRole('heading', { level: 1, name: 'AppShell' }).waitFor();
+      await expect(desktopPage.locator('.tr-site-header').isVisible()).resolves.toBe(
+        false,
+      );
       await expectPreviewGeometry(desktopPage);
       const desktopSidebar = desktopPage
         .locator('.tr-app-shell > aside.tr-app-shell-sidebar')
@@ -1272,7 +1301,10 @@ describe('built React Router documentation', () => {
       await toggle.click();
       await expect(pressedControl.isChecked()).resolves.toBe(false);
       await pressedControl.check();
-      await page.getByRole('button', { name: 'Reset', exact: true }).click();
+      await page
+        .locator('[data-component-playground]')
+        .getByRole('button', { name: 'Reset', exact: true })
+        .click();
       await expect(pressedControl.isChecked()).resolves.toBe(false);
 
       await gotoHydrated(page, `${origin}/components/progress`);
@@ -1306,6 +1338,20 @@ describe('built React Router documentation', () => {
       await expect(
         page.locator('[data-playground-preview] .tr-btn').getAttribute('data-variant'),
       ).resolves.toBe('danger');
+
+      await page.goto(`${origin}/components/checkbox`);
+      const checkboxPreview = page.locator('[data-playground-preview]');
+      const mixedControl = page
+        .locator('[data-playground-control="indeterminate"]')
+        .getByRole('checkbox');
+      const checkbox = checkboxPreview.getByRole('checkbox', {
+        name: 'Enable backups',
+      });
+      await mixedControl.check();
+      await expect(checkbox.getAttribute('aria-checked')).resolves.toBe('mixed');
+      await checkbox.click();
+      await expect(mixedControl.isChecked()).resolves.toBe(false);
+      await expect(checkbox.getAttribute('aria-checked')).resolves.toBe('false');
     } finally {
       await page.close();
     }
@@ -1325,7 +1371,10 @@ describe('built React Router documentation', () => {
       await expect(drawerOpen.isChecked()).resolves.toBe(false);
       const drawerLabel = page.locator('[data-playground-control="label"] input');
       await drawerLabel.fill('Open deployment settings');
-      await page.getByRole('button', { name: 'Reset', exact: true }).click();
+      await page
+        .locator('[data-component-playground]')
+        .getByRole('button', { name: 'Reset', exact: true })
+        .click();
       await expect(drawerOpen.isChecked()).resolves.toBe(false);
       await expect(drawerLabel.inputValue()).resolves.toBe('Open settings');
 
@@ -1338,7 +1387,10 @@ describe('built React Router documentation', () => {
       await expect(rackInput.inputValue()).resolves.toBe('rack-beta');
       await rackInput.fill('rack-gamma');
       await expect(formValue.inputValue()).resolves.toBe('rack-gamma');
-      await page.getByRole('button', { name: 'Reset', exact: true }).click();
+      await page
+        .locator('[data-component-playground]')
+        .getByRole('button', { name: 'Reset', exact: true })
+        .click();
       await expect(rackInput.inputValue()).resolves.toBe('rack-alpha');
 
       await gotoHydrated(page, `${origin}/components/number-field`);
@@ -1351,7 +1403,10 @@ describe('built React Router documentation', () => {
       await replicas.focus();
       await page.keyboard.press('ArrowUp');
       await expect(numberValue.inputValue()).resolves.toBe('8');
-      await page.getByRole('button', { name: 'Reset', exact: true }).click();
+      await page
+        .locator('[data-component-playground]')
+        .getByRole('button', { name: 'Reset', exact: true })
+        .click();
       await expect(replicas.inputValue()).resolves.toBe('3');
 
       await gotoHydrated(page, `${origin}/components/otp-field`);
@@ -1369,7 +1424,10 @@ describe('built React Router documentation', () => {
       await otpInputs.first().focus();
       await page.keyboard.type('2468');
       await expect(otpValue.inputValue()).resolves.toBe('2468');
-      await page.getByRole('button', { name: 'Reset', exact: true }).click();
+      await page
+        .locator('[data-component-playground]')
+        .getByRole('button', { name: 'Reset', exact: true })
+        .click();
       await expect(otpValue.inputValue()).resolves.toBe('');
 
       await gotoHydrated(page, `${origin}/components/select`);
@@ -1390,7 +1448,10 @@ describe('built React Router documentation', () => {
       await page.getByRole('option', { name: 'Staging rack' }).click();
       await expect.poll(() => selectValue.textContent()).toContain('staging');
       await expect.poll(() => selectOpen.isChecked()).toBe(false);
-      await page.getByRole('button', { name: 'Reset', exact: true }).click();
+      await page
+        .locator('[data-component-playground]')
+        .getByRole('button', { name: 'Reset', exact: true })
+        .click();
       await expect.poll(() => selectValue.textContent()).toContain('alpha');
 
       await gotoHydrated(page, `${origin}/components/slider`);
@@ -1405,7 +1466,10 @@ describe('built React Router documentation', () => {
       await sliderThumb.focus();
       await page.keyboard.press('ArrowRight');
       await expect(sliderValue.inputValue()).resolves.toBe('73');
-      await page.getByRole('button', { name: 'Reset', exact: true }).click();
+      await page
+        .locator('[data-component-playground]')
+        .getByRole('button', { name: 'Reset', exact: true })
+        .click();
       await expect(sliderValue.inputValue()).resolves.toBe('48');
 
       await gotoHydrated(page, `${origin}/components/switch`);
@@ -1419,7 +1483,10 @@ describe('built React Router documentation', () => {
       await expect(switchControl.isChecked()).resolves.toBe(false);
       await switchControl.click();
       await expect(switchChecked.isChecked()).resolves.toBe(true);
-      await page.getByRole('button', { name: 'Reset', exact: true }).click();
+      await page
+        .locator('[data-component-playground]')
+        .getByRole('button', { name: 'Reset', exact: true })
+        .click();
       await expect(switchChecked.isChecked()).resolves.toBe(true);
 
       await gotoHydrated(page, `${origin}/components/toggle-group`);
@@ -1435,7 +1502,10 @@ describe('built React Router documentation', () => {
         .toBe('true');
       await group.getByRole('button', { name: 'End' }).click();
       await expect.poll(() => groupValue.inputValue()).toContain('end');
-      await page.getByRole('button', { name: 'Reset', exact: true }).click();
+      await page
+        .locator('[data-component-playground]')
+        .getByRole('button', { name: 'Reset', exact: true })
+        .click();
       await expect.poll(() => groupValue.inputValue()).toContain('start');
     } finally {
       await page.close();
@@ -1614,11 +1684,19 @@ describe('built React Router documentation', () => {
         .toBe(true);
 
       await page.goto(`${origin}/components/tooltip`);
-      const tooltipTrigger = page
-        .locator('[data-component-example-id="tooltip-basic"]')
-        .getByRole('button', { name: 'Rack temperature' });
+      const tooltipExample = page.locator(
+        '[data-component-example-id="tooltip-basic"]',
+      );
+      const tooltipTrigger = tooltipExample.getByRole('button', {
+        name: 'Rack temperature',
+      });
+      await tooltipTrigger.scrollIntoViewIfNeeded();
       await tooltipTrigger.focus();
-      const tooltip = page.getByRole('tooltip', { name: '24°C' });
+      await expect
+        .poll(() => tooltipTrigger.getAttribute('aria-describedby'))
+        .not.toBeNull();
+      const tooltipId = await tooltipTrigger.getAttribute('aria-describedby');
+      const tooltip = page.locator(`[id="${tooltipId}"]`);
       await tooltip.waitFor();
       await expectInsideViewport(page, tooltip);
       await expect(tooltipTrigger.getAttribute('aria-describedby')).resolves.toBe(
@@ -1677,7 +1755,9 @@ describe('built React Router documentation', () => {
         .locator('[data-component-example-id="preview-card-states"]')
         .getByRole('link', { name: 'Rack Beta' });
       await previewTrigger.focus();
-      const previewCard = page.locator('.tr-preview-card-popup[data-open]');
+      const previewCard = page
+        .locator('.tr-preview-card-popup[data-open]')
+        .filter({ hasText: 'Rack Beta' });
       await previewCard.waitFor();
       await expectInsideViewport(page, previewCard);
       await expect(

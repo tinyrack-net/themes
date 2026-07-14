@@ -20,8 +20,10 @@ test('opens from the real context event instead of a forced open coordinate', as
     <ContextMenu.Root>
       <ContextMenu.Trigger>Rack target</ContextMenu.Trigger>
       <ContextMenu.Portal>
+        <ContextMenu.Backdrop />
         <ContextMenu.Positioner>
           <ContextMenu.Popup>
+            <ContextMenu.Arrow />
             <ContextMenu.Item>Inspect</ContextMenu.Item>
           </ContextMenu.Popup>
         </ContextMenu.Positioner>
@@ -110,8 +112,10 @@ test('styles items, submenu triggers, indicators, separators, and overflow as me
     <ContextMenu.Root>
       <ContextMenu.Trigger>Rack target</ContextMenu.Trigger>
       <ContextMenu.Portal>
+        <ContextMenu.Backdrop />
         <ContextMenu.Positioner>
           <ContextMenu.Popup>
+            <ContextMenu.Arrow />
             <ContextMenu.Group>
               <ContextMenu.GroupLabel>View</ContextMenu.GroupLabel>
               <ContextMenu.CheckboxItem defaultChecked>
@@ -133,6 +137,7 @@ test('styles items, submenu triggers, indicators, separators, and overflow as me
                 </ContextMenu.Positioner>
               </ContextMenu.Portal>
             </ContextMenu.SubmenuRoot>
+            <ContextMenu.Item variant="danger">Remove rack</ContextMenu.Item>
           </ContextMenu.Popup>
         </ContextMenu.Positioner>
       </ContextMenu.Portal>
@@ -161,6 +166,7 @@ test('styles items, submenu triggers, indicators, separators, and overflow as me
   const disabledItem = document.querySelector<HTMLElement>(
     '.tr-context-menu-item[data-disabled]',
   );
+  const dangerItem = document.querySelector<HTMLElement>('[data-variant="danger"]');
 
   expect(getComputedStyle(popup as HTMLElement).display).toBe('grid');
   expect(getComputedStyle(popup as HTMLElement).overflowY).toBe('auto');
@@ -181,6 +187,11 @@ test('styles items, submenu triggers, indicators, separators, and overflow as me
   expect(
     Number.parseFloat(getComputedStyle(disabledItem as HTMLElement).opacity),
   ).toBeLessThan(1);
+  expect(getComputedStyle(dangerItem as HTMLElement).color).not.toBe(
+    getComputedStyle(item as HTMLElement).color,
+  );
+  expect(document.querySelector('.tr-context-menu-arrow')).not.toBeNull();
+  expect(document.querySelector('.tr-context-menu-backdrop')).not.toBeNull();
   item?.setAttribute('data-highlighted', '');
   expect(getComputedStyle(item as HTMLElement).backgroundColor).not.toBe(
     getComputedStyle(popup as HTMLElement).backgroundColor,
@@ -196,6 +207,7 @@ test('invokes an enabled command and restores trigger focus', async () => {
         Rack target
       </ContextMenu.Trigger>
       <ContextMenu.Portal>
+        <ContextMenu.Backdrop />
         <ContextMenu.Positioner>
           <ContextMenu.Popup>
             <ContextMenu.Item disabled>Unavailable</ContextMenu.Item>

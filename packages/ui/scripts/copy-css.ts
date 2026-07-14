@@ -13,6 +13,7 @@ const publicAssets = [
     target: `components/${componentName}/${componentName}.css`,
   })),
   { source: 'core/core.css', target: 'core.css' },
+  { source: 'internal/layer-parts.css', target: 'internal/layer-parts.css' },
   { source: 'mdx/mdx.css', target: 'mdx.css' },
 ] as const;
 

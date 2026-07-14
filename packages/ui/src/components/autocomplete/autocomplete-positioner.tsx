@@ -9,5 +9,5 @@ export type AutocompletePositionerProps = ComponentProps<
 >;
 export const AutocompletePositioner = createComponentPart(
   BaseAutocomplete.Positioner,
-  'tr-autocomplete-positioner',
+  'tr-layer-positioner tr-autocomplete-positioner',
 );

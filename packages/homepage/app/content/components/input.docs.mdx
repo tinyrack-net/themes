@@ -71,7 +71,7 @@ Controls expose `label`, `value`, `placeholder`, `disabled`, `readOnly`, and `re
         aria-invalid={invalid || undefined}
         id="required-name"
         name="rack"
-        onChange={(event) => setValue(event.currentTarget.value)}
+        onValueChange={setValue}
         required
         value={value}
       />
@@ -84,4 +84,4 @@ Controls expose `label`, `value`, `placeholder`, `disabled`, `readOnly`, and `re
 
 ## API
 
-`Input` forwards native input props, refs, events, `className`, `style`, and Base UI's `render` contract.
+`Input` forwards native input props, refs, events, `className`, `style`, and Base UI's `render` contract. Prefer `onValueChange(value, details)` when the next string value is what the state model needs; use native `onChange` when the event object itself matters. The `render` prop can replace the rendered element while Tinyrack merges behavior, state, ref, and `.tr-input` styling onto it.

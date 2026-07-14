@@ -13,7 +13,7 @@ const avatarFixture = new URL('../fixtures/tinyrack-avatar.svg', import.meta.url
 
 type AvatarStoryArgs = {
   fallback: string;
-  image: boolean;
+  imageState: 'loaded' | 'missing' | 'error';
   shape: AvatarShape;
   size: AvatarSize;
 };
@@ -21,16 +21,21 @@ type AvatarStoryArgs = {
 const meta = {
   title: 'Components/Avatar',
   parameters: { layout: 'centered' },
-  args: { fallback: 'TR', image: true, shape: 'circle', size: 'md' },
+  args: { fallback: 'TR', imageState: 'loaded', shape: 'circle', size: 'md' },
   argTypes: {
     fallback: { control: 'text' },
-    image: { control: 'boolean' },
+    imageState: { control: 'select', options: ['loaded', 'missing', 'error'] },
     shape: { control: 'select', options: ['circle', 'square'] },
     size: { control: 'select', options: ['sm', 'md', 'lg'] },
   },
-  render: ({ fallback, image, ...rootProps }) => (
+  render: ({ fallback, imageState, ...rootProps }) => (
     <Avatar.Root {...rootProps}>
-      {image ? <Avatar.Image alt="Tinyrack server rack" src={avatarFixture} /> : null}
+      {imageState === 'missing' ? null : (
+        <Avatar.Image
+          alt="Tinyrack server rack"
+          src={imageState === 'loaded' ? avatarFixture : '/missing-avatar.svg'}
+        />
+      )}
       <Avatar.Fallback>{fallback}</Avatar.Fallback>
     </Avatar.Root>
   ),

@@ -3,7 +3,10 @@ import { mergeClassNames } from '../../internal/component-class-name.js';
 
 export type SpinnerSize = 'sm' | 'md' | 'lg';
 export type SpinnerVariant = 'current' | 'muted' | 'primary' | 'danger';
-export type SpinnerProps = Omit<ComponentProps<'span'>, 'aria-label' | 'role'> & {
+export type SpinnerProps = Omit<
+  ComponentProps<'span'>,
+  'aria-hidden' | 'aria-label' | 'children' | 'role'
+> & {
   decorative?: boolean;
   label?: string;
   size?: SpinnerSize;

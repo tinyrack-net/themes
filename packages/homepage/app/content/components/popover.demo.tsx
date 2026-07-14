@@ -13,9 +13,12 @@ import {
 
 type PopoverStoryArgs = {
   align: 'start' | 'center' | 'end';
+  alignOffset: number;
+  collisionMode: 'flip' | 'shift' | 'none';
   description: string;
   open: boolean;
   side: 'top' | 'right' | 'bottom' | 'left';
+  sideOffset: number;
   title: string;
 };
 
@@ -25,9 +28,12 @@ type PopoverExampleProps = Partial<PopoverStoryArgs> & {
 
 export function PopoverExample({
   align = 'center',
+  alignOffset = 0,
+  collisionMode = 'flip',
   description = 'All nodes online.',
   open = false,
   side = 'bottom',
+  sideOffset = 8,
   title = 'Rack A',
   onOpenChange,
 }: PopoverExampleProps) {
@@ -39,8 +45,19 @@ export function PopoverExample({
     <Popover.Root {...stateProps}>
       <Popover.Trigger>Rack details</Popover.Trigger>
       <Popover.Portal>
-        <Popover.Positioner align={align} side={side}>
+        <Popover.Positioner
+          align={align}
+          alignOffset={alignOffset}
+          collisionAvoidance={
+            collisionMode === 'flip'
+              ? { align: 'flip', side: 'flip' }
+              : { align: collisionMode, side: collisionMode }
+          }
+          side={side}
+          sideOffset={sideOffset}
+        >
           <Popover.Popup>
+            <Popover.Arrow />
             <Popover.Title>{title}</Popover.Title>
             <Popover.Description>{description}</Popover.Description>
             <Select.Root
@@ -82,21 +99,47 @@ export function PopoverExample({
   );
 }
 
+export function PopoverControlledLifecycle() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="grid w-full justify-items-end gap-3">
+      <PopoverExample
+        align="end"
+        alignOffset={12}
+        collisionMode="flip"
+        description="Collision handling keeps this long surface inside the viewport."
+        onOpenChange={setOpen}
+        open={open}
+        side="right"
+        sideOffset={16}
+        title="Controlled edge popover"
+      />
+      <output aria-live="polite">Popover is {open ? 'open' : 'closed'}.</output>
+    </div>
+  );
+}
+
 const meta = {
   title: 'Components/Popover',
   parameters: { layout: 'centered' },
   args: {
     align: 'center',
+    alignOffset: 0,
+    collisionMode: 'flip',
     description: 'All nodes online.',
     open: false,
     side: 'bottom',
+    sideOffset: 8,
     title: 'Rack A',
   },
   argTypes: {
     align: { control: 'select', options: ['start', 'center', 'end'] },
+    alignOffset: { control: { type: 'range', min: -24, max: 24, step: 2 } },
+    collisionMode: { control: 'select', options: ['flip', 'shift', 'none'] },
     description: { control: 'text' },
     open: { control: 'boolean' },
     side: { control: 'select', options: ['top', 'right', 'bottom', 'left'] },
+    sideOffset: { control: { type: 'range', min: 0, max: 32, step: 2 } },
     title: { control: 'text' },
   },
   render: function Render(args) {

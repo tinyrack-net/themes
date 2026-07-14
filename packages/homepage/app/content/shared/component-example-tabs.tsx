@@ -151,10 +151,18 @@ function ComponentExampleSourcePanel({
         value={normalizedCode}
       />
       <CodeBlock
-        className="m-0 max-w-full pr-32"
+        aria-label={`${label} source for ${title}`}
+        className="m-0 w-full min-w-0 max-w-full pr-32"
         code={normalizedCode}
         language={language}
+        tabIndex={0}
       />
+      <p
+        className="m-0 mt-1 text-tinyrack-xs text-tinyrack-text-muted sm:hidden"
+        data-code-scroll-hint=""
+      >
+        Scroll inside the code area to read long lines.
+      </p>
     </div>
   );
 }
@@ -228,7 +236,7 @@ export function ComponentExampleTabs({
         </Tabs.List>
         <Tabs.Panel value="preview">
           <ScrollArea.Root variant="plain">
-            <ScrollArea.Viewport>
+            <ScrollArea.Viewport aria-label={`${title} preview`} tabIndex={0}>
               <ScrollArea.Content
                 className={mergeClassNames(
                   'grid min-h-40 min-w-max gap-4 bg-tinyrack-canvas p-4 text-tinyrack-text sm:min-w-full sm:p-6',

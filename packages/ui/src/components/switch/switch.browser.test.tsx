@@ -179,7 +179,10 @@ test('preserves controlled and disabled state boundaries', async () => {
     getComputedStyle(
       disabledElement.querySelector<HTMLElement>('.tr-switch-thumb') as HTMLElement,
     ).opacity,
-  ).toBe('0.5');
+  ).toBe('1');
+  expect(getComputedStyle(disabledElement).backgroundColor).not.toBe(
+    getComputedStyle(document.documentElement).backgroundColor,
+  );
 });
 
 test('surfaces required invalid state and recovers when switched on', async () => {
@@ -225,6 +228,8 @@ test('keeps read-only switches focusable without mutating native form state', as
   const controlElement = control.element() as HTMLElement;
   expect(controlElement.tabIndex).toBe(0);
   expect(controlElement.getAttribute('aria-checked')).toBe('true');
+  expect(controlElement.hasAttribute('data-readonly')).toBe(true);
+  expect(getComputedStyle(controlElement).cursor).toBe('default');
 
   await control.click();
   controlElement.focus();

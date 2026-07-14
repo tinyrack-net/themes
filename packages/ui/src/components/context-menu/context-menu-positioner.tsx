@@ -9,5 +9,5 @@ export type ContextMenuPositionerProps = ComponentProps<
 >;
 export const ContextMenuPositioner = createComponentPart(
   BaseContextMenu.Positioner,
-  'tr-context-menu-positioner',
+  'tr-layer-positioner tr-context-menu-positioner',
 );

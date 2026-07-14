@@ -39,6 +39,44 @@ const selectItems = {
   staging: 'Staging rack',
 } as const;
 
+const longSelectItems = Object.fromEntries(
+  Array.from({ length: 18 }, (_, index) => [
+    `rack-${index + 1}`,
+    `Rack ${String(index + 1).padStart(2, '0')} · Seoul availability zone`,
+  ]),
+);
+
+export function SelectLongCollection() {
+  return (
+    <Select.Root defaultValue="rack-1" items={longSelectItems}>
+      <Select.Label>Long rack collection</Select.Label>
+      <Select.Trigger aria-label="Long rack collection">
+        <Select.Value />
+        <Select.Icon aria-hidden="true">
+          <ChevronDown />
+        </Select.Icon>
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Positioner sideOffset={8}>
+          <Select.Popup>
+            <Select.Arrow />
+            <Select.ScrollUpArrow aria-label="Scroll up">↑</Select.ScrollUpArrow>
+            <Select.List>
+              {Object.entries(longSelectItems).map(([value, label]) => (
+                <Select.Item key={value} value={value}>
+                  <Select.ItemText>{label}</Select.ItemText>
+                  <Select.ItemIndicator aria-hidden="true">✓</Select.ItemIndicator>
+                </Select.Item>
+              ))}
+            </Select.List>
+            <Select.ScrollDownArrow aria-label="Scroll down">↓</Select.ScrollDownArrow>
+          </Select.Popup>
+        </Select.Positioner>
+      </Select.Portal>
+    </Select.Root>
+  );
+}
+
 export function SelectPreview({
   defaultOpen,
   defaultValue,

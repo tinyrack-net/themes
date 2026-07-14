@@ -282,7 +282,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
           </Progress.Track>
         </Progress.Root>
       ) : null}
-      <AppShell.Header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-tinyrack-border bg-tinyrack-surface px-4 lg:hidden">
+      <AppShell.Header className="tr-site-header sticky top-0 z-40 flex h-14 items-center justify-between border-b border-tinyrack-border bg-tinyrack-surface px-4 lg:hidden">
         <UiLink
           className="text-inherit"
           data-site-brand=""

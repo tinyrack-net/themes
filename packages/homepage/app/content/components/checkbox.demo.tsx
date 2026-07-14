@@ -24,18 +24,26 @@ type StoryArgs = {
 type CheckboxPreviewProps = Omit<StoryArgs, 'checked'> & {
   checked?: boolean;
   defaultChecked?: boolean;
+  form?: string;
+  name?: string;
   onCheckedChange?: (checked: boolean) => void;
+  uncheckedValue?: string;
+  value?: string;
 };
 
 export function CheckboxPreview({
   checked,
   defaultChecked,
   disabled,
+  form,
   indeterminate,
   label,
+  name = 'backups',
   onCheckedChange,
   readOnly,
   required,
+  uncheckedValue,
+  value,
 }: CheckboxPreviewProps) {
   const inputId = useId();
   const stateProps = checked === undefined ? { defaultChecked } : { checked };
@@ -45,12 +53,15 @@ export function CheckboxPreview({
       <Checkbox.Root
         {...stateProps}
         disabled={disabled}
+        form={form}
         id={inputId}
         indeterminate={indeterminate}
-        name="backups"
+        name={name}
         onCheckedChange={onCheckedChange}
         readOnly={readOnly}
         required={required}
+        uncheckedValue={uncheckedValue}
+        value={value}
       >
         <Checkbox.Indicator aria-hidden="true">
           {indeterminate ? '−' : '✓'}
@@ -101,9 +112,43 @@ export function CheckboxStateComparison() {
       <CheckboxStateSample title="Enabled · Unchecked" />
       <CheckboxStateSample checked title="Enabled · Checked" />
       <CheckboxStateSample indeterminate title="Mixed" />
-      <CheckboxStateSample checked readOnly title="Read only" />
+      <CheckboxStateSample indeterminate readOnly title="Read only · Mixed" />
       <CheckboxStateSample disabled title="Disabled · Unchecked" />
-      <CheckboxStateSample checked disabled title="Disabled · Checked" />
+      <CheckboxStateSample disabled indeterminate title="Disabled · Mixed" />
+    </div>
+  );
+}
+
+export function CheckboxFormValuesPreview() {
+  const formId = useId();
+  const [result, setResult] = useState('');
+
+  return (
+    <div className="grid gap-3">
+      <Form
+        className="grid gap-3"
+        id={formId}
+        onSubmit={(event) => {
+          event.preventDefault();
+          const values = new FormData(event.currentTarget).getAll('monitoring');
+          setResult(`Submitted: ${values.join(', ')}`);
+        }}
+      >
+        <Button type="submit">Read form value</Button>
+      </Form>
+      <CheckboxPreview
+        defaultChecked={false}
+        disabled={false}
+        form={formId}
+        indeterminate={false}
+        label="Monitoring outside the form"
+        name="monitoring"
+        readOnly={false}
+        required={false}
+        uncheckedValue="disabled"
+        value="enabled"
+      />
+      <output aria-live="polite">{result}</output>
     </div>
   );
 }
@@ -172,7 +217,7 @@ const meta = {
     return (
       <CheckboxPreview
         {...args}
-        onCheckedChange={(checked) => updateArgs({ checked })}
+        onCheckedChange={(checked) => updateArgs({ checked, indeterminate: false })}
       />
     );
   },

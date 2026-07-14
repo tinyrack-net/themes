@@ -42,7 +42,7 @@ export function RadioPreview({
       onValueChange={(value) => onSelectedChange?.(value === 'primary')}
       readOnly={readOnly}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex min-h-6 items-center gap-2">
         <Radio.Root disabled={disabled} id={inputId} value="primary">
           <Radio.Indicator aria-hidden="true" />
         </Radio.Root>
@@ -63,35 +63,44 @@ export function RadioStateComparison() {
 
   return (
     <div className="grid gap-4">
-      <RadioGroup className="grid gap-3" defaultValue="selected" name="radio-states">
-        <label className="flex items-center gap-2" htmlFor={`${groupId}-selected`}>
+      <RadioGroup className="grid gap-3" defaultValue="disabled" name="radio-states">
+        <label
+          className="flex min-h-6 items-center gap-2"
+          htmlFor={`${groupId}-selected`}
+        >
           <Radio.Root id={`${groupId}-selected`} value="selected">
             <Radio.Indicator aria-hidden="true" />
           </Radio.Root>
-          Selected
+          Available unselected
         </label>
-        <label className="flex items-center gap-2" htmlFor={`${groupId}-available`}>
+        <label
+          className="flex min-h-6 items-center gap-2"
+          htmlFor={`${groupId}-available`}
+        >
           <Radio.Root id={`${groupId}-available`} value="available">
             <Radio.Indicator aria-hidden="true" />
           </Radio.Root>
-          Available
+          Available alternate
         </label>
         <label
-          className="flex items-center gap-2 text-tinyrack-text-muted"
+          className="flex min-h-6 items-center gap-2 text-tinyrack-text-muted"
           htmlFor={`${groupId}-disabled`}
         >
           <Radio.Root disabled id={`${groupId}-disabled`} value="disabled">
             <Radio.Indicator aria-hidden="true" />
           </Radio.Root>
-          Disabled
+          Disabled selected
         </label>
       </RadioGroup>
-      <RadioGroup defaultValue="readonly" name="readonly-radio" readOnly>
-        <label className="flex items-center gap-2" htmlFor={`${groupId}-readonly`}>
+      <RadioGroup name="readonly-radio" readOnly value="">
+        <label
+          className="flex min-h-6 items-center gap-2"
+          htmlFor={`${groupId}-readonly`}
+        >
           <Radio.Root id={`${groupId}-readonly`} value="readonly">
             <Radio.Indicator aria-hidden="true" />
           </Radio.Root>
-          Read only
+          Read-only unselected
         </label>
       </RadioGroup>
     </div>

@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type DialogViewportProps = ComponentProps<typeof BaseDialog.Viewport>;
 export const DialogViewport = createComponentPart(
   BaseDialog.Viewport,
-  'tr-dialog-viewport',
+  'tr-layer-viewport tr-dialog-viewport',
 );

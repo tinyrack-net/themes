@@ -92,8 +92,10 @@ export function ContextMenuPreview({
               More actions
             </Button>
             <ContextMenu.Portal>
+              <ContextMenu.Backdrop />
               <ContextMenu.Positioner>
                 <ContextMenu.Popup>
+                  <ContextMenu.Arrow />
                   <ContextMenu.Group>
                     <ContextMenu.GroupLabel>{label}</ContextMenu.GroupLabel>
                     <ContextMenu.LinkItem
@@ -123,6 +125,7 @@ export function ContextMenuPreview({
                     <ContextMenu.Portal>
                       <ContextMenu.Positioner>
                         <ContextMenu.Popup>
+                          <ContextMenu.Arrow />
                           <ContextMenu.Item
                             onClick={() => setResult(`${label} moved to Production.`)}
                           >
@@ -138,7 +141,10 @@ export function ContextMenuPreview({
                     </ContextMenu.Portal>
                   </ContextMenu.SubmenuRoot>
                   <ContextMenu.Separator />
-                  <ContextMenu.Item onClick={() => setResult(`${label} removed.`)}>
+                  <ContextMenu.Item
+                    onClick={() => setResult(`${label} removed.`)}
+                    variant="danger"
+                  >
                     Remove rack
                   </ContextMenu.Item>
                 </ContextMenu.Popup>
@@ -191,8 +197,10 @@ export function ContextMenuViewOptionsPreview() {
           </span>
         </ContextMenu.Trigger>
         <ContextMenu.Portal>
+          <ContextMenu.Backdrop />
           <ContextMenu.Positioner>
             <ContextMenu.Popup>
+              <ContextMenu.Arrow />
               <ContextMenu.Group>
                 <ContextMenu.GroupLabel>View</ContextMenu.GroupLabel>
                 <ContextMenu.CheckboxItem

@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type PreviewCardBackdropProps = ComponentProps<typeof BasePreviewCard.Backdrop>;
 export const PreviewCardBackdrop = createComponentPart(
   BasePreviewCard.Backdrop,
-  'tr-preview-card-backdrop',
+  'tr-layer-backdrop tr-preview-card-backdrop',
 );

@@ -18,9 +18,7 @@
     outline-offset: var(--tinyrack-focus-offset);
   }
 
-  .tr-toggle-group :disabled,
   .tr-toggle-group[data-disabled] {
     cursor: not-allowed;
-    opacity: var(--tinyrack-opacity-disabled);
   }
 }

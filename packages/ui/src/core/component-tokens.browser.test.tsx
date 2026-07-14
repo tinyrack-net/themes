@@ -35,7 +35,7 @@ test('Button, Form, and Tabs share the medium control recipe', async () => {
   await renderSharedControls();
 
   const button = document.querySelector('.tr-btn');
-  const input = document.querySelector('.tr-input');
+  const input = document.querySelector('.tr-field-control');
   const tab = document.querySelector('.tr-tabs-tab');
 
   for (const control of [button, input, tab]) {
@@ -59,7 +59,8 @@ test('global foundation overrides flow through every control', async () => {
     getComputedStyle(document.querySelector('.tr-btn') as Element).borderRadius,
   ).toBe('14px');
   expect(
-    getComputedStyle(document.querySelector('.tr-input') as Element).borderRadius,
+    getComputedStyle(document.querySelector('.tr-field-control') as Element)
+      .borderRadius,
   ).toBe('14px');
   expect(
     getComputedStyle(document.querySelector('.tr-tabs-tab') as Element)
@@ -75,7 +76,7 @@ test('component recipe overrides remain isolated from the global recipe', async 
   expect(getComputedStyle(document.querySelector('.tr-btn') as Element).height).toBe(
     '56px',
   );
-  expect(getComputedStyle(document.querySelector('.tr-input') as Element).height).toBe(
-    '40px',
-  );
+  expect(
+    getComputedStyle(document.querySelector('.tr-field-control') as Element).height,
+  ).toBe('40px');
 });

@@ -23,7 +23,10 @@ export function ToastViewport({
   return (
     <BaseToast.Viewport
       {...props}
-      className={mergeComponentClassName('tr-toast-viewport', className)}
+      className={mergeComponentClassName(
+        'tr-layer-viewport tr-toast-viewport',
+        className,
+      )}
       data-position={position}
     />
   );

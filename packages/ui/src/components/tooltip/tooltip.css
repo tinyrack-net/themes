@@ -1,21 +1,27 @@
 @import "../popover/popover.css";
 
+@import "../../internal/layer-parts.css";
+
 @layer components {
   .tr-tooltip {
     display: inline-flex;
   }
 
   .tr-tooltip-content {
-    --_tr-tooltip-background: var(--tinyrack-text);
-    --_tr-tooltip-border: var(--tinyrack-text);
-    --_tr-tooltip-color: var(--tinyrack-surface);
-    --_tr-tooltip-line-height: 1.4;
-    --_tr-tooltip-max-width: 20rem;
+    --_tr-tooltip-background: var(--tinyrack-surface-inverse);
+    --_tr-tooltip-border: var(--tinyrack-border-inverse);
+    --_tr-tooltip-color: var(--tinyrack-text-inverse);
+    --_tr-tooltip-line-height: var(--tinyrack-leading-md);
+    --_tr-tooltip-max-width: var(--tinyrack-overlay-width-sm);
     --_tr-tooltip-viewport-inset: var(--tinyrack-space-lg);
     max-width: min(
       var(--tr-tooltip-max-width, var(--_tr-tooltip-max-width)),
-      var(--tr-layer-available-width, calc(100vw - var(--_tr-tooltip-viewport-inset)))
+      var(
+        --tr-layer-available-width,
+        var(--available-width, calc(100vw - var(--_tr-tooltip-viewport-inset)))
+      )
     );
+    overflow-wrap: anywhere;
     padding: var(--tinyrack-space-xs) var(--tinyrack-space-sm);
     border-color: var(--tr-tooltip-border, var(--_tr-tooltip-border));
     border-radius: var(--tinyrack-radius-sm);
@@ -25,5 +31,10 @@
     font-weight: var(--tinyrack-weight-medium);
     line-height: var(--tr-tooltip-line-height, var(--_tr-tooltip-line-height));
     pointer-events: none;
+  }
+
+  .tr-tooltip-arrow[data-side] {
+    background: var(--tr-tooltip-background, var(--_tr-tooltip-background));
+    border-color: var(--tr-tooltip-border, var(--_tr-tooltip-border));
   }
 }

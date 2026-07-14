@@ -12,6 +12,7 @@ import {
 
 type StoryArgs = {
   disabled: boolean;
+  itemDisabled: boolean;
   loopFocus: boolean;
   multiple: boolean;
   orientation: 'horizontal' | 'vertical';
@@ -24,6 +25,7 @@ type ToggleGroupPreviewProps = StoryArgs & {
 
 export function ToggleGroupPreview({
   disabled,
+  itemDisabled,
   loopFocus,
   multiple,
   onValueChange,
@@ -43,7 +45,9 @@ export function ToggleGroupPreview({
       >
         <Toggle value="start">Start</Toggle>
         <Toggle value="center">Center</Toggle>
-        <Toggle value="end">End</Toggle>
+        <Toggle disabled={itemDisabled} value="end">
+          End
+        </Toggle>
       </ToggleGroup>
       <output aria-live="polite" className="text-tinyrack-sm text-tinyrack-text-muted">
         Active: {value.length === 0 ? 'none' : value.join(', ')}
@@ -56,14 +60,20 @@ export function ToggleGroupInteractiveExample() {
   const [value, setValue] = useState<string[]>(['start']);
 
   return (
-    <ToggleGroupPreview
-      disabled={false}
-      loopFocus
-      multiple={false}
-      onValueChange={setValue}
-      orientation="horizontal"
-      value={value}
-    />
+    <div className="grid justify-items-start gap-3">
+      <ToggleGroup
+        aria-label="Text alignment"
+        defaultValue={['start']}
+        onValueChange={setValue}
+      >
+        <Toggle value="start">Start</Toggle>
+        <Toggle value="center">Center</Toggle>
+        <Toggle value="end">End</Toggle>
+      </ToggleGroup>
+      <output aria-live="polite" className="text-tinyrack-sm text-tinyrack-text-muted">
+        Active: {value.length === 0 ? 'none' : value.join(', ')}
+      </output>
+    </div>
   );
 }
 
@@ -89,12 +99,50 @@ export function ToggleGroupMultipleExample() {
   );
 }
 
+export function ToggleGroupAvailabilityExample() {
+  return (
+    <div className="grid w-full gap-6 sm:grid-cols-2">
+      <div className="grid justify-items-start gap-3">
+        <p className="text-tinyrack-sm font-semibold">Group disabled</p>
+        <ToggleGroup
+          aria-label="Unavailable panel placement"
+          defaultValue={['top']}
+          disabled
+          loopFocus={false}
+          orientation="vertical"
+        >
+          <Toggle value="top">Top</Toggle>
+          <Toggle value="middle">Middle</Toggle>
+          <Toggle value="bottom">Bottom</Toggle>
+        </ToggleGroup>
+      </div>
+
+      <div className="grid justify-items-start gap-3">
+        <p className="text-tinyrack-sm font-semibold">One item disabled</p>
+        <ToggleGroup
+          aria-label="Available panel placement"
+          defaultValue={['top']}
+          loopFocus={false}
+          orientation="vertical"
+        >
+          <Toggle value="top">Top</Toggle>
+          <Toggle value="middle">Middle</Toggle>
+          <Toggle disabled value="bottom">
+            Bottom unavailable
+          </Toggle>
+        </ToggleGroup>
+      </div>
+    </div>
+  );
+}
+
 const meta = {
   title: 'Components/Toggle Group',
   excludeStories: /.*(?:Preview|Example)$/,
   parameters: { layout: 'centered' },
   args: {
     disabled: false,
+    itemDisabled: false,
     loopFocus: true,
     multiple: false,
     orientation: 'horizontal',
@@ -102,6 +150,7 @@ const meta = {
   },
   argTypes: {
     disabled: { control: 'boolean' },
+    itemDisabled: { control: 'boolean' },
     loopFocus: { control: 'boolean' },
     multiple: { control: 'boolean' },
     orientation: { options: ['horizontal', 'vertical'], control: 'radio' },

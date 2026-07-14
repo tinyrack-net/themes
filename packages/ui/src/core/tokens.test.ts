@@ -3,6 +3,7 @@ import {
   tinyrackBorders,
   tinyrackControlMetrics,
   tinyrackLayers,
+  tinyrackMeasurements,
   tinyrackMotion,
   tinyrackOpacity,
   tinyrackPalettes,
@@ -10,6 +11,7 @@ import {
   tinyrackSemanticColors,
   tinyrackShadows,
   tinyrackSpacing,
+  tinyrackSpinnerMetrics,
   tinyrackTypography,
 } from './index.js';
 
@@ -27,7 +29,14 @@ const semanticColorNames = [
   'textPlaceholder',
   'border',
   'borderStrong',
+  'controlBorder',
+  'controlTrack',
   'focus',
+  'surfaceInverse',
+  'textInverse',
+  'borderInverse',
+  'skeletonFill',
+  'skeletonHighlight',
   'primary',
   'primaryHover',
   'onPrimary',
@@ -93,7 +102,7 @@ describe('tinyrack design tokens', () => {
   it('provides exactly the public light and dark functional colors', () => {
     for (const mode of ['light', 'dark'] as const) {
       expect(Object.keys(tinyrackSemanticColors[mode])).toEqual(semanticColorNames);
-      expect(Object.keys(tinyrackSemanticColors[mode])).toHaveLength(30);
+      expect(Object.keys(tinyrackSemanticColors[mode])).toHaveLength(37);
     }
   });
 
@@ -160,6 +169,18 @@ describe('tinyrack design tokens', () => {
   it('keeps foundation token groups available from /core', () => {
     expect(tinyrackPalettes.neutral[950]).toBe('#0a0a0a');
     expect(tinyrackSpacing).toMatchObject({ md: '0.75rem', xl: '1.5rem' });
+    expect(tinyrackMeasurements).toMatchObject({
+      'measure-md': '12rem',
+      'overlay-width-md': '32rem',
+      'control-width-md': '20rem',
+    });
+    expect(tinyrackSpinnerMetrics).toEqual({
+      sizeSm: '1rem',
+      sizeMd: '1.25rem',
+      sizeLg: '1.75rem',
+      strokeWidth: '0.125rem',
+      trackOpacity: '24%',
+    });
     expect(tinyrackRadii).toMatchObject({ sm: '0.25rem', md: '0.375rem' });
     expect(tinyrackBorders.focus).toEqual({ width: '2px', offset: '2px' });
     expect(tinyrackShadows).toHaveProperty('overlay');

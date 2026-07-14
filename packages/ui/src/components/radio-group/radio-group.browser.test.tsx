@@ -1,5 +1,5 @@
 import './radio-group.css';
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 import { expect, test } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
@@ -94,4 +94,49 @@ test('keeps read-only and disabled groups from mutating', async () => {
   expect(disabledBeta.element().getAttribute('aria-disabled')).toBe('true');
   await disabledBeta.click({ force: true });
   expect(disabledBeta.element().getAttribute('aria-checked')).toBe('false');
+});
+
+test('preserves render, refs, native props, and external form reset', async () => {
+  const rootRef = createRef<HTMLDivElement>();
+  const inputRef = createRef<HTMLInputElement>();
+  await render(
+    <>
+      <form id="external-radio-form" />
+      <RadioGroup
+        aria-label="External racks"
+        className={(state) => `consumer-group ${state.required ? 'is-required' : ''}`}
+        defaultValue="alpha"
+        form="external-radio-form"
+        inputRef={inputRef}
+        name="rack"
+        ref={rootRef}
+        render={<section data-consumer="radio-group" />}
+        required
+        style={{ gap: 'var(--tinyrack-space-sm)' }}
+      >
+        <Radio.Root aria-label="External alpha" value="alpha" />
+        <Radio.Root aria-label="External beta" value="beta" />
+      </RadioGroup>
+    </>,
+  );
+
+  const form = document.querySelector<HTMLFormElement>('#external-radio-form');
+  expect(rootRef.current?.tagName).toBe('SECTION');
+  expect(rootRef.current?.dataset['consumer']).toBe('radio-group');
+  expect(rootRef.current).toHaveClass(
+    'tr-radio-group',
+    'consumer-group',
+    'is-required',
+  );
+  expect(inputRef.current?.form).toBe(form);
+  expect(new FormData(form as HTMLFormElement).get('rack')).toBe('alpha');
+
+  (page.getByRole('radio', { name: 'External beta' }).element() as HTMLElement).click();
+  await expect
+    .poll(() => new FormData(form as HTMLFormElement).get('rack'))
+    .toBe('beta');
+  form?.reset();
+  await expect
+    .poll(() => new FormData(form as HTMLFormElement).get('rack'))
+    .toBe('alpha');
 });

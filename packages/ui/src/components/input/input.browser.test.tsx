@@ -11,6 +11,22 @@ test('renders the Tinyrack Input wrapper', async () => {
   expect(document.querySelector('.tr-input')).not.toBeNull();
 });
 
+test('reports string values and merges behavior onto a rendered native input', async () => {
+  const onValueChange = vi.fn();
+  await render(
+    <Input
+      aria-label="Rendered rack"
+      onValueChange={onValueChange}
+      render={<input data-consumer-input="" />}
+    />,
+  );
+  const input = document.querySelector<HTMLInputElement>('[data-consumer-input]');
+  input?.focus();
+  await userEvent.keyboard('Rack Alpha');
+  expect(onValueChange.mock.calls.at(-1)?.[0]).toBe('Rack Alpha');
+  expect(input).toHaveClass('tr-input');
+});
+
 test('forwards refs and native events, FormData, readonly, disabled, and reset', async () => {
   const ref = createRef<HTMLInputElement>();
   const onChange = vi.fn();

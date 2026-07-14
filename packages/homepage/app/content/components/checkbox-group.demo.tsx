@@ -15,14 +15,16 @@ import {
 type StoryArgs = {
   disabled: boolean;
   label: string;
+  readOnly: boolean;
   selectedValues: string[];
 };
 
-type CheckboxGroupPreviewProps = Omit<StoryArgs, 'selectedValues'> & {
+type CheckboxGroupPreviewProps = Omit<StoryArgs, 'readOnly' | 'selectedValues'> & {
   descriptionId?: string;
   defaultSelectedValues?: string[];
   invalid?: boolean;
   onSelectedValuesChange?: (selectedValues: string[]) => void;
+  readOnly?: boolean;
   selectedValues?: string[];
 };
 
@@ -39,6 +41,7 @@ export function CheckboxGroupPreview({
   invalid,
   label,
   onSelectedValuesChange,
+  readOnly = false,
   selectedValues,
 }: CheckboxGroupPreviewProps) {
   const baseId = useId();
@@ -68,12 +71,15 @@ export function CheckboxGroupPreview({
                 aria-labelledby={optionLabelId}
                 id={inputId}
                 name="rack-features"
+                readOnly={readOnly}
                 value={option.value}
               >
                 <Checkbox.Indicator aria-hidden="true">✓</Checkbox.Indicator>
               </Checkbox.Root>
               <label
-                className={disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
+                className={
+                  disabled || readOnly ? 'cursor-not-allowed' : 'cursor-pointer'
+                }
                 htmlFor={inputId}
                 id={optionLabelId}
                 style={disabled ? { color: 'var(--tinyrack-text-muted)' } : undefined}
@@ -101,6 +107,106 @@ export function CheckboxGroupStateComparison() {
         disabled
         label="Disabled features"
       />
+      <CheckboxGroupPreview
+        defaultSelectedValues={['backups']}
+        disabled={false}
+        label="Read-only features"
+        readOnly
+      />
+    </div>
+  );
+}
+
+export function CheckboxGroupParentPreview() {
+  const groupId = useId();
+  const allValues = checkboxGroupOptions.map((option) => option.value);
+  const [value, setValue] = useState<string[]>(['metrics']);
+
+  return (
+    <CheckboxGroup
+      allValues={allValues}
+      aria-label="Rack permissions"
+      onValueChange={setValue}
+      value={value}
+    >
+      <label
+        className="flex min-h-6 items-center gap-2 font-semibold"
+        htmlFor={`${groupId}-all`}
+      >
+        <Checkbox.Root id={`${groupId}-all`} parent>
+          <Checkbox.Indicator
+            render={(props, state) => (
+              <span {...props}>{state.indeterminate ? '−' : '✓'}</span>
+            )}
+          />
+        </Checkbox.Root>
+        Select all
+      </label>
+      {checkboxGroupOptions.map((option) => (
+        <label
+          className="flex min-h-6 items-center gap-2"
+          htmlFor={`${groupId}-${option.value}`}
+          key={option.value}
+        >
+          <Checkbox.Root
+            id={`${groupId}-${option.value}`}
+            name="permissions"
+            value={option.value}
+          >
+            <Checkbox.Indicator aria-hidden="true">✓</Checkbox.Indicator>
+          </Checkbox.Root>
+          {option.label}
+        </label>
+      ))}
+      <output aria-live="polite">Selected: {value.join(', ') || 'none'}</output>
+    </CheckboxGroup>
+  );
+}
+
+export function CheckboxGroupExternalFormPreview() {
+  const formId = useId();
+  const groupId = useId();
+  const [result, setResult] = useState('');
+
+  return (
+    <div className="grid gap-3">
+      <Form
+        id={formId}
+        onReset={() => setResult('Reset to metrics.')}
+        onSubmit={(event) => {
+          event.preventDefault();
+          setResult(
+            `Submitted: ${new FormData(event.currentTarget).getAll('features').join(', ')}`,
+          );
+        }}
+      >
+        <div className="flex flex-wrap gap-2">
+          <Button type="submit">Submit external group</Button>
+          <Button type="reset" variant="secondary">
+            Reset
+          </Button>
+        </div>
+      </Form>
+      <CheckboxGroup aria-label="External features" defaultValue={['metrics']}>
+        {checkboxGroupOptions.slice(0, 2).map((option) => (
+          <label
+            className="flex min-h-6 items-center gap-2"
+            htmlFor={`${groupId}-${option.value}`}
+            key={option.value}
+          >
+            <Checkbox.Root
+              form={formId}
+              id={`${groupId}-${option.value}`}
+              name="features"
+              value={option.value}
+            >
+              <Checkbox.Indicator aria-hidden="true">✓</Checkbox.Indicator>
+            </Checkbox.Root>
+            {option.label}
+          </label>
+        ))}
+      </CheckboxGroup>
+      <output aria-live="polite">{result}</output>
     </div>
   );
 }
@@ -159,11 +265,13 @@ const meta = {
   args: {
     disabled: false,
     label: 'Rack features',
+    readOnly: false,
     selectedValues: ['metrics', 'backups'],
   },
   argTypes: {
     disabled: { control: 'boolean' },
     label: { control: 'text' },
+    readOnly: { control: 'boolean' },
     selectedValues: {
       control: { type: 'checklist' },
       options: checkboxGroupOptions.map((option) => option.value),

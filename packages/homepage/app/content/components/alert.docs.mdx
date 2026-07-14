@@ -95,6 +95,35 @@ Persistent status messaging with semantic titles, descriptions, and optional act
 </Alert.Root>` }]}
 />
 
+<ComponentExampleTabs
+  id="alert-actions"
+  title="Contextual heading and wrapping actions"
+  description="Choose the heading level from page context. Actions wrap inside the alert instead of forcing page overflow."
+  previewLayout="stretch"
+  preview={(
+    <Alert.Root variant="warning">
+      <Alert.Title render={<h3 />}>Maintenance approval required</Alert.Title>
+      <Alert.Description>The requested window overlaps an active deployment and needs an explicit decision.</Alert.Description>
+      <Alert.Actions>
+        <Button size="sm" variant="primary">Approve window</Button>
+        <Button appearance="outline" size="sm">Review deployment</Button>
+        <Button appearance="ghost" size="sm">Dismiss</Button>
+      </Alert.Actions>
+    </Alert.Root>
+  )}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<Alert.Root variant="warning">
+  <Alert.Title render={<h3 />}>Maintenance approval required</Alert.Title>
+  <Alert.Description>
+    The requested window overlaps an active deployment and needs an explicit decision.
+  </Alert.Description>
+  <Alert.Actions>
+    <Button size="sm" variant="primary">Approve window</Button>
+    <Button appearance="outline" size="sm">Review deployment</Button>
+    <Button appearance="ghost" size="sm">Dismiss</Button>
+  </Alert.Actions>
+</Alert.Root>` }]}
+/>
+
 ## API
 
 `Alert.Root` forwards native `div` props and React 19 `ref`; it does not assign a live-region role automatically because announcement urgency is application context.

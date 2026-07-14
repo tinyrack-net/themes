@@ -5,4 +5,7 @@ import type { ComponentProps } from 'react';
 import { createComponentPart } from '../../internal/component-part.js';
 
 export type SelectArrowProps = ComponentProps<typeof BaseSelect.Arrow>;
-export const SelectArrow = createComponentPart(BaseSelect.Arrow, 'tr-select-arrow');
+export const SelectArrow = createComponentPart(
+  BaseSelect.Arrow,
+  'tr-layer-arrow tr-select-arrow',
+);

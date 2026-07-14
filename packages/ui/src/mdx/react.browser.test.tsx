@@ -98,6 +98,22 @@ test('React MDX renderer maps inline code, fenced code, and tables to Tinyrack c
           </tr>
         </tbody>
       </Table>
+      <Table>
+        <thead>
+          <tr>
+            <th>Axis</th>
+            <th>Values</th>
+            <th>Default</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>state</td>
+            <td>controlled or uncontrolled</td>
+            <td>uncontrolled</td>
+          </tr>
+        </tbody>
+      </Table>
     </Wrapper>,
   );
 
@@ -114,6 +130,15 @@ test('React MDX renderer maps inline code, fenced code, and tables to Tinyrack c
   expect(table?.classList.contains('tr-mdx-table')).toBe(true);
   expect(table?.getAttribute('data-density')).toBe('compact');
   expect(rightAlignedHeader?.textContent).toBe('Value');
+  const contractTable = document.querySelector<HTMLElement>(
+    'table[data-contract-table]',
+  );
+  expect(contractTable).not.toBeNull();
+  expect(
+    Array.from(contractTable?.querySelectorAll('tbody td') ?? [], (cell) =>
+      cell.getAttribute('data-contract-label'),
+    ),
+  ).toEqual(['Axis', 'Values', 'Default']);
   await expect
     .poll(() => codeBlock?.querySelectorAll('span[style*="color"]').length ?? 0, {
       timeout: 10_000,

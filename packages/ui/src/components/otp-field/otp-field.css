@@ -17,7 +17,7 @@
     min-width: 0;
     height: var(--tr-otp-field-size, var(--tinyrack-control-height-lg));
     box-sizing: border-box;
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-md);
     background: var(--tinyrack-surface);
     color: var(--tinyrack-text);

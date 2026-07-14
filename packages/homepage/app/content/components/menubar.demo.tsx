@@ -1,3 +1,4 @@
+import { Button } from '@tinyrack/ui/components/button';
 import { Menu } from '@tinyrack/ui/components/menu';
 import { Menubar } from '@tinyrack/ui/components/menubar';
 import { useState } from 'react';
@@ -12,9 +13,16 @@ type StoryArgs = {
   orientation: 'horizontal' | 'vertical';
   label: string;
   loopFocus: boolean;
+  modal: boolean;
 };
 
-export function MenubarPreview({ disabled, loopFocus, orientation, label }: StoryArgs) {
+export function MenubarPreview({
+  disabled,
+  loopFocus,
+  modal,
+  orientation,
+  label,
+}: StoryArgs) {
   const [result, setResult] = useState('No command selected');
 
   return (
@@ -23,6 +31,7 @@ export function MenubarPreview({ disabled, loopFocus, orientation, label }: Stor
         aria-label={label}
         disabled={disabled}
         loopFocus={loopFocus}
+        modal={modal}
         orientation={orientation}
       >
         <Menu.Root>
@@ -68,9 +77,39 @@ export function MenubarPreview({ disabled, loopFocus, orientation, label }: Stor
           </Menu.Portal>
         </Menu.Root>
       </Menubar>
+      <Button className="mt-3" type="button">
+        Outside focus target
+      </Button>
       <output aria-live="polite" className="mt-3 block text-sm">
         {result}
       </output>
+    </div>
+  );
+}
+
+export function MenubarConfigurationMatrix() {
+  return (
+    <div className="grid min-w-0 gap-6 sm:grid-cols-2">
+      <section className="grid content-start gap-2">
+        <strong>Vertical · non-modal · bounded focus</strong>
+        <MenubarPreview
+          disabled={false}
+          label="Vertical tools"
+          loopFocus={false}
+          modal={false}
+          orientation="vertical"
+        />
+      </section>
+      <section className="grid content-start gap-2">
+        <strong>Disabled · modal</strong>
+        <MenubarPreview
+          disabled
+          label="Unavailable tools"
+          loopFocus
+          modal
+          orientation="horizontal"
+        />
+      </section>
     </div>
   );
 }
@@ -84,12 +123,14 @@ const meta = {
     orientation: 'horizontal',
     label: 'Application menu',
     loopFocus: true,
+    modal: true,
   },
   argTypes: {
     disabled: { control: 'boolean' },
     orientation: { options: ['horizontal', 'vertical'], control: 'radio' },
     label: { control: 'text' },
     loopFocus: { control: 'boolean' },
+    modal: { control: 'boolean' },
   },
   render: (args) => <MenubarPreview {...args} />,
 } satisfies Meta<StoryArgs>;

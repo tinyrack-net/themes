@@ -1,8 +1,10 @@
+@import "../../internal/layer-parts.css";
+
 @layer components {
   .tr-context-menu,
   .tr-context-menu-popup {
     --_tr-context-menu-popup-max-height: calc(var(--tinyrack-control-height-md) * 8);
-    --_tr-context-menu-popup-max-width: 32rem;
+    --_tr-context-menu-popup-max-width: var(--tinyrack-overlay-width-md);
     --_tr-context-menu-popup-min-width: calc(var(--tinyrack-control-height-md) * 5);
     box-sizing: border-box;
     color: var(--tr-context-menu-color, var(--tinyrack-text));
@@ -16,7 +18,7 @@
 
   .tr-context-menu-popup {
     background: var(--tr-context-menu-popup-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-lg);
     box-shadow: var(--tinyrack-shadow-overlay);
     color: var(--tinyrack-text);
@@ -63,18 +65,35 @@
     background: var(--tr-context-menu-control-background, transparent);
   }
 
-  .tr-context-menu-item:is(:hover, :focus-visible, [data-highlighted]),
-  .tr-context-menu-checkbox-item:is(:hover, :focus-visible, [data-highlighted]),
-  .tr-context-menu-link-item:is(:hover, :focus-visible, [data-highlighted]),
-  .tr-context-menu-radio-item:is(:hover, :focus-visible, [data-highlighted]),
-  .tr-context-menu-submenu-trigger:is(
+  .tr-context-menu-item:hover,
+  .tr-context-menu-checkbox-item:hover,
+  .tr-context-menu-link-item:hover,
+  .tr-context-menu-radio-item:hover,
+  .tr-context-menu-submenu-trigger:is(:hover, [data-popup-open]) {
+    background: var(--tinyrack-surface-hover);
+  }
+
+  .tr-context-menu-item:is(:focus-visible, [data-highlighted]),
+  .tr-context-menu-checkbox-item:is(:focus-visible, [data-highlighted]),
+  .tr-context-menu-link-item:is(:focus-visible, [data-highlighted]),
+  .tr-context-menu-radio-item:is(:focus-visible, [data-highlighted]),
+  .tr-context-menu-submenu-trigger:is(:focus-visible, [data-highlighted]) {
+    background: var(--tinyrack-surface-hover);
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: calc(var(--tinyrack-focus-width) * -1);
+  }
+
+  .tr-context-menu-item[data-variant="danger"] {
+    color: var(--tinyrack-danger);
+  }
+
+  .tr-context-menu-item[data-variant="danger"]:is(
     :hover,
     :focus-visible,
-    [data-highlighted],
-    [data-popup-open]
+    [data-highlighted]
   ) {
-    background: var(--tinyrack-surface-hover);
-    outline: none;
+    background: var(--tinyrack-danger-surface);
+    color: var(--tinyrack-danger-hover);
   }
 
   .tr-context-menu-group-label {
@@ -111,14 +130,14 @@
   }
 
   .tr-context-menu-separator {
-    background: var(--tinyrack-border);
+    background: var(--tinyrack-control-border);
     border: 0;
     height: var(--tinyrack-border-width-default);
     margin: var(--tinyrack-space-xs) calc(var(--tinyrack-space-xs) * -1);
   }
 
   .tr-context-menu-positioner {
-    z-index: var(--tinyrack-layer-dropdown);
+    --tr-layer-z-index: var(--tinyrack-layer-dialog);
   }
 
   .tr-context-menu-item[data-disabled],

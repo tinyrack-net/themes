@@ -68,6 +68,48 @@ This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, e
 </NavigationMenu.Root>` }]}
 />
 
+<ComponentExampleTabs
+  id="navigation-menu-responsive-alternative"
+  title="Desktop navigation and mobile drawer"
+  description="Resize the page: the desktop NavigationMenu is replaced by a Drawer with the same destinations instead of compressing the horizontal keyboard model."
+  previewLayout="stretch"
+  preview={<Stories.NavigationMenuResponsiveAlternative />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`import { Drawer } from '@tinyrack/ui/components/drawer';
+import { Link } from '@tinyrack/ui/components/link';
+import { NavigationMenu } from '@tinyrack/ui/components/navigation-menu';
+
+<>
+  <div className="hidden md:block">
+    <NavigationMenu.Root aria-label="Platform navigation">
+      <NavigationMenu.List>
+        <NavigationMenu.Item><NavigationMenu.Link href="#deployments">Deployments</NavigationMenu.Link></NavigationMenu.Item>
+        <NavigationMenu.Item><NavigationMenu.Link href="#metrics">Metrics</NavigationMenu.Link></NavigationMenu.Item>
+        <NavigationMenu.Item><NavigationMenu.Link href="#guides">Guides</NavigationMenu.Link></NavigationMenu.Item>
+      </NavigationMenu.List>
+    </NavigationMenu.Root>
+  </div>
+  <div className="md:hidden">
+    <Drawer.Root swipeDirection="right">
+      <Drawer.Trigger>Open site navigation</Drawer.Trigger>
+      <Drawer.Portal>
+        <Drawer.Backdrop />
+        <Drawer.Viewport>
+          <Drawer.Popup><Drawer.Content>
+            <Drawer.Title>Site navigation</Drawer.Title>
+            <nav aria-label="Mobile site navigation">
+              <Link href="#deployments">Deployments</Link>
+              <Link href="#metrics">Metrics</Link>
+              <Link href="#guides">Guides</Link>
+            </nav>
+            <Drawer.Close>Close navigation</Drawer.Close>
+          </Drawer.Content></Drawer.Popup>
+        </Drawer.Viewport>
+      </Drawer.Portal>
+    </Drawer.Root>
+  </div>
+</>` }]}
+/>
+
 ## API
 
 Every compound part and prop/state type is exported from `@tinyrack/ui/components/navigation-menu`; styles remain opt-in through the matching CSS subpath.

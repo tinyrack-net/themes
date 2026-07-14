@@ -5,19 +5,19 @@ import type {
 } from '../../playground/demo.js';
 import { definePlayground } from '../../playground/demo.js';
 
-type CodeStoryArgs = { children: string; width: number };
+type CodeStoryArgs = { children: string; containerWidth: number };
 
 const meta = {
   title: 'Components/Code',
   component: Code,
   parameters: { layout: 'centered' },
-  args: { children: 'pnpm test:component\npnpm verify', width: 320 },
+  args: { children: 'pnpm test:component\npnpm verify', containerWidth: 320 },
   argTypes: {
-    children: { control: 'text' },
-    width: { control: { type: 'range', min: 160, max: 640, step: 16 } },
+    children: { control: 'textarea' },
+    containerWidth: { control: { type: 'range', min: 160, max: 640, step: 16 } },
   },
-  render: ({ children, width }) => (
-    <p style={{ maxWidth: width }}>
+  render: ({ children, containerWidth }) => (
+    <p style={{ maxWidth: containerWidth }}>
       Run <Code>{children}</Code> before publishing.
     </p>
   ),

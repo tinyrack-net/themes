@@ -1,3 +1,4 @@
+import '../../core/core.css';
 import './meter.css';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
@@ -62,4 +63,33 @@ test('links its label, exposes a human value, and sizes the indicator', async ()
   expect(root?.getAttribute('aria-labelledby')).toBe(label?.id);
   expect(root?.getAttribute('aria-valuetext')).toContain('used');
   expect(indicator?.style.width).toBe('25%');
+});
+
+test('applies every explicit semantic variant over the contrast-safe track', async () => {
+  document.documentElement.dataset['theme'] = 'tinyrack-light';
+  const variants = ['neutral', 'info', 'success', 'warning', 'danger'] as const;
+  await render(
+    <div>
+      {variants.map((variant) => (
+        <Meter.Root aria-label={variant} key={variant} value={50} variant={variant}>
+          <Meter.Track>
+            <Meter.Indicator />
+          </Meter.Track>
+        </Meter.Root>
+      ))}
+    </div>,
+  );
+
+  const indicators = Array.from(
+    document.querySelectorAll<HTMLElement>('.tr-meter-indicator'),
+  );
+  expect(
+    new Set(indicators.map((indicator) => getComputedStyle(indicator).backgroundColor))
+      .size,
+  ).toBe(variants.length);
+  const track = document.querySelector<HTMLElement>('.tr-meter-track');
+  expect(getComputedStyle(track as HTMLElement).backgroundColor).toBe(
+    'rgb(115, 115, 115)',
+  );
+  delete document.documentElement.dataset['theme'];
 });

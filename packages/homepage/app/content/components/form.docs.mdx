@@ -133,6 +133,39 @@ A native form wrapper for submission, validity, and Base UI field errors.
 }` }]}
 />
 
+<ComponentExampleTabs
+  id="form-actions"
+  title="Imperative validation and first-invalid focus"
+  description="Validate one named field or the whole form through `actionsRef`. Native submit focuses the first invalid Field control; the typed `onFormSubmit` values remain string-safe."
+  preview={<Stories.FormActionsPreview />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useRef } from 'react';
+import { Form, type FormActions } from '@tinyrack/ui/components/form';
+
+export function RackForm() {
+  const actionsRef = useRef<FormActions>(null);
+
+  return <Form<{ rack: string; region: string }>
+    actionsRef={actionsRef}
+    onFormSubmit={(values) => console.log(values.rack, values.region)}
+    validationMode="onBlur"
+  >
+    <Field.Root name="rack">
+      <Field.Label>Rack name</Field.Label>
+      <Field.Control required />
+      <Field.Error match="valueMissing">Enter a rack name.</Field.Error>
+    </Field.Root>
+    <Field.Root name="region">
+      <Field.Label>Region</Field.Label>
+      <Field.Control required />
+      <Field.Error match="valueMissing">Enter a region.</Field.Error>
+    </Field.Root>
+    <Button onClick={() => actionsRef.current?.validate('rack')} type="button">Validate rack</Button>
+    <Button onClick={() => actionsRef.current?.validate()} type="button">Validate all</Button>
+    <Button type="submit">Submit</Button>
+  </Form>;
+}` }]}
+/>
+
 ## API
 
-`Form` forwards native form props, refs, events, `className`, and `style`; controls keep ownership of their own values. Use `errors` with field names for server responses and `onFormSubmit` when Base UI should provide parsed registered field values.
+`Form` forwards native form props, refs, events, `className`, `style`, and `render`; controls keep ownership of their own values. `FormProps<Values>` preserves the field-value generic through `onFormSubmit`. Use `errors` with field names for server responses, choose `validationMode` at Form or Field scope, and use `FormActions.validate(name?)` for explicit validation without synthesizing a submit.

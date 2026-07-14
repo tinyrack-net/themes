@@ -10,7 +10,7 @@ export function TinyrackMdxAnchor({
     <Link
       className={mergeClassNames('tr-mdx-link', className)}
       underline="always"
-      variant="primary"
+      variant="default"
       {...anchorProps}
     />
   );

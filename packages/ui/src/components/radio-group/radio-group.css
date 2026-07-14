@@ -7,15 +7,17 @@
     gap: var(--tr-radio-group-gap, var(--tinyrack-space-sm));
   }
 
-  .tr-radio-group :focus-visible,
+  .tr-radio-group .tr-radio:focus-visible,
   .tr-radio-group:focus-visible {
     outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
     outline-offset: var(--tinyrack-focus-offset);
   }
 
-  .tr-radio-group :disabled,
   .tr-radio-group[data-disabled] {
     cursor: not-allowed;
-    opacity: var(--tinyrack-opacity-disabled);
+  }
+
+  .tr-radio-group[data-readonly] .tr-radio {
+    cursor: default;
   }
 }

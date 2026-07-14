@@ -2,10 +2,23 @@
 
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import type { ComponentProps } from 'react';
-import { createComponentPart } from '../../internal/component-part.js';
+import { mergeComponentClassName } from '../../internal/component-class-name.js';
 
-export type ContextMenuItemProps = ComponentProps<typeof BaseContextMenu.Item>;
-export const ContextMenuItem = createComponentPart(
-  BaseContextMenu.Item,
-  'tr-context-menu-item',
-);
+export type ContextMenuItemVariant = 'default' | 'danger';
+export type ContextMenuItemProps = ComponentProps<typeof BaseContextMenu.Item> & {
+  variant?: ContextMenuItemVariant;
+};
+
+export function ContextMenuItem({
+  className,
+  variant = 'default',
+  ...props
+}: ContextMenuItemProps) {
+  return (
+    <BaseContextMenu.Item
+      {...props}
+      className={mergeComponentClassName('tr-context-menu-item', className)}
+      data-variant={variant}
+    />
+  );
+}

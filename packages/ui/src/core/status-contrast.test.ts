@@ -77,6 +77,24 @@ describe('semantic status contrast', () => {
         contrast(theme.focus, theme.canvas),
         'focus on canvas',
       ).toBeGreaterThanOrEqual(3);
+      expect(
+        contrast(theme.textInverse, theme.surfaceInverse),
+        'inverse content',
+      ).toBeGreaterThanOrEqual(4.5);
+      expect(
+        contrast(theme.borderInverse, theme.surfaceInverse),
+        'inverse boundary',
+      ).toBeGreaterThanOrEqual(3);
+      for (const surface of [theme.canvas, theme.surface]) {
+        expect(
+          contrast(theme.controlBorder, surface),
+          'control boundary',
+        ).toBeGreaterThanOrEqual(3);
+        expect(
+          contrast(theme.controlTrack, surface),
+          'graphical track',
+        ).toBeGreaterThanOrEqual(3);
+      }
     }
   });
 });

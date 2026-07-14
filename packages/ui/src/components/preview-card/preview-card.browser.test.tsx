@@ -1,3 +1,4 @@
+import '../../core/core.css';
 import './preview-card.css';
 import { expect, test, vi } from 'vitest';
 import { userEvent } from 'vitest/browser';
@@ -12,6 +13,27 @@ test('renders the Tinyrack PreviewCard wrapper', async () => {
     </PreviewCard.Root>,
   );
   expect(document.querySelector('.tr-preview-card-trigger')).not.toBeNull();
+  expect(document.querySelector('.tr-preview-card')).toBeNull();
+});
+
+test('applies the visual contract to rendered trigger and popup parts', async () => {
+  document.documentElement.dataset['theme'] = 'tinyrack-light';
+  await render(
+    <PreviewCard.Root defaultOpen>
+      <PreviewCard.Trigger href="#parts">Rendered trigger</PreviewCard.Trigger>
+      <PreviewCard.Portal>
+        <PreviewCard.Positioner>
+          <PreviewCard.Popup>Rendered popup</PreviewCard.Popup>
+        </PreviewCard.Positioner>
+      </PreviewCard.Portal>
+    </PreviewCard.Root>,
+  );
+  const trigger = document.querySelector<HTMLElement>('.tr-preview-card-trigger');
+  const popup = document.querySelector<HTMLElement>('.tr-preview-card-popup');
+  await expect.poll(() => popup?.hasAttribute('data-open')).toBe(true);
+  expect(getComputedStyle(trigger as HTMLElement).fontFamily).not.toBe('');
+  expect(getComputedStyle(popup as HTMLElement).maxWidth).not.toBe('none');
+  delete document.documentElement.dataset['theme'];
 });
 
 test('opens from keyboard focus and dismisses without moving focus', async () => {

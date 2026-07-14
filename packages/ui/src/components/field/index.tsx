@@ -30,7 +30,7 @@ export type { FieldDescriptionProps } from './field-description.js';
 export type { FieldErrorProps } from './field-error.js';
 export type { FieldItemProps } from './field-item.js';
 export type { FieldLabelProps } from './field-label.js';
-export type { FieldRootProps } from './field-root.js';
+export type { FieldRootProps, FieldSize } from './field-root.js';
 export type { FieldValidityProps } from './field-validity.js';
 export {
   FieldControl,

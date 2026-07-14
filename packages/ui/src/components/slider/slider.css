@@ -1,7 +1,7 @@
 @layer components {
   .tr-slider {
-    --_tr-slider-min-height: 12rem;
-    --_tr-slider-min-width: 16rem;
+    --_tr-slider-min-height: var(--tinyrack-measure-md);
+    --_tr-slider-min-width: var(--tinyrack-measure-lg);
     box-sizing: border-box;
     color: var(--tr-slider-color, var(--tinyrack-text));
     display: grid;
@@ -17,7 +17,7 @@
   }
 
   .tr-slider-track {
-    background: var(--tr-slider-track-background, var(--tinyrack-surface-muted));
+    background: var(--tr-slider-track-background, var(--tinyrack-control-track));
     border-radius: var(--tinyrack-radius-full);
     flex: 1;
     height: var(--tr-slider-track-size, var(--tinyrack-space-xs));

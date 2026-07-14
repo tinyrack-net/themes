@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type ContextMenuArrowProps = ComponentProps<typeof BaseContextMenu.Arrow>;
 export const ContextMenuArrow = createComponentPart(
   BaseContextMenu.Arrow,
-  'tr-context-menu-arrow',
+  'tr-layer-arrow tr-context-menu-arrow',
 );

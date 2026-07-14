@@ -134,6 +134,55 @@ function FeatureForm() {
 }` }]}
 />
 
+<ComponentExampleTabs
+  id="checkbox-group-parent"
+  title="Parent checkbox and mixed state"
+  description="The parent selects every child and becomes mixed when only part of the controlled value is selected."
+  preview={<Stories.CheckboxGroupParentPreview />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
+import { Checkbox } from '@tinyrack/ui/components/checkbox';
+import { CheckboxGroup } from '@tinyrack/ui/components/checkbox-group';
+
+const permissions = ['metrics', 'alerts', 'backups'];
+
+export function PermissionGroup() {
+  const [value, setValue] = useState(['metrics']);
+  return <CheckboxGroup allValues={permissions} onValueChange={setValue} value={value}>
+    <label>
+      <Checkbox.Root parent>
+        <Checkbox.Indicator render={(props, state) => (
+          <span {...props}>{state.indeterminate ? '−' : '✓'}</span>
+        )} />
+      </Checkbox.Root>
+      Select all
+    </label>
+    {permissions.map((permission) => <label key={permission}>
+      <Checkbox.Root name="permissions" value={permission}>
+        <Checkbox.Indicator aria-hidden="true">✓</Checkbox.Indicator>
+      </Checkbox.Root>
+      {permission}
+    </label>)}
+  </CheckboxGroup>;
+}` }]}
+/>
+
+<ComponentExampleTabs
+  id="checkbox-group-external-form"
+  title="External form ownership and reset"
+  description="Each descendant input names the external form. Reset restores the group's original uncontrolled value even though the group is outside the form DOM subtree."
+  preview={<Stories.CheckboxGroupExternalFormPreview />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<>
+  <Form id="feature-form">
+    <Button type="submit">Submit</Button>
+    <Button type="reset">Reset</Button>
+  </Form>
+  <CheckboxGroup aria-label="External features" defaultValue={['metrics']}>
+    <label><Checkbox.Root form="feature-form" name="features" value="metrics" /> Metrics</label>
+    <label><Checkbox.Root form="feature-form" name="features" value="alerts" /> Alerts</label>
+  </CheckboxGroup>
+</>` }]}
+/>
+
 ## API
 
 `CheckboxGroup` and its prop and state types are exported from `@tinyrack/ui/components/checkbox-group`; render `Checkbox.Root` children with distinct `value` props and an accessible name for each visual checkbox role.

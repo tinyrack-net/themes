@@ -2,6 +2,7 @@ import '../../core/core.css';
 import './table.css';
 import { createRef } from 'react';
 import { expect, test } from 'vitest';
+import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { Table, TableRoot } from './index.js';
 
@@ -61,6 +62,29 @@ test('applies every public density value', async () => {
   ).toBeGreaterThan(
     Number.parseFloat(getComputedStyle(compactCell as HTMLElement).paddingTop),
   );
+});
+
+test('lets hover feedback override the even striped row surface', async () => {
+  document.documentElement.dataset['theme'] = 'tinyrack-light';
+  await render(
+    <Table.Root striped>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Odd</Table.Cell>
+        </Table.Row>
+        <Table.Row data-testid="even-row">
+          <Table.Cell>Even</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table.Root>,
+  );
+  const row = document.querySelector<HTMLElement>('[data-testid="even-row"]');
+  const stripedColor = getComputedStyle(row as HTMLElement).backgroundColor;
+  await page.getByTestId('even-row').hover();
+  await expect
+    .poll(() => getComputedStyle(row as HTMLElement).backgroundColor)
+    .not.toBe(stripedColor);
+  delete document.documentElement.dataset['theme'];
 });
 
 test('names and focuses the overflow container through container props and ref', async () => {

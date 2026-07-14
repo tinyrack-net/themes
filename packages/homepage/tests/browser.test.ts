@@ -122,6 +122,23 @@ async function expectNoLocalOverflow(locator: Locator, label: string) {
   expect(overflow.scrollWidth, label).toBeLessThanOrEqual(overflow.clientWidth + 1);
 }
 
+async function settledScrollTop(locator: Locator) {
+  return locator.evaluate(async (element) => {
+    let previous = element.scrollTop;
+    let stableFrames = 0;
+    for (let frame = 0; frame < 120; frame += 1) {
+      await new Promise<void>((resolveFrame) =>
+        requestAnimationFrame(() => resolveFrame()),
+      );
+      const current = element.scrollTop;
+      stableFrames = Math.abs(current - previous) < 1 ? stableFrames + 1 : 0;
+      previous = current;
+      if (stableFrames >= 6) return current;
+    }
+    return element.scrollTop;
+  });
+}
+
 async function highlightedCodeColors(locator: Locator) {
   return locator.evaluate((element) => {
     const token = element.querySelector('span');
@@ -423,9 +440,7 @@ describe('built React Router documentation', () => {
       await expect
         .poll(() => desktopMainViewport.evaluate((element) => element.scrollTop))
         .toBeGreaterThan(wheelScrollTop);
-      const mainScrollTop = await desktopMainViewport.evaluate(
-        (element) => element.scrollTop,
-      );
+      const mainScrollTop = await settledScrollTop(desktopMainViewport);
       expect(await desktopPage.evaluate(() => window.scrollY)).toBe(0);
       const stickySidebarBox = await desktopSidebar.boundingBox();
       expect(stickySidebarBox).not.toBeNull();

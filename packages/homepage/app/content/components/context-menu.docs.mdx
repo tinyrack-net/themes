@@ -1,25 +1,22 @@
 import { ComponentPlayground } from '../../playground/playground.js';
 export const meta = () => [{ title: "ContextMenu · Tinyrack UI" }];
 
-import { ContextMenu } from '@tinyrack/ui/components/context-menu';
-import { Button } from '@tinyrack/ui/components/button';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { baseUiExampleSources } from '../shared/base-ui-example-sources.js';
 import * as Stories from './context-menu.demo.js';
 
 
 # ContextMenu
 
-A right-click menu with selection, groups, links, and submenus.
+A contextual command surface opened from an arbitrary target with right-click or the platform context-menu key.
 
 ## Contract
 
-This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, events, and the `render` contract. Playground controls cover `label`, `open`, `disabledItem`.
+`ContextMenu` attaches commands to content such as a rack row, file, or canvas. Use `Menu` when a dedicated trigger always opens the command list. This Tinyrack wrapper preserves Base UI positioning, focus, dismissal, React 19 refs, native props, events, and the `render` contract. Playground controls cover `label`, `open`, and `disabledItem`.
 
 ## Install
 
-<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/context-menu.css';", "import { ContextMenu } from '@tinyrack/ui/components/context-menu';"] }]} />
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom lucide-react', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/button.css';", "import '@tinyrack/ui/components/context-menu.css';", "import { Button } from '@tinyrack/ui/components/button';", "import { ContextMenu } from '@tinyrack/ui/components/context-menu';", "import { Check, ChevronRight, CircleDot, Server } from 'lucide-react';"] }]} />
 
 ## Playground
 
@@ -29,55 +26,137 @@ This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, e
 
 <ComponentExampleTabs
   id="context-menu-basic"
-  title="Default"
-  preview={<ContextMenu.Root><ContextMenu.Trigger render={<Button />}>Right-click target</ContextMenu.Trigger><ContextMenu.Portal><ContextMenu.Positioner><ContextMenu.Popup><ContextMenu.Item>Restart</ContextMenu.Item><ContextMenu.Separator /><ContextMenu.Item>Inspect</ContextMenu.Item></ContextMenu.Popup></ContextMenu.Positioner></ContextMenu.Portal></ContextMenu.Root>}
-  sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['context-menu'] }]}
+  title="Rack row actions"
+  description="Right-click the rack row or focus it and press Shift+F10. The separate More actions button opens the same commands for touch users."
+  preview={<Stories.ContextMenuPreview label="Rack Alpha" open={false} disabledItem={false} />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`import { Button } from '@tinyrack/ui/components/button';
+import { ContextMenu } from '@tinyrack/ui/components/context-menu';
+import { ChevronRight, Server } from 'lucide-react';
+import { useRef } from 'react';
+
+function RackRowActions() {
+  const triggerRef = useRef<HTMLDivElement>(null);
+
+  function openActions() {
+    const rect = triggerRef.current?.getBoundingClientRect();
+    if (!triggerRef.current || !rect) return;
+    triggerRef.current.dispatchEvent(new MouseEvent('contextmenu', {
+      bubbles: true,
+      button: 2,
+      clientX: rect.right - 24,
+      clientY: rect.top + rect.height / 2,
+    }));
+  }
+
+  return (
+    <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
+      <ContextMenu.Root>
+        <ContextMenu.Trigger
+          aria-label="Rack Alpha, online rack. Open context menu for actions."
+          className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3"
+          ref={triggerRef}
+          render={<Button appearance="ghost" type="button" />}
+        >
+          <Server aria-hidden="true" />
+          <span>Rack Alpha</span>
+          <span>10.42.0.18 · Seoul</span>
+          <span>Online</span>
+        </ContextMenu.Trigger>
+        <Button appearance="outline" onClick={openActions} size="sm">
+          More actions
+        </Button>
+        <ContextMenu.Portal>
+          <ContextMenu.Positioner>
+            <ContextMenu.Popup>
+              <ContextMenu.Group>
+                <ContextMenu.GroupLabel>Rack Alpha</ContextMenu.GroupLabel>
+                <ContextMenu.LinkItem href="/racks/alpha">Open details</ContextMenu.LinkItem>
+                <ContextMenu.Item>Copy address</ContextMenu.Item>
+                <ContextMenu.Item>Restart</ContextMenu.Item>
+              </ContextMenu.Group>
+              <ContextMenu.Separator />
+              <ContextMenu.SubmenuRoot>
+                <ContextMenu.SubmenuTrigger>
+                  Move to <ChevronRight aria-hidden="true" />
+                </ContextMenu.SubmenuTrigger>
+                <ContextMenu.Portal>
+                  <ContextMenu.Positioner>
+                    <ContextMenu.Popup>
+                      <ContextMenu.Item>Production</ContextMenu.Item>
+                      <ContextMenu.Item>Staging</ContextMenu.Item>
+                    </ContextMenu.Popup>
+                  </ContextMenu.Positioner>
+                </ContextMenu.Portal>
+              </ContextMenu.SubmenuRoot>
+              <ContextMenu.Separator />
+              <ContextMenu.Item>Remove rack</ContextMenu.Item>
+            </ContextMenu.Popup>
+          </ContextMenu.Positioner>
+        </ContextMenu.Portal>
+      </ContextMenu.Root>
+    </div>
+  );
+}` }]}
 />
 
 ## Examples
 
 <ComponentExampleTabs
   id="context-menu-states"
-  title="Rich anatomy"
-  description="Right-click the target, then exercise the group, checkbox, radio, link, disabled item, and submenu. The live result below the target reflects each selection."
-  preview={<Stories.ContextMenuPreview label={'Right-click for rack actions'} open={false} disabledItem={true} />}
-  sources={[{ label: 'React', language: 'tsx', code: String.raw`function RackContextMenu() {
+  title="Canvas view options"
+  description="Right-click the canvas to toggle labels, choose a density, or reset the view. Checkbox and radio items are used where those selection patterns fit the target."
+  preview={<Stories.ContextMenuViewOptionsPreview />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`import { Button } from '@tinyrack/ui/components/button';
+import { ContextMenu } from '@tinyrack/ui/components/context-menu';
+import { Check, CircleDot } from 'lucide-react';
+import { useState } from 'react';
+
+function CanvasViewOptions() {
+  const [showLabels, setShowLabels] = useState(true);
+  const [density, setDensity] = useState('comfortable');
+
   return (
     <ContextMenu.Root>
-      <ContextMenu.Trigger render={<Button />}>Right-click for rack actions</ContextMenu.Trigger>
+      <ContextMenu.Trigger
+        aria-label="Rack canvas view options"
+        render={<Button appearance="ghost" type="button" />}
+      >
+        Rack canvas
+      </ContextMenu.Trigger>
       <ContextMenu.Portal>
         <ContextMenu.Positioner>
           <ContextMenu.Popup>
             <ContextMenu.Group>
-              <ContextMenu.GroupLabel>Rack actions</ContextMenu.GroupLabel>
-              <ContextMenu.Item>Restart</ContextMenu.Item>
+              <ContextMenu.GroupLabel>View</ContextMenu.GroupLabel>
+              <ContextMenu.CheckboxItem
+                checked={showLabels}
+                onCheckedChange={setShowLabels}
+              >
+                <ContextMenu.CheckboxItemIndicator aria-hidden="true">
+                  <Check />
+                </ContextMenu.CheckboxItemIndicator>
+                Show labels
+              </ContextMenu.CheckboxItem>
             </ContextMenu.Group>
-            <ContextMenu.CheckboxItem defaultChecked>
-              <ContextMenu.CheckboxItemIndicator aria-hidden="true">✓</ContextMenu.CheckboxItemIndicator>
-              Show labels
-            </ContextMenu.CheckboxItem>
-            <ContextMenu.RadioGroup defaultValue="production">
-              <ContextMenu.RadioItem value="production">
-                <ContextMenu.RadioItemIndicator aria-hidden="true">●</ContextMenu.RadioItemIndicator>
-                Production
-              </ContextMenu.RadioItem>
-              <ContextMenu.RadioItem value="staging">
-                <ContextMenu.RadioItemIndicator aria-hidden="true">●</ContextMenu.RadioItemIndicator>
-                Staging
-              </ContextMenu.RadioItem>
-            </ContextMenu.RadioGroup>
-            <ContextMenu.LinkItem href="#inspect">Inspect</ContextMenu.LinkItem>
-            <ContextMenu.SubmenuRoot>
-              <ContextMenu.SubmenuTrigger>Move to</ContextMenu.SubmenuTrigger>
-              <ContextMenu.Portal>
-                <ContextMenu.Positioner>
-                  <ContextMenu.Popup>
-                    <ContextMenu.Item>Cluster A</ContextMenu.Item>
-                    <ContextMenu.Item>Cluster B</ContextMenu.Item>
-                  </ContextMenu.Popup>
-                </ContextMenu.Positioner>
-              </ContextMenu.Portal>
-            </ContextMenu.SubmenuRoot>
+            <ContextMenu.Group>
+              <ContextMenu.GroupLabel>Density</ContextMenu.GroupLabel>
+              <ContextMenu.RadioGroup onValueChange={setDensity} value={density}>
+                <ContextMenu.RadioItem value="comfortable">
+                  <ContextMenu.RadioItemIndicator aria-hidden="true">
+                    <CircleDot />
+                  </ContextMenu.RadioItemIndicator>
+                  Comfortable
+                </ContextMenu.RadioItem>
+                <ContextMenu.RadioItem value="compact">
+                  <ContextMenu.RadioItemIndicator aria-hidden="true">
+                    <CircleDot />
+                  </ContextMenu.RadioItemIndicator>
+                  Compact
+                </ContextMenu.RadioItem>
+              </ContextMenu.RadioGroup>
+            </ContextMenu.Group>
+            <ContextMenu.Separator />
+            <ContextMenu.Item>Reset view</ContextMenu.Item>
           </ContextMenu.Popup>
         </ContextMenu.Positioner>
       </ContextMenu.Portal>
@@ -88,4 +167,4 @@ This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, e
 
 ## API
 
-Every compound part and prop/state type is exported from `@tinyrack/ui/components/context-menu`; styles remain opt-in through the matching CSS subpath. Render the trigger as a focusable control so keyboard users can use the platform context-menu command, and provide an explicit click/tap action that opens the same commands on touch devices.
+Every compound part and prop/state type is exported from `@tinyrack/ui/components/context-menu`; styles remain opt-in through the matching CSS subpath. Make the target focusable for Shift+F10 and provide an explicit control that dispatches the same context-menu action when touch users cannot right-click.

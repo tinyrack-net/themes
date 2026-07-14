@@ -1,24 +1,17 @@
 @layer components {
-  .tr-context-menu {
+  .tr-context-menu,
+  .tr-context-menu-popup {
+    --_tr-context-menu-popup-max-height: calc(var(--tinyrack-control-height-md) * 8);
     --_tr-context-menu-popup-max-width: 32rem;
+    --_tr-context-menu-popup-min-width: calc(var(--tinyrack-control-height-md) * 5);
     box-sizing: border-box;
     color: var(--tr-context-menu-color, var(--tinyrack-text));
     font-family: var(--tinyrack-font-body);
   }
 
-  .tr-context-menu-trigger,
-  .tr-context-menu-submenu-trigger {
-    align-items: center;
-    background: var(--tr-context-menu-control-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
-    border-radius: var(--tinyrack-radius-md);
-    color: var(--tinyrack-text);
-    cursor: pointer;
-    display: inline-flex;
-    font: inherit;
-    gap: var(--tinyrack-control-gap-md);
-    min-height: var(--tinyrack-control-height-md);
-    padding-inline: var(--tinyrack-control-padding-inline-md);
+  .tr-context-menu-trigger {
+    background: var(--tr-context-menu-control-background);
+    cursor: context-menu;
   }
 
   .tr-context-menu-popup {
@@ -27,44 +20,80 @@
     border-radius: var(--tinyrack-radius-lg);
     box-shadow: var(--tinyrack-shadow-overlay);
     color: var(--tinyrack-text);
+    display: grid;
+    gap: var(--tinyrack-space-xs);
+    max-height: min(
+      var(--tr-context-menu-popup-max-height, var(--_tr-context-menu-popup-max-height)),
+      var(--available-height)
+    );
     max-width: min(
-      90vw,
+      var(--available-width),
       var(--tr-context-menu-popup-max-width, var(--_tr-context-menu-popup-max-width))
     );
-    padding: var(--tinyrack-space-md);
+    min-width: min(var(--_tr-context-menu-popup-min-width), var(--available-width));
+    overflow: auto;
+    padding: var(--tinyrack-space-xs);
     z-index: var(--tinyrack-layer-dropdown);
   }
 
   .tr-context-menu-item,
   .tr-context-menu-checkbox-item,
   .tr-context-menu-link-item,
-  .tr-context-menu-radio-item {
+  .tr-context-menu-radio-item,
+  .tr-context-menu-submenu-trigger {
     align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 0;
     border-radius: var(--tinyrack-radius-sm);
+    box-sizing: border-box;
     color: var(--tinyrack-text);
     cursor: pointer;
     display: flex;
-    gap: var(--tinyrack-control-gap-md);
+    font: inherit;
+    gap: var(--tinyrack-space-sm);
     min-height: var(--tinyrack-control-height-sm);
-    padding-inline: var(--tinyrack-control-padding-inline-sm);
+    padding: var(--tinyrack-space-sm) var(--tinyrack-space-md);
+    text-align: start;
+    text-decoration: none;
+    width: 100%;
   }
 
-  .tr-context-menu-item[data-highlighted],
-  .tr-context-menu-checkbox-item[data-highlighted],
-  .tr-context-menu-link-item[data-highlighted],
-  .tr-context-menu-radio-item[data-highlighted] {
+  .tr-context-menu-submenu-trigger {
+    background: var(--tr-context-menu-control-background, transparent);
+  }
+
+  .tr-context-menu-item:is(:hover, :focus-visible, [data-highlighted]),
+  .tr-context-menu-checkbox-item:is(:hover, :focus-visible, [data-highlighted]),
+  .tr-context-menu-link-item:is(:hover, :focus-visible, [data-highlighted]),
+  .tr-context-menu-radio-item:is(:hover, :focus-visible, [data-highlighted]),
+  .tr-context-menu-submenu-trigger:is(
+    :hover,
+    :focus-visible,
+    [data-highlighted],
+    [data-popup-open]
+  ) {
     background: var(--tinyrack-surface-hover);
+    outline: none;
   }
 
   .tr-context-menu-group-label {
-    color: var(--tinyrack-text);
-    font-weight: var(--tinyrack-weight-medium);
+    color: var(--tinyrack-text-muted);
+    font-size: var(--tinyrack-text-xs);
+    font-weight: var(--tinyrack-weight-strong);
+    padding: var(--tinyrack-space-sm) var(--tinyrack-space-md) var(--tinyrack-space-xs);
   }
 
   .tr-context-menu-checkbox-item-indicator,
   .tr-context-menu-radio-item-indicator {
-    background: var(--tr-context-menu-indicator-background, var(--tinyrack-primary));
+    align-items: center;
+    background: var(--tr-context-menu-indicator-background, transparent);
     border-radius: var(--tinyrack-radius-full);
+    color: var(--tr-context-menu-indicator-color, var(--tinyrack-primary));
+    display: inline-flex;
+    flex: none;
+    inline-size: var(--tinyrack-space-lg);
+    justify-content: center;
   }
 
   .tr-context-menu-backdrop {
@@ -77,9 +106,15 @@
   .tr-context-menu-group,
   .tr-context-menu-radio-group {
     align-items: stretch;
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: var(--tinyrack-space-xs);
+  }
+
+  .tr-context-menu-separator {
+    background: var(--tinyrack-border);
+    border: 0;
+    height: var(--tinyrack-border-width-default);
+    margin: var(--tinyrack-space-xs) calc(var(--tinyrack-space-xs) * -1);
   }
 
   .tr-context-menu-positioner {
@@ -89,20 +124,14 @@
   .tr-context-menu-item[data-disabled],
   .tr-context-menu-checkbox-item[data-disabled],
   .tr-context-menu-link-item[data-disabled],
-  .tr-context-menu-radio-item[data-disabled] {
+  .tr-context-menu-radio-item[data-disabled],
+  .tr-context-menu-submenu-trigger[data-disabled] {
     cursor: not-allowed;
     opacity: var(--tinyrack-opacity-disabled);
   }
 
-  .tr-context-menu :focus-visible,
-  .tr-context-menu:focus-visible {
+  .tr-context-menu-trigger:focus-visible {
     outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
     outline-offset: var(--tinyrack-focus-offset);
-  }
-
-  .tr-context-menu :disabled,
-  .tr-context-menu[data-disabled] {
-    cursor: not-allowed;
-    opacity: var(--tinyrack-opacity-disabled);
   }
 }

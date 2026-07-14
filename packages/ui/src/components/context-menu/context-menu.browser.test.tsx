@@ -1,3 +1,4 @@
+import '../../core/core.css';
 import './context-menu.css';
 import { expect, test, vi } from 'vitest';
 import { userEvent } from 'vitest/browser';
@@ -42,6 +43,149 @@ test('opens from the real context event instead of a forced open coordinate', as
     .toBe('menu');
   const positioner = document.querySelector<HTMLElement>('.tr-context-menu-positioner');
   await expect.poll(() => positioner?.style.transform).not.toBe('');
+});
+
+test('opens from Shift+F10 when the target is keyboard focusable', async () => {
+  await render(
+    <ContextMenu.Root>
+      <ContextMenu.Trigger render={<button type="button" />}>
+        Keyboard target
+      </ContextMenu.Trigger>
+      <ContextMenu.Portal>
+        <ContextMenu.Positioner>
+          <ContextMenu.Popup>
+            <ContextMenu.Item>Inspect</ContextMenu.Item>
+          </ContextMenu.Popup>
+        </ContextMenu.Positioner>
+      </ContextMenu.Portal>
+    </ContextMenu.Root>,
+  );
+
+  const trigger = document.querySelector<HTMLButtonElement>('.tr-context-menu-trigger');
+  trigger?.focus();
+  await userEvent.keyboard('{Shift>}{F10}{/Shift}');
+
+  await expect.poll(() => document.querySelector('[role="menu"]')).not.toBeNull();
+});
+
+test('supports the ContextMenu key and preserves consumer keyboard cancellation', async () => {
+  const onKeyDown = vi.fn();
+  await render(
+    <ContextMenu.Root>
+      <ContextMenu.Trigger
+        onKeyDown={(event) => {
+          onKeyDown(event.key);
+          if (event.key === 'F10') event.preventDefault();
+        }}
+        render={<button type="button" />}
+      >
+        Keyboard target
+      </ContextMenu.Trigger>
+      <ContextMenu.Portal>
+        <ContextMenu.Positioner>
+          <ContextMenu.Popup>
+            <ContextMenu.Item>Inspect</ContextMenu.Item>
+          </ContextMenu.Popup>
+        </ContextMenu.Positioner>
+      </ContextMenu.Portal>
+    </ContextMenu.Root>,
+  );
+
+  const trigger = document.querySelector<HTMLButtonElement>('.tr-context-menu-trigger');
+  trigger?.dispatchEvent(
+    new KeyboardEvent('keydown', { bubbles: true, key: 'F10', shiftKey: true }),
+  );
+  expect(document.querySelector('[role="menu"]')).toBeNull();
+
+  trigger?.dispatchEvent(
+    new KeyboardEvent('keydown', { bubbles: true, key: 'ContextMenu' }),
+  );
+  await expect.poll(() => document.querySelector('[role="menu"]')).not.toBeNull();
+  expect(onKeyDown).toHaveBeenCalledTimes(2);
+});
+
+test('styles items, submenu triggers, indicators, separators, and overflow as menu anatomy', async () => {
+  document.documentElement.dataset['theme'] = 'tinyrack-light';
+  await render(
+    <ContextMenu.Root>
+      <ContextMenu.Trigger>Rack target</ContextMenu.Trigger>
+      <ContextMenu.Portal>
+        <ContextMenu.Positioner>
+          <ContextMenu.Popup>
+            <ContextMenu.Group>
+              <ContextMenu.GroupLabel>View</ContextMenu.GroupLabel>
+              <ContextMenu.CheckboxItem defaultChecked>
+                <ContextMenu.CheckboxItemIndicator>
+                  Checked
+                </ContextMenu.CheckboxItemIndicator>
+                Show labels
+              </ContextMenu.CheckboxItem>
+              <ContextMenu.Item disabled>Unavailable</ContextMenu.Item>
+            </ContextMenu.Group>
+            <ContextMenu.Separator />
+            <ContextMenu.SubmenuRoot>
+              <ContextMenu.SubmenuTrigger>Move to</ContextMenu.SubmenuTrigger>
+              <ContextMenu.Portal>
+                <ContextMenu.Positioner>
+                  <ContextMenu.Popup>
+                    <ContextMenu.Item>Production</ContextMenu.Item>
+                  </ContextMenu.Popup>
+                </ContextMenu.Positioner>
+              </ContextMenu.Portal>
+            </ContextMenu.SubmenuRoot>
+          </ContextMenu.Popup>
+        </ContextMenu.Positioner>
+      </ContextMenu.Portal>
+    </ContextMenu.Root>,
+  );
+
+  document.querySelector('.tr-context-menu-trigger')?.dispatchEvent(
+    new MouseEvent('contextmenu', {
+      bubbles: true,
+      button: 2,
+      clientX: 48,
+      clientY: 48,
+    }),
+  );
+  await expect.poll(() => document.querySelector('[role="menu"]')).not.toBeNull();
+
+  const popup = document.querySelector<HTMLElement>('.tr-context-menu-popup');
+  const item = document.querySelector<HTMLElement>('.tr-context-menu-checkbox-item');
+  const submenu = document.querySelector<HTMLElement>(
+    '.tr-context-menu-submenu-trigger',
+  );
+  const separator = document.querySelector<HTMLElement>('.tr-context-menu-separator');
+  const indicator = document.querySelector<HTMLElement>(
+    '.tr-context-menu-checkbox-item-indicator',
+  );
+  const disabledItem = document.querySelector<HTMLElement>(
+    '.tr-context-menu-item[data-disabled]',
+  );
+
+  expect(getComputedStyle(popup as HTMLElement).display).toBe('grid');
+  expect(getComputedStyle(popup as HTMLElement).overflowY).toBe('auto');
+  expect(getComputedStyle(submenu as HTMLElement).display).toBe(
+    getComputedStyle(item as HTMLElement).display,
+  );
+  expect(getComputedStyle(submenu as HTMLElement).width).toBe(
+    getComputedStyle(item as HTMLElement).width,
+  );
+  expect(getComputedStyle(submenu as HTMLElement).borderTopStyle).toBe('none');
+  expect(
+    Number.parseFloat(getComputedStyle(separator as HTMLElement).height),
+  ).toBeGreaterThan(0);
+  expect(getComputedStyle(indicator as HTMLElement).display).toContain('flex');
+  expect(
+    Number.parseFloat(getComputedStyle(indicator as HTMLElement).width),
+  ).toBeGreaterThan(0);
+  expect(
+    Number.parseFloat(getComputedStyle(disabledItem as HTMLElement).opacity),
+  ).toBeLessThan(1);
+  item?.setAttribute('data-highlighted', '');
+  expect(getComputedStyle(item as HTMLElement).backgroundColor).not.toBe(
+    getComputedStyle(popup as HTMLElement).backgroundColor,
+  );
+  delete document.documentElement.dataset['theme'];
 });
 
 test('invokes an enabled command and restores trigger focus', async () => {

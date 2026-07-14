@@ -969,6 +969,80 @@ describe('built React Router documentation', () => {
     }
   });
 
+  it('opens ContextMenu rack commands from pointer, keyboard, and touch fallback', async () => {
+    const page = await browser.newPage({ viewport: { height: 900, width: 1280 } });
+    await setTheme(page, 'tinyrack-light');
+    try {
+      await page.goto(`${origin}/components/context-menu`);
+      const example = page.locator('[data-component-example-id="context-menu-basic"]');
+      const target = example.getByRole('button', {
+        name: 'Rack Alpha, online rack. Open context menu for actions.',
+      });
+      const moreActions = example.getByRole('button', {
+        name: 'Open actions for Rack Alpha',
+      });
+      const openPopup = page.locator('.tr-context-menu-popup[data-open]').first();
+
+      await target.focus();
+      const targetBox = await target.boundingBox();
+      expect(targetBox).not.toBeNull();
+      await target.click({
+        button: 'right',
+        position: {
+          x: (targetBox?.width ?? 0) - 8,
+          y: (targetBox?.height ?? 0) / 2,
+        },
+      });
+      await openPopup.waitFor();
+      await expectInsideViewport(page, openPopup);
+      const pointerPopupBox = await openPopup.boundingBox();
+      expect(pointerPopupBox?.x ?? 0).toBeGreaterThanOrEqual(targetBox?.x ?? 0);
+      expect(pointerPopupBox?.x ?? 0).toBeLessThanOrEqual(
+        (targetBox?.x ?? 0) + (targetBox?.width ?? 0),
+      );
+      const pointerCommands = await openPopup.getByRole('menuitem').allTextContents();
+      await openPopup.getByRole('menuitem', { name: 'Copy address' }).click();
+      await expect
+        .poll(() => example.locator('output[aria-live="polite"]').textContent())
+        .toContain('10.42.0.18 copied.');
+      await expect
+        .poll(() => target.evaluate((element) => document.activeElement === element))
+        .toBe(true);
+
+      await target.click({ button: 'right' });
+      await openPopup.waitFor();
+      await page.keyboard.press('Escape');
+      await expect.poll(() => openPopup.isVisible()).toBe(false);
+      await expect
+        .poll(() => target.evaluate((element) => document.activeElement === element))
+        .toBe(true);
+
+      await page.keyboard.press('Shift+F10');
+      await openPopup.waitFor();
+      await page.keyboard.press('Escape');
+      await expect
+        .poll(() => target.evaluate((element) => document.activeElement === element))
+        .toBe(true);
+
+      await moreActions.click();
+      await openPopup.waitFor();
+      await expect(openPopup.getByRole('menuitem').allTextContents()).resolves.toEqual(
+        pointerCommands,
+      );
+      await openPopup.getByRole('menuitem', { name: 'Restart' }).click();
+      await expect
+        .poll(() => example.locator('output[aria-live="polite"]').textContent())
+        .toContain('Restart requested for Rack Alpha.');
+      await expect
+        .poll(() =>
+          moreActions.evaluate((element) => document.activeElement === element),
+        )
+        .toBe(true);
+    } finally {
+      await page.close();
+    }
+  });
+
   it('accepts complex popup and menu contracts at mobile bounds', async () => {
     const page = await browser.newPage({ viewport: { height: 844, width: 390 } });
     try {

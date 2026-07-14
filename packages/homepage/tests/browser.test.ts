@@ -103,19 +103,26 @@ async function setTheme(page: Page, theme: 'tinyrack-dark' | 'tinyrack-light') {
   }, theme);
 }
 
+async function gotoHydrated(page: Page, url: string) {
+  await page.goto(url);
+  await page.locator('html[data-hydrated="true"]').waitFor();
+}
+
 async function expectInsideViewport(page: Page, locator: Locator) {
-  const box = await locator.boundingBox();
-  const viewport = page.viewportSize();
-  expect(box).not.toBeNull();
-  expect(viewport).not.toBeNull();
-  expect(box?.x).toBeGreaterThanOrEqual(-1);
-  expect(box?.y).toBeGreaterThanOrEqual(-1);
-  expect((box?.x ?? 0) + (box?.width ?? 0)).toBeLessThanOrEqual(
-    (viewport?.width ?? 0) + 1,
-  );
-  expect((box?.y ?? 0) + (box?.height ?? 0)).toBeLessThanOrEqual(
-    (viewport?.height ?? 0) + 1,
-  );
+  await expect
+    .poll(async () => {
+      const box = await locator.boundingBox();
+      const viewport = page.viewportSize();
+      if (box === null || viewport === null) return false;
+
+      return (
+        box.x >= -1 &&
+        box.y >= -1 &&
+        box.x + box.width <= viewport.width + 1 &&
+        box.y + box.height <= viewport.height + 1
+      );
+    })
+    .toBe(true);
 }
 
 async function expectVerticallyCentered(container: Locator, item: Locator) {
@@ -873,7 +880,7 @@ describe('built React Router documentation', () => {
   it('updates controls from inputs and component interaction, then resets', async () => {
     const page = await browser.newPage({ viewport: { height: 900, width: 1280 } });
     try {
-      await page.goto(`${origin}/components/toggle`);
+      await gotoHydrated(page, `${origin}/components/toggle`);
       const preview = page.locator('[data-playground-preview]');
       const pressedControl = page
         .locator('[data-playground-control="pressed"]')
@@ -887,7 +894,7 @@ describe('built React Router documentation', () => {
       await page.getByRole('button', { name: 'Reset', exact: true }).click();
       await expect(pressedControl.isChecked()).resolves.toBe(false);
 
-      await page.goto(`${origin}/components/progress`);
+      await gotoHydrated(page, `${origin}/components/progress`);
       const range = page
         .locator('[data-playground-control="value"]')
         .getByRole('slider');
@@ -900,16 +907,16 @@ describe('built React Router documentation', () => {
           .getAttribute('aria-valuenow'),
       ).resolves.toBe('72');
 
-      await page.goto(`${origin}/components/checkbox-group`);
+      await gotoHydrated(page, `${origin}/components/checkbox-group`);
       const checklist = page.locator('[data-playground-control="selectedValues"]');
       await expect(checklist.getByRole('checkbox').count()).resolves.toBeGreaterThan(1);
 
-      await page.goto(`${origin}/components/accordion`);
+      await gotoHydrated(page, `${origin}/components/accordion`);
       const jsonControl = page.locator('[data-playground-control="value"] textarea');
       await jsonControl.fill('not-json');
       await expect(jsonControl.getAttribute('aria-invalid')).resolves.toBe('true');
 
-      await page.goto(`${origin}/components/button`);
+      await gotoHydrated(page, `${origin}/components/button`);
       const select = page
         .locator('[data-playground-control="variant"]')
         .getByRole('combobox');
@@ -926,7 +933,7 @@ describe('built React Router documentation', () => {
   it('keeps stateful Playground controls synchronized in both directions', async () => {
     const page = await browser.newPage({ viewport: { height: 900, width: 1280 } });
     try {
-      await page.goto(`${origin}/components/drawer`);
+      await gotoHydrated(page, `${origin}/components/drawer`);
       const drawerOpen = page
         .locator('[data-playground-control="open"]')
         .getByRole('checkbox');
@@ -941,7 +948,7 @@ describe('built React Router documentation', () => {
       await expect(drawerOpen.isChecked()).resolves.toBe(false);
       await expect(drawerLabel.inputValue()).resolves.toBe('Open settings');
 
-      await page.goto(`${origin}/components/form`);
+      await gotoHydrated(page, `${origin}/components/form`);
       const formValue = page.locator('[data-playground-control="value"] input');
       const rackInput = page
         .locator('[data-playground-preview]')
@@ -953,7 +960,7 @@ describe('built React Router documentation', () => {
       await page.getByRole('button', { name: 'Reset', exact: true }).click();
       await expect(rackInput.inputValue()).resolves.toBe('rack-alpha');
 
-      await page.goto(`${origin}/components/number-field`);
+      await gotoHydrated(page, `${origin}/components/number-field`);
       const numberValue = page.locator('[data-playground-control="value"] input');
       const replicas = page
         .locator('[data-playground-preview]')
@@ -966,7 +973,7 @@ describe('built React Router documentation', () => {
       await page.getByRole('button', { name: 'Reset', exact: true }).click();
       await expect(replicas.inputValue()).resolves.toBe('3');
 
-      await page.goto(`${origin}/components/otp-field`);
+      await gotoHydrated(page, `${origin}/components/otp-field`);
       const otpValue = page.locator('[data-playground-control="value"] input');
       const otpInputs = page.locator('[data-playground-preview] .tr-otp-field-digit');
       await otpValue.fill('1234');
@@ -984,7 +991,7 @@ describe('built React Router documentation', () => {
       await page.getByRole('button', { name: 'Reset', exact: true }).click();
       await expect(otpValue.inputValue()).resolves.toBe('');
 
-      await page.goto(`${origin}/components/select`);
+      await gotoHydrated(page, `${origin}/components/select`);
       const selectValue = page
         .locator('[data-playground-control="value"]')
         .getByRole('combobox');
@@ -1005,7 +1012,7 @@ describe('built React Router documentation', () => {
       await page.getByRole('button', { name: 'Reset', exact: true }).click();
       await expect.poll(() => selectValue.textContent()).toContain('alpha');
 
-      await page.goto(`${origin}/components/slider`);
+      await gotoHydrated(page, `${origin}/components/slider`);
       const sliderValue = page
         .locator('[data-playground-control="value"]')
         .getByRole('spinbutton');
@@ -1020,7 +1027,7 @@ describe('built React Router documentation', () => {
       await page.getByRole('button', { name: 'Reset', exact: true }).click();
       await expect(sliderValue.inputValue()).resolves.toBe('48');
 
-      await page.goto(`${origin}/components/switch`);
+      await gotoHydrated(page, `${origin}/components/switch`);
       const switchChecked = page
         .locator('[data-playground-control="checked"]')
         .getByRole('checkbox');
@@ -1034,7 +1041,7 @@ describe('built React Router documentation', () => {
       await page.getByRole('button', { name: 'Reset', exact: true }).click();
       await expect(switchChecked.isChecked()).resolves.toBe(true);
 
-      await page.goto(`${origin}/components/toggle-group`);
+      await gotoHydrated(page, `${origin}/components/toggle-group`);
       const groupValue = page.locator('[data-playground-control="value"] textarea');
       const group = page
         .locator('[data-playground-preview]')

@@ -61,6 +61,25 @@ describe('React-only component structure', () => {
     expect(source).not.toMatch(/<[A-Za-z]\w*\b[^>]*\/>/);
   });
 
+  it('awaits asynchronous browser render lifecycle methods', () => {
+    const violations = componentNames.flatMap((component) => {
+      const source = readFileSync(
+        join(componentsRoot, component, `${component}.browser.test.tsx`),
+        'utf8',
+      );
+
+      return source
+        .split(/\r?\n/)
+        .flatMap((line, index) =>
+          line.includes('.unmount()') && !/\bawait\b/.test(line)
+            ? [`${component}.browser.test.tsx:${index + 1}`]
+            : [],
+        );
+    });
+
+    expect(violations).toEqual([]);
+  });
+
   it('has exactly the supported provider directories', () => {
     const actual = readdirSync(providersRoot, { withFileTypes: true })
       .filter((entry) => entry.isDirectory())

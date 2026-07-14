@@ -36,6 +36,7 @@ test('preserves namespace, native props, refs, and Tinyrack variants', async () 
   expect(root.dataset['shape']).toBe('square');
   expect(root.dataset['size']).toBe('lg');
   expect(getComputedStyle(root).width).toBe('52px');
+  await expect.poll(() => fallbackRef.current).not.toBeNull();
   expect(fallbackRef.current).toHaveClass('tr-avatar-fallback');
 });
 

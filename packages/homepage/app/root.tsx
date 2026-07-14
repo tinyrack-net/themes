@@ -7,7 +7,7 @@ import './styles/app.css';
 import { documentSeoManifest } from 'virtual:tinyrack-document-seo';
 import { MDXProvider } from '@mdx-js/react';
 import { createTinyrackMdxComponents } from '@tinyrack/ui/mdx';
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { type ComponentPropsWithoutRef, type ReactNode, useEffect } from 'react';
 import {
   Links,
   type LinksFunction,
@@ -40,6 +40,14 @@ function RouteMdxWrapper({ children, className }: ComponentPropsWithoutRef<'arti
 const homepageMdxComponents = createTinyrackMdxComponents({
   components: { wrapper: RouteMdxWrapper },
 });
+
+function HydrationMarker() {
+  useEffect(() => {
+    document.documentElement.dataset['hydrated'] = 'true';
+  }, []);
+
+  return null;
+}
 
 export const links: LinksFunction = () => [
   { href: '/favicon.svg', rel: 'icon', type: 'image/svg+xml' },
@@ -77,6 +85,7 @@ export function Layout({ children }: { children: ReactNode }) {
 export default function App() {
   return (
     <MDXProvider components={homepageMdxComponents}>
+      <HydrationMarker />
       <SiteShell>
         <Outlet />
       </SiteShell>

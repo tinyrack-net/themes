@@ -47,22 +47,32 @@ test('preserves controlled state, native props, and the trigger relationship', a
   expect(panel?.hidden).toBe(false);
 });
 
-test('opens and closes from Enter and Space while retaining trigger focus', async () => {
-  await render(
+test('opens from Enter while retaining trigger focus', async () => {
+  const screen = await render(
     <Collapsible.Root>
-      <Collapsible.Trigger>Keyboard details</Collapsible.Trigger>
-      <Collapsible.Panel>Keyboard content</Collapsible.Panel>
+      <Collapsible.Trigger>Enter details</Collapsible.Trigger>
+      <Collapsible.Panel>Enter content</Collapsible.Panel>
     </Collapsible.Root>,
   );
-  const trigger = document.querySelector<HTMLButtonElement>('.tr-collapsible-summary');
+  const trigger = screen.getByRole('button', { name: 'Enter details' });
 
-  trigger?.focus();
-  await userEvent.keyboard('{Enter}');
-  await expect.poll(() => trigger?.getAttribute('aria-expanded')).toBe('true');
-  expect(document.activeElement).toBe(trigger);
-  await userEvent.keyboard(' ');
-  await expect.poll(() => trigger?.getAttribute('aria-expanded')).toBe('false');
-  expect(document.activeElement).toBe(trigger);
+  await userEvent.type(trigger, '{Enter}');
+  await expect.element(trigger).toHaveAttribute('aria-expanded', 'true');
+  await expect.element(trigger).toHaveFocus();
+});
+
+test('closes from Space while retaining trigger focus', async () => {
+  const screen = await render(
+    <Collapsible.Root defaultOpen>
+      <Collapsible.Trigger>Space details</Collapsible.Trigger>
+      <Collapsible.Panel>Space content</Collapsible.Panel>
+    </Collapsible.Root>,
+  );
+  const trigger = screen.getByRole('button', { name: 'Space details' });
+
+  await userEvent.type(trigger, '[Space]');
+  await expect.element(trigger).toHaveAttribute('aria-expanded', 'false');
+  await expect.element(trigger).toHaveFocus();
 });
 
 test('animates the panel open and closed with design-system motion tokens', async () => {
@@ -97,8 +107,9 @@ test('animates the panel open and closed with design-system motion tokens', asyn
 
   await expect.poll(() => panel?.hasAttribute('data-starting-style')).toBe(false);
   trigger?.click();
-  await expect.poll(() => panel?.hasAttribute('data-ending-style')).toBe(true);
-  expect(panel?.isConnected).toBe(true);
+  await expect
+    .poll(() => panel?.isConnected === true && panel.hasAttribute('data-ending-style'))
+    .toBe(true);
   await expect.poll(() => panel?.isConnected).toBe(false);
 });
 

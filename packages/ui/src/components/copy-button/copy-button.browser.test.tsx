@@ -49,14 +49,11 @@ test('restarts its reset timer after repeated copy actions', async () => {
   await userEvent.click(button);
   await expect.poll(() => onStatusChange.mock.calls.length).toBe(2);
   expect(writeText).toHaveBeenCalledTimes(2);
-  view.unmount();
+  await view.unmount();
   writeText.mockRestore();
 });
 
 test('falls back to selection copying after Clipboard API rejection', async () => {
-  const writeText = vi
-    .spyOn(navigator.clipboard, 'writeText')
-    .mockRejectedValue(new Error('denied'));
   const execCommand = vi.fn(() => true);
   Object.defineProperty(document, 'execCommand', {
     configurable: true,
@@ -68,7 +65,13 @@ test('falls back to selection copying after Clipboard API rejection', async () =
   const selection = document.getSelection();
   const range = document.createRange();
   range.selectNodeContents(selected);
-  selection?.addRange(range);
+  const writeText = vi
+    .spyOn(navigator.clipboard, 'writeText')
+    .mockImplementation(() => {
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+      return Promise.reject(new Error('denied'));
+    });
   await render(<CopyButton value="fallback value" />);
   await userEvent.click(
     document.querySelector<HTMLButtonElement>('.tr-btn') as HTMLButtonElement,
@@ -81,6 +84,7 @@ test('falls back to selection copying after Clipboard API rejection', async () =
   expect(execCommand).toHaveBeenCalledWith('copy');
   expect(document.querySelector('body > textarea')).toBeNull();
   expect(selection?.toString()).toBe('Existing selection');
+  selection?.removeAllRanges();
   selected.remove();
   writeText.mockRestore();
 });
@@ -158,7 +162,7 @@ test('reports unavailable when both copy strategies fail and respects cancellati
     'Unavailable',
   );
 
-  view.unmount();
+  await view.unmount();
   await render(<CopyButton onClick={onClick} value="cancelled" />);
   await userEvent.click(
     document.querySelector<HTMLButtonElement>('.tr-btn') as HTMLButtonElement,

@@ -121,9 +121,15 @@ test('animates the popup and backdrop when opening and closing', async () => {
   expect(Number.parseFloat(backdropStyle.transitionDuration)).toBeGreaterThan(0);
 
   document.querySelector<HTMLButtonElement>('.tr-drawer-close')?.click();
-  await expect.poll(() => popup?.hasAttribute('data-ending-style')).toBe(true);
-  expect(popup?.isConnected).toBe(true);
-  expect(getComputedStyle(popup as HTMLElement).transform).not.toBe('none');
-  expect(Number.parseFloat(getComputedStyle(backdrop as HTMLElement).opacity)).toBe(0);
+  await expect
+    .poll(() => {
+      if (popup?.isConnected !== true || backdrop?.isConnected !== true) return false;
+      return (
+        popup.hasAttribute('data-ending-style') &&
+        getComputedStyle(popup).transform !== 'none' &&
+        Number.parseFloat(getComputedStyle(backdrop).opacity) === 0
+      );
+    })
+    .toBe(true);
   await expect.poll(() => popup?.isConnected).toBe(false);
 });

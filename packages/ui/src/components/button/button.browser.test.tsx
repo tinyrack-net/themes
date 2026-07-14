@@ -78,17 +78,24 @@ test('uses a readable semantic foreground for secondary outline buttons', async 
   );
 });
 
-test('activates from Enter and Space while preserving focus', async () => {
+test('activates from Enter while preserving focus', async () => {
   const onClick = vi.fn();
-  await render(<Button onClick={onClick}>Keyboard save</Button>);
-  const button = document.querySelector<HTMLButtonElement>('.tr-btn');
+  const screen = await render(<Button onClick={onClick}>Enter save</Button>);
+  const button = screen.getByRole('button', { name: 'Enter save' });
 
-  button?.focus();
-  expect(document.activeElement).toBe(button);
-  await userEvent.keyboard('{Enter}');
-  await userEvent.keyboard(' ');
-  expect(onClick).toHaveBeenCalledTimes(2);
-  expect(document.activeElement).toBe(button);
+  await userEvent.type(button, '{Enter}');
+  await expect.poll(() => onClick.mock.calls.length).toBe(1);
+  await expect.element(button).toHaveFocus();
+});
+
+test('activates from Space while preserving focus', async () => {
+  const onClick = vi.fn();
+  const screen = await render(<Button onClick={onClick}>Space save</Button>);
+  const button = screen.getByRole('button', { name: 'Space save' });
+
+  await userEvent.type(button, '[Space]');
+  await expect.poll(() => onClick.mock.calls.length).toBe(1);
+  await expect.element(button).toHaveFocus();
 });
 
 test('defaults to a non-submit button and supports explicit form submission', async () => {

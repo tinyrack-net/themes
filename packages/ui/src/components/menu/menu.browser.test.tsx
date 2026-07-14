@@ -23,33 +23,34 @@ function ActionsMenu({ onRestart }: { onRestart?: () => void }) {
 
 test('opens from the trigger and exposes Tinyrack menu semantics', async () => {
   expect(Menu.Root).toBe(MenuRoot);
-  await render(<ActionsMenu />);
-  const trigger = page.getByRole('button', { name: 'Actions' }).element();
+  const screen = await render(<ActionsMenu />);
+  const trigger = screen.getByRole('button', { name: 'Actions' });
   await userEvent.click(trigger);
 
-  const menu = page.getByRole('menu', { name: 'Actions' }).element();
-  expect(menu).toHaveClass('tr-layer', 'tr-menu-content');
-  expect(page.getByRole('menuitem', { name: 'Restart' }).element()).toHaveClass(
-    'tr-menu-item',
-  );
-  expect(trigger.getAttribute('aria-expanded')).toBe('true');
+  await expect
+    .element(screen.getByRole('menu', { name: 'Actions' }))
+    .toHaveClass('tr-layer', 'tr-menu-content');
+  await expect
+    .element(screen.getByRole('menuitem', { name: 'Restart' }))
+    .toHaveClass('tr-menu-item');
+  await expect.element(trigger).toHaveAttribute('aria-expanded', 'true');
 });
 
 test('uses keyboard typeahead, activates an item, and restores trigger focus', async () => {
   const onRestart = vi.fn();
-  await render(<ActionsMenu onRestart={onRestart} />);
-  const trigger = page.getByRole('button', { name: 'Actions' }).element();
-  trigger.focus();
-  await userEvent.keyboard('{Enter}');
-  await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('true');
+  const screen = await render(<ActionsMenu onRestart={onRestart} />);
+  const trigger = screen.getByRole('button', { name: 'Actions' });
+  await userEvent.type(trigger, '{Enter}');
+  await expect.element(trigger).toHaveAttribute('aria-expanded', 'true');
 
-  await userEvent.keyboard('{Home}');
-  const restart = page.getByRole('menuitem', { name: 'Restart' }).element();
-  await expect.poll(() => restart.hasAttribute('data-highlighted')).toBe(true);
-  await userEvent.keyboard('{Enter}');
+  const restart = screen.getByRole('menuitem', { name: 'Restart' });
+  await expect.element(restart).toHaveFocus();
+  await userEvent.type(restart, '{Home}');
+  await expect.element(restart).toHaveAttribute('data-highlighted');
+  await userEvent.type(restart, '{Enter}');
   expect(onRestart).toHaveBeenCalledOnce();
-  await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('false');
-  await expect.poll(() => document.activeElement).toBe(trigger);
+  await expect.element(trigger).toHaveAttribute('aria-expanded', 'false');
+  await expect.element(trigger).toHaveFocus();
 });
 
 test('updates checkbox and radio items without closing the menu', async () => {
@@ -89,15 +90,17 @@ test('updates checkbox and radio items without closing the menu', async () => {
 });
 
 test('dismisses with Escape and keeps the positioned popup in viewport bounds', async () => {
-  await render(<ActionsMenu />);
-  const trigger = page.getByRole('button', { name: 'Actions' }).element();
+  const screen = await render(<ActionsMenu />);
+  const trigger = screen.getByRole('button', { name: 'Actions' });
   await userEvent.click(trigger);
-  await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('true');
+  await expect.element(trigger).toHaveAttribute('aria-expanded', 'true');
   const popup = document.querySelector<HTMLElement>('.tr-menu-content') as HTMLElement;
   const rect = popup.getBoundingClientRect();
   expect(rect.left).toBeGreaterThanOrEqual(0);
   expect(rect.right).toBeLessThanOrEqual(window.innerWidth);
-  await userEvent.keyboard('{Escape}');
-  await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('false');
-  await expect.poll(() => document.activeElement).toBe(trigger);
+  const menu = screen.getByRole('menu');
+  await expect.element(menu).toHaveFocus();
+  await userEvent.type(menu, '{Escape}');
+  await expect.element(trigger).toHaveAttribute('aria-expanded', 'false');
+  await expect.element(trigger).toHaveFocus();
 });

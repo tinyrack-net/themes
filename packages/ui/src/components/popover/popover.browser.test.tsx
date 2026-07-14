@@ -38,14 +38,13 @@ test('opens by pointer with accessible title and description relationships', asy
 });
 
 test('dismisses with Escape and restores trigger focus', async () => {
-  await render(<DetailsPopover />);
-  const trigger = page.getByRole('button', { name: 'Details' }).element();
-  trigger.focus();
-  await userEvent.keyboard('{Enter}');
-  await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('true');
-  await userEvent.keyboard('{Escape}');
-  await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('false');
-  await expect.poll(() => document.activeElement).toBe(trigger);
+  const screen = await render(<DetailsPopover />);
+  const trigger = screen.getByRole('button', { exact: true, name: 'Details' });
+  await userEvent.type(trigger, '{Enter}');
+  await expect.element(trigger).toHaveAttribute('aria-expanded', 'true');
+  await userEvent.type(trigger, '{Escape}');
+  await expect.element(trigger).toHaveAttribute('aria-expanded', 'false');
+  await expect.element(trigger).toHaveFocus();
 });
 
 test('dismisses on outside pointer interaction and remains within viewport bounds', async () => {

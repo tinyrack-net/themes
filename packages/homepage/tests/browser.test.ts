@@ -13,6 +13,7 @@ const contentTypes: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.pagefind': 'application/wasm',
   '.png': 'image/png',
   '.svg': 'image/svg+xml',
   '.txt': 'text/plain; charset=utf-8',
@@ -257,17 +258,61 @@ describe('built React Router documentation', () => {
     });
   }
 
-  it('filters navigation and persists theme selection', async () => {
+  it('searches documentation with Pagefind and persists theme selection', async () => {
     const page = await browser.newPage({ viewport: { height: 900, width: 1280 } });
+    const pagefindRequests: string[] = [];
+    page.on('request', (request) => {
+      if (request.url().includes('/pagefind/')) pagefindRequests.push(request.url());
+    });
     try {
       await page.goto(origin);
-      await page.getByRole('searchbox', { name: 'Filter components' }).fill('button');
+      expect(pagefindRequests).toEqual([]);
+
+      const trigger = page.getByRole('button', { name: 'Search documentation' });
+      await trigger.click();
+      const dialog = page.getByRole('dialog', { name: 'Search documentation' });
+      const search = dialog.getByRole('combobox', { name: 'Search documentation' });
       await expect(
-        page.getByRole('link', { name: 'Button', exact: true }).isVisible(),
+        search.evaluate((element) => element === document.activeElement),
       ).resolves.toBe(true);
+      await search.fill('button');
+      await expect
+        .poll(() =>
+          dialog.locator('.tr-site-search-result-heading strong').first().textContent(),
+        )
+        .toBe('Button');
+      expect(pagefindRequests.length).toBeGreaterThan(0);
+
+      await page.keyboard.press('Escape');
+      await expect.poll(() => dialog.isVisible()).toBe(false);
       await expect(
-        page.getByRole('link', { name: 'Accordion', exact: true }).count(),
-      ).resolves.toBe(0);
+        trigger.evaluate((element) => element === document.activeElement),
+      ).resolves.toBe(true);
+
+      await page.keyboard.press('Control+k');
+      await search.fill('getAriaValueText');
+      await expect(
+        dialog.locator('.tr-site-search-result-heading strong').first().textContent(),
+      ).resolves.toBe('Slider');
+      await page.keyboard.press('ArrowDown');
+      await expect
+        .poll(() =>
+          dialog
+            .locator('.tr-site-search-result')
+            .first()
+            .getAttribute('data-highlighted'),
+        )
+        .not.toBeNull();
+      await page.keyboard.press('Enter');
+      await page.getByRole('heading', { level: 1, name: 'Slider' }).waitFor();
+      await expect
+        .poll(() => new URL(page.url()).hash)
+        .toBe('#slider-validation-heading');
+      const searchDestination = page.locator('#slider-validation-heading');
+      await expect
+        .poll(async () => (await searchDestination.boundingBox())?.y ?? 0)
+        .toBeGreaterThanOrEqual(60);
+
       await page.getByRole('button', { name: 'Use light theme' }).click();
       expect(await page.locator('html').getAttribute('data-theme')).toBe(
         'tinyrack-light',
@@ -319,22 +364,44 @@ describe('built React Router documentation', () => {
     });
     try {
       await mobilePage.goto(`${origin}/components/button`);
+      const mobileSearch = mobilePage.getByRole('button', {
+        name: 'Search documentation',
+      });
       for (const control of [
         mobilePage.getByRole('button', { name: 'Use light theme' }),
         mobilePage.getByRole('button', { name: 'Open navigation' }),
+        mobileSearch,
       ]) {
         const box = await control.boundingBox();
         expect(box?.width).toBeGreaterThanOrEqual(44);
         expect(box?.height).toBeGreaterThanOrEqual(44);
       }
+      await mobileSearch.click();
+      const mobileSearchDialog = mobilePage.getByRole('dialog', {
+        name: 'Search documentation',
+      });
+      await expectInsideViewport(mobilePage, mobileSearchDialog);
+      await mobileSearchDialog
+        .getByRole('combobox', { name: 'Search documentation' })
+        .fill('switch');
+      await expect
+        .poll(() =>
+          mobileSearchDialog
+            .locator('.tr-site-search-result-heading strong')
+            .first()
+            .textContent(),
+        )
+        .toBe('Switch');
+      await mobileSearchDialog.locator('.tr-site-search-result').first().click();
+      await mobilePage.getByRole('heading', { level: 1, name: 'Switch' }).waitFor();
+      await expect.poll(() => mobileSearchDialog.isVisible()).toBe(false);
 
       await desktopPage.goto(`${origin}/foundations/typography`);
-      const search = desktopPage.getByRole('searchbox', { name: 'Filter components' });
-      expect(
-        Number.parseFloat(
-          await search.evaluate((element) => getComputedStyle(element).paddingLeft),
-        ),
-      ).toBeGreaterThanOrEqual(36);
+      const search = desktopPage.getByRole('button', {
+        name: 'Search documentation',
+      });
+      const searchBox = await search.boundingBox();
+      expect(searchBox?.width).toBeGreaterThanOrEqual(200);
       const reference = desktopPage.locator('[data-foundation-reference="typography"]');
       await expect(
         reference.evaluate((element) => element.scrollWidth),

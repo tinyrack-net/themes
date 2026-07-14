@@ -46,3 +46,20 @@ test('supports aria-labelledby and Button loading behavior', async () => {
   expect(button?.disabled).toBe(true);
   expect(button?.getAttribute('aria-label')).toBe('Saving rack');
 });
+
+test('keeps a large icon square without shrinking it inside the touch target', async () => {
+  await render(
+    <IconButton aria-label="Open navigation" size="lg">
+      <svg aria-hidden="true" viewBox="0 0 24 24" />
+    </IconButton>,
+  );
+  const button = document.querySelector<HTMLButtonElement>('.tr-icon-btn');
+  const icon = button?.querySelector('svg');
+
+  expect(button?.getBoundingClientRect().width).toBe(48);
+  expect(button?.getBoundingClientRect().height).toBe(48);
+  expect(icon?.getBoundingClientRect().width).toBe(24);
+  expect(icon?.getBoundingClientRect().height).toBe(24);
+  if (icon === null || icon === undefined) throw new Error('Missing IconButton icon.');
+  expect(getComputedStyle(icon).flexShrink).toBe('0');
+});

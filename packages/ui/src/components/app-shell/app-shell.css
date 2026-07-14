@@ -43,16 +43,17 @@
     display: none;
   }
 
-  .tr-app-shell-drawer-viewport {
+  .tr-drawer-viewport.tr-app-shell-drawer-viewport {
     align-items: stretch;
     justify-content: flex-start;
   }
 
-  .tr-app-shell-drawer-popup {
+  .tr-drawer-popup.tr-app-shell-drawer-popup {
     border-block: 0;
     border-inline-start: 0;
     border-radius: 0;
     block-size: 100dvh;
+    inline-size: var(--tr-app-shell-sidebar-width, calc(var(--tinyrack-space-2xl) * 9));
     max-block-size: none;
     max-inline-size: var(
       --tr-app-shell-sidebar-width,
@@ -60,19 +61,28 @@
     );
   }
 
-  .tr-app-shell-drawer-content {
+  .tr-drawer-content.tr-app-shell-drawer-content {
     block-size: 100%;
     display: block;
+    gap: 0;
+    max-block-size: none;
     padding: 0;
   }
 
-  .tr-app-shell-drawer-content .tr-app-shell-sidebar {
+  .tr-drawer-content.tr-app-shell-drawer-content .tr-app-shell-sidebar {
     block-size: 100%;
+    inline-size: 100%;
   }
 
   @media (width >= 48rem) {
     .tr-app-shell[data-breakpoint="sm"] > .tr-app-shell-sidebar {
+      align-self: start;
+      block-size: 100%;
       display: block;
+      inset-block-start: 0;
+      max-block-size: 100dvh;
+      overflow: hidden;
+      position: sticky;
     }
 
     .tr-app-shell[data-breakpoint="sm"] .tr-app-shell-trigger {
@@ -102,7 +112,13 @@
 
   @media (width >= 64rem) {
     .tr-app-shell[data-breakpoint="lg"] > .tr-app-shell-sidebar {
+      align-self: start;
+      block-size: 100%;
       display: block;
+      inset-block-start: 0;
+      max-block-size: 100dvh;
+      overflow: hidden;
+      position: sticky;
     }
 
     .tr-app-shell[data-breakpoint="lg"] .tr-app-shell-trigger {

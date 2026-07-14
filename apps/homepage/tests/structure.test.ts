@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 import { componentNames } from '../../../packages/ui/scripts/component-catalog.js';
 import { componentDocsManifest } from '../app/content/shared/component-docs-manifest.js';
@@ -104,15 +105,84 @@ describe('React Router documentation contract', () => {
     expect(legacySources).toEqual([]);
   });
 
-  it('defines all 58 content routes as static route modules', () => {
+  it('defines all 62 content routes as static route modules', () => {
     const routes = readText('app/routes.ts');
-    expect(componentDocsManifest).toHaveLength(47);
+    expect(componentDocsManifest).toHaveLength(51);
     expect(routes).not.toContain(':slug');
     expect(routes).toContain("index('content/welcome.mdx')");
     expect(routes).toContain("route('foundations',");
     expect(routes).toContain("route('integrations/mdx-renderer',");
     expect(readText('react-router.config.ts')).toContain('prerender: true');
     expect(readText('react-router.config.ts')).toContain("mode: 'initial'");
+  });
+
+  it('uses design-system primitives for executable and copy-ready UI', () => {
+    const disallowedTags = new Set([
+      'a',
+      'button',
+      'code',
+      'fieldset',
+      'form',
+      'input',
+      'select',
+      'table',
+      'textarea',
+    ]);
+    const violations: string[] = [];
+    const inspectTsx = (source: string, label: string) => {
+      const file = ts.createSourceFile(
+        label,
+        source,
+        ts.ScriptTarget.Latest,
+        true,
+        ts.ScriptKind.TSX,
+      );
+      const visit = (node: ts.Node) => {
+        if (
+          (ts.isNoSubstitutionTemplateLiteral(node) || ts.isStringLiteral(node)) &&
+          node.text.includes('<')
+        ) {
+          inspectTsx(`<>${node.text}</>`, `${label}#copy-source`);
+        }
+        if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
+          const tag = node.tagName.getText(file);
+          if (disallowedTags.has(tag)) violations.push(`${label}: <${tag}>`);
+          for (const attribute of node.attributes.properties) {
+            if (
+              ts.isJsxAttribute(attribute) &&
+              attribute.name.getText(file) === 'className' &&
+              attribute.initializer &&
+              /overflow-(?:auto|scroll|[xy]-(?:auto|scroll))/.test(
+                attribute.initializer.getText(file),
+              )
+            ) {
+              violations.push(`${label}: direct scrollbar`);
+            }
+          }
+        }
+        ts.forEachChild(node, visit);
+      };
+      visit(file);
+    };
+
+    const authoredTsx = filesUnder(join(homepageRoot, 'app')).filter((path) =>
+      path.endsWith('.tsx'),
+    );
+    for (const path of authoredTsx) inspectTsx(readFileSync(path, 'utf8'), path);
+
+    const docsFiles = filesUnder(join(homepageRoot, 'app/content')).filter((path) =>
+      path.endsWith('.mdx'),
+    );
+    for (const path of docsFiles) {
+      const source = readFileSync(path, 'utf8');
+      for (const [index, match] of [
+        ...source.matchAll(/String\.raw`([\s\S]*?)`/g),
+      ].entries()) {
+        inspectTsx(`<>${match[1] ?? ''}</>`, `${path}#source-${index + 1}`);
+      }
+    }
+
+    expect(violations).toEqual([]);
   });
 
   it('pins the warning-free React Router v8 framework toolchain', () => {

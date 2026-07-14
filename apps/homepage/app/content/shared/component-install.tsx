@@ -1,11 +1,10 @@
 'use client';
 
-import { Button } from '@tinyrack/ui/components/button';
 import { CodeBlock } from '@tinyrack/ui/components/code-block';
+import { CopyButton } from '@tinyrack/ui/components/copy-button';
+import { ScrollArea } from '@tinyrack/ui/components/scroll-area';
 import { Tabs } from '@tinyrack/ui/components/tabs';
-import { useEffect, useState } from 'react';
 import type { BundledLanguage } from 'shiki/bundle/web';
-import { copyDocsSource } from './copy-docs-source.js';
 
 export type ComponentInstallSurface = {
   imports: readonly string[];
@@ -18,14 +17,6 @@ export type ComponentInstallSurface = {
 export type ComponentInstallProps = {
   surfaces: readonly ComponentInstallSurface[];
 };
-
-const copyStatusLabels = {
-  copied: 'Copied',
-  idle: 'Copy',
-  unavailable: 'Copy unavailable',
-} as const;
-
-type CopyStatus = keyof typeof copyStatusLabels;
 
 function surfaceValue(label: string) {
   return label
@@ -63,54 +54,18 @@ type InstallCodeBlockProps = {
 };
 
 function InstallCodeBlock({ code, label, language }: InstallCodeBlockProps) {
-  const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
-
-  useEffect(() => {
-    if (copyStatus === 'idle') {
-      return;
-    }
-
-    const resetTimer = window.setTimeout(() => {
-      setCopyStatus('idle');
-    }, 2000);
-
-    return () => {
-      window.clearTimeout(resetTimer);
-    };
-  }, [copyStatus]);
-
-  async function copyCode() {
-    setCopyStatus((await copyDocsSource(code)) ? 'copied' : 'unavailable');
-  }
-
-  const copyLabel = copyStatusLabels[copyStatus];
-
   return (
     <div className="relative min-w-0">
-      <Button
+      <CopyButton
         appearance="solid"
         aria-label={`Copy ${label}`}
         className="absolute top-2 right-2 z-10"
         data-install-copy={label}
-        onClick={() => void copyCode()}
+        idleLabel="Copy"
         size="sm"
-      >
-        {copyLabel}
-      </Button>
-      <CodeBlock
-        className="m-0 max-w-full overflow-x-auto pr-32"
-        code={code}
-        language={language}
+        value={code}
       />
-      <span
-        aria-atomic="true"
-        aria-live="polite"
-        className="sr-only"
-        data-install-copy-status={copyStatus}
-        role="status"
-      >
-        {copyStatus === 'idle' ? '' : `${label}: ${copyLabel}`}
-      </span>
+      <CodeBlock className="m-0 max-w-full pr-32" code={code} language={language} />
     </div>
   );
 }
@@ -130,19 +85,25 @@ export function ComponentInstall({ surfaces }: ComponentInstallProps) {
       defaultValue={surfaceValue(firstSurface.label)}
       size="sm"
     >
-      <Tabs.List
-        aria-label="Installation target"
-        className="!overflow-x-auto !overflow-y-hidden"
-      >
-        {surfaces.map((surface) => (
-          <Tabs.Tab
-            key={`${surface.label}-${surface.install}`}
-            value={surfaceValue(surface.label)}
-          >
-            {surface.label}
-          </Tabs.Tab>
-        ))}
-      </Tabs.List>
+      <ScrollArea.Root variant="plain">
+        <ScrollArea.Viewport>
+          <ScrollArea.Content className="min-w-max">
+            <Tabs.List aria-label="Installation target">
+              {surfaces.map((surface) => (
+                <Tabs.Tab
+                  key={`${surface.label}-${surface.install}`}
+                  value={surfaceValue(surface.label)}
+                >
+                  {surface.label}
+                </Tabs.Tab>
+              ))}
+            </Tabs.List>
+          </ScrollArea.Content>
+        </ScrollArea.Viewport>
+        <ScrollArea.Scrollbar orientation="horizontal">
+          <ScrollArea.Thumb />
+        </ScrollArea.Scrollbar>
+      </ScrollArea.Root>
       {surfaces.map((surface) => {
         const importCode = surface.imports.join('\n').replace(/\r\n?/g, '\n').trim();
         const value = surfaceValue(surface.label);

@@ -1,3 +1,4 @@
+import { Button } from '@tinyrack/ui/components/button';
 import { ContextMenu } from '@tinyrack/ui/components/context-menu';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
@@ -58,7 +59,7 @@ export function ContextMenuPreview({
         className="block rounded border border-tinyrack-border bg-tinyrack-surface p-6 text-tinyrack-text"
         onClick={openAtTrigger}
         ref={triggerRef}
-        render={<button type="button" />}
+        render={<Button />}
       >
         {label} — click or right-click
       </ContextMenu.Trigger>

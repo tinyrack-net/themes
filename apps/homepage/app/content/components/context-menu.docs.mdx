@@ -2,6 +2,7 @@ import { ComponentPlayground } from '../../playground/playground.js';
 export const meta = () => [{ title: "ContextMenu · Tinyrack UI" }];
 
 import { ContextMenu } from '@tinyrack/ui/components/context-menu';
+import { Button } from '@tinyrack/ui/components/button';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentInstall } from '../shared/component-install.js';
 import { baseUiExampleSources } from '../shared/base-ui-example-sources.js';
@@ -29,7 +30,7 @@ This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, e
 <ComponentExampleTabs
   id="context-menu-basic"
   title="Default"
-  preview={<ContextMenu.Root><ContextMenu.Trigger render={<button type="button" />}>Right-click target</ContextMenu.Trigger><ContextMenu.Portal><ContextMenu.Positioner><ContextMenu.Popup><ContextMenu.Item>Restart</ContextMenu.Item><ContextMenu.Separator /><ContextMenu.Item>Inspect</ContextMenu.Item></ContextMenu.Popup></ContextMenu.Positioner></ContextMenu.Portal></ContextMenu.Root>}
+  preview={<ContextMenu.Root><ContextMenu.Trigger render={<Button />}>Right-click target</ContextMenu.Trigger><ContextMenu.Portal><ContextMenu.Positioner><ContextMenu.Popup><ContextMenu.Item>Restart</ContextMenu.Item><ContextMenu.Separator /><ContextMenu.Item>Inspect</ContextMenu.Item></ContextMenu.Popup></ContextMenu.Positioner></ContextMenu.Portal></ContextMenu.Root>}
   sources={[{ label: 'React', language: 'tsx', code: baseUiExampleSources['context-menu'] }]}
 />
 
@@ -43,7 +44,7 @@ This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, e
   sources={[{ label: 'React', language: 'tsx', code: String.raw`function RackContextMenu() {
   return (
     <ContextMenu.Root>
-      <ContextMenu.Trigger render={<button type="button" />}>Right-click for rack actions</ContextMenu.Trigger>
+      <ContextMenu.Trigger render={<Button />}>Right-click for rack actions</ContextMenu.Trigger>
       <ContextMenu.Portal>
         <ContextMenu.Positioner>
           <ContextMenu.Popup>

@@ -1,5 +1,6 @@
 import { Popover } from '@tinyrack/ui/components/popover';
-import { useId, useState } from 'react';
+import { Select } from '@tinyrack/ui/components/select';
+import { useState } from 'react';
 import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
@@ -29,7 +30,6 @@ export function PopoverExample({
   title = 'Rack A',
   onOpenChange,
 }: PopoverExampleProps) {
-  const selectId = useId();
   const [theme, setTheme] = useState('system');
   const stateProps =
     onOpenChange === undefined ? { defaultOpen: open } : { onOpenChange, open };
@@ -42,16 +42,34 @@ export function PopoverExample({
           <Popover.Popup>
             <Popover.Title>{title}</Popover.Title>
             <Popover.Description>{description}</Popover.Description>
-            <label htmlFor={selectId}>Dashboard theme</label>
-            <select
-              id={selectId}
-              onChange={(event) => setTheme(event.currentTarget.value)}
+            <Select.Root
+              items={{ system: 'System', light: 'Light', dark: 'Dark' }}
+              onValueChange={(value) => setTheme((value as string | null) ?? 'system')}
               value={theme}
             >
-              <option value="system">System</option>
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </select>
+              <Select.Label>Dashboard theme</Select.Label>
+              <Select.Trigger aria-label="Dashboard theme">
+                <Select.Value />
+                <Select.Icon aria-hidden="true">⌄</Select.Icon>
+              </Select.Trigger>
+              <Select.Portal>
+                <Select.Positioner>
+                  <Select.Popup>
+                    <Select.List>
+                      <Select.Item value="system">
+                        <Select.ItemText>System</Select.ItemText>
+                      </Select.Item>
+                      <Select.Item value="light">
+                        <Select.ItemText>Light</Select.ItemText>
+                      </Select.Item>
+                      <Select.Item value="dark">
+                        <Select.ItemText>Dark</Select.ItemText>
+                      </Select.Item>
+                    </Select.List>
+                  </Select.Popup>
+                </Select.Positioner>
+              </Select.Portal>
+            </Select.Root>
             <output aria-live="polite">Theme: {theme}</output>
             <Popover.Close>Close</Popover.Close>
           </Popover.Popup>

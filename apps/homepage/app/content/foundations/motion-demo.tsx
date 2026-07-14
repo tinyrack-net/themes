@@ -1,4 +1,6 @@
 import { Button } from '@tinyrack/ui/components/button';
+import { Code } from '@tinyrack/ui/components/code';
+import { Fieldset } from '@tinyrack/ui/components/fieldset';
 import { tinyrackMotion } from '@tinyrack/ui/core';
 import { type CSSProperties, useEffect, useRef, useState } from 'react';
 import './motion-demo.css';
@@ -144,7 +146,7 @@ export function MotionDurationComparison() {
             <div className="grid gap-1">
               <div className="flex items-baseline gap-2">
                 <strong>{name}</strong>
-                <code>{value}</code>
+                <Code>{value}</Code>
               </div>
               <span className="text-tinyrack-sm text-tinyrack-text-muted">{use}</span>
             </div>
@@ -199,7 +201,7 @@ export function MotionEasingComparison() {
             <div className="grid gap-1">
               <div className="flex items-baseline gap-2">
                 <strong>{name}</strong>
-                <code>{value}</code>
+                <Code>{value}</Code>
               </div>
               <span className="text-tinyrack-sm text-tinyrack-text-muted">{use}</span>
             </div>
@@ -263,8 +265,8 @@ export function ReducedMotionPreview() {
             decorative movement while keeping the result visible.
           </p>
         </div>
-        <fieldset className="m-0 flex flex-wrap gap-tinyrack-sm border-0 p-0">
-          <legend className="sr-only">Motion preview mode</legend>
+        <Fieldset.Root className="m-0 flex flex-wrap gap-tinyrack-sm border-0 p-0">
+          <Fieldset.Legend className="sr-only">Motion preview mode</Fieldset.Legend>
           <Button
             appearance={mode === 'system' ? 'solid' : 'outline'}
             aria-pressed={mode === 'system'}
@@ -282,7 +284,7 @@ export function ReducedMotionPreview() {
           <Button onClick={replay} variant="primary">
             Replay state change
           </Button>
-        </fieldset>
+        </Fieldset.Root>
       </header>
 
       <div className="min-h-28 overflow-hidden rounded-tinyrack-lg bg-tinyrack-surface-muted p-tinyrack-lg">

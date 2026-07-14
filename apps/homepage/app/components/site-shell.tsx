@@ -1,10 +1,14 @@
 'use client';
 
+import { AppShell } from '@tinyrack/ui/components/app-shell';
+import { IconButton } from '@tinyrack/ui/components/icon-button';
+import { Input } from '@tinyrack/ui/components/input';
+import { Link as UiLink } from '@tinyrack/ui/components/link';
 import { Progress } from '@tinyrack/ui/components/progress';
 import { Spinner } from '@tinyrack/ui/components/spinner';
 import { MenuIcon, MoonIcon, SearchIcon, SunIcon, XIcon } from 'lucide-react';
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
-import { Link, NavLink, useLocation, useNavigation } from 'react-router';
+import { NavLink, Link as RouterLink, useLocation, useNavigation } from 'react-router';
 import { componentDocsManifest } from '../content/shared/component-docs-manifest.js';
 
 const foundationLinks = [
@@ -47,7 +51,7 @@ function NavigationLink({
   const isPending = !isActive && pendingPathname === to;
 
   return (
-    <Link
+    <UiLink
       aria-current={isActive ? 'page' : undefined}
       className={`flex items-center justify-between gap-2 border-l-2 px-3 py-1.5 text-tinyrack-sm no-underline transition-colors ${
         isActive
@@ -55,11 +59,12 @@ function NavigationLink({
           : 'border-transparent text-tinyrack-text-muted hover:bg-tinyrack-surface-hover hover:text-tinyrack-text'
       }`}
       onClick={onNavigate}
-      to={to}
+      render={<RouterLink to={to} />}
+      underline="none"
     >
       <span className="min-w-0">{label}</span>
       {isPending ? <Spinner decorative size="sm" variant="primary" /> : null}
-    </Link>
+    </UiLink>
   );
 }
 
@@ -90,9 +95,9 @@ function SiteNavigation({
           aria-hidden="true"
           className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-tinyrack-text-muted"
         />
-        <input
+        <Input
           aria-label="Filter components"
-          className="tr-playground-input tr-site-search-input w-full"
+          className="tr-site-search-input w-full"
           onChange={(event) => setQuery(event.currentTarget.value)}
           placeholder="Filter components"
           type="search"
@@ -202,12 +207,20 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
   function applyTheme(nextTheme: Theme) {
     document.documentElement.dataset['theme'] = nextTheme;
+    document.documentElement.style.colorScheme =
+      nextTheme === 'tinyrack-dark' ? 'dark' : 'light';
     localStorage.setItem('tinyrack-theme', nextTheme);
     setTheme(nextTheme);
   }
 
   return (
-    <div className="min-h-screen bg-tinyrack-surface text-tinyrack-text">
+    <AppShell.Root
+      breakpoint="lg"
+      className="min-h-screen bg-tinyrack-surface text-tinyrack-text"
+      layout="sidebar-first"
+      onOpenChange={(open) => setMenuOpen(open)}
+      open={menuOpen}
+    >
       {isNavigating ? (
         <Progress.Root className="tr-site-navigation-progress" size="sm" value={null}>
           <Progress.Label className="sr-only">Loading page</Progress.Label>
@@ -216,75 +229,80 @@ export function SiteShell({ children }: { children: ReactNode }) {
           </Progress.Track>
         </Progress.Root>
       ) : null}
-      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-tinyrack-border bg-tinyrack-surface px-4 lg:hidden">
-        <NavLink className="font-semibold text-inherit no-underline" to="/">
+      <AppShell.Header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-tinyrack-border bg-tinyrack-surface px-4 lg:hidden">
+        <UiLink
+          className="font-semibold text-inherit"
+          render={<NavLink to="/" />}
+          underline="none"
+        >
           Tinyrack UI
-        </NavLink>
+        </UiLink>
         <div className="flex items-center gap-2">
-          <button
+          <IconButton
+            appearance="ghost"
             aria-label={`Use ${theme === 'tinyrack-dark' ? 'light' : 'dark'} theme`}
-            className="tr-site-icon-button"
             onClick={() =>
               applyTheme(theme === 'tinyrack-dark' ? 'tinyrack-light' : 'tinyrack-dark')
             }
-            type="button"
+            size="lg"
           >
             {theme === 'tinyrack-dark' ? (
               <SunIcon aria-hidden="true" />
             ) : (
               <MoonIcon aria-hidden="true" />
             )}
-          </button>
-          <button
-            aria-expanded={menuOpen}
-            aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
-            className="tr-site-icon-button"
-            onClick={() => setMenuOpen((open) => !open)}
-            type="button"
-          >
-            {menuOpen ? <XIcon aria-hidden="true" /> : <MenuIcon aria-hidden="true" />}
-          </button>
+          </IconButton>
+          <AppShell.Trigger appearance="ghost" aria-label="Open navigation" size="lg">
+            <MenuIcon aria-hidden="true" />
+          </AppShell.Trigger>
         </div>
-      </header>
-      <aside
-        className={`${menuOpen ? 'fixed inset-0 top-14 z-30 block overflow-y-auto' : 'hidden'} border-r border-tinyrack-border bg-tinyrack-surface p-4 lg:fixed lg:inset-y-0 lg:left-0 lg:block lg:w-72 lg:overflow-y-auto`}
+      </AppShell.Header>
+      <AppShell.Sidebar
+        aria-label="Documentation sidebar"
+        className="bg-tinyrack-surface p-4"
       >
+        <div className="mb-4 flex items-center justify-between gap-3 lg:hidden">
+          <strong>Tinyrack UI</strong>
+          <AppShell.Close appearance="ghost" aria-label="Close navigation" size="lg">
+            <XIcon aria-hidden="true" />
+          </AppShell.Close>
+        </div>
         <div className="mb-6 hidden items-center justify-between gap-3 lg:flex">
-          <NavLink
-            className="text-tinyrack-lg font-semibold text-inherit no-underline"
-            to="/"
+          <UiLink
+            className="text-tinyrack-lg font-semibold text-inherit"
+            render={<NavLink to="/" />}
+            underline="none"
           >
             Tinyrack UI
-          </NavLink>
-          <button
+          </UiLink>
+          <IconButton
+            appearance="ghost"
             aria-label={`Use ${theme === 'tinyrack-dark' ? 'light' : 'dark'} theme`}
-            className="tr-site-icon-button"
             onClick={() =>
               applyTheme(theme === 'tinyrack-dark' ? 'tinyrack-light' : 'tinyrack-dark')
             }
-            type="button"
           >
             {theme === 'tinyrack-dark' ? (
               <SunIcon aria-hidden="true" />
             ) : (
               <MoonIcon aria-hidden="true" />
             )}
-          </button>
+          </IconButton>
         </div>
         <SiteNavigation
           currentPathname={currentPathname}
           onNavigate={() => setMenuOpen(false)}
           pendingPathname={pendingPathname}
         />
-      </aside>
-      <div className="min-w-0 lg:pl-72">
+      </AppShell.Sidebar>
+      <AppShell.Main>
         <div
           aria-busy={isNavigating || undefined}
           className="tr-site-content mx-auto w-full max-w-5xl min-w-0 p-4 sm:p-8 lg:p-10"
         >
           {children}
         </div>
-      </div>
-    </div>
+      </AppShell.Main>
+    </AppShell.Root>
   );
 }

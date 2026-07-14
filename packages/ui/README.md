@@ -70,8 +70,9 @@ Supported Base UI modules:
 `slider`, `switch`, `tabs`, `toast`, `toggle`, `toggle-group`, `toolbar`, and
 `tooltip`.
 
-Tinyrack-native modules are `alert`, `badge`, `card`, `code`, `code-block`,
-`link`, `skeleton`, `spinner`, and `table`.
+Tinyrack-native modules are `alert`, `app-shell`, `badge`, `card`, `code`,
+`code-block`, `copy-button`, `icon-button`, `link`, `skeleton`, `spinner`,
+`table`, and `textarea`.
 
 There is no component root barrel, `/react` or `/dom` compatibility suffix,
 public overlay manager, or Astro renderer.

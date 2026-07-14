@@ -73,11 +73,11 @@ Shape tokens keep controls crisp, make layered surfaces recognizable, and reserv
 
 Radius values are public TypeScript metadata and runtime CSS tokens. Owned component CSS consumes semantic radius roles while application layout can use prefixed Tailwind utilities.
 
-```html
-<section class="rounded-tinyrack-lg border border-tinyrack-border p-tinyrack-lg">
-  <button class="tr-btn">Deploy</button>
-  <span class="tr-badge">ready</span>
-</section>
+```tsx
+<Card.Root>
+  <Button>Deploy</Button>
+  <Badge>ready</Badge>
+</Card.Root>
 ```
 
 ```ts

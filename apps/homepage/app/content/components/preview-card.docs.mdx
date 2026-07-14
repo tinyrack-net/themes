@@ -2,6 +2,7 @@ import { ComponentPlayground } from '../../playground/playground.js';
 export const meta = () => [{ title: "PreviewCard · Tinyrack UI" }];
 
 import { PreviewCard } from '@tinyrack/ui/components/preview-card';
+import { Link } from '@tinyrack/ui/components/link';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentInstall } from '../shared/component-install.js';
 import { baseUiExampleSources } from '../shared/base-ui-example-sources.js';
@@ -43,7 +44,7 @@ pointer path remains forgiving.
   id="preview-card-states"
   title="Interactive service preview"
   description="Hover or focus the link to reveal the non-modal preview. Move the pointer into the card without dismissing it, then leave or press Escape."
-  preview={<PreviewCard.Root><PreviewCard.Trigger href="#rack-beta">Rack Beta</PreviewCard.Trigger><PreviewCard.Portal><PreviewCard.Positioner sideOffset={8}><PreviewCard.Popup><strong>Rack Beta</strong><p>Degraded · 8 of 10 services healthy</p><a href="#rack-beta-incidents">View incidents</a><PreviewCard.Arrow /></PreviewCard.Popup></PreviewCard.Positioner></PreviewCard.Portal></PreviewCard.Root>}
+  preview={<PreviewCard.Root><PreviewCard.Trigger href="#rack-beta">Rack Beta</PreviewCard.Trigger><PreviewCard.Portal><PreviewCard.Positioner sideOffset={8}><PreviewCard.Popup><strong>Rack Beta</strong><p>Degraded · 8 of 10 services healthy</p><Link href="#rack-beta-incidents">View incidents</Link><PreviewCard.Arrow /></PreviewCard.Popup></PreviewCard.Positioner></PreviewCard.Portal></PreviewCard.Root>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`<PreviewCard.Root>
   <PreviewCard.Trigger href="#rack-beta">Rack Beta</PreviewCard.Trigger>
   <PreviewCard.Portal>
@@ -51,7 +52,7 @@ pointer path remains forgiving.
       <PreviewCard.Popup>
         <strong>Rack Beta</strong>
         <p>Degraded · 8 of 10 services healthy</p>
-        <a href="#rack-beta-incidents">View incidents</a>
+        <Link href="#rack-beta-incidents">View incidents</Link>
         <PreviewCard.Arrow />
       </PreviewCard.Popup>
     </PreviewCard.Positioner>

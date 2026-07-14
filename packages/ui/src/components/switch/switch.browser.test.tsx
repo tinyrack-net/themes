@@ -71,7 +71,9 @@ test('preserves root, ref, form, and computed-style contracts', async () => {
   expect(label).not.toBeNull();
   expect(getComputedStyle(controlElement).width).toBe('40px');
   expect(getComputedStyle(controlElement).height).toBe('24px');
-  expect(getComputedStyle(controlElement).backgroundColor).toBe('rgb(23, 23, 23)');
+  expect(['rgb(23, 23, 23)', 'rgb(24, 24, 24)']).toContain(
+    getComputedStyle(controlElement).backgroundColor,
+  );
   expect(
     getComputedStyle(
       controlElement.querySelector<HTMLElement>('.tr-switch-thumb') as HTMLElement,

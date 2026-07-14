@@ -1,4 +1,5 @@
 import { Button } from '@tinyrack/ui/components/button';
+import { Form } from '@tinyrack/ui/components/form';
 import { Input } from '@tinyrack/ui/components/input';
 import { useId, useState } from 'react';
 import type {
@@ -61,7 +62,7 @@ export function InputValidationPreview() {
   const invalid = attempted && value.trim().length === 0;
 
   return (
-    <form
+    <Form
       className="grid w-80 max-w-full gap-3"
       noValidate
       onSubmit={(event) => {
@@ -92,7 +93,7 @@ export function InputValidationPreview() {
       <output aria-live="polite">
         {attempted && !invalid ? `Ready to create ${value}.` : ''}
       </output>
-    </form>
+    </Form>
   );
 }
 

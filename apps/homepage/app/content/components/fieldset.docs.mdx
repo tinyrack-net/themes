@@ -31,11 +31,11 @@ Groups related controls under one native, accessible legend.
   sources={[{ label: 'React', language: 'tsx', code: String.raw`<Fieldset.Root>
   <Fieldset.Legend>Notifications</Fieldset.Legend>
   <label htmlFor="email-alerts">
-    <input defaultChecked id="email-alerts" type="checkbox" />
+    <Checkbox.Root defaultChecked id="email-alerts"><Checkbox.Indicator>✓</Checkbox.Indicator></Checkbox.Root>
     Email alerts
   </label>
   <label htmlFor="incident-summaries">
-    <input defaultChecked id="incident-summaries" type="checkbox" />
+    <Checkbox.Root defaultChecked id="incident-summaries"><Checkbox.Indicator>✓</Checkbox.Indicator></Checkbox.Root>
     Incident summaries
   </label>
 </Fieldset.Root>` }]}
@@ -55,11 +55,11 @@ Groups related controls under one native, accessible legend.
   sources={[{ label: 'React', language: 'tsx', code: String.raw`<div className="grid gap-5 sm:grid-cols-2">
   <Fieldset.Root>
     <Fieldset.Legend>Editable settings</Fieldset.Legend>
-    <label><input defaultChecked type="checkbox" /> Email alerts</label>
+    <label><Checkbox.Root defaultChecked aria-label="Email alerts"><Checkbox.Indicator>✓</Checkbox.Indicator></Checkbox.Root> Email alerts</label>
   </Fieldset.Root>
   <Fieldset.Root disabled>
     <Fieldset.Legend>Managed settings</Fieldset.Legend>
-    <label><input defaultChecked type="checkbox" /> Email alerts</label>
+    <label><Checkbox.Root defaultChecked aria-label="Email alerts"><Checkbox.Indicator>✓</Checkbox.Indicator></Checkbox.Root> Email alerts</label>
   </Fieldset.Root>
 </div>` }]}
 />

@@ -19,6 +19,24 @@ test('renders the Tinyrack ScrollArea wrapper', async () => {
     </ScrollArea.Root>,
   );
   expect(document.querySelector('.tr-scroll-area')).not.toBeNull();
+  expect(document.querySelector('.tr-scroll-area')?.getAttribute('data-variant')).toBe(
+    'surface',
+  );
+});
+
+test('offers a borderless and padding-free plain variant', async () => {
+  await render(
+    <ScrollArea.Root variant="plain">
+      <ScrollArea.Viewport>
+        <ScrollArea.Content>Navigation</ScrollArea.Content>
+      </ScrollArea.Viewport>
+    </ScrollArea.Root>,
+  );
+  const root = document.querySelector<HTMLElement>('.tr-scroll-area');
+  const content = document.querySelector<HTMLElement>('.tr-scroll-area-content');
+  expect(root?.dataset['variant']).toBe('plain');
+  expect(getComputedStyle(root as HTMLElement).borderTopWidth).toBe('0px');
+  expect(getComputedStyle(content as HTMLElement).paddingTop).toBe('0px');
 });
 
 test('keeps vertical and horizontal scroll indicators visible', async () => {

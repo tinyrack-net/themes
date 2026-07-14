@@ -61,7 +61,7 @@ export const baseUiExampleSources = {
   ))}
 </CheckboxGroup>`,
   'context-menu': `<ContextMenu.Root>
-  <ContextMenu.Trigger render={<button type="button" />}>Right-click target</ContextMenu.Trigger>
+  <ContextMenu.Trigger render={<Button />}>Right-click target</ContextMenu.Trigger>
   <ContextMenu.Portal>
     <ContextMenu.Positioner>
       <ContextMenu.Popup>
@@ -89,8 +89,9 @@ export const baseUiExampleSources = {
 </Drawer.Root>`,
   fieldset: `<Fieldset.Root>
   <Fieldset.Legend>Notifications</Fieldset.Legend>
-  <label>
-    <input type="checkbox" /> Email alerts
+  <label className="flex items-center gap-2">
+    <Checkbox.Root aria-label="Email alerts"><Checkbox.Indicator>✓</Checkbox.Indicator></Checkbox.Root>
+    Email alerts
   </label>
 </Fieldset.Root>`,
   form: `<Form onSubmit={(event) => event.preventDefault()}>

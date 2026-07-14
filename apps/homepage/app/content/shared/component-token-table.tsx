@@ -524,34 +524,34 @@ export function ComponentTokenTable({ component }: { component: ComponentTokenNa
     <section data-component-token-table={component}>
       <h2 className="tr-mdx-h2">CSS tokens</h2>
       <p className="tr-mdx-p">
-        Override these <code className="tr-code">--tr-*</code> variables on a component
-        or ancestor. Foundation defaults continue to come from{' '}
-        <code className="tr-code">--tinyrack-*</code> tokens.
+        Override these <Code>--tr-*</Code> variables on a component or ancestor.
+        Foundation defaults continue to come from <Code>--tinyrack-*</Code> tokens.
       </p>
-      <div className="tr-table-container tr-mdx-table-container">
-        <table className="tr-table" data-density="compact">
-          <thead>
-            <tr>
-              <th scope="col">Token</th>
-              <th scope="col">Role</th>
-              <th scope="col">Fallback</th>
-            </tr>
-          </thead>
-          <tbody>
-            {componentTokens[component].map((token) => (
-              <tr key={token.name}>
-                <th scope="row">
-                  <code className="tr-code">{token.name}</code>
-                </th>
-                <td>{token.role}</td>
-                <td>
-                  <code className="tr-code">{token.fallback}</code>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Table.Root containerClassName="tr-mdx-table-container" density="compact">
+        <Table.Header>
+          <Table.Row>
+            <Table.Head scope="col">Token</Table.Head>
+            <Table.Head scope="col">Role</Table.Head>
+            <Table.Head scope="col">Fallback</Table.Head>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {componentTokens[component].map((token) => (
+            <Table.Row key={token.name}>
+              <Table.Head scope="row">
+                <Code>{token.name}</Code>
+              </Table.Head>
+              <Table.Cell>{token.role}</Table.Cell>
+              <Table.Cell>
+                <Code>{token.fallback}</Code>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table.Root>
     </section>
   );
 }
+
+import { Code } from '@tinyrack/ui/components/code';
+import { Table } from '@tinyrack/ui/components/table';

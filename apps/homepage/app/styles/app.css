@@ -86,6 +86,16 @@ body {
   padding-left: 2.25rem;
 }
 
+.tr-site-navigation-progress {
+  --tr-progress-fill: var(--tinyrack-primary);
+  --tr-progress-height: var(--tinyrack-space-xs);
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: var(--tinyrack-layer-toast);
+  pointer-events: none;
+}
+
 .tr-playground-reset {
   @apply min-h-8 rounded-tinyrack-md border border-tinyrack-border bg-tinyrack-surface px-3 text-tinyrack-sm font-medium text-tinyrack-text hover:bg-tinyrack-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tinyrack-primary;
 }

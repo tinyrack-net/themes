@@ -4,6 +4,7 @@ import type { AddressInfo } from 'node:net';
 import { extname, join, resolve, sep } from 'node:path';
 import { type Browser, chromium, type Locator, type Page } from 'playwright';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { componentDocsManifest } from '../app/content/shared/component-docs-manifest.js';
 import { staticDocumentRoutes } from '../app/content/shared/static-document-routes.js';
 
 const buildRoot = join(process.cwd(), 'build/client');
@@ -125,6 +126,18 @@ async function expectInsideViewport(page: Page, locator: Locator) {
     .toBe(true);
 }
 
+async function expectHorizontallyInsideViewport(page: Page, locator: Locator) {
+  await expect
+    .poll(async () => {
+      const box = await locator.boundingBox();
+      const viewport = page.viewportSize();
+      if (box === null || viewport === null) return false;
+
+      return box.x >= -1 && box.x + box.width <= viewport.width + 1;
+    })
+    .toBe(true);
+}
+
 async function expectVerticallyCentered(container: Locator, item: Locator) {
   const containerBox = await container.boundingBox();
   const itemBox = await item.boundingBox();
@@ -228,7 +241,9 @@ describe('built React Router documentation', () => {
       await setTheme(page, scenario.theme);
       const pageErrors: string[] = [];
       const consoleErrors: string[] = [];
-      page.on('pageerror', (error) => pageErrors.push(error.message));
+      page.on('pageerror', (error) =>
+        pageErrors.push(`${page.url()}: ${error.message}`),
+      );
       page.on('console', (message) => {
         if (message.type() !== 'error') return;
         const source = message.location().url;
@@ -368,6 +383,123 @@ describe('built React Router documentation', () => {
       await expectNoLocalOverflow(mobilePagination, 'mobile document pagination');
       await expectNoLocalOverflow(mobilePrevious, 'mobile previous document');
       await expectNoLocalOverflow(mobileNext, 'mobile next document');
+    } finally {
+      await desktopPage.close();
+      await mobilePage.close();
+    }
+  });
+
+  it('presents Welcome as a responsive rack-console launch point', async () => {
+    const desktopPage = await browser.newPage({
+      viewport: { height: 1024, width: 1440 },
+    });
+    const mobilePage = await browser.newPage({ viewport: { height: 844, width: 390 } });
+    const pageErrors: string[] = [];
+    desktopPage.on('pageerror', (error) => pageErrors.push(error.message));
+    mobilePage.on('pageerror', (error) => pageErrors.push(error.message));
+    await setTheme(desktopPage, 'tinyrack-light');
+    await setTheme(mobilePage, 'tinyrack-dark');
+
+    try {
+      await gotoHydrated(desktopPage, origin);
+      await gotoHydrated(mobilePage, origin);
+
+      const desktopHero = desktopPage.locator('[data-welcome-hero]');
+      const rackStatus = desktopPage.getByRole('region', {
+        name: 'Rack A production status',
+      });
+      const startBuilding = desktopPage.getByRole('link', {
+        name: 'Start building',
+      });
+      const mainViewport = desktopPage.locator('.tr-site-main-scroll-viewport');
+
+      await expect(
+        desktopPage.getByRole('heading', { level: 1, name: 'Tinyrack UI' }).isVisible(),
+      ).resolves.toBe(true);
+      await expect(
+        desktopHero.getByText('React 19', { exact: true }).isVisible(),
+      ).resolves.toBe(true);
+      await expect(
+        desktopHero.getByText('Base UI', { exact: true }).isVisible(),
+      ).resolves.toBe(true);
+      await expect(
+        desktopHero
+          .getByText(`${componentDocsManifest.length} components`, {
+            exact: true,
+          })
+          .isVisible(),
+      ).resolves.toBe(true);
+      await expect(
+        desktopPage
+          .getByText(
+            'Build compact operational interfaces without rebuilding the basics.',
+            { exact: true },
+          )
+          .isVisible(),
+      ).resolves.toBe(true);
+
+      await expect(rackStatus.isVisible()).resolves.toBe(true);
+      expect(
+        await rackStatus
+          .getByRole('progressbar', { name: 'Cluster load' })
+          .getAttribute('aria-valuenow'),
+      ).toBe('41');
+      for (const status of ['online', 'ready', 'complete']) {
+        await expect(
+          rackStatus.getByText(status, { exact: true }).isVisible(),
+        ).resolves.toBe(true);
+      }
+
+      expect(await startBuilding.getAttribute('href')).toBe('#quick-start');
+      expect(
+        await desktopPage
+          .getByRole('link', { name: 'Explore foundations' })
+          .getAttribute('href'),
+      ).toBe('/foundations/');
+      await startBuilding.focus();
+      await expect(
+        startBuilding.evaluate((element) => element === document.activeElement),
+      ).resolves.toBe(true);
+      await startBuilding.click();
+      await expect.poll(() => new URL(desktopPage.url()).hash).toBe('#quick-start');
+      await expect.poll(() => settledScrollTop(mainViewport)).toBeGreaterThan(0);
+
+      expect(await desktopPage.locator('main h1, main h2').allTextContents()).toEqual([
+        'Tinyrack UI',
+        'Start building in five minutes',
+        'Built for operational products',
+        'Choose your next step',
+      ]);
+      await expect(
+        desktopPage.getByText('Public package map', { exact: true }).count(),
+      ).resolves.toBe(0);
+      for (const [name, href] of [
+        ['Learn the foundations', '/foundations/'],
+        ['Build an app shell', '/components/app-shell/'],
+        ['Configure providers', '/integrations/base-ui-providers/'],
+      ] as const) {
+        expect(await desktopPage.getByRole('link', { name }).getAttribute('href')).toBe(
+          href,
+        );
+      }
+
+      await expectNoLocalOverflow(mobilePage.locator('html'), 'Welcome document');
+      await expectNoLocalOverflow(
+        mobilePage.locator('[data-welcome-hero]'),
+        'Welcome hero',
+      );
+      await expectHorizontallyInsideViewport(
+        mobilePage,
+        mobilePage.locator('[data-welcome-rack]'),
+      );
+      await expectHorizontallyInsideViewport(
+        mobilePage,
+        mobilePage.locator('[data-component-install]'),
+      );
+      expect(await mobilePage.locator('html').getAttribute('data-theme')).toBe(
+        'tinyrack-dark',
+      );
+      expect(pageErrors).toEqual([]);
     } finally {
       await desktopPage.close();
       await mobilePage.close();

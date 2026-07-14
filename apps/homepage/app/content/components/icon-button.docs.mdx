@@ -1,0 +1,34 @@
+import { ComponentPlayground } from '../../playground/playground.js';
+export const meta = () => [{ title: 'IconButton · Tinyrack UI' }];
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import * as Stories from './icon-button.demo.js';
+
+# IconButton
+
+An icon-only action that shares Button visuals and requires an accessible name.
+
+## Contract
+
+Provide `aria-label` or `aria-labelledby`. Appearance, variant, size, loading, disabled, refs, and events match Button.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/icon-button.css';", "import { IconButton } from '@tinyrack/ui/components/icon-button';"] }]} />
+
+## Playground
+
+<ComponentPlayground definition={Stories.playground} />
+
+## Usage
+
+<ComponentExampleTabs id="icon-button-basic" title="Settings action" preview={<Stories.IconButtonPreview appearance="outline" disabled={false} label="Settings" size="md" variant="secondary" />} sources={[{ label: 'React', language: 'tsx', code: String.raw`<IconButton aria-label="Settings"><SettingsIcon aria-hidden="true" /></IconButton>` }]} />
+
+## Examples
+
+<ComponentExampleTabs id="icon-button-states" title="Primary and disabled" preview={<div className="flex gap-3"><Stories.IconButtonPreview appearance="solid" disabled={false} label="Settings" size="sm" variant="primary" /><Stories.IconButtonPreview appearance="outline" disabled label="Unavailable settings" size="lg" variant="secondary" /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<IconButton aria-label="Settings" size="sm" variant="primary"><SettingsIcon /></IconButton>
+<IconButton aria-label="Unavailable settings" disabled size="lg"><SettingsIcon /></IconButton>` }]} />
+
+## API
+
+`IconButton` accepts the Button contract but requires exactly one accessible naming prop. Its CSS subpath includes Button CSS.

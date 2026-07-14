@@ -1,0 +1,41 @@
+import { ComponentPlayground } from '../../playground/playground.js';
+export const meta = () => [{ title: 'AppShell · Tinyrack UI' }];
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import * as Stories from './app-shell.demo.js';
+
+# AppShell
+
+A responsive application frame with a static desktop sidebar and modal mobile navigation.
+
+## Contract
+
+`Main` owns the page's single main landmark. `Sidebar` is static on desktop and uses Base UI Drawer for mobile focus, dismissal, scroll lock, and focus return.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/app-shell.css';", "import { AppShell } from '@tinyrack/ui/components/app-shell';"] }]} />
+
+## Playground
+
+<ComponentPlayground definition={Stories.playground} />
+
+## Usage
+
+<ComponentExampleTabs id="app-shell-basic" title="Responsive shell" preview={<Stories.AppShellPreview breakpoint="lg" layout="sidebar-first" open={false} />} sources={[{ label: 'React', language: 'tsx', code: String.raw`<AppShell.Root breakpoint="lg" layout="sidebar-first">
+  <AppShell.Header><AppShell.Trigger aria-label="Open navigation">☰</AppShell.Trigger></AppShell.Header>
+  <AppShell.Sidebar aria-label="Documentation"><nav>Navigation</nav></AppShell.Sidebar>
+  <AppShell.Main>Page content</AppShell.Main>
+</AppShell.Root>` }]} />
+
+## Examples
+
+<ComponentExampleTabs id="app-shell-layouts" title="Header-first layout" preview={<Stories.AppShellPreview breakpoint="sm" layout="header-first" open={false} />} sources={[{ label: 'React', language: 'tsx', code: String.raw`<AppShell.Root breakpoint="sm" layout="header-first">
+  <AppShell.Header>Global header</AppShell.Header>
+  <AppShell.Sidebar aria-label="Workspace">Workspace navigation</AppShell.Sidebar>
+  <AppShell.Main>Workspace content</AppShell.Main>
+</AppShell.Root>` }]} />
+
+## API
+
+`Root` accepts controlled or uncontrolled open state, `sm` or `lg` breakpoints, and `header-first` or `sidebar-first` layout. `Trigger` and `Close` require an accessible name. `Sidebar` contains a plain `ScrollArea` and mobile modal Drawer.

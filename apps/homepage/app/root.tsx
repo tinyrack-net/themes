@@ -17,9 +17,11 @@ const themeScript = `(() => {
   document.documentElement.dataset.theme = theme;
 })();`;
 
-function RouteMdxWrapper({ children, className }: ComponentPropsWithoutRef<'main'>) {
+function RouteMdxWrapper({ children, className }: ComponentPropsWithoutRef<'article'>) {
   return (
-    <main className={['tr-mdx', className].filter(Boolean).join(' ')}>{children}</main>
+    <article className={['tr-mdx', className].filter(Boolean).join(' ')}>
+      {children}
+    </article>
   );
 }
 

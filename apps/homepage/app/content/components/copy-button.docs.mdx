@@ -1,0 +1,33 @@
+import { ComponentPlayground } from '../../playground/playground.js';
+export const meta = () => [{ title: 'CopyButton · Tinyrack UI' }];
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import * as Stories from './copy-button.demo.js';
+
+# CopyButton
+
+A reusable copy action with Clipboard API fallback and accessible status announcements.
+
+## Contract
+
+The control reports `idle`, `copied`, or `unavailable` through `data-copy-status` and resets after two seconds by default.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/copy-button.css';", "import { CopyButton } from '@tinyrack/ui/components/copy-button';"] }]} />
+
+## Playground
+
+<ComponentPlayground definition={Stories.playground} />
+
+## Usage
+
+<ComponentExampleTabs id="copy-button-basic" title="Copy a command" preview={<Stories.CopyButtonPreview copiedLabel="Copied" idleLabel="Copy command" value="pnpm add @tinyrack/ui" />} sources={[{ label: 'React', language: 'tsx', code: String.raw`<CopyButton value="pnpm add @tinyrack/ui" idleLabel="Copy command" />` }]} />
+
+## Examples
+
+<ComponentExampleTabs id="copy-button-labels" title="Contextual labels" preview={<Stories.CopyButtonPreview copiedLabel="Import copied" idleLabel="Copy import" value="import { Button } from '@tinyrack/ui/components/button';" />} sources={[{ label: 'React', language: 'tsx', code: String.raw`<CopyButton value={source} idleLabel="Copy import" copiedLabel="Import copied" unavailableLabel="Copy unavailable" />` }]} />
+
+## API
+
+`value` is copied with Clipboard API and an offscreen selection fallback. Labels, `resetDelay`, status changes, and all normal Button appearance, variant, size, loading, and event props are supported.

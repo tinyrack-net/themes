@@ -105,16 +105,20 @@ Focus-trapped dialog surfaces with four sizes and five placements.
         </Dialog.Description>
         <div className="tr-dialog-body grid gap-4">
           <p>Confirm the environment, maintenance window, and rollback owner.</p>
-          <label htmlFor={notesId}>Rollback notes</label>
-          <textarea defaultValue="Restore the previous deployment and verify rack health." id={notesId} name="notes" rows={8} />
-          <form onSubmit={(event) => {
+          <Field.Root>
+            <Field.Label htmlFor={notesId}>Rollback notes</Field.Label>
+            <Textarea defaultValue="Restore the previous deployment and verify rack health." id={notesId} name="notes" rows={8} />
+          </Field.Root>
+          <Form onSubmit={(event) => {
             event.preventDefault();
             setResult('Saved ' + new FormData(event.currentTarget).get('rack'));
           }}>
-            <label htmlFor={inputId}>Rack name</label>
-            <input defaultValue="rack-alpha" id={inputId} name="rack" required />
-            <button type="submit">Save changes</button>
-          </form>
+            <Field.Root>
+              <Field.Label htmlFor={inputId}>Rack name</Field.Label>
+              <Input defaultValue="rack-alpha" id={inputId} name="rack" required />
+            </Field.Root>
+            <Button type="submit">Save changes</Button>
+          </Form>
           <output aria-live="polite">{result}</output>
         </div>
         <Dialog.Close>Cancel</Dialog.Close>

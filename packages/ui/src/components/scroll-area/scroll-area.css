@@ -10,6 +10,12 @@
     position: relative;
   }
 
+  .tr-scroll-area[data-variant="plain"] {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+  }
+
   .tr-scroll-area-viewport {
     height: 100%;
     width: 100%;
@@ -18,6 +24,10 @@
   .tr-scroll-area-content {
     color: var(--tinyrack-text);
     padding: var(--tinyrack-space-md);
+  }
+
+  .tr-scroll-area[data-variant="plain"] .tr-scroll-area-content {
+    padding: 0;
   }
 
   .tr-scroll-area-scrollbar {

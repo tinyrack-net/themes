@@ -1,0 +1,35 @@
+import { ComponentPlayground } from '../../playground/playground.js';
+export const meta = () => [{ title: 'Textarea · Tinyrack UI' }];
+import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
+import { ComponentInstall } from '../shared/component-install.js';
+import * as Stories from './textarea.demo.js';
+
+# Textarea
+
+A tokenized multiline native control with vertical resizing and full form behavior.
+
+## Contract
+
+Textarea preserves native refs, names, FormData, reset, disabled, read-only, required, and invalid states.
+
+## Install
+
+<ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui react react-dom', imports: ["import '@tinyrack/ui/core.css';", "import '@tinyrack/ui/components/textarea.css';", "import { Textarea } from '@tinyrack/ui/components/textarea';"] }]} />
+
+## Playground
+
+<ComponentPlayground definition={Stories.playground} />
+
+## Usage
+
+<ComponentExampleTabs id="textarea-basic" title="Operational notes" preview={<Stories.TextareaPreview disabled={false} label="Rack notes" placeholder="Operational notes" readOnly={false} required={false} value="" />} sources={[{ label: 'React', language: 'tsx', code: String.raw`<label htmlFor="rack-notes">Rack notes</label>
+<Textarea id="rack-notes" name="notes" placeholder="Operational notes" />` }]} />
+
+## Examples
+
+<ComponentExampleTabs id="textarea-states" title="Read-only and invalid" preview={<div className="grid gap-4 sm:grid-cols-2"><Stories.TextareaPreview disabled={false} label="Read only" placeholder="" readOnly required={false} value="Locked note" /><Stories.TextareaPreview disabled={false} label="Required" placeholder="Add a note" readOnly={false} required value="" /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Textarea aria-label="Read only" defaultValue="Locked note" readOnly />
+<Textarea aria-invalid="true" aria-label="Required note" required />` }]} />
+
+## API
+
+`Textarea` forwards every native textarea prop, ref, event, class, and style. Its default resize direction is vertical and native validity remains authoritative.

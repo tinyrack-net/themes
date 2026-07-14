@@ -65,7 +65,7 @@ Controls expose `label`, `value`, `placeholder`, `disabled`, `readOnly`, and `re
   const invalid = attempted && value.trim().length === 0;
 
   return (
-    <form noValidate onSubmit={(event) => { event.preventDefault(); event.currentTarget.checkValidity(); setAttempted(true); }}>
+    <Form noValidate onSubmit={(event) => { event.preventDefault(); event.currentTarget.checkValidity(); setAttempted(true); }}>
       <label htmlFor="required-name">Rack name</label>
       <Input
         aria-describedby={invalid ? 'required-name-error' : undefined}
@@ -78,7 +78,7 @@ Controls expose `label`, `value`, `placeholder`, `disabled`, `readOnly`, and `re
       />
       {invalid ? <p id="required-name-error" role="alert">Rack name is required.</p> : null}
       <Button type="submit">Continue</Button>
-    </form>
+    </Form>
   );
 }` }]}
 />

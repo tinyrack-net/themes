@@ -1,3 +1,4 @@
+import { Checkbox } from '@tinyrack/ui/components/checkbox';
 import { Fieldset } from '@tinyrack/ui/components/fieldset';
 import { useId } from 'react';
 import type {
@@ -35,17 +36,20 @@ export function FieldsetPreview({
     <Fieldset.Root className="w-full max-w-80 min-w-0" disabled={disabled}>
       <Fieldset.Legend>{legend}</Fieldset.Legend>
       <label className="flex items-center gap-2" htmlFor={emailId}>
-        <input
+        <Checkbox.Root
           checked={emailAlerts}
           defaultChecked={emailAlerts === undefined ? defaultEmailAlerts : undefined}
           id={emailId}
-          onChange={(event) => onEmailAlertsChange?.(event.currentTarget.checked)}
-          type="checkbox"
-        />
+          onCheckedChange={(checked) => onEmailAlertsChange?.(checked)}
+        >
+          <Checkbox.Indicator aria-hidden="true">✓</Checkbox.Indicator>
+        </Checkbox.Root>
         Email alerts
       </label>
       <label className="flex items-center gap-2" htmlFor={incidentId}>
-        <input defaultChecked id={incidentId} type="checkbox" />
+        <Checkbox.Root defaultChecked id={incidentId}>
+          <Checkbox.Indicator aria-hidden="true">✓</Checkbox.Indicator>
+        </Checkbox.Root>
         Incident summaries
       </label>
     </Fieldset.Root>

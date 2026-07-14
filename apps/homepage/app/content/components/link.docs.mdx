@@ -86,4 +86,4 @@ const label = (value) => value[0].toUpperCase() + value.slice(1);
 
 ## API
 
-Use `Link` for navigation and `Button` for commands; `target`, `rel`, `download`, native anchor props, and `ref` are forwarded unchanged.
+Use `Link` for navigation and `Button` for commands; `target`, `rel`, `download`, native anchor props, and `ref` are forwarded unchanged. Its Base UI `render` contract composes React Router without nested anchors: `<Link render={<RouterLink to="/racks" />}>Racks</Link>`.

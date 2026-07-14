@@ -245,6 +245,25 @@ try {
         return example.getByText('Rack Alpha already exists.');
       },
     },
+    {
+      name: 'app-shell-open-mobile',
+      path: '/components/button',
+      viewport: { height: 844, width: 390 },
+      act: async (page: Page) => {
+        await page.getByRole('button', { name: 'Open navigation' }).click();
+        return page.locator('.tr-app-shell-drawer-popup[data-open]');
+      },
+    },
+    {
+      name: 'copy-button-copied-desktop',
+      path: '/components/copy-button',
+      viewport: { height: 900, width: 1440 },
+      act: async (page: Page) => {
+        const example = page.locator('[data-component-example-id="copy-button-basic"]');
+        await example.getByRole('button', { name: 'Copy command' }).click();
+        return example.locator('[data-copy-status="copied"]');
+      },
+    },
   ];
 
   for (const interaction of interactions) {
@@ -289,5 +308,5 @@ if (entries.length !== staticDocumentRoutes.length * 2 || failures.length > 0) {
 }
 
 console.log(
-  `captured ${entries.length} full pages and 5 interaction states at ${outputRoot}`,
+  `captured ${entries.length} full pages and 7 interaction states at ${outputRoot}`,
 );

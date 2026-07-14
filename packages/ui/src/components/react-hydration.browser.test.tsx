@@ -4,6 +4,7 @@ import { renderToString } from 'react-dom/server.browser';
 import { expect, test } from 'vitest';
 import { Accordion } from './accordion/index.js';
 import { AlertDialog } from './alert-dialog/index.js';
+import { AppShell } from './app-shell/index.js';
 import { Autocomplete } from './autocomplete/index.js';
 import { Avatar } from './avatar/index.js';
 import { Button } from './button/index.js';
@@ -12,11 +13,13 @@ import { CheckboxGroup } from './checkbox-group/index.js';
 import { Collapsible } from './collapsible/index.js';
 import { Combobox } from './combobox/index.js';
 import { ContextMenu } from './context-menu/index.js';
+import { CopyButton } from './copy-button/index.js';
 import { Dialog } from './dialog/index.js';
 import { Drawer } from './drawer/index.js';
 import { Field } from './field/index.js';
 import { Fieldset } from './fieldset/index.js';
 import { Form } from './form/index.js';
+import { IconButton } from './icon-button/index.js';
 import { Input } from './input/index.js';
 import { Menu } from './menu/index.js';
 import { Menubar } from './menubar/index.js';
@@ -34,6 +37,7 @@ import { Select } from './select/index.js';
 import { Slider } from './slider/index.js';
 import { Switch } from './switch/index.js';
 import { Tabs } from './tabs/index.js';
+import { Textarea } from './textarea/index.js';
 import { Toast } from './toast/index.js';
 import { Toggle } from './toggle/index.js';
 import { ToggleGroup } from './toggle-group/index.js';
@@ -59,6 +63,13 @@ function InteractiveFixture() {
         <Avatar.Image alt="Profile" src="/avatar.png" />
         <Avatar.Fallback>TR</Avatar.Fallback>
       </Avatar.Root>
+      <AppShell.Root>
+        <AppShell.Header>
+          <AppShell.Trigger aria-label="Open shell">☰</AppShell.Trigger>
+        </AppShell.Header>
+        <AppShell.Sidebar aria-label="Shell navigation">Navigation</AppShell.Sidebar>
+        <AppShell.Main>Shell content</AppShell.Main>
+      </AppShell.Root>
       <AlertDialog.Root>
         <AlertDialog.Trigger>Delete rack</AlertDialog.Trigger>
       </AlertDialog.Root>
@@ -66,6 +77,8 @@ function InteractiveFixture() {
         <Autocomplete.Input aria-label="Search racks" />
       </Autocomplete.Root>
       <Button>Save</Button>
+      <CopyButton value="Rack source" />
+      <IconButton aria-label="Refresh rack">↻</IconButton>
       <CheckboxGroup defaultValue={['backups']}>
         <Checkbox.Root aria-label="Backups" value="backups">
           <Checkbox.Indicator>✓</Checkbox.Indicator>
@@ -95,6 +108,7 @@ function InteractiveFixture() {
       </Fieldset.Root>
       <Form>
         <Input aria-label="Rack name" name="rack" />
+        <Textarea aria-label="Rack notes" />
       </Form>
       <Menu.Root>
         <Menu.Trigger>Actions</Menu.Trigger>

@@ -53,14 +53,18 @@ export const baseUiSingleComponentNames = [
 
 export const tinyrackComponentNames = [
   'alert',
+  'app-shell',
   'badge',
   'card',
   'code',
   'code-block',
+  'copy-button',
+  'icon-button',
   'link',
   'skeleton',
   'spinner',
   'table',
+  'textarea',
 ] as const;
 
 export const componentNames = [

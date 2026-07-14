@@ -25,7 +25,10 @@ export type {
 } from '@base-ui/react/scroll-area';
 export type { ScrollAreaContentProps } from './scroll-area-content.js';
 export type { ScrollAreaCornerProps } from './scroll-area-corner.js';
-export type { ScrollAreaRootProps } from './scroll-area-root.js';
+export type {
+  ScrollAreaRootProps,
+  ScrollAreaVariant,
+} from './scroll-area-root.js';
 export type { ScrollAreaScrollbarProps } from './scroll-area-scrollbar.js';
 export type { ScrollAreaThumbProps } from './scroll-area-thumb.js';
 export type { ScrollAreaViewportProps } from './scroll-area-viewport.js';

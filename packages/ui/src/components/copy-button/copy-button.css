@@ -1,0 +1,12 @@
+@import "../button/button.css";
+
+@layer components {
+  .tr-copy-button-announcement {
+    block-size: var(--tinyrack-border-width-default);
+    clip-path: inset(50%);
+    inline-size: var(--tinyrack-border-width-default);
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+}

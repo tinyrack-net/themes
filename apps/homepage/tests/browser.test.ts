@@ -204,6 +204,13 @@ describe('built React Router documentation', () => {
             scenario.theme,
           );
           await expect(page.locator('main').count()).resolves.toBe(1);
+          if (scenario.name === 'dark mobile') {
+            await page
+              .locator('.tr-app-shell-header')
+              .first()
+              .getByRole('button', { name: 'Open navigation' })
+              .click();
+          }
           const currentNavigationLink = page.locator(
             'nav[aria-label="Documentation"] [aria-current="page"]',
           );
@@ -392,7 +399,7 @@ describe('built React Router documentation', () => {
       const navigation = page.getByRole('navigation', { name: 'Documentation' });
       await navigation.getByRole('link', { name: 'Button', exact: true }).click();
       await page.getByRole('heading', { level: 1, name: 'Button' }).waitFor();
-      await expect(navigation.isVisible()).resolves.toBe(false);
+      await expect.poll(() => navigation.isVisible()).toBe(false);
       await page.goBack();
       await page.getByRole('heading', { level: 1, name: 'Tinyrack UI' }).waitFor();
       await page.goForward();
@@ -468,7 +475,7 @@ describe('built React Router documentation', () => {
       await navigation.getByRole('link', { name: 'Card', exact: true }).click();
       await routeModuleRequest;
 
-      await expect(navigation.isVisible()).resolves.toBe(false);
+      await expect.poll(() => navigation.isVisible()).toBe(false);
       const progress = page.getByRole('progressbar', { name: 'Loading page' });
       await progress.waitFor();
       const progressBox = await progress.boundingBox();
@@ -498,7 +505,9 @@ describe('built React Router documentation', () => {
     try {
       await page.goto(`${origin}/components/toggle`);
       const preview = page.locator('[data-playground-preview]');
-      const pressedControl = page.locator('[data-playground-control="pressed"] input');
+      const pressedControl = page
+        .locator('[data-playground-control="pressed"]')
+        .getByRole('checkbox');
       const toggle = preview.getByRole('button', { name: 'Bold' });
       await pressedControl.check();
       await expect(toggle.getAttribute('aria-pressed')).resolves.toBe('true');
@@ -509,8 +518,12 @@ describe('built React Router documentation', () => {
       await expect(pressedControl.isChecked()).resolves.toBe(false);
 
       await page.goto(`${origin}/components/progress`);
-      const range = page.locator('[data-playground-control="value"] input');
-      await range.fill('72');
+      const range = page
+        .locator('[data-playground-control="value"]')
+        .getByRole('slider');
+      await range.focus();
+      await range.press('Home');
+      for (let value = 0; value < 72; value += 1) await range.press('ArrowRight');
       await expect(
         page
           .locator('[data-playground-preview] [role="progressbar"]')
@@ -527,8 +540,11 @@ describe('built React Router documentation', () => {
       await expect(jsonControl.getAttribute('aria-invalid')).resolves.toBe('true');
 
       await page.goto(`${origin}/components/button`);
-      const select = page.locator('[data-playground-control="variant"] select');
-      await select.selectOption({ label: 'danger' });
+      const select = page
+        .locator('[data-playground-control="variant"]')
+        .getByRole('combobox');
+      await select.click();
+      await page.getByRole('option', { name: 'danger', exact: true }).click();
       await expect(
         page.locator('[data-playground-preview] .tr-btn').getAttribute('data-variant'),
       ).resolves.toBe('danger');
@@ -541,7 +557,9 @@ describe('built React Router documentation', () => {
     const page = await browser.newPage({ viewport: { height: 900, width: 1280 } });
     try {
       await page.goto(`${origin}/components/drawer`);
-      const drawerOpen = page.locator('[data-playground-control="open"] input');
+      const drawerOpen = page
+        .locator('[data-playground-control="open"]')
+        .getByRole('checkbox');
       await drawerOpen.check();
       const drawer = page.getByRole('dialog', { name: 'Rack settings' });
       await drawer.waitFor();
@@ -597,35 +615,30 @@ describe('built React Router documentation', () => {
       await expect(otpValue.inputValue()).resolves.toBe('');
 
       await page.goto(`${origin}/components/select`);
-      const selectValue = page.locator('[data-playground-control="value"] select');
-      const selectOpen = page.locator('[data-playground-control="open"] input');
+      const selectValue = page
+        .locator('[data-playground-control="value"]')
+        .getByRole('combobox');
+      const selectOpen = page
+        .locator('[data-playground-control="open"]')
+        .getByRole('checkbox');
       const selectTrigger = page
         .locator('[data-playground-preview]')
         .getByRole('combobox', { name: 'Deployment rack' });
-      await selectValue.selectOption('beta');
+      await selectValue.click();
+      await page.getByRole('option', { name: 'beta', exact: true }).click();
       await expect(selectTrigger.textContent()).resolves.toContain('Rack Beta');
       await selectTrigger.click();
       await expect.poll(() => selectOpen.isChecked()).toBe(true);
       await page.getByRole('option', { name: 'Staging rack' }).click();
-      await expect
-        .poll(() =>
-          selectValue.evaluate(
-            (select) => (select as HTMLSelectElement).selectedOptions[0]?.textContent,
-          ),
-        )
-        .toBe('staging');
+      await expect.poll(() => selectValue.textContent()).toContain('staging');
       await expect.poll(() => selectOpen.isChecked()).toBe(false);
       await page.getByRole('button', { name: 'Reset', exact: true }).click();
-      await expect
-        .poll(() =>
-          selectValue.evaluate(
-            (select) => (select as HTMLSelectElement).selectedOptions[0]?.textContent,
-          ),
-        )
-        .toBe('alpha');
+      await expect.poll(() => selectValue.textContent()).toContain('alpha');
 
       await page.goto(`${origin}/components/slider`);
-      const sliderValue = page.locator('[data-playground-control="value"] input');
+      const sliderValue = page
+        .locator('[data-playground-control="value"]')
+        .getByRole('spinbutton');
       const sliderThumb = page
         .locator('[data-playground-preview]')
         .getByRole('slider', { name: 'Volume' });
@@ -638,7 +651,9 @@ describe('built React Router documentation', () => {
       await expect(sliderValue.inputValue()).resolves.toBe('48');
 
       await page.goto(`${origin}/components/switch`);
-      const switchChecked = page.locator('[data-playground-control="checked"] input');
+      const switchChecked = page
+        .locator('[data-playground-control="checked"]')
+        .getByRole('checkbox');
       const switchControl = page
         .locator('[data-playground-preview]')
         .getByRole('switch', { name: 'Automatic updates' });
@@ -683,7 +698,7 @@ describe('built React Router documentation', () => {
         name: 'Copy React source for Basic action',
       });
       await copyButton.click();
-      await expect.poll(() => copyButton.textContent()).toBe('Copied');
+      await expect.poll(() => copyButton.textContent()).toContain('Copied');
 
       await page.goto(`${origin}/components/dialog`);
       await page

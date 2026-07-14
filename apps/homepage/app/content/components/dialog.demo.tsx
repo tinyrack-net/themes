@@ -1,8 +1,13 @@
+import { Button } from '@tinyrack/ui/components/button';
 import {
   Dialog,
   type DialogPlacement,
   type DialogSize,
 } from '@tinyrack/ui/components/dialog';
+import { Field } from '@tinyrack/ui/components/field';
+import { Form } from '@tinyrack/ui/components/form';
+import { Input } from '@tinyrack/ui/components/input';
+import { Textarea } from '@tinyrack/ui/components/textarea';
 import { useId, useState } from 'react';
 import type {
   DemoMeta as Meta,
@@ -63,26 +68,30 @@ export function DialogExample({
                   continue reading this body while the title and actions remain in
                   place.
                 </p>
-                <label htmlFor={notesId}>Rollback notes</label>
-                <textarea
-                  defaultValue="Restore the previous deployment and verify rack health."
-                  id={notesId}
-                  name="notes"
-                  rows={8}
-                />
+                <Field.Root>
+                  <Field.Label htmlFor={notesId}>Rollback notes</Field.Label>
+                  <Textarea
+                    defaultValue="Restore the previous deployment and verify rack health."
+                    id={notesId}
+                    name="notes"
+                    rows={8}
+                  />
+                </Field.Root>
               </div>
             ) : null}
-            <form
+            <Form
               className="grid gap-2"
               onSubmit={(event) => {
                 event.preventDefault();
                 setResult(`Saved ${new FormData(event.currentTarget).get('rack')}`);
               }}
             >
-              <label htmlFor={inputId}>Rack name</label>
-              <input defaultValue="rack-alpha" id={inputId} name="rack" required />
-              <button type="submit">Save changes</button>
-            </form>
+              <Field.Root>
+                <Field.Label htmlFor={inputId}>Rack name</Field.Label>
+                <Input defaultValue="rack-alpha" id={inputId} name="rack" required />
+              </Field.Root>
+              <Button type="submit">Save changes</Button>
+            </Form>
             <output aria-live="polite">{result}</output>
           </div>
           <Dialog.Close>Cancel</Dialog.Close>

@@ -1,0 +1,21 @@
+@import "../button/button.css";
+
+@layer components {
+  .tr-icon-btn {
+    padding-inline: 0;
+    width: var(--_tr-btn-height, var(--tinyrack-control-height-md));
+  }
+
+  .tr-icon-btn[data-size="sm"] {
+    width: var(--_tr-btn-height, var(--tinyrack-control-height-sm));
+  }
+
+  .tr-icon-btn[data-size="lg"] {
+    width: var(--_tr-btn-height, var(--tinyrack-control-height-lg));
+  }
+
+  .tr-icon-btn > svg {
+    block-size: var(--tr-icon-button-icon-size, var(--tinyrack-space-lg));
+    inline-size: var(--tr-icon-button-icon-size, var(--tinyrack-space-lg));
+  }
+}

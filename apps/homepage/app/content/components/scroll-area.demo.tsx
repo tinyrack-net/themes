@@ -8,9 +8,10 @@ import { definePlayground } from '../../playground/demo.js';
 type StoryArgs = {
   content: string;
   orientation: 'both' | 'horizontal' | 'vertical';
+  variant: 'surface' | 'plain';
 };
 
-export function ScrollAreaPreview({ content, orientation }: StoryArgs) {
+export function ScrollAreaPreview({ content, orientation, variant }: StoryArgs) {
   const hasHorizontal = orientation === 'horizontal' || orientation === 'both';
   const hasVertical = orientation === 'vertical' || orientation === 'both';
   const entries = Array.from(
@@ -19,7 +20,10 @@ export function ScrollAreaPreview({ content, orientation }: StoryArgs) {
   );
 
   return (
-    <ScrollArea.Root style={{ height: '10rem', width: 'min(20rem, 100%)' }}>
+    <ScrollArea.Root
+      style={{ height: '10rem', width: 'min(20rem, 100%)' }}
+      variant={variant}
+    >
       <ScrollArea.Viewport aria-label={content}>
         <ScrollArea.Content
           style={
@@ -66,10 +70,12 @@ const meta = {
   args: {
     content: 'Rack event log',
     orientation: 'both',
+    variant: 'surface',
   },
   argTypes: {
     content: { control: 'text' },
     orientation: { options: ['vertical', 'horizontal', 'both'], control: 'radio' },
+    variant: { options: ['surface', 'plain'], control: 'radio' },
   },
   render: (args) => <ScrollAreaPreview {...args} />,
 } satisfies Meta<StoryArgs>;

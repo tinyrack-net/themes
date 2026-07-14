@@ -1,4 +1,5 @@
 import { Drawer } from '@tinyrack/ui/components/drawer';
+import { Select } from '@tinyrack/ui/components/select';
 import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
@@ -65,13 +66,30 @@ export function DrawerPreview({
             <Drawer.Content>
               <Drawer.Title>Rack settings</Drawer.Title>
               <Drawer.Description>Update deployment preferences.</Drawer.Description>
-              <label>
-                Environment
-                <select defaultValue="production">
-                  <option value="production">Production</option>
-                  <option value="staging">Staging</option>
-                </select>
-              </label>
+              <Select.Root
+                defaultValue="production"
+                items={{ production: 'Production', staging: 'Staging' }}
+              >
+                <Select.Label>Environment</Select.Label>
+                <Select.Trigger aria-label="Environment">
+                  <Select.Value />
+                  <Select.Icon aria-hidden="true">⌄</Select.Icon>
+                </Select.Trigger>
+                <Select.Portal>
+                  <Select.Positioner>
+                    <Select.Popup>
+                      <Select.List>
+                        <Select.Item value="production">
+                          <Select.ItemText>Production</Select.ItemText>
+                        </Select.Item>
+                        <Select.Item value="staging">
+                          <Select.ItemText>Staging</Select.ItemText>
+                        </Select.Item>
+                      </Select.List>
+                    </Select.Popup>
+                  </Select.Positioner>
+                </Select.Portal>
+              </Select.Root>
               <Drawer.Root>
                 <Drawer.Trigger>Open nested confirmation</Drawer.Trigger>
                 <Drawer.Portal>

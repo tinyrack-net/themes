@@ -1,12 +1,13 @@
 'use client';
 
-import { Button } from '@tinyrack/ui/components/button';
 import { CodeBlock } from '@tinyrack/ui/components/code-block';
+import { CopyButton } from '@tinyrack/ui/components/copy-button';
+import { Link } from '@tinyrack/ui/components/link';
+import { ScrollArea } from '@tinyrack/ui/components/scroll-area';
 import { Tabs } from '@tinyrack/ui/components/tabs';
 import { LinkIcon } from 'lucide-react';
-import { type ReactNode, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 import type { BundledLanguage } from 'shiki/bundle/web';
-import { copyDocsSource } from './copy-docs-source.js';
 
 function mergeClassNames(...classNames: Array<false | null | string | undefined>) {
   return classNames.filter(Boolean).join(' ');
@@ -36,14 +37,6 @@ const previewLayoutClassNames = {
   start: 'content-start items-start justify-items-start',
   stretch: 'content-start items-start justify-items-stretch',
 } as const;
-const copyStatusLabels = {
-  copied: 'Copied',
-  idle: 'Copy',
-  unavailable: 'Copy unavailable',
-} as const;
-
-type CopyStatus = keyof typeof copyStatusLabels;
-
 function sourceValue(label: string) {
   return `source-${label
     .trim()
@@ -143,57 +136,25 @@ function ComponentExampleSourcePanel({
   normalizedCode,
   title,
 }: ComponentExampleSourcePanelProps) {
-  const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
-
-  useEffect(() => {
-    if (copyStatus === 'idle') {
-      return;
-    }
-
-    const resetTimer = window.setTimeout(() => {
-      setCopyStatus('idle');
-    }, 2000);
-
-    return () => {
-      window.clearTimeout(resetTimer);
-    };
-  }, [copyStatus]);
-
-  async function copySource() {
-    setCopyStatus((await copyDocsSource(normalizedCode)) ? 'copied' : 'unavailable');
-  }
-
-  const copyLabel = copyStatusLabels[copyStatus];
-
   return (
     <div
       className="relative min-w-0"
       data-component-example-source={label.toLowerCase()}
     >
-      <Button
+      <CopyButton
         appearance="solid"
         aria-label={`Copy ${label} source for ${title}`}
         className="absolute top-2 right-2 z-10"
         data-copy-source={label}
-        onClick={() => void copySource()}
+        idleLabel="Copy"
         size="sm"
-      >
-        {copyLabel}
-      </Button>
+        value={normalizedCode}
+      />
       <CodeBlock
-        className="m-0 max-w-full overflow-x-auto pr-32"
+        className="m-0 max-w-full pr-32"
         code={normalizedCode}
         language={language}
       />
-      <span
-        aria-atomic="true"
-        aria-live="polite"
-        className="sr-only"
-        data-copy-status={copyStatus}
-        role="status"
-      >
-        {copyStatus === 'idle' ? '' : `${label} source: ${copyLabel}`}
-      </span>
     </div>
   );
 }
@@ -227,14 +188,15 @@ export function ComponentExampleTabs({
           className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm"
           id={headingId}
         >
-          <a
+          <Link
             className="group inline-flex items-center gap-2 text-inherit no-underline"
             href={`#${id}`}
+            underline="none"
           >
             {title}
             <LinkIcon aria-hidden="true" className="h-4 w-4 shrink-0 opacity-60" />
             <span className="sr-only"> permalink</span>
-          </a>
+          </Link>
         </h3>
         {description === undefined ? null : (
           <p className="m-0 text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">
@@ -261,16 +223,23 @@ export function ComponentExampleTabs({
           ))}
         </Tabs.List>
         <Tabs.Panel value="preview">
-          <div
-            className={mergeClassNames(
-              'grid min-h-40 min-w-0 gap-4 overflow-x-auto bg-tinyrack-canvas p-4 text-tinyrack-text sm:p-6',
-              previewLayoutClassNames[previewLayout],
-              previewClassName,
-            )}
-            data-preview-layout={previewLayout}
-          >
-            {preview}
-          </div>
+          <ScrollArea.Root variant="plain">
+            <ScrollArea.Viewport>
+              <ScrollArea.Content
+                className={mergeClassNames(
+                  'grid min-h-40 min-w-max gap-4 bg-tinyrack-canvas p-4 text-tinyrack-text sm:min-w-full sm:p-6',
+                  previewLayoutClassNames[previewLayout],
+                  previewClassName,
+                )}
+                data-preview-layout={previewLayout}
+              >
+                {preview}
+              </ScrollArea.Content>
+            </ScrollArea.Viewport>
+            <ScrollArea.Scrollbar orientation="horizontal">
+              <ScrollArea.Thumb />
+            </ScrollArea.Scrollbar>
+          </ScrollArea.Root>
         </Tabs.Panel>
         {sortedSources.map((source) => (
           <Tabs.Panel key={source.label} value={sourceValue(source.label)}>

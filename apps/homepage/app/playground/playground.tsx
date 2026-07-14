@@ -1,5 +1,15 @@
 'use client';
 
+import { Button } from '@tinyrack/ui/components/button';
+import { Checkbox } from '@tinyrack/ui/components/checkbox';
+import { Field } from '@tinyrack/ui/components/field';
+import { Input } from '@tinyrack/ui/components/input';
+import { Radio } from '@tinyrack/ui/components/radio';
+import { RadioGroup } from '@tinyrack/ui/components/radio-group';
+import { ScrollArea } from '@tinyrack/ui/components/scroll-area';
+import { Select } from '@tinyrack/ui/components/select';
+import { Slider } from '@tinyrack/ui/components/slider';
+import { Textarea } from '@tinyrack/ui/components/textarea';
 import {
   type ChangeEvent,
   createElement,
@@ -61,36 +71,54 @@ function ChoiceControl({
   );
 
   if (kind === 'select') {
+    const items = Object.fromEntries(
+      options.map((option, index) => [String(index), optionLabel(option)]),
+    );
     return (
-      <select
-        className="tr-playground-input"
-        id={`playground-${name}`}
-        onChange={(event) => onChange(options[Number(event.currentTarget.value)])}
-        value={selectedIndex}
+      <Select.Root
+        items={items}
+        onValueChange={(index) => onChange(options[Number(index)])}
+        value={String(selectedIndex)}
       >
-        {options.map((option, index) => (
-          <option key={optionLabel(option)} value={index}>
-            {optionLabel(option)}
-          </option>
-        ))}
-      </select>
+        <Select.Trigger aria-label={name} id={`playground-${name}`}>
+          <Select.Value />
+          <Select.Icon aria-hidden="true">⌄</Select.Icon>
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Positioner sideOffset={8}>
+            <Select.Popup>
+              <Select.List>
+                {options.map((option, index) => (
+                  <Select.Item key={optionLabel(option)} value={String(index)}>
+                    <Select.ItemText>{optionLabel(option)}</Select.ItemText>
+                    <Select.ItemIndicator aria-hidden="true">✓</Select.ItemIndicator>
+                  </Select.Item>
+                ))}
+              </Select.List>
+            </Select.Popup>
+          </Select.Positioner>
+        </Select.Portal>
+      </Select.Root>
     );
   }
 
   return (
-    <div className="flex flex-wrap gap-3" id={`playground-${name}`}>
+    <RadioGroup
+      className="flex flex-wrap gap-3"
+      id={`playground-${name}`}
+      name={`playground-${name}`}
+      onValueChange={(index) => onChange(options[Number(index)])}
+      value={String(selectedIndex)}
+    >
       {options.map((option, index) => (
-        <label className="inline-flex items-center gap-2" key={optionLabel(option)}>
-          <input
-            checked={index === selectedIndex}
-            name={`playground-${name}`}
-            onChange={() => onChange(option)}
-            type="radio"
-          />
+        <span className="inline-flex items-center gap-2" key={optionLabel(option)}>
+          <Radio.Root aria-label={optionLabel(option)} value={String(index)}>
+            <Radio.Indicator aria-hidden="true" />
+          </Radio.Root>
           <span>{optionLabel(option)}</span>
-        </label>
+        </span>
       ))}
-    </div>
+    </RadioGroup>
   );
 }
 
@@ -112,20 +140,22 @@ function ChecklistControl({
       {options.map((option) => {
         const checked = selected.some((entry) => Object.is(entry, option));
         return (
-          <label className="inline-flex items-center gap-2" key={optionLabel(option)}>
-            <input
+          <span className="inline-flex items-center gap-2" key={optionLabel(option)}>
+            <Checkbox.Root
+              aria-label={optionLabel(option)}
               checked={checked}
-              onChange={() =>
+              onCheckedChange={() =>
                 onChange(
                   checked
                     ? selected.filter((entry) => !Object.is(entry, option))
                     : [...selected, option],
                 )
               }
-              type="checkbox"
-            />
+            >
+              <Checkbox.Indicator aria-hidden="true">✓</Checkbox.Indicator>
+            </Checkbox.Root>
             <span>{optionLabel(option)}</span>
-          </label>
+          </span>
         );
       })}
     </div>
@@ -171,9 +201,9 @@ function JsonControl({
 
   return (
     <>
-      <textarea
+      <Textarea
         aria-invalid={invalid}
-        className="tr-playground-input min-h-24 font-mono"
+        className="min-h-24 font-mono"
         id={`playground-${name}`}
         onChange={updateDraft}
         value={draft}
@@ -205,12 +235,14 @@ function ControlField({
 
   if (kind === 'boolean') {
     control = (
-      <input
+      <Checkbox.Root
+        aria-label={name}
         checked={Boolean(value)}
         id={`playground-${name}`}
-        onChange={(event) => onChange(event.currentTarget.checked)}
-        type="checkbox"
-      />
+        onCheckedChange={(checked) => onChange(checked)}
+      >
+        <Checkbox.Indicator aria-hidden="true">✓</Checkbox.Indicator>
+      </Checkbox.Root>
     );
   } else if (kind === 'select' || kind === 'radio') {
     control = (
@@ -243,11 +275,28 @@ function ControlField({
           : {})}
       />
     );
+  } else if (kind === 'range') {
+    const numericValue = typeof value === 'number' ? value : 0;
+    control = (
+      <Slider.Root
+        {...limits}
+        onValueChange={(values) =>
+          onChange(Array.isArray(values) ? (values[0] ?? numericValue) : values)
+        }
+        value={[numericValue]}
+      >
+        <Slider.Control>
+          <Slider.Track>
+            <Slider.Indicator />
+          </Slider.Track>
+          <Slider.Thumb aria-label={name} id={`playground-${name}`} />
+        </Slider.Control>
+      </Slider.Root>
+    );
   } else {
     control = (
-      <input
+      <Input
         {...limits}
-        className="tr-playground-input"
         id={`playground-${name}`}
         onChange={(event) => {
           if (kind === 'number') {
@@ -258,25 +307,24 @@ function ControlField({
             );
             return;
           }
-          onChange(
-            kind === 'range'
-              ? event.currentTarget.valueAsNumber
-              : event.currentTarget.value,
-          );
+          onChange(event.currentTarget.value);
         }}
-        type={kind}
+        type={kind === 'number' ? 'number' : 'text'}
         value={typeof value === 'number' || typeof value === 'string' ? value : ''}
       />
     );
   }
 
   return (
-    <div className="grid gap-2" data-playground-control={name}>
-      <label className="text-tinyrack-sm font-medium" htmlFor={`playground-${name}`}>
+    <Field.Root className="grid gap-2" data-playground-control={name}>
+      <Field.Label
+        className="text-tinyrack-sm font-medium"
+        htmlFor={`playground-${name}`}
+      >
         {name}
-      </label>
+      </Field.Label>
       {control}
-    </div>
+    </Field.Root>
   );
 }
 
@@ -299,30 +347,42 @@ export function ComponentPlayground<TArgs extends DemoArgs>({
       className="my-6 grid min-w-0 overflow-hidden border border-tinyrack-border bg-tinyrack-surface lg:grid-cols-[minmax(0,1fr)_18rem]"
       data-component-playground=""
     >
-      <div
-        className="grid min-h-64 min-w-0 place-items-center overflow-auto bg-tinyrack-canvas p-4 sm:p-8"
+      <ScrollArea.Root
+        className="min-h-64 min-w-0 bg-tinyrack-canvas"
         data-playground-preview=""
+        variant="plain"
       >
-        <PlaygroundArgsProvider key={resetKey} args={args} updateArgs={updateArgs}>
-          {createElement(Render, args)}
-        </PlaygroundArgsProvider>
-      </div>
+        <ScrollArea.Viewport>
+          <ScrollArea.Content className="grid min-h-64 min-w-0 place-items-center p-4 sm:p-8">
+            <PlaygroundArgsProvider key={resetKey} args={args} updateArgs={updateArgs}>
+              {createElement(Render, args)}
+            </PlaygroundArgsProvider>
+          </ScrollArea.Content>
+        </ScrollArea.Viewport>
+        <ScrollArea.Scrollbar orientation="vertical">
+          <ScrollArea.Thumb />
+        </ScrollArea.Scrollbar>
+        <ScrollArea.Scrollbar orientation="horizontal">
+          <ScrollArea.Thumb />
+        </ScrollArea.Scrollbar>
+        <ScrollArea.Corner />
+      </ScrollArea.Root>
       <aside
         className="grid content-start gap-4 border-t border-tinyrack-border p-4 lg:border-t-0 lg:border-l"
         data-playground-controls=""
       >
         <div className="flex items-center justify-between gap-3">
           <h3 className="m-0 text-tinyrack-base font-semibold">Controls</h3>
-          <button
-            className="tr-playground-reset"
+          <Button
+            appearance="outline"
             onClick={() => {
               setArgs({ ...definition.args });
               setResetKey((current) => current + 1);
             }}
-            type="button"
+            size="sm"
           >
             Reset
-          </button>
+          </Button>
         </div>
         {Object.entries(definition.argTypes).map(([name, spec]) =>
           spec === undefined ? null : (

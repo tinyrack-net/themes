@@ -65,3 +65,15 @@ test('preserves native external and download destination attributes', async () =
   expect(external?.rel).toBe('noreferrer');
   expect(download?.download).toBe('rack-inventory.csv');
 });
+
+test('composes a router-style rendered anchor without DOM nesting', async () => {
+  await render(
+    <Link href="/racks" render={<a data-router-link="true" href="/racks" />}>
+      Racks
+    </Link>,
+  );
+  const link = document.querySelector<HTMLAnchorElement>('[data-router-link="true"]');
+  expect(link?.classList.contains('tr-link')).toBe(true);
+  expect(link?.pathname).toBe('/racks');
+  expect(link?.querySelector('a')).toBeNull();
+});

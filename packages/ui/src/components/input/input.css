@@ -38,6 +38,11 @@
   }
 
   .tr-input-group {
+    --_tr-input-group-control-height: var(
+      --tr-input-group-height,
+      var(--tinyrack-control-height-md)
+    );
+
     align-items: stretch;
     background: var(--tr-input-group-background, var(--tinyrack-surface));
     border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
@@ -45,7 +50,7 @@
     box-sizing: border-box;
     color: var(--tinyrack-text);
     display: flex;
-    min-height: var(--tinyrack-control-height-md);
+    min-height: var(--_tr-input-group-control-height);
     min-width: 0;
     overflow: hidden;
     transition:
@@ -74,6 +79,7 @@
 
   .tr-input-group .tr-input-group-input.tr-input {
     background: transparent;
+    block-size: var(--_tr-input-group-control-height);
     border: 0;
     border-radius: 0;
     flex: 1 1 auto;
@@ -97,18 +103,25 @@
   }
 
   .tr-input-group-action {
+    --_tr-input-group-action-size: var(
+      --tr-input-group-action-size,
+      var(--_tr-input-group-control-height, var(--tinyrack-control-height-md))
+    );
+
     align-items: center;
     background: transparent;
+    block-size: var(--_tr-input-group-action-size);
     border: 0;
     border-inline-start: var(--tinyrack-border-width-default) solid
       var(--tinyrack-border);
     color: var(--tinyrack-text-muted);
+    box-sizing: border-box;
     cursor: pointer;
     display: inline-flex;
-    flex: 0 0 var(--tr-input-group-action-size, var(--tinyrack-control-height-md));
+    flex: 0 0 var(--_tr-input-group-action-size);
     font: inherit;
     justify-content: center;
-    min-height: var(--tinyrack-control-height-md);
+    min-height: var(--_tr-input-group-action-size);
     padding: 0;
     transition:
       background-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard),

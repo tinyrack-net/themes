@@ -154,7 +154,7 @@ test('renders the portalled popup as a trigger-aligned Tinyrack layer', async ()
   expect(selectedItemStyle.backgroundColor).not.toBe(
     getComputedStyle(popup as HTMLElement).backgroundColor,
   );
-  expect(selectedItemStyle.outlineStyle).toBe('none');
+  expect(selectedItemStyle.outlineStyle).toBe('solid');
 });
 
 test('preserves explicit positioning props and class names', async () => {

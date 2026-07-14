@@ -12,12 +12,18 @@ export function CheckboxGroup({ className, ref, value, ...props }: CheckboxGroup
 
   useEffect(() => {
     if (value !== undefined) return;
-    const form = rootRef.current?.closest('form');
-    if (!form) return;
-
-    const reset = () => setResetKey((current) => current + 1);
-    form.addEventListener('reset', reset);
-    return () => form.removeEventListener('reset', reset);
+    const reset = (event: Event) => {
+      const form = event.target;
+      if (!(form instanceof HTMLFormElement)) return;
+      const ownsForm = Array.from(
+        rootRef.current?.querySelectorAll<HTMLInputElement>('input') ?? [],
+      ).some((input) => input.form === form);
+      if (rootRef.current?.closest('form') === form || ownsForm) {
+        setResetKey((current) => current + 1);
+      }
+    };
+    document.addEventListener('reset', reset, true);
+    return () => document.removeEventListener('reset', reset, true);
   }, [value]);
 
   return (

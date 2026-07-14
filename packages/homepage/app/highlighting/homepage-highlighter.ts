@@ -26,7 +26,10 @@ export const homepageHighlightLanguages = [
   'shell',
 ] as const;
 
-export const homepageHighlightThemes = ['github-dark', 'github-light'] as const;
+export const homepageHighlightThemes = [
+  'github-dark-high-contrast',
+  'github-light-high-contrast',
+] as const;
 
 const createHomepageHighlighter = createBundledHighlighter({
   langs: {
@@ -45,8 +48,10 @@ const createHomepageHighlighter = createBundledHighlighter({
     typescript: loadTypeScript,
   },
   themes: {
-    'github-dark': () => import('@shikijs/themes/github-dark'),
-    'github-light': () => import('@shikijs/themes/github-light'),
+    'github-dark-high-contrast': () =>
+      import('@shikijs/themes/github-dark-high-contrast'),
+    'github-light-high-contrast': () =>
+      import('@shikijs/themes/github-light-high-contrast'),
   },
   engine: () => createJavaScriptRegexEngine(),
 });

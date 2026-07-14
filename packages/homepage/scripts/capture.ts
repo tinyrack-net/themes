@@ -148,7 +148,7 @@ try {
     for (const route of staticDocumentRoutes) {
       activePath = route.path;
       await page.goto(`${started.origin}${route.path}`, { waitUntil: 'networkidle' });
-      await page.getByRole('heading', { level: 1, name: route.title }).waitFor();
+      await page.locator('h1').filter({ hasText: route.title }).waitFor();
       await page.waitForFunction(() =>
         [...document.querySelectorAll('pre[data-language]')].every((element) =>
           element.hasAttribute('data-highlighted'),
@@ -261,7 +261,9 @@ try {
           .locator('[data-component-example-id="preview-card-states"]')
           .getByRole('link', { name: 'Rack Beta' })
           .focus();
-        return page.locator('.tr-preview-card-popup[data-open]');
+        return page
+          .locator('.tr-preview-card-popup[data-open]')
+          .filter({ hasText: 'Rack Beta' });
       },
     },
     {

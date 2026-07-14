@@ -91,6 +91,38 @@ const variants = ['current', 'muted', 'primary', 'danger'];
 </div>` }]}
 />
 
+<ComponentExampleTabs
+  id="spinner-task-lifecycle"
+  title="Task lifecycle"
+  description="Start, finish, and reset the task to verify that the announced status only exists while work is running."
+  preview={<Stories.SpinnerLifecyclePreview />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`function DeploymentStatus() {
+  const [state, setState] = useState('idle');
+  return (
+    <div>
+      <Button onClick={() => setState('running')}>Start task</Button>
+      <Button disabled={state !== 'running'} onClick={() => setState('complete')}>
+        Finish task
+      </Button>
+      <output aria-live="polite">
+        {state === 'running' ? <Spinner label="Deploying rack" variant="primary" /> : null}
+        {state === 'complete' ? 'Deployment complete.' : null}
+      </output>
+    </div>
+  );
+}` }]}
+/>
+
 ## API
 
 By default Spinner exposes `role="status"`; use a task-specific `label`. Set `decorative` inside an already named loading control or status region so only one element is announced.
+
+| CSS token | Default | Purpose |
+| --- | --- | --- |
+| `--tr-spinner-size` | size recipe | Indicator diameter |
+| `--tr-spinner-stroke-width` | `--tinyrack-spinner-stroke-width` | Ring thickness |
+| `--tr-spinner-color` | semantic variant color | Active and track color |
+| `--tinyrack-spinner-size-sm` | foundation metric | Small diameter |
+| `--tinyrack-spinner-size-md` | foundation metric | Medium diameter |
+| `--tinyrack-spinner-size-lg` | foundation metric | Large diameter |
+| `--tinyrack-spinner-track-opacity` | foundation metric | Inactive ring opacity |

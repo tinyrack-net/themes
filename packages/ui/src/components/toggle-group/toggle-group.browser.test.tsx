@@ -16,6 +16,38 @@ test('renders the Tinyrack ToggleGroup wrapper', async () => {
   expect(document.querySelector('.tr-toggle-group')).not.toBeNull();
 });
 
+test('preserves refs, native props, events, render, and state-based class names', async () => {
+  let groupRef: HTMLDivElement | null = null;
+  let clickCount = 0;
+
+  await render(
+    <ToggleGroup
+      aria-label="Rendered formatting"
+      className={({ orientation }) => `consumer-group consumer-group-${orientation}`}
+      data-owner="editor"
+      onClick={() => {
+        clickCount += 1;
+      }}
+      orientation="vertical"
+      ref={(node) => {
+        groupRef = node;
+      }}
+      render={<div data-rendered="toggle-group" />}
+    >
+      <Toggle value="bold">Bold</Toggle>
+    </ToggleGroup>,
+  );
+
+  const group = page.getByRole('group', { name: 'Rendered formatting' });
+  expect(groupRef).toBe(group.element());
+  expect(group.element().dataset['owner']).toBe('editor');
+  expect(group.element().dataset['rendered']).toBe('toggle-group');
+  expect(group.element().classList.contains('tr-toggle-group')).toBe(true);
+  expect(group.element().classList.contains('consumer-group-vertical')).toBe(true);
+  await group.getByRole('button', { name: 'Bold' }).click();
+  expect(clickCount).toBe(1);
+});
+
 test('preserves controlled multiple selection and orientation state', async () => {
   function ControlledToggleGroup() {
     const [value, setValue] = useState<string[]>(['bold']);
@@ -79,6 +111,34 @@ test('moves focus by orientation, respects bounded edges, and deselects single v
   expect(start.element().getAttribute('aria-pressed')).toBe('false');
   await center.click();
   await expect.poll(() => center.element().getAttribute('aria-pressed')).toBe('false');
+});
+
+test('moves vertical focus, skips disabled items, and loops at the group edges', async () => {
+  await render(
+    <ToggleGroup
+      aria-label="Panel placement"
+      defaultValue={['top']}
+      orientation="vertical"
+    >
+      <Toggle value="top">Top</Toggle>
+      <Toggle disabled value="middle">
+        Middle unavailable
+      </Toggle>
+      <Toggle value="bottom">Bottom</Toggle>
+    </ToggleGroup>,
+  );
+
+  const top = page.getByRole('button', { name: 'Top' });
+  const middle = page.getByRole('button', { name: 'Middle unavailable' });
+  const bottom = page.getByRole('button', { name: 'Bottom' });
+  top.element().focus();
+  await userEvent.keyboard('{ArrowDown}');
+  expect(document.activeElement).toBe(bottom.element());
+  expect(document.activeElement).not.toBe(middle.element());
+  await userEvent.keyboard('{ArrowDown}');
+  expect(document.activeElement).toBe(top.element());
+  await userEvent.keyboard('{ArrowUp}');
+  expect(document.activeElement).toBe(bottom.element());
 });
 
 test('propagates group disabled state and suppresses item activation', async () => {

@@ -6,6 +6,13 @@ import { render } from 'vitest-browser-react';
 import { Tabs } from '../tabs/index.js';
 import { Dialog, DialogRoot } from './index.js';
 
+const invalidEdgeSize: import('./dialog-popup.js').DialogPopupProps = {
+  placement: 'top',
+  // @ts-expect-error top and bottom placements intentionally forbid the size recipe.
+  size: 'sm',
+};
+void invalidEdgeSize;
+
 test('uses Base UI dialog focus and dismissal behavior', async () => {
   expect(Dialog.Root).toBe(DialogRoot);
   await render(
@@ -97,4 +104,35 @@ test('layers modal surfaces above active tabs', async () => {
       activeTabBounds.top + activeTabBounds.height / 2,
     ),
   ).toBe(backdrop);
+});
+
+test('omits size recipes for both top and bottom edge placements', async () => {
+  const top = await render(
+    <Dialog.Root defaultOpen modal={false}>
+      <Dialog.Portal>
+        <Dialog.Popup placement="top">
+          <Dialog.Title>Top notice</Dialog.Title>
+          <Dialog.Description>Anchored to the top edge.</Dialog.Description>
+        </Dialog.Popup>
+      </Dialog.Portal>
+    </Dialog.Root>,
+  );
+  const topPopup = document.querySelector<HTMLElement>('.tr-dialog-box');
+  expect(topPopup?.dataset['placement']).toBe('top');
+  expect(topPopup?.hasAttribute('data-size')).toBe(false);
+  await top.unmount();
+
+  await render(
+    <Dialog.Root defaultOpen modal={false}>
+      <Dialog.Portal>
+        <Dialog.Popup placement="bottom">
+          <Dialog.Title>Bottom notice</Dialog.Title>
+          <Dialog.Description>Anchored to the bottom edge.</Dialog.Description>
+        </Dialog.Popup>
+      </Dialog.Portal>
+    </Dialog.Root>,
+  );
+  const bottomPopup = document.querySelector<HTMLElement>('.tr-dialog-box');
+  expect(bottomPopup?.dataset['placement']).toBe('bottom');
+  expect(bottomPopup?.hasAttribute('data-size')).toBe(false);
 });

@@ -1,7 +1,7 @@
 import '../../core/core.css';
 import './accordion.css';
-import { useState } from 'react';
-import { expect, test } from 'vitest';
+import { Fragment, useState } from 'react';
+import { expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { Accordion, AccordionRoot } from './index.js';
 
@@ -102,6 +102,44 @@ test('visually distinguishes disabled items and keeps them closed', async () => 
   disabledTrigger?.click();
   await expect.poll(() => disabledTrigger?.getAttribute('aria-expanded')).toBe('false');
   expect(disabledItem?.querySelector('.tr-accordion-content')).toBeNull();
+});
+
+test('removes a disabled item from an initially open value', async () => {
+  await render(
+    <Accordion.Root defaultValue={['logs']}>
+      <Fragment key="disabled-items">
+        {null}
+        <Accordion.Item disabled value="logs">
+          <Accordion.Header>
+            <Accordion.Trigger>Logs</Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Panel keepMounted>Unavailable</Accordion.Panel>
+        </Accordion.Item>
+      </Fragment>
+    </Accordion.Root>,
+  );
+
+  const trigger = document.querySelector<HTMLButtonElement>('.tr-accordion-trigger');
+  const item = document.querySelector<HTMLElement>('.tr-accordion-item');
+  expect(trigger?.getAttribute('aria-expanded')).toBe('false');
+  expect(item?.hasAttribute('data-open')).toBe(false);
+  expect(document.querySelector<HTMLElement>('.tr-accordion-content')?.hidden).toBe(
+    true,
+  );
+});
+
+test('normalizes a missing internal change value before notifying the consumer', () => {
+  const onValueChange = vi.fn();
+  const root = AccordionRoot<string>({ children: null, onValueChange });
+  const handleValueChange = (
+    root.props as {
+      onValueChange: (value: string[] | undefined, eventDetails: never) => void;
+    }
+  ).onValueChange;
+
+  handleValueChange(undefined, undefined as never);
+
+  expect(onValueChange).toHaveBeenCalledWith([], undefined);
 });
 
 test('animates the panel when it closes', async () => {

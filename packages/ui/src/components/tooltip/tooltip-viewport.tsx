@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type TooltipViewportProps = ComponentProps<typeof BaseTooltip.Viewport>;
 export const TooltipViewport = createComponentPart(
   BaseTooltip.Viewport,
-  'tr-tooltip-viewport',
+  'tr-layer-viewport tr-tooltip-viewport',
 );

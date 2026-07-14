@@ -8,6 +8,7 @@ import { definePlayground } from '../../playground/demo.js';
 type SkeletonStoryArgs = {
   announced: boolean;
   animate: boolean;
+  circleSize: number;
   height: number;
   label: string;
   shape: SkeletonShape;
@@ -21,6 +22,7 @@ const meta = {
   args: {
     announced: false,
     animate: true,
+    circleSize: 48,
     height: 48,
     label: 'Loading server',
     shape: 'rectangle',
@@ -29,17 +31,31 @@ const meta = {
   argTypes: {
     announced: { control: 'boolean' },
     animate: { control: 'boolean' },
-    height: { control: { type: 'range', min: 12, max: 240, step: 4 } },
-    label: { control: 'text' },
+    circleSize: {
+      control: { type: 'range', min: 12, max: 240, step: 4 },
+      when: (args) => args['shape'] === 'circle',
+    },
+    height: {
+      control: { type: 'range', min: 12, max: 240, step: 4 },
+      when: (args) => args['shape'] !== 'circle',
+    },
+    label: { control: 'text', when: (args) => args['announced'] === true },
     shape: { control: 'select', options: ['text', 'rectangle', 'circle'] },
-    width: { control: { type: 'range', min: 12, max: 480, step: 4 } },
+    width: {
+      control: { type: 'range', min: 12, max: 480, step: 4 },
+      when: (args) => args['shape'] !== 'circle',
+    },
   },
-  render: ({ animate, announced, height, label, shape, width }) => (
+  render: ({ animate, announced, circleSize, height, label, shape, width }) => (
     <Skeleton
       animate={animate}
       aria-label={announced ? label : undefined}
       shape={shape}
-      style={{ height, width }}
+      style={
+        shape === 'circle'
+          ? { height: circleSize, width: circleSize }
+          : { height, width }
+      }
     />
   ),
 } satisfies Meta<SkeletonStoryArgs>;

@@ -1,6 +1,6 @@
 import '../../core/core.css';
 import './combobox.css';
-import { createRef } from 'react';
+import { createRef, useState } from 'react';
 import { expect, test, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
@@ -137,6 +137,21 @@ test('filters and selects a result from the keyboard', async () => {
   expect(new FormData(input.form as HTMLFormElement).get('service')).toBe('Gamma');
 });
 
+test('gives the highlighted option a visible focus indicator', async () => {
+  document.documentElement.dataset['theme'] = 'tinyrack-light';
+  await render(<ServiceCombobox />);
+  const input = page
+    .getByRole('combobox', { name: 'Service' })
+    .element() as HTMLInputElement;
+  input.focus();
+  await userEvent.keyboard('{ArrowDown}');
+  const highlighted = document.querySelector<HTMLElement>(
+    '.tr-combobox-option[data-highlighted]',
+  );
+  expect(highlighted).not.toBeNull();
+  expect(getComputedStyle(highlighted as HTMLElement).outlineStyle).toBe('solid');
+});
+
 test('keeps the portal inside the viewport and dismisses with Escape', async () => {
   await render(<ServiceCombobox />);
   const input = page
@@ -168,4 +183,87 @@ test('keeps the portal inside the viewport and dismisses with Escape', async () 
   expect(arrowRect?.height).toBeGreaterThan(0);
   await userEvent.keyboard('{Escape}');
   await expect.poll(() => input.getAttribute('aria-expanded')).toBe('false');
+});
+
+test('renders and updates the complete multiple chip and grid anatomy', async () => {
+  function MultipleCombobox() {
+    const items = ['Alpha', 'Beta'];
+    const [value, setValue] = useState<string[]>(['Alpha']);
+    return (
+      <Combobox.Root grid items={items} multiple onValueChange={setValue} value={value}>
+        <label htmlFor="multiple-services-input">Services</label>
+        <Combobox.InputGroup>
+          <Combobox.Chips>
+            <Combobox.Value>
+              {(selected: string[]) =>
+                selected.map((item) => (
+                  <Combobox.Chip key={item}>
+                    {item}
+                    <Combobox.ChipRemove aria-label={`Remove ${item}`}>
+                      ×
+                    </Combobox.ChipRemove>
+                  </Combobox.Chip>
+                ))
+              }
+            </Combobox.Value>
+            <Combobox.Input id="multiple-services-input" />
+          </Combobox.Chips>
+          <Combobox.Trigger aria-label="Show services">Open</Combobox.Trigger>
+        </Combobox.InputGroup>
+        <Combobox.Portal>
+          <Combobox.Positioner>
+            <Combobox.Popup>
+              <Combobox.List>
+                <Combobox.Collection>
+                  {(item: string) => (
+                    <Combobox.Row key={item}>
+                      <Combobox.Item value={item}>{item}</Combobox.Item>
+                    </Combobox.Row>
+                  )}
+                </Combobox.Collection>
+              </Combobox.List>
+            </Combobox.Popup>
+          </Combobox.Positioner>
+        </Combobox.Portal>
+      </Combobox.Root>
+    );
+  }
+
+  await render(<MultipleCombobox />);
+  expect(
+    document.querySelector('label[for="multiple-services-input"]')?.textContent,
+  ).toBe('Services');
+  expect(document.querySelectorAll('.tr-combobox-chip')).toHaveLength(1);
+  expect(
+    getComputedStyle(document.querySelector('.tr-combobox-chips') as Element).display,
+  ).toBe('flex');
+  await userEvent.click(page.getByRole('button', { name: 'Remove Alpha' }).element());
+  await expect
+    .poll(() => document.querySelectorAll('.tr-combobox-chip').length)
+    .toBe(0);
+  await userEvent.click(page.getByRole('button', { name: 'Services' }).element());
+  await expect.poll(() => document.querySelectorAll('.tr-combobox-row').length).toBe(2);
+});
+
+test('uses Combobox.Label for a trigger-only select anatomy', async () => {
+  await render(
+    <Combobox.Root items={['Alpha', 'Beta']}>
+      <Combobox.Label>Services</Combobox.Label>
+      <Combobox.Trigger>Choose a service</Combobox.Trigger>
+      <Combobox.Portal>
+        <Combobox.Positioner>
+          <Combobox.Popup>
+            <Combobox.List>
+              <Combobox.Item value="Alpha">Alpha</Combobox.Item>
+              <Combobox.Item value="Beta">Beta</Combobox.Item>
+            </Combobox.List>
+          </Combobox.Popup>
+        </Combobox.Positioner>
+      </Combobox.Portal>
+    </Combobox.Root>,
+  );
+  expect(document.querySelector('.tr-combobox-label')?.textContent).toBe('Services');
+  expect(page.getByRole('combobox', { name: 'Services' }).element()).toHaveClass(
+    'tr-combobox-trigger',
+  );
 });

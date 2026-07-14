@@ -23,7 +23,9 @@
     width: 100%;
   }
 
-  .tr-autocomplete-clear[data-disabled] {
+  .tr-autocomplete-clear[data-disabled],
+  .tr-autocomplete-input-group:has(.tr-autocomplete-input[readonly])
+    .tr-autocomplete-clear {
     display: none;
   }
 
@@ -81,9 +83,14 @@
     padding-inline: var(--tinyrack-control-padding-inline-sm);
   }
 
-  .tr-autocomplete-item:is([data-highlighted], :hover) {
+  .tr-autocomplete-item:hover {
     background: var(--tinyrack-surface-hover);
-    outline: none;
+  }
+
+  .tr-autocomplete-item[data-highlighted] {
+    background: var(--tinyrack-surface-hover);
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: calc(var(--tinyrack-focus-width) * -1);
   }
 
   .tr-autocomplete-item[data-disabled] {

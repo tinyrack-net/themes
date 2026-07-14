@@ -51,6 +51,20 @@ test('renders plain code without loading a highlighter', async () => {
   expect(ref.current?.textContent).toBe('plain text');
 });
 
+test('keeps an async highlight result bound to the latest code and language', async () => {
+  const { rerender } = await render(
+    <CodeBlock code="const stale = true;" language="ts" />,
+  );
+  await rerender(<CodeBlock code="body { color: red; }" language="css" />);
+  const element = document.querySelector<HTMLPreElement>('.tr-code-block');
+  await expect
+    .poll(() => element?.dataset['highlighted'], { timeout: 10_000 })
+    .toBe('true');
+  expect(element?.dataset['language']).toBe('css');
+  expect(element?.textContent).toBe('body { color: red; }');
+  expect(element?.textContent).not.toContain('stale');
+});
+
 test('tracks Tinyrack light and dark themes without re-highlighting', async () => {
   document.documentElement.dataset['theme'] = 'tinyrack-light';
   const ref = createRef<HTMLPreElement>();
@@ -61,7 +75,7 @@ test('tracks Tinyrack light and dark themes without re-highlighting', async () =
     .toBe('true');
   expect(renderedThemeColors(ref.current)).toEqual({
     background: 'rgb(255, 255, 255)',
-    token: 'rgb(215, 58, 73)',
+    token: 'rgb(160, 17, 31)',
   });
   const highlightedMarkup = ref.current?.innerHTML;
 
@@ -70,8 +84,8 @@ test('tracks Tinyrack light and dark themes without re-highlighting', async () =
   await expect
     .poll(() => renderedThemeColors(ref.current))
     .toEqual({
-      background: 'rgb(36, 41, 46)',
-      token: 'rgb(249, 117, 131)',
+      background: 'rgb(10, 12, 16)',
+      token: 'rgb(255, 148, 146)',
     });
   expect(ref.current?.innerHTML).toBe(highlightedMarkup);
 });

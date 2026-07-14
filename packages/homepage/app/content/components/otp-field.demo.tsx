@@ -2,7 +2,7 @@ import { Button } from '@tinyrack/ui/components/button';
 import { Field } from '@tinyrack/ui/components/field';
 import { Form } from '@tinyrack/ui/components/form';
 import { OTPField } from '@tinyrack/ui/components/otp-field';
-import { useId, useState } from 'react';
+import { Fragment, useId, useState } from 'react';
 import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
@@ -26,6 +26,19 @@ type OTPFieldPreviewProps = Omit<StoryArgs, 'value'> & {
   onValueChange?: (value: string) => void;
   value?: string;
 };
+
+function OTPFieldSlots({ length }: { length: number }) {
+  const separatorIndex = Math.ceil(length / 2);
+  const positions = Array.from({ length }, (_, position) => position + 1);
+  return positions.map((position) => (
+    <Fragment key={`slot-${position}`}>
+      {position === separatorIndex + 1 ? (
+        <OTPField.Separator aria-hidden="true" />
+      ) : null}
+      <OTPField.Input aria-label={`Digit ${position} of ${length}`} />
+    </Fragment>
+  ));
+}
 
 export function OTPFieldPreview({
   defaultValue,
@@ -53,10 +66,47 @@ export function OTPFieldPreview({
         readOnly={readOnly}
         required={required}
       >
-        {Array.from({ length }, (_, index) => `slot-${index + 1}`).map((slot) => (
-          <OTPField.Input key={slot} />
-        ))}
+        <OTPFieldSlots length={length} />
       </OTPField.Root>
+    </div>
+  );
+}
+
+export function OTPFieldInputFlow() {
+  const [event, setEvent] = useState('Waiting for input.');
+  const [value, setValue] = useState('');
+  return (
+    <div className="grid gap-3">
+      <p className="m-0 text-tinyrack-sm text-tinyrack-muted">
+        Type digits or paste a complete code. Letters are rejected and reported below.
+      </p>
+      <OTPField.Root
+        aria-label="Interactive verification code"
+        length={4}
+        onValueChange={(nextValue, details) => {
+          setValue(nextValue);
+          setEvent(`Accepted ${nextValue || 'empty'} via ${details.reason}.`);
+        }}
+        onValueComplete={(nextValue, details) =>
+          setEvent(`Completed ${nextValue} via ${details.reason}.`)
+        }
+        onValueInvalid={(attemptedValue, details) =>
+          setEvent(`Rejected ${attemptedValue} via ${details.reason}.`)
+        }
+        value={value}
+      >
+        <OTPFieldSlots length={4} />
+      </OTPField.Root>
+      <output aria-live="polite">{event}</output>
+      <Button
+        appearance="outline"
+        onClick={() => {
+          setValue('');
+          setEvent('Reset.');
+        }}
+      >
+        Reset
+      </Button>
     </div>
   );
 }
@@ -116,10 +166,7 @@ export function OTPFieldValidationPreview() {
           required
           value={value}
         >
-          <OTPField.Input />
-          <OTPField.Input />
-          <OTPField.Input />
-          <OTPField.Input />
+          <OTPFieldSlots length={4} />
         </OTPField.Root>
         <Field.Description>Enter all four digits.</Field.Description>
         {invalid ? (

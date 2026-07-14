@@ -55,6 +55,7 @@ export function TabsPreview({
           <Tabs.Tab disabled={disabled} value="logs">
             Logs
           </Tabs.Tab>
+          <Tabs.Indicator />
         </Tabs.List>
         <Tabs.Panel value="overview">All systems operational.</Tabs.Panel>
         <Tabs.Panel value="network">10 Gbps uplink.</Tabs.Panel>
@@ -88,6 +89,7 @@ export function TabsInteractiveExample() {
           <Tabs.Tab disabled value="logs">
             Logs
           </Tabs.Tab>
+          <Tabs.Indicator />
         </Tabs.List>
         <Tabs.Panel value="overview">All systems operational.</Tabs.Panel>
         <Tabs.Panel value="network">10 Gbps uplink.</Tabs.Panel>

@@ -1,3 +1,4 @@
+import '../../core/core.css';
 import './menu.css';
 import { expect, test, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
@@ -37,6 +38,7 @@ test('opens from the trigger and exposes Tinyrack menu semantics', async () => {
 });
 
 test('uses keyboard typeahead, activates an item, and restores trigger focus', async () => {
+  document.documentElement.dataset['theme'] = 'tinyrack-light';
   const onRestart = vi.fn();
   const screen = await render(<ActionsMenu onRestart={onRestart} />);
   const trigger = screen.getByRole('button', { name: 'Actions' });
@@ -47,6 +49,7 @@ test('uses keyboard typeahead, activates an item, and restores trigger focus', a
   await expect.element(restart).toHaveFocus();
   await userEvent.type(restart, '{Home}');
   await expect.element(restart).toHaveAttribute('data-highlighted');
+  expect(getComputedStyle(restart.element()).outlineStyle).toBe('solid');
   await userEvent.type(restart, '{Enter}');
   expect(onRestart).toHaveBeenCalledOnce();
   await expect.element(trigger).toHaveAttribute('aria-expanded', 'false');

@@ -14,7 +14,7 @@ A non-modal hover or focus preview for linked content.
 
 ## Contract
 
-This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, events, and the `render` contract. Playground controls cover `label`, `open`.
+This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, events, and the `render` contract. Playground controls cover `label`, controlled `open`, `delay`, `closeDelay`, `side`, and `align`.
 
 `Trigger` waits `600ms` before opening and `300ms` before closing by default.
 Override those values with `delay` and `closeDelay` only when the trigger-to-card
@@ -43,8 +43,8 @@ pointer path remains forgiving.
   id="preview-card-states"
   title="Interactive service preview"
   description="Hover or focus the link to reveal the non-modal preview. Move the pointer into the card without dismissing it, then leave or press Escape."
-  preview={<PreviewCard.Root><PreviewCard.Trigger href="#rack-beta">Rack Beta</PreviewCard.Trigger><PreviewCard.Portal><PreviewCard.Positioner sideOffset={8}><PreviewCard.Popup><strong>Rack Beta</strong><p>Degraded · 8 of 10 services healthy</p><Link href="#rack-beta-incidents">View incidents</Link><PreviewCard.Arrow /></PreviewCard.Popup></PreviewCard.Positioner></PreviewCard.Portal></PreviewCard.Root>}
-  sources={[{ label: 'React', language: 'tsx', code: String.raw`<PreviewCard.Root>
+  preview={<PreviewCard.Root defaultOpen><PreviewCard.Trigger href="#rack-beta">Rack Beta</PreviewCard.Trigger><PreviewCard.Portal><PreviewCard.Positioner sideOffset={8}><PreviewCard.Popup><strong>Rack Beta</strong><p>Degraded · 8 of 10 services healthy</p><Link href="#rack-beta-incidents">View incidents</Link><PreviewCard.Arrow /></PreviewCard.Popup></PreviewCard.Positioner></PreviewCard.Portal></PreviewCard.Root>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<PreviewCard.Root defaultOpen>
   <PreviewCard.Trigger href="#rack-beta">Rack Beta</PreviewCard.Trigger>
   <PreviewCard.Portal>
     <PreviewCard.Positioner sideOffset={8}>
@@ -53,6 +53,25 @@ pointer path remains forgiving.
         <p>Degraded · 8 of 10 services healthy</p>
         <Link href="#rack-beta-incidents">View incidents</Link>
         <PreviewCard.Arrow />
+      </PreviewCard.Popup>
+    </PreviewCard.Positioner>
+  </PreviewCard.Portal>
+</PreviewCard.Root>` }]}
+/>
+
+<ComponentExampleTabs
+  id="preview-card-positioning"
+  title="Timing and collision-safe positioning"
+  description="The open card demonstrates a zero-delay audit state, top-side placement, end alignment, an arrow, and viewport-aware containment."
+  preview={<Stories.PreviewCardPreview align="end" closeDelay={150} delay={0} label="Edge rack" open side="top" />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<PreviewCard.Root defaultOpen>
+  <PreviewCard.Trigger closeDelay={150} delay={0} href="#edge-rack">Edge rack</PreviewCard.Trigger>
+  <PreviewCard.Portal>
+    <PreviewCard.Positioner align="end" side="top">
+      <PreviewCard.Popup>
+        <PreviewCard.Arrow />
+        <strong>Edge rack</strong>
+        <p>Collision-aware preview content remains inside the viewport.</p>
       </PreviewCard.Popup>
     </PreviewCard.Positioner>
   </PreviewCard.Portal>

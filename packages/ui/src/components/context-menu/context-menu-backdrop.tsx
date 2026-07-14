@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type ContextMenuBackdropProps = ComponentProps<typeof BaseContextMenu.Backdrop>;
 export const ContextMenuBackdrop = createComponentPart(
   BaseContextMenu.Backdrop,
-  'tr-context-menu-backdrop',
+  'tr-layer-backdrop tr-context-menu-backdrop',
 );

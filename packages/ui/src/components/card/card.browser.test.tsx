@@ -21,6 +21,12 @@ test('assembles the semantic card parts', async () => {
   expect(root?.querySelector('header')).not.toBeNull();
   expect(root?.querySelector('footer')).not.toBeNull();
   expect(getComputedStyle(root as HTMLElement).boxShadow).not.toBe('none');
+  expect(
+    getComputedStyle(root?.querySelector('.tr-card-header') as HTMLElement).display,
+  ).toBe('grid');
+  expect(
+    getComputedStyle(root?.querySelector('.tr-card-footer') as HTMLElement).flexWrap,
+  ).toBe('wrap');
 });
 
 test('styles every public card variant and padding value', async () => {

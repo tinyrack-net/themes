@@ -1,6 +1,8 @@
+@import "../../internal/layer-parts.css";
+
 @layer components {
-  .tr-preview-card {
-    --_tr-preview-card-popup-max-width: 20rem;
+  .tr-preview-card-trigger,
+  .tr-preview-card-popup {
     box-sizing: border-box;
     color: var(--tr-preview-card-color, var(--tinyrack-text));
     font-family: var(--tinyrack-font-body);
@@ -9,7 +11,7 @@
   .tr-preview-card-trigger {
     align-items: center;
     background: var(--tr-preview-card-control-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-md);
     color: var(--tinyrack-text);
     cursor: pointer;
@@ -21,8 +23,9 @@
   }
 
   .tr-preview-card-popup {
+    --_tr-preview-card-popup-max-width: var(--tinyrack-overlay-width-sm);
     background: var(--tr-preview-card-popup-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-lg);
     box-shadow: var(--tinyrack-shadow-overlay);
     color: var(--tinyrack-text);
@@ -55,14 +58,16 @@
     z-index: var(--tinyrack-layer-backdrop);
   }
 
-  .tr-preview-card :focus-visible,
-  .tr-preview-card:focus-visible {
+  .tr-preview-card-trigger:focus-visible,
+  .tr-preview-card-popup:focus-visible,
+  .tr-preview-card-popup :focus-visible {
     outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
     outline-offset: var(--tinyrack-focus-offset);
   }
 
-  .tr-preview-card :disabled,
-  .tr-preview-card[data-disabled] {
+  .tr-preview-card-trigger:disabled,
+  .tr-preview-card-trigger[data-disabled],
+  .tr-preview-card-popup[data-disabled] {
     cursor: not-allowed;
     opacity: var(--tinyrack-opacity-disabled);
   }

@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type PopoverViewportProps = ComponentProps<typeof BasePopover.Viewport>;
 export const PopoverViewport = createComponentPart(
   BasePopover.Viewport,
-  'tr-popover-viewport',
+  'tr-layer-viewport tr-popover-viewport',
 );

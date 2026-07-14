@@ -1,9 +1,11 @@
+import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
+import type { ComponentProps } from 'react';
 import { createComponentPart } from '../../internal/component-part.js';
-import type { SeparatorProps } from '../separator/index.js';
-import { Separator } from '../separator/index.js';
 
-export type ContextMenuSeparatorProps = SeparatorProps;
+export type ContextMenuSeparatorProps = ComponentProps<
+  typeof BaseContextMenu.Separator
+>;
 export const ContextMenuSeparator = createComponentPart(
-  Separator,
-  'tr-context-menu-separator',
+  BaseContextMenu.Separator,
+  'tr-separator tr-context-menu-separator',
 );

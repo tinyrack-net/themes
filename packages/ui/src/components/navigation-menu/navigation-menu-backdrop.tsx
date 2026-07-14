@@ -9,5 +9,5 @@ export type NavigationMenuBackdropProps = ComponentProps<
 >;
 export const NavigationMenuBackdrop = createComponentPart(
   BaseNavigationMenu.Backdrop,
-  'tr-navigation-menu-backdrop',
+  'tr-layer-backdrop tr-navigation-menu-backdrop',
 );

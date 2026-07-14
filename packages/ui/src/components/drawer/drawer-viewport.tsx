@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type DrawerViewportProps = ComponentProps<typeof BaseDrawer.Viewport>;
 export const DrawerViewport = createComponentPart(
   BaseDrawer.Viewport,
-  'tr-drawer-viewport',
+  'tr-layer-viewport tr-drawer-viewport',
 );

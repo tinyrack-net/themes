@@ -59,6 +59,8 @@ const forbiddenDeclarations = {
 
 const directDesignLiteral =
   /(?:#[0-9a-f]{3,8}\b|rgb\(|\b\d*\.?\d+(?:px|rem|em|ch|ms|s)\b|\b0?\.\d+(?!%)\b)/i;
+const componentTokenDesignLiteral =
+  /(?:\b[1-9]\d*(?:\.\d+)?(?:px|rem|em|ch|ms|s)\b|\b0?\.\d+(?!%|turn|deg)\b)/i;
 
 const coreCss = readFileSync(join(process.cwd(), 'src/core/core.css'), 'utf8');
 const declaredGlobalTokens = new Set(
@@ -88,13 +90,21 @@ describe('public CSS token usage', () => {
         const declaration = line.trim();
         if (
           declaration.length === 0 ||
-          declaration.startsWith('--') ||
           declaration.startsWith('@') ||
           declaration.startsWith('/*') ||
           declaration.startsWith('*')
         ) {
           continue;
         }
+
+        if (declaration.startsWith('--') && stylePath.startsWith('src/components/')) {
+          expect(
+            declaration,
+            `${stylePath}:${index + 1} component tokens must fall back to foundation tokens`,
+          ).not.toMatch(componentTokenDesignLiteral);
+          continue;
+        }
+        if (declaration.startsWith('--')) continue;
 
         expect(
           declaration,
@@ -179,8 +189,10 @@ describe('public CSS token usage', () => {
     for (const status of ['info', 'success', 'warning', 'danger']) {
       expect(toast).toContain(`--_tr-toast-accent: var(--tinyrack-${status}-border);`);
     }
-    expect(tooltip).toContain('--_tr-tooltip-background: var(--tinyrack-text);');
-    expect(tooltip).toContain('--_tr-tooltip-color: var(--tinyrack-surface);');
+    expect(tooltip).toContain(
+      '--_tr-tooltip-background: var(--tinyrack-surface-inverse);',
+    );
+    expect(tooltip).toContain('--_tr-tooltip-color: var(--tinyrack-text-inverse);');
 
     const alertContract = readFileSync(
       join(process.cwd(), 'src/components/alert/alert-root.tsx'),

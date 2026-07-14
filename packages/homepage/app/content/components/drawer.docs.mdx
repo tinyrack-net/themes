@@ -76,6 +76,43 @@ This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, e
 </Drawer.Root>` }]}
 />
 
+<ComponentExampleTabs
+  id="drawer-provider-handle"
+  title="Provider, detached handle, and swipe area"
+  description="The provider coordinates page indentation, a detached trigger passes payload through a handle, and the edge swipe area can open the same drawer."
+  preview={<Stories.DrawerProviderHandlePreview />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`const drawerHandle = Drawer.createHandle<{ title: string }>();
+
+<Drawer.Provider>
+  <div className="relative min-h-48 overflow-hidden">
+    <Drawer.IndentBackground />
+    <Drawer.Indent>
+      <Drawer.Trigger handle={drawerHandle} payload={{ title: 'Detached rack actions' }}>
+        Open detached drawer
+      </Drawer.Trigger>
+    </Drawer.Indent>
+    <Drawer.Root handle={drawerHandle} swipeDirection="down">
+      {({ payload }) => (
+        <>
+          <Drawer.SwipeArea />
+          <Drawer.Portal>
+            <Drawer.Backdrop />
+            <Drawer.Viewport>
+              <Drawer.Popup>
+                <Drawer.Content>
+                  <Drawer.Title>{payload.title}</Drawer.Title>
+                  <Drawer.Close>Close</Drawer.Close>
+                </Drawer.Content>
+              </Drawer.Popup>
+            </Drawer.Viewport>
+          </Drawer.Portal>
+        </>
+      )}
+    </Drawer.Root>
+  </div>
+</Drawer.Provider>` }]}
+/>
+
 ## API
 
 Every compound part and prop/state type is exported from `@tinyrack/ui/components/drawer`; styles remain opt-in through the matching CSS subpath.

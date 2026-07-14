@@ -11,7 +11,9 @@ import {
 
 type AccordionStoryArgs = {
   disabledItem: boolean;
+  lifecycle: 'unmount' | 'keepMounted' | 'hiddenUntilFound';
   multiple: boolean;
+  rootDisabled: boolean;
   value: string[];
 };
 
@@ -21,14 +23,19 @@ type AccordionPreviewProps = AccordionStoryArgs & {
 
 export function AccordionPreview({
   disabledItem,
+  lifecycle,
   multiple,
   onValueChange,
+  rootDisabled,
   value,
 }: AccordionPreviewProps) {
   return (
     <div className="grid w-96 max-w-full gap-3">
       <Accordion.Root
         className="w-full"
+        disabled={rootDisabled}
+        hiddenUntilFound={lifecycle === 'hiddenUntilFound'}
+        keepMounted={lifecycle === 'keepMounted'}
         multiple={multiple}
         onValueChange={(nextValue) => onValueChange?.(nextValue as string[])}
         value={value}
@@ -87,10 +94,21 @@ const meta = {
   title: 'Components/Accordion',
   excludeStories: /.*(?:Preview|Example)$/,
   parameters: { layout: 'centered' },
-  args: { disabledItem: false, multiple: false, value: ['overview'] },
+  args: {
+    disabledItem: false,
+    lifecycle: 'unmount',
+    multiple: false,
+    rootDisabled: false,
+    value: ['overview'],
+  },
   argTypes: {
     disabledItem: { control: 'boolean' },
+    lifecycle: {
+      control: 'select',
+      options: ['unmount', 'keepMounted', 'hiddenUntilFound'],
+    },
     multiple: { control: 'boolean' },
+    rootDisabled: { control: 'boolean' },
     value: { control: 'json' },
   },
   render: function Render(args) {

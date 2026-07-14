@@ -14,8 +14,9 @@ Navigation with semantic color and underline behavior while preserving native an
 
 | Axis | Values | Default |
 | --- | --- | --- |
-| `variant` | `default`, `muted`, `primary`, `danger` | `default` |
+| `variant` | `default`, `muted`, `danger` | `default` |
 | `underline` | `always`, `hover`, `none` | `hover` |
+| `disabled` | blocks pointer and keyboard navigation | `false` |
 
 ## Install
 
@@ -27,7 +28,7 @@ Navigation with semantic color and underline behavior while preserving native an
 
 ## Usage
 
-<ComponentExampleTabs id="link-basic" title="Navigation link" preview={<Link href="https://tinyrack.net" variant="primary">Open Tinyrack</Link>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Link href="https://tinyrack.net" variant="primary">Open Tinyrack</Link>` }]} />
+<ComponentExampleTabs id="link-basic" title="Navigation link" preview={<Link href="https://tinyrack.net" variant="default">Open Tinyrack</Link>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Link href="https://tinyrack.net" variant="default">Open Tinyrack</Link>` }]} />
 
 ## Examples
 
@@ -38,13 +39,13 @@ Navigation with semantic color and underline behavior while preserving native an
   previewLayout="start"
   preview={(
     <div className="grid gap-5">
-      <div className="grid gap-2"><strong>Hover</strong><div className="flex flex-wrap gap-4"><Link href="#" underline="hover" variant="default">Default</Link><Link href="#" underline="hover" variant="muted">Muted</Link><Link href="#" underline="hover" variant="primary">Primary</Link><Link href="#" underline="hover" variant="danger">Danger</Link></div></div>
-      <div className="grid gap-2"><strong>Always</strong><div className="flex flex-wrap gap-4"><Link href="#" underline="always" variant="default">Default</Link><Link href="#" underline="always" variant="muted">Muted</Link><Link href="#" underline="always" variant="primary">Primary</Link><Link href="#" underline="always" variant="danger">Danger</Link></div></div>
-      <div className="grid gap-2"><strong>None</strong><div className="flex flex-wrap gap-4"><Link href="#" underline="none" variant="default">Default</Link><Link href="#" underline="none" variant="muted">Muted</Link><Link href="#" underline="none" variant="primary">Primary</Link><Link href="#" underline="none" variant="danger">Danger</Link></div></div>
+      <div className="grid gap-2"><strong>Hover</strong><div className="flex flex-wrap gap-4"><Link href="#" underline="hover" variant="default">Default</Link><Link href="#" underline="hover" variant="muted">Muted</Link><Link href="#" underline="hover" variant="danger">Danger</Link></div></div>
+      <div className="grid gap-2"><strong>Always</strong><div className="flex flex-wrap gap-4"><Link href="#" underline="always" variant="default">Default</Link><Link href="#" underline="always" variant="muted">Muted</Link><Link href="#" underline="always" variant="danger">Danger</Link></div></div>
+      <div className="grid gap-2"><strong>None</strong><div className="flex flex-wrap gap-4"><Link href="#" underline="none" variant="default">Default</Link><Link href="#" underline="none" variant="muted">Muted</Link><Link href="#" underline="none" variant="danger">Danger</Link></div></div>
     </div>
   )}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`const underlines = ['hover', 'always', 'none'];
-const variants = ['default', 'muted', 'primary', 'danger'];
+const variants = ['default', 'muted', 'danger'];
 const label = (value) => value[0].toUpperCase() + value.slice(1);
 
 <div className="grid gap-5">
@@ -70,14 +71,16 @@ const label = (value) => value[0].toUpperCase() + value.slice(1);
   preview={(
     <div className="flex flex-wrap gap-4">
       <Link href="#rack-inventory">Rack inventory</Link>
-      <Link href="https://tinyrack.net" rel="noreferrer" target="_blank" variant="primary">Tinyrack website (opens in new tab)</Link>
+      <Link href="https://tinyrack.net" rel="noreferrer" target="_blank" variant="default">Tinyrack website (opens in new tab)</Link>
+      <Link disabled href="/billing">Billing (disabled)</Link>
       <Link download="rack-inventory.csv" href="/rack-inventory.csv" underline="always">Download inventory (CSV)</Link>
     </div>
   )}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`<Link href="#rack-inventory">Rack inventory</Link>
-<Link href="https://tinyrack.net" rel="noreferrer" target="_blank" variant="primary">
+<Link href="https://tinyrack.net" rel="noreferrer" target="_blank" variant="default">
   Tinyrack website (opens in new tab)
 </Link>
+<Link disabled href="/billing">Billing (disabled)</Link>
 <Link download="rack-inventory.csv" href="/rack-inventory.csv" underline="always">
   Download inventory (CSV)
 </Link>` }]}

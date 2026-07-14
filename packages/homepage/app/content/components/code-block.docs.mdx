@@ -15,7 +15,7 @@ Block-level source display with optional Shiki highlighting and explicit wrappin
 | Axis | Values | Default |
 | --- | --- | --- |
 | `language` | Shiki bundled language | plain text |
-| Syntax theme | `github-light`, `github-dark` | inherited from the Tinyrack theme |
+| Syntax theme | `github-light-high-contrast`, `github-dark-high-contrast` | inherited from the Tinyrack theme |
 | `wrap` | `true`, `false` | `false` |
 
 ## Install
@@ -91,4 +91,4 @@ function CopyableCodeBlock() {
 
 ## API
 
-Highlighting happens after hydration; the original source remains SSR-safe and visible before Shiki loads. Highlighted blocks automatically use `github-light` inside `tinyrack-light` and `github-dark` inside `tinyrack-dark`.
+Highlighting happens after hydration; the original source remains SSR-safe and visible before Shiki loads. Highlighted blocks automatically use `github-light-high-contrast` inside `tinyrack-light` and `github-dark-high-contrast` inside `tinyrack-dark`. Changing `code` or `language` cancels stale work so an earlier async result can never replace the current source.

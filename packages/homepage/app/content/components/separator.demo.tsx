@@ -1,14 +1,15 @@
-import {
-  Separator,
-  type SeparatorOrientation,
-} from '@tinyrack/ui/components/separator';
+import { Button } from '@tinyrack/ui/components/button';
+import { Separator, type SeparatorProps } from '@tinyrack/ui/components/separator';
 import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
 } from '../../playground/demo.js';
 import { definePlayground } from '../../playground/demo.js';
 
-type SeparatorStoryArgs = { decorative: boolean; orientation: SeparatorOrientation };
+type SeparatorStoryArgs = {
+  decorative: boolean;
+  orientation: NonNullable<SeparatorProps['orientation']>;
+};
 
 const meta = {
   title: 'Components/Separator',
@@ -21,13 +22,21 @@ const meta = {
   },
   render: ({ decorative, orientation }) =>
     orientation === 'vertical' ? (
-      <div className="flex h-16 items-center gap-4">
-        <span>CPU</span>
+      <div
+        aria-label="Resource filters"
+        className="flex h-16 items-center gap-4"
+        role="toolbar"
+      >
+        <Button size="sm" type="button">
+          CPU
+        </Button>
         <Separator
           orientation="vertical"
           role={decorative ? 'presentation' : 'separator'}
         />
-        <span>Memory</span>
+        <Button size="sm" type="button">
+          Memory
+        </Button>
       </div>
     ) : (
       <div className="grid w-80 gap-3">

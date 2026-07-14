@@ -29,7 +29,8 @@
     width: 100%;
   }
 
-  .tr-combobox-clear[data-disabled] {
+  .tr-combobox-clear[data-disabled],
+  .tr-combobox-input-group:has(.tr-combobox[readonly]) .tr-combobox-clear {
     display: none;
   }
 
@@ -87,9 +88,14 @@
     padding-inline: var(--tinyrack-control-padding-inline-sm);
   }
 
-  .tr-combobox-option:is([data-highlighted], :hover) {
+  .tr-combobox-option:hover {
     background: var(--tinyrack-surface-hover);
-    outline: none;
+  }
+
+  .tr-combobox-option[data-highlighted] {
+    background: var(--tinyrack-surface-hover);
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: calc(var(--tinyrack-focus-width) * -1);
   }
 
   .tr-combobox-option:is([aria-selected="true"], [data-selected]) {
@@ -106,6 +112,61 @@
     color: var(--tinyrack-primary);
     flex: none;
     margin-inline-start: auto;
+  }
+
+  .tr-combobox-label {
+    color: var(--tinyrack-text);
+    display: block;
+    font-size: var(--tinyrack-text-sm);
+    font-weight: var(--tinyrack-weight-medium);
+    margin-block-end: var(--tinyrack-space-xs);
+  }
+
+  .tr-combobox-chips {
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    gap: var(--tinyrack-space-xs);
+    min-width: 0;
+    padding: var(--tinyrack-space-xs);
+  }
+
+  .tr-combobox-chip {
+    align-items: center;
+    background: var(--tinyrack-surface-selected);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
+    border-radius: var(--tinyrack-radius-full);
+    color: var(--tinyrack-text);
+    display: inline-flex;
+    font-size: var(--tinyrack-text-xs);
+    gap: var(--tinyrack-space-xs);
+    min-height: var(--tinyrack-control-height-sm);
+    padding-inline: var(--tinyrack-control-padding-inline-sm);
+  }
+
+  .tr-combobox-chip-remove {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: var(--tinyrack-radius-full);
+    color: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    padding: var(--tinyrack-space-xs);
+  }
+
+  .tr-combobox-chip-remove:focus-visible {
+    outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
+    outline-offset: var(--tinyrack-focus-offset);
+  }
+
+  .tr-combobox-row {
+    align-items: center;
+    display: flex;
+    gap: var(--tinyrack-space-sm);
+    min-width: 0;
   }
 
   .tr-combobox-status,

@@ -5,4 +5,7 @@ import type { ComponentProps } from 'react';
 import { createComponentPart } from '../../internal/component-part.js';
 
 export type PopoverArrowProps = ComponentProps<typeof BasePopover.Arrow>;
-export const PopoverArrow = createComponentPart(BasePopover.Arrow, 'tr-popover-arrow');
+export const PopoverArrow = createComponentPart(
+  BasePopover.Arrow,
+  'tr-layer-arrow tr-popover-arrow',
+);

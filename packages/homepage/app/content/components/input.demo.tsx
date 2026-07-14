@@ -44,7 +44,7 @@ export function InputPreview({
         disabled={disabled}
         defaultValue={value === undefined ? defaultValue : undefined}
         id={inputId}
-        onChange={(event) => onValueChange?.(event.currentTarget.value)}
+        onValueChange={onValueChange}
         placeholder={placeholder}
         readOnly={readOnly}
         required={required}
@@ -78,7 +78,7 @@ export function InputValidationPreview() {
           aria-invalid={invalid || undefined}
           id={inputId}
           name="rack"
-          onChange={(event) => setValue(event.currentTarget.value)}
+          onValueChange={setValue}
           onInvalid={(event) => event.preventDefault()}
           required
           value={value}

@@ -2,7 +2,8 @@
   .tr-toolbar {
     align-items: center;
     background: var(--tr-toolbar-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid
+      var(--tr-toolbar-border, var(--tinyrack-control-border));
     border-radius: var(--tinyrack-radius-lg);
     box-sizing: border-box;
     color: var(--tr-toolbar-color, var(--tinyrack-text));
@@ -20,7 +21,8 @@
   .tr-toolbar-button {
     align-items: center;
     background: var(--tr-toolbar-control-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid
+      var(--tr-toolbar-control-border, var(--tinyrack-control-border));
     border-radius: var(--tinyrack-radius-md);
     color: var(--tinyrack-text);
     cursor: pointer;
@@ -33,7 +35,8 @@
 
   .tr-toolbar-input {
     background: var(--tr-toolbar-input-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid
+      var(--tr-toolbar-input-border, var(--tinyrack-control-border));
     border-radius: var(--tinyrack-radius-md);
     color: var(--tinyrack-text);
     font: inherit;
@@ -52,8 +55,20 @@
     padding-inline: var(--tinyrack-control-padding-inline-sm);
   }
 
-  .tr-toolbar-link[data-highlighted] {
-    background: var(--tinyrack-surface-hover);
+  .tr-toolbar-button:hover:not(:disabled, [data-disabled]),
+  .tr-toolbar-link:hover {
+    background: var(
+      --tr-toolbar-control-background-hover,
+      var(--tinyrack-surface-hover)
+    );
+  }
+
+  .tr-toolbar-button:is(:active, [data-pressed]):not(:disabled, [data-disabled]),
+  .tr-toolbar-link:active {
+    background: var(
+      --tr-toolbar-control-background-pressed,
+      var(--tinyrack-surface-pressed)
+    );
   }
 
   .tr-toolbar-group {
@@ -62,15 +77,28 @@
     gap: var(--tinyrack-control-gap-md);
   }
 
-  .tr-toolbar-separator {
-    align-self: stretch;
-    background: var(--tinyrack-border);
-    width: var(--tinyrack-border-width-default);
+  .tr-toolbar-group[data-orientation="vertical"] {
+    align-items: stretch;
+    flex-direction: column;
   }
 
-  .tr-toolbar[data-orientation="vertical"] .tr-toolbar-separator {
+  .tr-toolbar-separator {
+    background: var(--tr-toolbar-separator-color, var(--tinyrack-control-border));
+  }
+
+  .tr-toolbar-separator[data-orientation="horizontal"] {
+    align-self: center;
+    flex: 1 1 auto;
     height: var(--tinyrack-border-width-default);
     width: auto;
+  }
+
+  .tr-toolbar-separator[data-orientation="vertical"] {
+    align-self: stretch;
+    flex: none;
+    height: auto;
+    min-height: var(--tinyrack-control-height-md);
+    width: var(--tinyrack-border-width-default);
   }
 
   .tr-toolbar :focus-visible,
@@ -83,6 +111,11 @@
   .tr-toolbar [data-disabled],
   .tr-toolbar[data-disabled] {
     cursor: not-allowed;
+  }
+
+  .tr-toolbar[data-disabled],
+  .tr-toolbar:not([data-disabled]) > :is(:disabled, [data-disabled]),
+  .tr-toolbar :not([data-disabled]) > :is(:disabled, [data-disabled]) {
     opacity: var(--tinyrack-opacity-disabled);
   }
 }

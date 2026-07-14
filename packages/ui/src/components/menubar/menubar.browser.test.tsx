@@ -158,3 +158,37 @@ test('preserves menu checkbox semantics and change callbacks', async () => {
   item?.click();
   await expect.poll(() => onCheckedChange.mock.calls.at(-1)?.[0]).toBe(false);
 });
+
+test('lets outside focus dismiss a non-modal menu without trapping focus', async () => {
+  await render(
+    <>
+      <Menubar aria-label="Non-modal application menu" modal={false}>
+        <Menu.Root>
+          <Menu.Trigger>File</Menu.Trigger>
+          <Menu.Portal>
+            <Menu.Positioner>
+              <Menu.Popup>
+                <Menu.Item>New</Menu.Item>
+              </Menu.Popup>
+            </Menu.Positioner>
+          </Menu.Portal>
+        </Menu.Root>
+      </Menubar>
+      <button type="button">Outside focus target</button>
+    </>,
+  );
+
+  const trigger = document.querySelector<HTMLButtonElement>('.tr-menu-trigger');
+  const outside = Array.from(
+    document.querySelectorAll<HTMLButtonElement>('button'),
+  ).find((button) => button.textContent === 'Outside focus target');
+  trigger?.click();
+  await expect
+    .poll(() => document.querySelector('.tr-menu-content')?.hasAttribute('data-open'))
+    .toBe(true);
+  await userEvent.click(outside as HTMLButtonElement);
+  await expect.poll(() => document.activeElement).toBe(outside);
+  await expect
+    .poll(() => document.querySelector('.tr-menu-content')?.hasAttribute('data-open'))
+    .not.toBe(true);
+});

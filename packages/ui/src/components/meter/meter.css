@@ -1,6 +1,6 @@
 @layer components {
   .tr-meter {
-    --_tr-meter-min-width: 16rem;
+    --_tr-meter-min-width: var(--tinyrack-measure-lg);
     box-sizing: border-box;
     color: var(--tr-meter-color, var(--tinyrack-text));
     display: grid;
@@ -16,7 +16,7 @@
   }
 
   .tr-meter-track {
-    background: var(--tr-meter-track-background, var(--tinyrack-surface-muted));
+    background: var(--tr-meter-track-background, var(--tinyrack-control-track));
     border-radius: var(--tinyrack-radius-full);
     grid-column: 1 / -1;
     height: var(--tr-meter-track-size, var(--tinyrack-space-sm));
@@ -24,10 +24,30 @@
   }
 
   .tr-meter-indicator {
-    background: var(--tr-meter-indicator-background, var(--tinyrack-primary));
+    background: var(--tr-meter-indicator-background, var(--_tr-meter-indicator));
     border-radius: var(--tinyrack-radius-full);
     height: 100%;
     transition: width var(--tinyrack-duration-normal) var(--tinyrack-ease-out);
+  }
+
+  .tr-meter[data-variant="neutral"] {
+    --_tr-meter-indicator: var(--tinyrack-text);
+  }
+
+  .tr-meter[data-variant="info"] {
+    --_tr-meter-indicator: var(--tinyrack-info);
+  }
+
+  .tr-meter[data-variant="success"] {
+    --_tr-meter-indicator: var(--tinyrack-success);
+  }
+
+  .tr-meter[data-variant="warning"] {
+    --_tr-meter-indicator: var(--tinyrack-warning);
+  }
+
+  .tr-meter[data-variant="danger"] {
+    --_tr-meter-indicator: var(--tinyrack-danger);
   }
 
   .tr-meter-value {

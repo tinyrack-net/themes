@@ -3,7 +3,7 @@
   --_tr-card-padding: var(--tinyrack-space-md);
   box-sizing: border-box;
   border: var(--tinyrack-border-width-default) solid
-    var(--tr-card-border, var(--tinyrack-border));
+    var(--tr-card-border, var(--tinyrack-control-border));
   border-radius: var(--tr-card-radius, var(--tinyrack-radius-lg));
   background-color: var(--tr-card-background, var(--_tr-card-background));
   color: var(--tr-card-color, var(--tinyrack-text));
@@ -38,4 +38,41 @@
 .tr-card[data-variant="elevated"] {
   border-color: transparent;
   box-shadow: var(--tr-card-shadow, var(--tinyrack-shadow-raised));
+}
+
+.tr-card-header,
+.tr-card-content,
+.tr-card-footer {
+  min-width: 0;
+}
+
+.tr-card-header {
+  display: grid;
+  gap: var(--tinyrack-space-xs);
+}
+
+.tr-card-title {
+  color: var(--tinyrack-text);
+  font-size: var(--tinyrack-text-lg);
+  font-weight: var(--tinyrack-weight-strong);
+  line-height: var(--tinyrack-leading-sm);
+  margin: 0;
+}
+
+.tr-card-description {
+  color: var(--tinyrack-text-muted);
+  font-size: var(--tinyrack-text-sm);
+  line-height: var(--tinyrack-leading-md);
+  margin: 0;
+}
+
+.tr-card-content {
+  margin-block: var(--tinyrack-space-md);
+}
+
+.tr-card-footer {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tinyrack-space-sm);
 }

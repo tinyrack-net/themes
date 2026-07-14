@@ -61,6 +61,7 @@ test('centers an input adornment and supports the end side', async () => {
 });
 
 test('filters, selects with the keyboard, and submits the native value', async () => {
+  document.documentElement.dataset['theme'] = 'tinyrack-light';
   const onValueChange = vi.fn();
   await render(
     <form style={{ marginInline: '2rem', width: '16rem' }}>
@@ -136,6 +137,12 @@ test('filters, selects with the keyboard, and submits the native value', async (
   const beta = Array.from(
     document.querySelectorAll<HTMLElement>('.tr-autocomplete-item'),
   ).find((item) => item.textContent === 'Rack Beta');
+  input?.focus();
+  await userEvent.keyboard('{ArrowDown}');
+  const highlighted = document.querySelector<HTMLElement>(
+    '.tr-autocomplete-item[data-highlighted]',
+  );
+  expect(getComputedStyle(highlighted as HTMLElement).outlineStyle).toBe('solid');
   await userEvent.click(beta as HTMLElement);
   await expect.poll(() => input?.value).toBe('Rack Beta');
   expect(onValueChange.mock.calls.at(-1)?.[0]).toBe('Rack Beta');
@@ -145,4 +152,47 @@ test('filters, selects with the keyboard, and submits the native value', async (
 
   document.querySelector<HTMLButtonElement>('.tr-autocomplete-clear')?.click();
   await expect.poll(() => input?.value).toBe('');
+});
+
+test('removes the clear action from a read-only input and keeps disabled items inert', async () => {
+  await render(
+    <div data-theme="tinyrack-light">
+      <Autocomplete.Root defaultValue="Rack Alpha" items={['Rack Alpha']} readOnly>
+        <Autocomplete.InputGroup>
+          <Autocomplete.Input aria-label="Read-only rack" />
+          <Autocomplete.Clear aria-label="Clear read-only rack">
+            Clear
+          </Autocomplete.Clear>
+        </Autocomplete.InputGroup>
+      </Autocomplete.Root>
+      <Autocomplete.Root defaultOpen items={['Rack Alpha', 'Rack Gamma']}>
+        <Autocomplete.Input aria-label="Selectable rack" />
+        <Autocomplete.Portal>
+          <Autocomplete.Positioner>
+            <Autocomplete.Popup>
+              <Autocomplete.List>
+                <Autocomplete.Item value="Rack Alpha">Rack Alpha</Autocomplete.Item>
+                <Autocomplete.Item disabled value="Rack Gamma">
+                  Rack Gamma
+                </Autocomplete.Item>
+              </Autocomplete.List>
+            </Autocomplete.Popup>
+          </Autocomplete.Positioner>
+        </Autocomplete.Portal>
+      </Autocomplete.Root>
+    </div>,
+  );
+
+  const clear = document.querySelector<HTMLElement>(
+    '[aria-label="Clear read-only rack"]',
+  );
+  expect(getComputedStyle(clear as HTMLElement).display).toBe('none');
+  const disabledItem = Array.from(
+    document.querySelectorAll<HTMLElement>('.tr-autocomplete-item'),
+  ).find((item) => item.textContent === 'Rack Gamma');
+  expect(disabledItem?.getAttribute('aria-disabled')).toBe('true');
+  disabledItem?.click();
+  expect(
+    document.querySelector<HTMLInputElement>('[aria-label="Selectable rack"]')?.value,
+  ).toBe('');
 });

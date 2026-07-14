@@ -133,3 +133,126 @@ test('animates the popup and backdrop when opening and closing', async () => {
     .toBe(true);
   await expect.poll(() => popup?.isConnected).toBe(false);
 });
+
+test.each([
+  ['down', 'flex-end', 'center', '0px', '0px'],
+  ['up', 'flex-start', 'center', '0px', '0px'],
+  ['left', 'stretch', 'flex-start', '0px', '0px'],
+  ['right', 'stretch', 'flex-end', '0px', '0px'],
+] as const)('anchors %s drawers to the matching viewport edge and squares the attached corners', async (direction, alignItems, justifyContent, firstRadius, secondRadius) => {
+  const view = await render(
+    <Drawer.Root defaultOpen swipeDirection={direction}>
+      <Drawer.Portal>
+        <Drawer.Viewport>
+          <Drawer.Popup aria-label={`${direction} drawer`}>
+            <Drawer.Content>Directional content</Drawer.Content>
+          </Drawer.Popup>
+        </Drawer.Viewport>
+      </Drawer.Portal>
+    </Drawer.Root>,
+  );
+  const viewport = document.querySelector<HTMLElement>('.tr-drawer-viewport');
+  const popup = document.querySelector<HTMLElement>('.tr-drawer-popup');
+  await expect.poll(() => popup?.hasAttribute('data-open')).toBe(true);
+  expect(getComputedStyle(viewport as HTMLElement).alignItems).toBe(alignItems);
+  expect(getComputedStyle(viewport as HTMLElement).justifyContent).toBe(justifyContent);
+
+  const style = getComputedStyle(popup as HTMLElement);
+  const attachedRadii =
+    direction === 'down'
+      ? [style.borderBottomLeftRadius, style.borderBottomRightRadius]
+      : direction === 'up'
+        ? [style.borderTopLeftRadius, style.borderTopRightRadius]
+        : direction === 'left'
+          ? [style.borderTopLeftRadius, style.borderBottomLeftRadius]
+          : [style.borderTopRightRadius, style.borderBottomRightRadius];
+  expect(attachedRadii).toEqual([firstRadius, secondRadius]);
+  await view.unmount();
+});
+
+test('opens from the edge swipe area and reports swipe as the change reason', async () => {
+  const onOpenChange = vi.fn();
+  await render(
+    <Drawer.Root onOpenChange={onOpenChange} swipeDirection="down">
+      <Drawer.SwipeArea />
+      <Drawer.Portal>
+        <Drawer.Backdrop />
+        <Drawer.Viewport>
+          <Drawer.Popup aria-label="Swipe drawer">
+            <Drawer.Content>Swipe content</Drawer.Content>
+          </Drawer.Popup>
+        </Drawer.Viewport>
+      </Drawer.Portal>
+    </Drawer.Root>,
+  );
+  const area = document.querySelector<HTMLElement>('.tr-drawer-swipe-area');
+  expect(area?.dataset['swipeDirection']).toBe('up');
+  const dispatch = (type: string, clientY: number, buttons: number) =>
+    area?.dispatchEvent(
+      new PointerEvent(type, {
+        bubbles: true,
+        buttons,
+        cancelable: true,
+        clientX: 120,
+        clientY,
+        pointerId: 1,
+        pointerType: 'mouse',
+      }),
+    );
+  dispatch('pointerdown', 800, 1);
+  dispatch('pointermove', 700, 1);
+  dispatch('pointermove', 600, 1);
+  dispatch('pointerup', 650, 0);
+  await expect
+    .poll(() => document.querySelector('.tr-drawer-popup')?.hasAttribute('data-open'))
+    .toBe(true);
+  expect(onOpenChange.mock.calls.at(-1)?.[1]?.reason).toBe('swipe');
+});
+
+test('keeps inactive provider layers from intercepting controls outside the drawer', async () => {
+  const onClick = vi.fn();
+
+  await render(
+    <Drawer.Provider>
+      <div style={{ height: 120, position: 'relative', width: 120 }}>
+        <Drawer.IndentBackground />
+        <Drawer.Indent>
+          <button type="button" onClick={onClick}>
+            Outside action
+          </button>
+        </Drawer.Indent>
+      </div>
+    </Drawer.Provider>,
+  );
+
+  await userEvent.click(
+    document.querySelector<HTMLButtonElement>('button') as HTMLButtonElement,
+  );
+  expect(onClick).toHaveBeenCalledOnce();
+});
+
+test('keeps a closed swipe area from intercepting controls outside the drawer', async () => {
+  const onClick = vi.fn();
+
+  await render(
+    <>
+      <button
+        type="button"
+        onClick={onClick}
+        style={{ bottom: 0, left: 0, position: 'fixed' }}
+      >
+        Bottom action
+      </button>
+      <div style={{ height: 120, position: 'relative', width: 120 }}>
+        <Drawer.Root swipeDirection="down">
+          <Drawer.SwipeArea />
+        </Drawer.Root>
+      </div>
+    </>,
+  );
+
+  await userEvent.click(
+    document.querySelector<HTMLButtonElement>('button') as HTMLButtonElement,
+  );
+  expect(onClick).toHaveBeenCalledOnce();
+});

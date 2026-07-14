@@ -1,3 +1,5 @@
+import { Drawer } from '@tinyrack/ui/components/drawer';
+import { Link } from '@tinyrack/ui/components/link';
 import { NavigationMenu } from '@tinyrack/ui/components/navigation-menu';
 import { ChevronDown } from 'lucide-react';
 import type {
@@ -19,6 +21,49 @@ type NavigationMenuPreviewProps = StoryArgs & {
   navigationLabel?: string;
   onOpenSectionChange?: (value: StoryArgs['openSection']) => void;
 };
+
+export function NavigationMenuResponsiveAlternative() {
+  return (
+    <div className="w-full">
+      <div className="hidden md:block">
+        <NavigationMenu.Root aria-label="Platform navigation">
+          <NavigationMenu.List>
+            <NavigationMenu.Item>
+              <NavigationMenu.Link href="#deployments">Deployments</NavigationMenu.Link>
+            </NavigationMenu.Item>
+            <NavigationMenu.Item>
+              <NavigationMenu.Link href="#metrics">Metrics</NavigationMenu.Link>
+            </NavigationMenu.Item>
+            <NavigationMenu.Item>
+              <NavigationMenu.Link href="#guides">Guides</NavigationMenu.Link>
+            </NavigationMenu.Item>
+          </NavigationMenu.List>
+        </NavigationMenu.Root>
+      </div>
+      <div className="md:hidden">
+        <Drawer.Root swipeDirection="right">
+          <Drawer.Trigger>Open site navigation</Drawer.Trigger>
+          <Drawer.Portal>
+            <Drawer.Backdrop />
+            <Drawer.Viewport>
+              <Drawer.Popup>
+                <Drawer.Content>
+                  <Drawer.Title>Site navigation</Drawer.Title>
+                  <nav aria-label="Mobile site navigation" className="grid gap-3">
+                    <Link href="#deployments">Deployments</Link>
+                    <Link href="#metrics">Metrics</Link>
+                    <Link href="#guides">Guides</Link>
+                  </nav>
+                  <Drawer.Close>Close navigation</Drawer.Close>
+                </Drawer.Content>
+              </Drawer.Popup>
+            </Drawer.Viewport>
+          </Drawer.Portal>
+        </Drawer.Root>
+      </div>
+    </div>
+  );
+}
 
 export function NavigationMenuPreview({
   label,

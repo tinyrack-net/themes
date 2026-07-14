@@ -47,57 +47,85 @@ export function DialogExample({
   const [result, setResult] = useState('No changes saved');
   const stateProps =
     onOpenChange === undefined ? { defaultOpen: open } : { onOpenChange, open };
+  const popupProps =
+    placement === 'top' || placement === 'bottom' ? { placement } : { placement, size };
 
   return (
     <Dialog.Root {...stateProps} modal={modal}>
       <Dialog.Trigger>Open dialog</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Backdrop />
-        <Dialog.Popup placement={placement} size={size}>
-          <Dialog.Title>{title}</Dialog.Title>
-          <Dialog.Description>{description}</Dialog.Description>
-          <div className="tr-dialog-body grid gap-4" data-dialog-scroll-body="">
-            {longContent ? (
-              <div className="grid gap-3">
-                <p>
-                  Confirm the target environment, maintenance window, and rollback owner
-                  before saving this deployment.
-                </p>
-                <p>
-                  Changes are reviewed against the current rack inventory. Operators can
-                  continue reading this body while the title and actions remain in
-                  place.
-                </p>
+        <Dialog.Viewport>
+          <Dialog.Popup {...popupProps}>
+            <Dialog.Title>{title}</Dialog.Title>
+            <Dialog.Description>{description}</Dialog.Description>
+            <div className="tr-dialog-body grid gap-4" data-dialog-scroll-body="">
+              {longContent ? (
+                <div className="grid gap-3">
+                  <p>
+                    Confirm the target environment, maintenance window, and rollback
+                    owner before saving this deployment.
+                  </p>
+                  <p>
+                    Changes are reviewed against the current rack inventory. Operators
+                    can continue reading this body while the title and actions remain in
+                    place.
+                  </p>
+                  <Field.Root>
+                    <Field.Label htmlFor={notesId}>Rollback notes</Field.Label>
+                    <Textarea
+                      defaultValue="Restore the previous deployment and verify rack health."
+                      id={notesId}
+                      name="notes"
+                      rows={8}
+                    />
+                  </Field.Root>
+                </div>
+              ) : null}
+              <Form
+                className="grid gap-2"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  setResult(`Saved ${new FormData(event.currentTarget).get('rack')}`);
+                }}
+              >
                 <Field.Root>
-                  <Field.Label htmlFor={notesId}>Rollback notes</Field.Label>
-                  <Textarea
-                    defaultValue="Restore the previous deployment and verify rack health."
-                    id={notesId}
-                    name="notes"
-                    rows={8}
-                  />
+                  <Field.Label htmlFor={inputId}>Rack name</Field.Label>
+                  <Input defaultValue="rack-alpha" id={inputId} name="rack" required />
                 </Field.Root>
-              </div>
-            ) : null}
-            <Form
-              className="grid gap-2"
-              onSubmit={(event) => {
-                event.preventDefault();
-                setResult(`Saved ${new FormData(event.currentTarget).get('rack')}`);
-              }}
-            >
-              <Field.Root>
-                <Field.Label htmlFor={inputId}>Rack name</Field.Label>
-                <Input defaultValue="rack-alpha" id={inputId} name="rack" required />
-              </Field.Root>
-              <Button type="submit">Save changes</Button>
-            </Form>
-            <output aria-live="polite">{result}</output>
-          </div>
-          <Dialog.Close>Cancel</Dialog.Close>
-        </Dialog.Popup>
+                <Button type="submit">Save changes</Button>
+              </Form>
+              <output aria-live="polite">{result}</output>
+            </div>
+            <Dialog.Close>Cancel</Dialog.Close>
+          </Dialog.Popup>
+        </Dialog.Viewport>
       </Dialog.Portal>
     </Dialog.Root>
+  );
+}
+
+const dialogHandle = Dialog.createHandle<void>();
+
+export function DialogHandleExample() {
+  return (
+    <>
+      <Dialog.Trigger handle={dialogHandle}>Open detached dialog</Dialog.Trigger>
+      <Dialog.Root handle={dialogHandle}>
+        <Dialog.Portal>
+          <Dialog.Backdrop />
+          <Dialog.Viewport>
+            <Dialog.Popup placement="middle" size="sm">
+              <Dialog.Title>Detached trigger</Dialog.Title>
+              <Dialog.Description>
+                A shared handle connects this root to a trigger outside it.
+              </Dialog.Description>
+              <Dialog.Close render={<Button variant="secondary" />}>Close</Dialog.Close>
+            </Dialog.Popup>
+          </Dialog.Viewport>
+        </Dialog.Portal>
+      </Dialog.Root>
+    </>
   );
 }
 
@@ -120,7 +148,11 @@ const meta = {
       control: 'select',
       options: ['middle', 'top', 'bottom', 'start', 'end'],
     },
-    size: { control: 'select', options: ['sm', 'md', 'lg', 'full'] },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg', 'full'],
+      when: (args) => args['placement'] !== 'top' && args['placement'] !== 'bottom',
+    },
     title: { control: 'text' },
   },
   render: function Render(args) {

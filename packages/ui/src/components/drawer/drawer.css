@@ -1,6 +1,8 @@
+@import "../../internal/layer-parts.css";
+
 @layer components {
   .tr-drawer {
-    --_tr-drawer-popup-max-width: 32rem;
+    --_tr-drawer-popup-max-width: var(--tinyrack-overlay-width-md);
     box-sizing: border-box;
     color: var(--tr-drawer-color, var(--tinyrack-text));
     font-family: var(--tinyrack-font-body);
@@ -10,7 +12,7 @@
   .tr-drawer-trigger {
     align-items: center;
     background: var(--tr-drawer-control-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-md);
     color: var(--tinyrack-text);
     cursor: pointer;
@@ -24,7 +26,7 @@
   .tr-drawer-content,
   .tr-drawer-popup {
     background: var(--tr-drawer-popup-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-lg);
     box-shadow: var(--tinyrack-shadow-overlay);
     color: var(--tinyrack-text);
@@ -122,12 +124,18 @@
     margin: 0;
   }
 
-  .tr-drawer-backdrop,
-  .tr-drawer-indent-background {
+  .tr-drawer-backdrop {
     background: var(--tr-drawer-backdrop, var(--tinyrack-scrim));
     inset: 0;
     position: fixed;
     z-index: var(--tinyrack-layer-backdrop);
+  }
+
+  .tr-drawer-indent-background {
+    background: var(--tr-drawer-backdrop, var(--tinyrack-scrim));
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
   }
 
   .tr-drawer-backdrop {
@@ -161,13 +169,83 @@
     z-index: var(--tinyrack-layer-dialog);
   }
 
+  .tr-drawer-viewport:has(> .tr-drawer-popup[data-swipe-direction="up"]) {
+    align-items: flex-start;
+  }
+
+  .tr-drawer-viewport:has(> .tr-drawer-popup[data-swipe-direction="left"]) {
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  .tr-drawer-viewport:has(> .tr-drawer-popup[data-swipe-direction="right"]) {
+    align-items: stretch;
+    justify-content: flex-end;
+  }
+
+  .tr-drawer-popup[data-swipe-direction="up"] {
+    border-end-end-radius: var(--tinyrack-radius-lg);
+    border-end-start-radius: var(--tinyrack-radius-lg);
+    border-start-end-radius: 0;
+    border-start-start-radius: 0;
+  }
+
+  .tr-drawer-popup[data-swipe-direction="left"] {
+    border-end-end-radius: var(--tinyrack-radius-lg);
+    border-end-start-radius: 0;
+    border-start-end-radius: var(--tinyrack-radius-lg);
+    border-start-start-radius: 0;
+    height: 100%;
+    max-height: none;
+    width: var(--tr-drawer-popup-max-width, var(--_tr-drawer-popup-max-width));
+  }
+
+  .tr-drawer-popup[data-swipe-direction="right"] {
+    border-end-end-radius: 0;
+    border-end-start-radius: var(--tinyrack-radius-lg);
+    border-start-end-radius: 0;
+    border-start-start-radius: var(--tinyrack-radius-lg);
+    height: 100%;
+    max-height: none;
+    width: var(--tr-drawer-popup-max-width, var(--_tr-drawer-popup-max-width));
+  }
+
   .tr-drawer-viewport > * {
     pointer-events: auto;
   }
 
   .tr-drawer-swipe-area {
     inset-inline: 0;
-    position: fixed;
+    position: absolute;
+    z-index: var(--tinyrack-layer-dialog);
+  }
+
+  .tr-drawer-swipe-area[data-swipe-direction="up"],
+  .tr-drawer-swipe-area[data-swipe-direction="down"] {
+    block-size: var(--tr-drawer-swipe-area-size, var(--tinyrack-space-xl));
+  }
+
+  .tr-drawer-swipe-area[data-swipe-direction="up"] {
+    bottom: 0;
+  }
+
+  .tr-drawer-swipe-area[data-swipe-direction="down"] {
+    top: 0;
+  }
+
+  .tr-drawer-swipe-area[data-swipe-direction="left"],
+  .tr-drawer-swipe-area[data-swipe-direction="right"] {
+    block-size: 100%;
+    inline-size: var(--tr-drawer-swipe-area-size, var(--tinyrack-space-xl));
+    inset-inline: auto;
+  }
+
+  .tr-drawer-swipe-area[data-swipe-direction="left"] {
+    right: 0;
+  }
+
+  .tr-drawer-swipe-area[data-swipe-direction="right"] {
+    left: 0;
   }
 
   .tr-drawer :focus-visible,

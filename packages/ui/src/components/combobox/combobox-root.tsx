@@ -1,9 +1,15 @@
 'use client';
 
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
-import type { ComponentProps, ReactElement } from 'react';
-import { createComponentPart } from '../../internal/component-part.js';
+import type { ReactElement } from 'react';
 
-export type ComboboxRootProps = ComponentProps<typeof BaseCombobox.Root>;
-export const ComboboxRoot: (props: ComboboxRootProps) => ReactElement | null =
-  createComponentPart(BaseCombobox.Root);
+export type ComboboxRootProps<
+  Value = unknown,
+  Multiple extends boolean | undefined = false,
+> = BaseCombobox.Root.Props<Value, Multiple>;
+
+export function ComboboxRoot<Value, Multiple extends boolean | undefined = false>(
+  props: ComboboxRootProps<Value, Multiple>,
+): ReactElement {
+  return <BaseCombobox.Root<Value, Multiple> {...props} />;
+}

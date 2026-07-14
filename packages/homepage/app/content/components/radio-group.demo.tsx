@@ -23,7 +23,9 @@ type StoryArgs = {
 
 type RadioGroupPreviewProps = Omit<StoryArgs, 'value'> & {
   defaultValue?: string;
+  form?: string;
   label?: string;
+  name?: string;
   onValueChange?: (value: string) => void;
   value?: string;
 };
@@ -37,7 +39,9 @@ const radioOptions = [
 export function RadioGroupPreview({
   defaultValue,
   disabled,
+  form,
   label = 'Rack',
+  name = 'rack',
   onValueChange,
   readOnly,
   required,
@@ -54,7 +58,8 @@ export function RadioGroupPreview({
         {...stateProps}
         aria-labelledby={legendId}
         disabled={disabled}
-        name="rack"
+        form={form}
+        name={name}
         onValueChange={(nextValue) => onValueChange?.(nextValue as string)}
         readOnly={readOnly}
         required={required}
@@ -201,6 +206,40 @@ export function RadioGroupValidationPreview() {
         {attempted && value ? `Primary rack: ${value}.` : ''}
       </output>
     </Form>
+  );
+}
+
+export function RadioGroupExternalFormPreview() {
+  const formId = useId();
+  const [result, setResult] = useState('');
+
+  return (
+    <div className="grid min-w-0 gap-3">
+      <Form
+        className="flex flex-wrap gap-2"
+        id={formId}
+        onReset={() => setResult('Reset to alpha.')}
+        onSubmit={(event) => {
+          event.preventDefault();
+          setResult(`Submitted: ${new FormData(event.currentTarget).get('rack')}`);
+        }}
+      >
+        <Button type="submit">Submit external group</Button>
+        <Button type="reset" variant="secondary">
+          Reset
+        </Button>
+      </Form>
+      <RadioGroupPreview
+        defaultValue="alpha"
+        disabled={false}
+        form={formId}
+        label="Rack outside the form"
+        name="rack"
+        readOnly={false}
+        required
+      />
+      <output aria-live="polite">{result}</output>
+    </div>
   );
 }
 

@@ -21,7 +21,7 @@ export type {
 } from '@base-ui/react/meter';
 export type { MeterIndicatorProps } from './meter-indicator.js';
 export type { MeterLabelProps } from './meter-label.js';
-export type { MeterRootProps } from './meter-root.js';
+export type { MeterRootProps, MeterVariant } from './meter-root.js';
 export type { MeterTrackProps } from './meter-track.js';
 export type { MeterValueProps } from './meter-value.js';
 export { MeterIndicator, MeterLabel, MeterRoot, MeterTrack, MeterValue };

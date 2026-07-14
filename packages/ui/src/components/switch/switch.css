@@ -17,7 +17,7 @@
     align-items: center;
     appearance: none;
     background: var(--tr-switch-background, var(--tinyrack-surface-muted));
-    border: var(--_tr-switch-border-width) solid var(--tinyrack-border-strong);
+    border: var(--_tr-switch-border-width) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-full);
     box-sizing: border-box;
     color: var(--tr-switch-color, var(--tinyrack-text));
@@ -32,7 +32,7 @@
     width: var(--tr-switch-width, var(--_tr-switch-width));
   }
 
-  .tr-switch:hover:not([data-checked], [data-disabled]) {
+  .tr-switch:hover:not([data-checked], [data-disabled], [data-readonly]) {
     background: var(--tr-switch-hover-background, var(--tinyrack-surface-hover));
   }
 
@@ -41,7 +41,7 @@
     border-color: var(--tr-switch-checked-border, var(--tinyrack-primary));
   }
 
-  .tr-switch[data-checked]:hover:not([data-disabled]) {
+  .tr-switch[data-checked]:hover:not([data-disabled], [data-readonly]) {
     background: var(
       --tr-switch-checked-hover-background,
       var(--tinyrack-primary-hover)
@@ -91,6 +91,26 @@
   .tr-switch:disabled .tr-switch-thumb,
   .tr-switch[data-disabled] .tr-switch-thumb {
     opacity: var(--tinyrack-opacity-disabled);
+  }
+
+  .tr-switch[data-checked]:is(:disabled, [data-disabled]) {
+    background: var(
+      --tr-switch-checked-disabled-background,
+      var(--tinyrack-surface-selected)
+    );
+    border-color: var(--tr-switch-checked-disabled-border, var(--tinyrack-primary));
+  }
+
+  .tr-switch[data-checked]:is(:disabled, [data-disabled]) .tr-switch-thumb {
+    background: var(
+      --tr-switch-checked-disabled-thumb-background,
+      var(--tinyrack-primary)
+    );
+    opacity: 1;
+  }
+
+  .tr-switch[data-readonly] {
+    cursor: default;
   }
 
   @media (prefers-reduced-motion: reduce) {

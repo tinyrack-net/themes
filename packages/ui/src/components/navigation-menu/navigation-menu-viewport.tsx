@@ -9,5 +9,5 @@ export type NavigationMenuViewportProps = ComponentProps<
 >;
 export const NavigationMenuViewport = createComponentPart(
   BaseNavigationMenu.Viewport,
-  'tr-navigation-menu-viewport',
+  'tr-layer-viewport tr-navigation-menu-viewport',
 );

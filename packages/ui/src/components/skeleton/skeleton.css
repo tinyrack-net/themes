@@ -1,7 +1,7 @@
 .tr-skeleton {
-  --_tr-skeleton-height: 1em;
-  --_tr-skeleton-background: var(--tinyrack-surface-muted);
-  --_tr-skeleton-highlight: var(--tinyrack-surface);
+  --_tr-skeleton-height: var(--tinyrack-text-md);
+  --_tr-skeleton-background: var(--tinyrack-skeleton-fill);
+  --_tr-skeleton-highlight: var(--tinyrack-skeleton-highlight);
   --_tr-skeleton-min-height: var(--tinyrack-space-lg);
   --_tr-skeleton-radius: var(--tinyrack-radius-sm);
   position: relative;
@@ -19,7 +19,7 @@
 }
 
 .tr-skeleton[data-shape="rectangle"] {
-  --_tr-skeleton-min-height: 4rem;
+  --_tr-skeleton-min-height: var(--tinyrack-measure-xs);
   --_tr-skeleton-radius: var(--tinyrack-radius-lg);
 }
 

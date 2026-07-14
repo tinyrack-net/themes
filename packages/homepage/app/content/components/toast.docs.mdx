@@ -3,7 +3,7 @@ import { ComponentPlayground } from '../../playground/playground.js';
 import { Toast } from '@tinyrack/ui/components/toast';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentInstall } from '../shared/component-install.js';
-import { ToastDemo, ToastLifecycleDemo, ToastPositionGallery, ToastVariantGallery } from './toast.demo.js';
+import { ToastAnchoredDemo, ToastDemo, ToastLifecycleDemo, ToastPositionGallery, ToastVariantGallery } from './toast.demo.js';
 import * as Stories from './toast.demo.js';
 
 
@@ -45,10 +45,10 @@ Transient status notifications with semantic variants, actions, dismissal, and s
       <Toast.Viewport aria-label="Managed notification example">
         {manager.toasts.map((toast) => (
           <Toast.Root key={toast.id} toast={toast}>
-            <div>
+            <Toast.Content>
               <Toast.Title>{toast.title}</Toast.Title>
               <Toast.Description>{toast.description}</Toast.Description>
-            </div>
+            </Toast.Content>
             <Toast.Action>View</Toast.Action>
             <Toast.Close aria-label="Dismiss notification">×</Toast.Close>
           </Toast.Root>
@@ -94,10 +94,10 @@ Transient status notifications with semantic variants, actions, dismissal, and s
       <Toast.Viewport aria-label="Status variant notifications" position="block-end-inline-end">
         {manager.toasts.map((toast) => (
           <Toast.Root key={toast.id} toast={toast}>
-            <div>
+            <Toast.Content>
               <Toast.Title>{toast.title}</Toast.Title>
               <Toast.Description>{toast.description}</Toast.Description>
-            </div>
+            </Toast.Content>
             <Toast.Close aria-label="Dismiss notification">×</Toast.Close>
           </Toast.Root>
         ))}
@@ -138,8 +138,7 @@ function PositionedToastDemo({ label, position }) {
       <Toast.Viewport aria-label={label + ' notifications'} position={position}>
         {manager.toasts.map((toast) => (
           <Toast.Root key={toast.id} toast={toast}>
-            <Toast.Title>{toast.title}</Toast.Title>
-            <Toast.Description>{toast.description}</Toast.Description>
+            <Toast.Content><Toast.Title>{toast.title}</Toast.Title><Toast.Description>{toast.description}</Toast.Description></Toast.Content>
             <Toast.Close aria-label="Dismiss notification">×</Toast.Close>
           </Toast.Root>
         ))}
@@ -195,12 +194,12 @@ function PositionedToastDemo({ label, position }) {
         });
       }
     }}>Queue four</Button>
+    <Button onClick={() => manager.close()}>Reset toasts</Button>
     <Toast.Portal>
       <Toast.Viewport aria-label="Lifecycle notifications">
         {manager.toasts.map((toast) => (
           <Toast.Root key={toast.id} toast={toast}>
-            <Toast.Title>{toast.title}</Toast.Title>
-            <Toast.Description>{toast.description}</Toast.Description>
+            <Toast.Content><Toast.Title>{toast.title}</Toast.Title><Toast.Description>{toast.description}</Toast.Description></Toast.Content>
             <Toast.Action onClick={() => manager.close(toast.id)}>Undo</Toast.Action>
             <Toast.Close aria-label="Dismiss notification">×</Toast.Close>
           </Toast.Root>
@@ -211,6 +210,39 @@ function PositionedToastDemo({ label, position }) {
 }
 
 <Toast.Provider limit={2}><ToastLifecycleDemo /></Toast.Provider>` }]}
+/>
+
+<ComponentExampleTabs
+  id="toast-anchored"
+  title="Anchored content, positioner, and arrow"
+  description="The toast is positioned against its trigger and uses the complete anchored anatomy."
+  preview={<Toast.Provider><ToastAnchoredDemo /></Toast.Provider>}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`function AnchoredToast() {
+  const manager = useToastManager();
+  const anchorRef = useRef(null);
+  return <>
+    <Button ref={anchorRef} onClick={() => manager.add({
+      description: 'The notification follows its action trigger.',
+      positionerProps: { anchor: anchorRef.current, side: 'top', sideOffset: 8 },
+      title: 'Anchored deployment',
+      type: 'info',
+    })}>Show anchored toast</Button>
+    <Toast.Portal>
+      {manager.toasts.map((toast) => (
+        <Toast.Positioner key={toast.id} toast={toast} {...toast.positionerProps}>
+          <Toast.Root toast={toast}>
+            <Toast.Arrow />
+            <Toast.Content>
+              <Toast.Title>{toast.title}</Toast.Title>
+              <Toast.Description>{toast.description}</Toast.Description>
+            </Toast.Content>
+            <Toast.Close aria-label="Dismiss notification">×</Toast.Close>
+          </Toast.Root>
+        </Toast.Positioner>
+      ))}
+    </Toast.Portal>
+  </>;
+}` }]}
 />
 
 ## API

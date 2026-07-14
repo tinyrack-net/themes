@@ -24,12 +24,15 @@ Use `Root/Trigger/Portal/Positioner/Popup` for the surface and compose `Item` or
 
 ## Usage
 
-<ComponentExampleTabs id="menu-basic" title="Action menu" preview={<Menu.Root><Menu.Trigger>Actions</Menu.Trigger><Menu.Portal><Menu.Positioner><Menu.Popup><Menu.Item>Restart</Menu.Item><Menu.Separator /><Menu.Item>Delete</Menu.Item></Menu.Popup></Menu.Positioner></Menu.Portal></Menu.Root>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Menu.Root>
+<ComponentExampleTabs id="menu-basic" title="Action menu" preview={<Menu.Root><Menu.Trigger>Actions</Menu.Trigger><Menu.Portal><Menu.Backdrop /><Menu.Positioner sideOffset={8}><Menu.Popup><Menu.Arrow /><Menu.Viewport><Menu.Item>Restart</Menu.Item><Menu.Separator /><Menu.Item>Delete</Menu.Item></Menu.Viewport></Menu.Popup></Menu.Positioner></Menu.Portal></Menu.Root>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<Menu.Root>
   <Menu.Trigger>Actions</Menu.Trigger>
-  <Menu.Portal><Menu.Positioner><Menu.Popup>
-    <Menu.Item>Restart</Menu.Item>
-    <Menu.Separator />
-    <Menu.Item>Delete</Menu.Item>
+  <Menu.Portal><Menu.Backdrop /><Menu.Positioner sideOffset={8}><Menu.Popup>
+    <Menu.Arrow />
+    <Menu.Viewport>
+      <Menu.Item>Restart</Menu.Item>
+      <Menu.Separator />
+      <Menu.Item>Delete</Menu.Item>
+    </Menu.Viewport>
   </Menu.Popup></Menu.Positioner></Menu.Portal>
 </Menu.Root>` }]} />
 
@@ -83,6 +86,34 @@ Use `Root/Trigger/Portal/Positioner/Popup` for the surface and compose `Item` or
 </Menu.Root>` }]}
 />
 
+<ComponentExampleTabs
+  id="menu-handle"
+  title="Detached handle and complete layer anatomy"
+  description="A trigger outside Root passes payload to the menu while Backdrop, Positioner, Popup, Arrow, and Viewport own the layer."
+  preview={<Stories.MenuHandleExample />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`const menuHandle = Menu.createHandle<{ rack: string }>();
+
+<Menu.Trigger handle={menuHandle} payload={{ rack: 'Rack Delta' }}>
+  Detached rack actions
+</Menu.Trigger>
+<Menu.Root handle={menuHandle}>
+  {(payload) => (
+    <Menu.Portal>
+      <Menu.Backdrop />
+      <Menu.Positioner sideOffset={8}>
+        <Menu.Popup>
+          <Menu.Arrow />
+          <Menu.Viewport>
+            <Menu.GroupLabel>{payload.rack}</Menu.GroupLabel>
+            <Menu.Item>Inspect rack</Menu.Item>
+          </Menu.Viewport>
+        </Menu.Popup>
+      </Menu.Positioner>
+    </Menu.Portal>
+  )}
+</Menu.Root>` }]}
+/>
+
 ## API
 
-Base UI owns roving focus, typeahead, keyboard activation, portal positioning, and outside/Escape dismissal.
+Base UI owns roving focus, typeahead, keyboard activation, portal positioning, and outside/Escape dismissal. `Viewport` is only needed when one popup transitions content between multiple triggers; it is shown here so the full public anatomy remains copy-ready.

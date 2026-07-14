@@ -23,6 +23,53 @@ type DrawerPreviewProps = StoryArgs & {
   onSnapPointChange?: (snapPoint: StoryArgs['activeSnapPoint']) => void;
 };
 
+const drawerHandle = Drawer.createHandle<{ title: string }>();
+
+export function DrawerProviderHandlePreview() {
+  return (
+    <Drawer.Provider>
+      <div className="relative min-h-48 w-full overflow-hidden rounded-md">
+        <Drawer.IndentBackground />
+        <Drawer.Indent>
+          <div className="grid min-h-48 content-center gap-3 rounded-md border border-tinyrack p-4">
+            <span>Provider-coordinated page surface</span>
+            <Drawer.Trigger
+              handle={drawerHandle}
+              payload={{ title: 'Detached rack actions' }}
+            >
+              Open detached drawer
+            </Drawer.Trigger>
+          </div>
+        </Drawer.Indent>
+        <Drawer.Root handle={drawerHandle} swipeDirection="down">
+          {({ payload }) => (
+            <>
+              <Drawer.SwipeArea />
+              <Drawer.Portal>
+                <Drawer.Backdrop />
+                <Drawer.Viewport>
+                  <Drawer.Popup>
+                    <Drawer.Content>
+                      <Drawer.Title>
+                        {(payload as { title?: string } | undefined)?.title ??
+                          'Detached rack actions'}
+                      </Drawer.Title>
+                      <Drawer.Description>
+                        The trigger and drawer share an imperative handle.
+                      </Drawer.Description>
+                      <Drawer.Close>Close</Drawer.Close>
+                    </Drawer.Content>
+                  </Drawer.Popup>
+                </Drawer.Viewport>
+              </Drawer.Portal>
+            </>
+          )}
+        </Drawer.Root>
+      </div>
+    </Drawer.Provider>
+  );
+}
+
 export function DrawerPreview({
   label,
   open,

@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type DialogBackdropProps = ComponentProps<typeof BaseDialog.Backdrop>;
 export const DialogBackdrop = createComponentPart(
   BaseDialog.Backdrop,
-  'tr-dialog-backdrop',
+  'tr-layer-backdrop tr-dialog-backdrop',
 );

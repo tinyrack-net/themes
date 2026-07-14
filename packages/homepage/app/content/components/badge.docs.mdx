@@ -68,7 +68,9 @@ Compact status labels with semantic color and density axes.
       <div className="grid gap-2"><strong>Large</strong><div className="flex flex-wrap gap-2"><Badge size="lg" variant="neutral">Neutral</Badge><Badge size="lg" variant="info">Info</Badge><Badge size="lg" variant="success">Success</Badge><Badge size="lg" variant="warning">Warning</Badge><Badge size="lg" variant="danger">Danger</Badge></div></div>
     </div>
   )}
-  sources={[{ label: 'React', language: 'tsx', code: String.raw`const sizes = [['sm', 'Small'], ['md', 'Medium'], ['lg', 'Large']];
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`import type { BadgeSize } from '@tinyrack/ui/components/badge';
+
+const sizes = [['sm', 'Small'], ['md', 'Medium'], ['lg', 'Large']] as const satisfies readonly (readonly [BadgeSize, string])[];
 
 <div className="grid gap-5">
   {sizes.map(([size, label]) => (

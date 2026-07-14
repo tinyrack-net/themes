@@ -2,7 +2,7 @@
   .tr-menubar {
     align-items: center;
     background: var(--tr-menubar-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-lg);
     box-sizing: border-box;
     color: var(--tr-menubar-color, var(--tinyrack-text));
@@ -23,9 +23,7 @@
     outline-offset: var(--tinyrack-focus-offset);
   }
 
-  .tr-menubar :disabled,
   .tr-menubar[data-disabled] {
     cursor: not-allowed;
-    opacity: var(--tinyrack-opacity-disabled);
   }
 }

@@ -65,7 +65,19 @@ function InstallCodeBlock({ code, label, language }: InstallCodeBlockProps) {
         size="sm"
         value={code}
       />
-      <CodeBlock className="m-0 max-w-full pr-32" code={code} language={language} />
+      <CodeBlock
+        aria-label={label}
+        className="m-0 w-full min-w-0 max-w-full pr-32"
+        code={code}
+        language={language}
+        tabIndex={0}
+      />
+      <p
+        className="m-0 mt-1 text-tinyrack-xs text-tinyrack-text-muted sm:hidden"
+        data-code-scroll-hint=""
+      >
+        Scroll inside the code area to read long lines.
+      </p>
     </div>
   );
 }
@@ -87,7 +99,7 @@ export function ComponentInstall({ surfaces }: ComponentInstallProps) {
       size="sm"
     >
       <ScrollArea.Root variant="plain">
-        <ScrollArea.Viewport>
+        <ScrollArea.Viewport aria-label="Installation targets" tabIndex={0}>
           <ScrollArea.Content className="min-w-max">
             <Tabs.List aria-label="Installation target">
               {surfaces.map((surface) => (

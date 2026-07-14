@@ -1,4 +1,5 @@
 export const tinyrackSpacing = {
+  '3xs': '0.0625rem',
   xs: '0.25rem',
   sm: '0.5rem',
   md: '0.75rem',

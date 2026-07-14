@@ -2,7 +2,7 @@
   .tr-toggle {
     align-items: center;
     background: var(--tr-toggle-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-md);
     box-sizing: border-box;
     color: var(--tr-toggle-color, var(--tinyrack-text));

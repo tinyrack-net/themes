@@ -1,3 +1,5 @@
+@import "../../internal/layer-parts.css";
+
 @layer components {
   .tr-dialog-backdrop {
     --_tr-dialog-backdrop-color: rgb(0 0 0 / var(--tinyrack-opacity-backdrop));
@@ -14,14 +16,17 @@
   }
 
   .tr-dialog-box {
-    --_tr-dialog-box-max-width: 32rem;
+    --_tr-dialog-box-max-width: var(--tinyrack-overlay-width-md);
     --_tr-dialog-box-padding: var(--tinyrack-space-xl);
     --_tr-dialog-box-radius: var(--tinyrack-radius-xl);
-    --_tr-dialog-closed-scale: 0.98;
+    --_tr-dialog-closed-scale: var(--tinyrack-overlay-closed-scale);
     --_tr-dialog-closed-translate: -50% calc(-50% + var(--tinyrack-space-md));
-    --_tr-dialog-viewport-gap: 5rem;
+    --_tr-dialog-viewport-gap: calc(
+      var(--tinyrack-measure-xs) +
+      var(--tinyrack-space-lg)
+    );
     background-color: var(--tr-dialog-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tr-dialog-box-radius, var(--_tr-dialog-box-radius));
     box-shadow: var(--tr-dialog-shadow, var(--tinyrack-shadow-overlay));
     box-sizing: border-box;
@@ -61,15 +66,15 @@
   }
 
   .tr-dialog-box[data-size="sm"] {
-    --_tr-dialog-box-max-width: 24rem;
+    --_tr-dialog-box-max-width: var(--tinyrack-measure-xl);
   }
 
   .tr-dialog-box[data-size="md"] {
-    --_tr-dialog-box-max-width: 32rem;
+    --_tr-dialog-box-max-width: var(--tinyrack-overlay-width-md);
   }
 
   .tr-dialog-box[data-size="lg"] {
-    --_tr-dialog-box-max-width: 48rem;
+    --_tr-dialog-box-max-width: var(--tinyrack-overlay-width-lg);
   }
 
   .tr-dialog-box[data-size="full"] {

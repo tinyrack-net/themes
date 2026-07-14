@@ -12,8 +12,8 @@ import type { BundledLanguage, ThemedToken } from 'shiki/bundle/web';
 import { mergeClassNames } from '../../internal/component-class-name.js';
 
 const automaticShikiThemes = {
-  dark: 'github-dark',
-  light: 'github-light',
+  dark: 'github-dark-high-contrast',
+  light: 'github-light-high-contrast',
 } as const;
 
 type HighlightedLines = ThemedToken[][];

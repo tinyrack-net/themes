@@ -1,6 +1,6 @@
 .tr-link {
-  --_tr-link-decoration-thickness: 0.08em;
-  --_tr-link-underline-offset: 0.18em;
+  --_tr-link-decoration-thickness: var(--tinyrack-text-decoration-thickness);
+  --_tr-link-underline-offset: var(--tinyrack-text-underline-offset);
   color: var(--tr-link-color, var(--tinyrack-primary));
   cursor: pointer;
   font-family: inherit;
@@ -64,6 +64,12 @@
   border-radius: var(--tr-link-radius, var(--tinyrack-radius-xs));
   outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
   outline-offset: var(--tinyrack-focus-offset);
+}
+
+.tr-link[data-disabled] {
+  cursor: not-allowed;
+  opacity: var(--tinyrack-opacity-disabled);
+  pointer-events: none;
 }
 
 .tr-link[aria-disabled="true"] {

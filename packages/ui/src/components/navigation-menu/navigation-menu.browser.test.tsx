@@ -214,3 +214,39 @@ test('switches controlled content between pointer-selected navigation items', as
     .toBe('resources');
   expect(document.body.textContent).toContain('Resources links');
 });
+
+test('shifts an edge-anchored popup inside the viewport', async () => {
+  await render(
+    <div style={{ position: 'fixed', right: 0, top: 20 }}>
+      <NavigationMenu.Root
+        aria-label="Edge navigation"
+        closeDelay={0}
+        defaultValue="resources"
+        delay={0}
+      >
+        <NavigationMenu.List>
+          <NavigationMenu.Item value="resources">
+            <NavigationMenu.Trigger>Resources</NavigationMenu.Trigger>
+            <NavigationMenu.Content>
+              <NavigationMenu.Link href="#guides">Guides</NavigationMenu.Link>
+              <NavigationMenu.Link href="#api">API reference</NavigationMenu.Link>
+            </NavigationMenu.Content>
+          </NavigationMenu.Item>
+        </NavigationMenu.List>
+        <NavigationMenu.Portal>
+          <NavigationMenu.Positioner>
+            <NavigationMenu.Popup>
+              <NavigationMenu.Viewport />
+            </NavigationMenu.Popup>
+          </NavigationMenu.Positioner>
+        </NavigationMenu.Portal>
+      </NavigationMenu.Root>
+    </div>,
+  );
+
+  const popup = document.querySelector<HTMLElement>('.tr-navigation-menu-popup');
+  await expect.poll(() => popup?.hasAttribute('data-open')).toBe(true);
+  const bounds = popup?.getBoundingClientRect();
+  expect(bounds?.left).toBeGreaterThanOrEqual(0);
+  expect(bounds?.right).toBeLessThanOrEqual(window.innerWidth);
+});

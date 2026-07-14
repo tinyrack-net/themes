@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type PopoverPositionerProps = ComponentProps<typeof BasePopover.Positioner>;
 export const PopoverPositioner = createComponentPart(
   BasePopover.Positioner,
-  'tr-popover-positioner',
+  'tr-layer-positioner tr-popover-positioner',
 );

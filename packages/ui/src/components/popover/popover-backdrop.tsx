@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type PopoverBackdropProps = ComponentProps<typeof BasePopover.Backdrop>;
 export const PopoverBackdrop = createComponentPart(
   BasePopover.Backdrop,
-  'tr-popover-backdrop',
+  'tr-layer-backdrop tr-popover-backdrop',
 );

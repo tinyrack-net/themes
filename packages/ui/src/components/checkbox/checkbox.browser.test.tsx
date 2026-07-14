@@ -58,6 +58,28 @@ test('preserves label, checked, and native form contracts', async () => {
   expect(input?.value).toBe('yes');
 });
 
+test('serializes explicit checked and unchecked values to an external form', async () => {
+  await render(
+    <>
+      <form id="external-checkbox-form" />
+      <Checkbox.Root
+        aria-label="Monitoring"
+        form="external-checkbox-form"
+        name="monitoring"
+        uncheckedValue="disabled"
+        value="enabled"
+      />
+    </>,
+  );
+
+  const form = document.querySelector<HTMLFormElement>('#external-checkbox-form');
+  const control = page.getByRole('checkbox', { name: 'Monitoring' });
+  expect(new FormData(form as HTMLFormElement).get('monitoring')).toBe('disabled');
+  (control.element() as HTMLElement).click();
+  await expect.poll(() => control.element().getAttribute('aria-checked')).toBe('true');
+  expect(new FormData(form as HTMLFormElement).get('monitoring')).toBe('enabled');
+});
+
 test('surfaces required invalid state and recovers when checked', async () => {
   await render(<RequiredCheckboxHarness />);
 

@@ -65,8 +65,10 @@ function RackRowActions() {
           More actions
         </Button>
         <ContextMenu.Portal>
+          <ContextMenu.Backdrop />
           <ContextMenu.Positioner>
             <ContextMenu.Popup>
+              <ContextMenu.Arrow />
               <ContextMenu.Group>
                 <ContextMenu.GroupLabel>Rack Alpha</ContextMenu.GroupLabel>
                 <ContextMenu.LinkItem href="/racks/alpha">Open details</ContextMenu.LinkItem>
@@ -81,6 +83,7 @@ function RackRowActions() {
                 <ContextMenu.Portal>
                   <ContextMenu.Positioner>
                     <ContextMenu.Popup>
+                      <ContextMenu.Arrow />
                       <ContextMenu.Item>Production</ContextMenu.Item>
                       <ContextMenu.Item>Staging</ContextMenu.Item>
                     </ContextMenu.Popup>
@@ -88,7 +91,7 @@ function RackRowActions() {
                 </ContextMenu.Portal>
               </ContextMenu.SubmenuRoot>
               <ContextMenu.Separator />
-              <ContextMenu.Item>Remove rack</ContextMenu.Item>
+              <ContextMenu.Item variant="danger">Remove rack</ContextMenu.Item>
             </ContextMenu.Popup>
           </ContextMenu.Positioner>
         </ContextMenu.Portal>
@@ -123,8 +126,10 @@ function CanvasViewOptions() {
         Rack canvas
       </ContextMenu.Trigger>
       <ContextMenu.Portal>
+        <ContextMenu.Backdrop />
         <ContextMenu.Positioner>
           <ContextMenu.Popup>
+            <ContextMenu.Arrow />
             <ContextMenu.Group>
               <ContextMenu.GroupLabel>View</ContextMenu.GroupLabel>
               <ContextMenu.CheckboxItem
@@ -166,4 +171,4 @@ function CanvasViewOptions() {
 
 ## API
 
-Every compound part and prop/state type is exported from `@tinyrack/ui/components/context-menu`; styles remain opt-in through the matching CSS subpath. Make the target focusable for Shift+F10 and provide an explicit control that dispatches the same context-menu action when touch users cannot right-click.
+Every compound part and prop/state type is exported from `@tinyrack/ui/components/context-menu`; styles remain opt-in through the matching CSS subpath. Use `Item variant="danger"` for destructive commands. `Backdrop`, `Positioner`, `Popup`, and `Arrow` share the layer anatomy; `Popup` is also the constrained scrolling viewport. Make the target focusable for Shift+F10 and provide an explicit control that dispatches the same context-menu action when touch users cannot right-click.

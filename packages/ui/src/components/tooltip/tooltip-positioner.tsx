@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type TooltipPositionerProps = ComponentProps<typeof BaseTooltip.Positioner>;
 export const TooltipPositioner = createComponentPart(
   BaseTooltip.Positioner,
-  'tr-tooltip-positioner',
+  'tr-layer-positioner tr-tooltip-positioner',
 );

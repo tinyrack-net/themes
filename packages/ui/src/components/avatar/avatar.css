@@ -12,7 +12,7 @@
   place-items: center;
   overflow: hidden;
   border: var(--tinyrack-border-width-default) solid
-    var(--tr-avatar-border, var(--tinyrack-border));
+    var(--tr-avatar-border, var(--tinyrack-control-border));
   border-radius: var(--tr-avatar-radius, var(--_tr-avatar-radius));
   background-color: var(--tr-avatar-background, var(--_tr-avatar-background));
   color: var(--tr-avatar-color, var(--_tr-avatar-color));

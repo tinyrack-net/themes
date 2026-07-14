@@ -5,4 +5,7 @@ import type { ComponentProps } from 'react';
 import { createComponentPart } from '../../internal/component-part.js';
 
 export type TooltipArrowProps = ComponentProps<typeof BaseTooltip.Arrow>;
-export const TooltipArrow = createComponentPart(BaseTooltip.Arrow, 'tr-tooltip-arrow');
+export const TooltipArrow = createComponentPart(
+  BaseTooltip.Arrow,
+  'tr-layer-arrow tr-tooltip-arrow',
+);

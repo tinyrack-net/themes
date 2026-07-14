@@ -88,10 +88,10 @@ export function ToastDemo({
         <Toast.Viewport aria-label="Playground notifications" position={position}>
           {manager.toasts.map((toast) => (
             <Toast.Root key={toast.id} toast={toast}>
-              <div>
+              <Toast.Content>
                 <Toast.Title>{toast.title}</Toast.Title>
                 <Toast.Description>{toast.description}</Toast.Description>
-              </div>
+              </Toast.Content>
               <Toast.Action>View</Toast.Action>
               <ToastCloseControl
                 onClose={() => {
@@ -142,10 +142,10 @@ export function ToastVariantGallery() {
         >
           {manager.toasts.map((toast) => (
             <Toast.Root key={toast.id} toast={toast}>
-              <div>
+              <Toast.Content>
                 <Toast.Title>{toast.title}</Toast.Title>
                 <Toast.Description>{toast.description}</Toast.Description>
-              </div>
+              </Toast.Content>
               <ToastCloseControl />
             </Toast.Root>
           ))}
@@ -210,6 +210,15 @@ export function ToastLifecycleDemo() {
         >
           Queue four
         </Button>
+        <Button
+          appearance="ghost"
+          onClick={() => {
+            manager.close();
+            activeToast.current = null;
+          }}
+        >
+          Reset toasts
+        </Button>
       </div>
       <Toast.Portal>
         <Toast.Viewport
@@ -218,10 +227,10 @@ export function ToastLifecycleDemo() {
         >
           {manager.toasts.map((toast) => (
             <Toast.Root key={toast.id} toast={toast}>
-              <div>
+              <Toast.Content>
                 <Toast.Title>{toast.title}</Toast.Title>
                 <Toast.Description>{toast.description}</Toast.Description>
-              </div>
+              </Toast.Content>
               <Toast.Action onClick={() => manager.close(toast.id)}>Undo</Toast.Action>
               <ToastCloseControl />
             </Toast.Root>
@@ -267,14 +276,50 @@ function ToastPositionDemo({
         <Toast.Viewport aria-label={`${label} notifications`} position={position}>
           {manager.toasts.map((toast) => (
             <Toast.Root key={toast.id} toast={toast}>
-              <div>
+              <Toast.Content>
                 <Toast.Title>{toast.title}</Toast.Title>
                 <Toast.Description>{toast.description}</Toast.Description>
-              </div>
+              </Toast.Content>
               <ToastCloseControl />
             </Toast.Root>
           ))}
         </Toast.Viewport>
+      </Toast.Portal>
+    </>
+  );
+}
+
+export function ToastAnchoredDemo() {
+  const manager = useToastManager();
+  const anchorRef = useRef<HTMLButtonElement>(null);
+  return (
+    <>
+      <Button
+        ref={anchorRef}
+        onClick={() =>
+          manager.add({
+            description: 'The notification follows its action trigger.',
+            positionerProps: { anchor: anchorRef.current, side: 'top', sideOffset: 8 },
+            title: 'Anchored deployment',
+            type: 'info',
+          })
+        }
+      >
+        Show anchored toast
+      </Button>
+      <Toast.Portal>
+        {manager.toasts.map((toast) => (
+          <Toast.Positioner key={toast.id} toast={toast} {...toast.positionerProps}>
+            <Toast.Root toast={toast}>
+              <Toast.Arrow />
+              <Toast.Content>
+                <Toast.Title>{toast.title}</Toast.Title>
+                <Toast.Description>{toast.description}</Toast.Description>
+              </Toast.Content>
+              <ToastCloseControl />
+            </Toast.Root>
+          </Toast.Positioner>
+        ))}
       </Toast.Portal>
     </>
   );

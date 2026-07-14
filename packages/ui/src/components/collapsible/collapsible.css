@@ -1,9 +1,9 @@
 @layer components {
   .tr-collapsible {
     --_tr-collapsible-chevron-size: var(--tinyrack-space-sm);
-    --_tr-collapsible-chevron-stroke: var(--tinyrack-radius-xs);
+    --_tr-collapsible-chevron-stroke: var(--tinyrack-border-width-strong);
     background-color: var(--tr-collapsible-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tr-collapsible-radius, var(--tinyrack-radius-md));
     color: var(--tinyrack-text);
     font-family: var(--tinyrack-font-body);
@@ -56,7 +56,7 @@
 
   .tr-collapsible-content {
     border-block-start: var(--tinyrack-border-width-default) solid
-      var(--tinyrack-border);
+      var(--tinyrack-control-border);
     box-sizing: border-box;
     color: var(--tinyrack-text-muted);
     font-size: var(--tinyrack-text-sm);

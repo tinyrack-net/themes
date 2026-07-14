@@ -5,12 +5,14 @@ import {
   tinyrackBorders,
   tinyrackControlMetrics,
   tinyrackLayers,
+  tinyrackMeasurements,
   tinyrackMotion,
   tinyrackOpacity,
   tinyrackRadii,
   tinyrackSemanticColors,
   tinyrackShadows,
   tinyrackSpacing,
+  tinyrackSpinnerMetrics,
   tinyrackTypography,
 } from './index.js';
 
@@ -187,6 +189,8 @@ describe('core.css source contract', () => {
       ...tokenDeclarations(tinyrackOpacity, 'tinyrack-opacity'),
       ...tokenDeclarations(tinyrackLayers, 'tinyrack-layer'),
       ...controlDeclarations,
+      ...tokenDeclarations(tinyrackMeasurements, 'tinyrack'),
+      ...tokenDeclarations(tinyrackSpinnerMetrics, 'tinyrack-spinner'),
     });
   });
 

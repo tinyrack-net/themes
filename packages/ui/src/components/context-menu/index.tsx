@@ -66,7 +66,10 @@ export type { ContextMenuCheckboxItemProps } from './context-menu-checkbox-item.
 export type { ContextMenuCheckboxItemIndicatorProps } from './context-menu-checkbox-item-indicator.js';
 export type { ContextMenuGroupProps } from './context-menu-group.js';
 export type { ContextMenuGroupLabelProps } from './context-menu-group-label.js';
-export type { ContextMenuItemProps } from './context-menu-item.js';
+export type {
+  ContextMenuItemProps,
+  ContextMenuItemVariant,
+} from './context-menu-item.js';
 export type { ContextMenuLinkItemProps } from './context-menu-link-item.js';
 export type { ContextMenuPopupProps } from './context-menu-popup.js';
 export type { ContextMenuPortalProps } from './context-menu-portal.js';

@@ -1,10 +1,12 @@
+@import "../../internal/layer-parts.css";
+
 @layer components {
   .tr-toast-provider {
     display: contents;
   }
 
   .tr-toast-viewport {
-    --_tr-toast-viewport-max-width: 24rem;
+    --_tr-toast-viewport-max-width: var(--tinyrack-measure-xl);
     inset: auto;
     position: fixed;
     box-sizing: border-box;
@@ -21,6 +23,7 @@
     border: 0;
     background: transparent;
     pointer-events: none;
+    z-index: var(--tinyrack-layer-toast);
   }
 
   .tr-toast-viewport[data-position^="block-start"] {
@@ -47,8 +50,9 @@
   .tr-toast {
     --_tr-toast-accent: var(--tinyrack-text-muted);
     --_tr-toast-background: var(--tinyrack-surface);
-    --_tr-toast-border: var(--tinyrack-border);
+    --_tr-toast-border: var(--tinyrack-control-border);
     --_tr-toast-color: var(--tinyrack-text);
+    --tr-layer-background: var(--tr-toast-background, var(--_tr-toast-background));
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: start;
@@ -63,6 +67,25 @@
     box-shadow: var(--tinyrack-shadow-raised);
     color: var(--tr-toast-color, var(--_tr-toast-color));
     pointer-events: auto;
+  }
+
+  .tr-toast-positioner {
+    --tr-layer-z-index: var(--tinyrack-layer-toast);
+    pointer-events: none;
+  }
+
+  .tr-toast-positioner > .tr-toast {
+    pointer-events: auto;
+  }
+
+  .tr-toast-content {
+    display: grid;
+    gap: var(--tinyrack-space-xs);
+    min-width: 0;
+  }
+
+  .tr-toast-arrow {
+    --tr-layer-background: var(--tr-toast-background, var(--_tr-toast-background));
   }
 
   .tr-toast[data-variant="info"] {

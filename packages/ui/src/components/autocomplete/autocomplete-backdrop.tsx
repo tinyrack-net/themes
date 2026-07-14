@@ -9,5 +9,5 @@ export type AutocompleteBackdropProps = ComponentProps<
 >;
 export const AutocompleteBackdrop = createComponentPart(
   BaseAutocomplete.Backdrop,
-  'tr-autocomplete-backdrop',
+  'tr-layer-backdrop tr-autocomplete-backdrop',
 );

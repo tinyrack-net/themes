@@ -37,7 +37,7 @@ export function AppShellPreview({
     <AppShell.Root
       {...stateProps}
       breakpoint={breakpoint}
-      className="h-80 min-h-0 w-full max-w-[46rem] overflow-hidden rounded-tinyrack-lg border border-tinyrack-border"
+      className="h-80 min-h-0 w-full max-w-[390px] overflow-hidden rounded-tinyrack-lg border border-tinyrack-border"
       layout={layout}
     >
       <AppShell.Header className="flex items-center gap-3 border-b border-tinyrack-border p-3">
@@ -61,6 +61,26 @@ export function AppShellPreview({
         Operational content
       </AppShell.Main>
     </AppShell.Root>
+  );
+}
+
+export function AppShellLayoutMatrix() {
+  const combinations = [
+    ['sm', 'header-first'],
+    ['sm', 'sidebar-first'],
+    ['lg', 'header-first'],
+    ['lg', 'sidebar-first'],
+  ] as const;
+
+  return (
+    <div className="grid min-w-0 gap-5 xl:grid-cols-2">
+      {combinations.map(([breakpoint, layout]) => (
+        <section className="grid min-w-0 gap-2" key={`${breakpoint}-${layout}`}>
+          <strong>{`${breakpoint} · ${layout}`}</strong>
+          <AppShellPreview breakpoint={breakpoint} layout={layout} />
+        </section>
+      ))}
+    </div>
   );
 }
 

@@ -14,11 +14,16 @@ import {
 } from '../../playground/demo.js';
 
 type StoryArgs = {
+  autoHighlight: boolean | 'always';
   disabled: boolean;
+  disabledItem: boolean;
+  mode: 'list' | 'both' | 'inline' | 'none';
   open: boolean;
+  openOnInputClick: boolean;
   placeholder: string;
   readOnly: boolean;
   required: boolean;
+  submitOnItemClick: boolean;
   value: string;
 };
 
@@ -37,14 +42,19 @@ const autocompleteItems = ['Rack Alpha', 'Rack Beta', 'Rack Gamma', 'Staging rac
 export function AutocompletePreview({
   defaultOpen,
   defaultValue,
+  autoHighlight,
   disabled,
+  disabledItem,
   label = 'Rack',
+  mode,
   onOpenChange,
   onValueChange,
   open,
+  openOnInputClick,
   placeholder,
   readOnly,
   required,
+  submitOnItemClick,
   value,
 }: AutocompletePreviewProps) {
   const inputId = useId();
@@ -55,13 +65,17 @@ export function AutocompletePreview({
     <Autocomplete.Root
       {...openProps}
       {...valueProps}
+      autoHighlight={autoHighlight}
       disabled={disabled}
       items={autocompleteItems}
+      mode={mode}
       name="rack-search"
       onOpenChange={onOpenChange}
+      openOnInputClick={openOnInputClick}
       onValueChange={onValueChange}
       readOnly={readOnly}
       required={required}
+      submitOnItemClick={submitOnItemClick}
     >
       <label className="grid w-full max-w-md gap-2" htmlFor={inputId}>
         {label}
@@ -90,7 +104,9 @@ export function AutocompletePreview({
                 <Autocomplete.GroupLabel>Production</Autocomplete.GroupLabel>
                 <Autocomplete.Item value="Rack Alpha">Rack Alpha</Autocomplete.Item>
                 <Autocomplete.Item value="Rack Beta">Rack Beta</Autocomplete.Item>
-                <Autocomplete.Item value="Rack Gamma">Rack Gamma</Autocomplete.Item>
+                <Autocomplete.Item disabled={disabledItem} value="Rack Gamma">
+                  Rack Gamma
+                </Autocomplete.Item>
               </Autocomplete.Group>
               <Autocomplete.Separator />
               <Autocomplete.Group>
@@ -111,26 +127,75 @@ export function AutocompleteStateComparison() {
     <div className="grid gap-5 sm:grid-cols-2">
       <AutocompletePreview
         defaultValue="Rack Alpha"
+        autoHighlight={false}
         disabled={false}
+        disabledItem={false}
+        mode="list"
+        openOnInputClick={false}
         placeholder="Search racks"
         readOnly={false}
         required={false}
+        submitOnItemClick={false}
       />
       <AutocompletePreview
         defaultValue="Rack Beta"
+        autoHighlight={false}
         disabled
+        disabledItem={false}
         label="Disabled"
+        mode="list"
+        openOnInputClick={false}
         placeholder="Search racks"
         readOnly={false}
         required={false}
+        submitOnItemClick={false}
       />
       <AutocompletePreview
         defaultValue="Rack Gamma"
+        autoHighlight={false}
         disabled={false}
+        disabledItem={false}
         label="Read only"
+        mode="list"
+        openOnInputClick={false}
         placeholder="Search racks"
         readOnly
         required={false}
+        submitOnItemClick={false}
+      />
+    </div>
+  );
+}
+
+export function AutocompleteBehaviorComparison() {
+  return (
+    <div className="grid min-w-0 gap-5 sm:grid-cols-2">
+      <AutocompletePreview
+        autoHighlight={false}
+        defaultValue="Edge rack"
+        disabled={false}
+        disabledItem={false}
+        label="Free-form value"
+        mode="both"
+        openOnInputClick
+        placeholder="Known or custom rack"
+        readOnly={false}
+        required={false}
+        submitOnItemClick={false}
+      />
+      <AutocompletePreview
+        autoHighlight="always"
+        defaultOpen
+        defaultValue="No matching region"
+        disabled={false}
+        disabledItem
+        label="Empty and disabled-item flow"
+        mode="list"
+        openOnInputClick
+        placeholder="Search racks"
+        readOnly={false}
+        required={false}
+        submitOnItemClick
       />
     </div>
   );
@@ -154,11 +219,16 @@ export function AutocompleteValidationPreview() {
       <Field.Root invalid={invalid}>
         <AutocompletePreview
           disabled={false}
+          autoHighlight={false}
+          disabledItem={false}
           label="Rack search"
+          mode="list"
           onValueChange={setValue}
+          openOnInputClick={false}
           placeholder="Type a rack name"
           readOnly={false}
           required
+          submitOnItemClick={false}
           value={value}
         />
         {invalid ? <Field.Error match>Enter a rack name.</Field.Error> : null}
@@ -176,19 +246,29 @@ const meta = {
   excludeStories: /.*Preview$/,
   parameters: { layout: 'centered' },
   args: {
+    autoHighlight: false,
     disabled: false,
+    disabledItem: false,
+    mode: 'list',
     open: false,
+    openOnInputClick: false,
     placeholder: 'Search racks',
     readOnly: false,
     required: false,
+    submitOnItemClick: false,
     value: '',
   },
   argTypes: {
+    autoHighlight: { control: 'select', options: [false, true, 'always'] },
     disabled: { control: 'boolean' },
+    disabledItem: { control: 'boolean' },
+    mode: { control: 'select', options: ['list', 'both', 'inline', 'none'] },
     open: { control: 'boolean' },
+    openOnInputClick: { control: 'boolean' },
     placeholder: { control: 'text' },
     readOnly: { control: 'boolean' },
     required: { control: 'boolean' },
+    submitOnItemClick: { control: 'boolean' },
     value: { control: 'text' },
   },
   render: function Render(args) {

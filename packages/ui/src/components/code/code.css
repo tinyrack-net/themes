@@ -1,5 +1,5 @@
 .tr-code {
-  --_tr-code-padding-y: 0.0625rem;
+  --_tr-code-padding-y: var(--tinyrack-space-3xs);
   background-color: var(--tr-code-background, var(--tinyrack-surface-muted));
   border: var(--tinyrack-border-width-default) solid
     var(--tr-code-border, var(--tinyrack-border));

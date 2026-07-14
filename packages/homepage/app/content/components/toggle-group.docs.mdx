@@ -1,7 +1,5 @@
 import { ComponentPlayground } from '../../playground/playground.js';
 
-import { Toggle } from '@tinyrack/ui/components/toggle';
-import { ToggleGroup } from '@tinyrack/ui/components/toggle-group';
 import { ComponentExampleTabs } from '../shared/component-example-tabs.js';
 import { ComponentInstall } from '../shared/component-install.js';
 import * as Stories from './toggle-group.demo.js';
@@ -13,13 +11,13 @@ Coordinates mutually exclusive or multiple toggle buttons. Like Toggle, it does 
 
 ## Contract
 
-| Axis | Values | Default |
-| --- | --- | --- |
-| selection | single or `multiple` | single |
-| state | controlled `value` array or uncontrolled `defaultValue` | `[]` |
-| orientation | horizontal or vertical | horizontal |
-| keyboard | looping or bounded arrow focus | looping |
-| availability | group or item disabled | enabled |
+| Axis | Contract |
+| --- | --- |
+| selection | single by default; opt into `multiple` |
+| state | controlled `value` or uncontrolled `defaultValue`; both use string arrays and default to `[]` |
+| orientation | horizontal by default; vertical when requested |
+| keyboard | arrow focus loops by default; set `loopFocus={false}` for bounded focus |
+| availability | enabled by default; disable the group or an individual item |
 
 ## Install
 
@@ -33,7 +31,7 @@ Coordinates mutually exclusive or multiple toggle buttons. Like Toggle, it does 
 
 <ComponentExampleTabs
   id="toggle-group-basic"
-  title="Controlled single selection"
+  title="Uncontrolled single selection"
   preview={<Stories.ToggleGroupInteractiveExample />}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import { Toggle } from '@tinyrack/ui/components/toggle';
@@ -46,8 +44,8 @@ export function AlignmentExample() {
     <div className="grid justify-items-start gap-3">
       <ToggleGroup
         aria-label="Text alignment"
+        defaultValue={['start']}
         onValueChange={setValue}
-        value={value}
       >
         <Toggle value="start">Start</Toggle>
         <Toggle value="center">Center</Toggle>
@@ -96,17 +94,47 @@ export function FormattingExample() {
 
 <ComponentExampleTabs
   id="toggle-group-orientation"
-  title="Vertical, bounded, and disabled"
-  preview={<ToggleGroup aria-label="Panel placement" loopFocus={false} orientation="vertical"><Toggle value="top">Top</Toggle><Toggle value="middle">Middle</Toggle><Toggle disabled value="bottom">Bottom unavailable</Toggle></ToggleGroup>}
-  sources={[{ label: 'React', language: 'tsx', code: String.raw`<ToggleGroup
-  aria-label="Panel placement"
-  loopFocus={false}
-  orientation="vertical"
->
-  <Toggle value="top">Top</Toggle>
-  <Toggle value="middle">Middle</Toggle>
-  <Toggle disabled value="bottom">Bottom unavailable</Toggle>
-</ToggleGroup>` }]}
+  title="Vertical focus and disabled scopes"
+  preview={<Stories.ToggleGroupAvailabilityExample />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`import { Toggle } from '@tinyrack/ui/components/toggle';
+import { ToggleGroup } from '@tinyrack/ui/components/toggle-group';
+
+export function AvailabilityExample() {
+  return (
+    <div className="grid w-full gap-6 sm:grid-cols-2">
+      <div className="grid justify-items-start gap-3">
+        <p className="text-tinyrack-sm font-semibold">Group disabled</p>
+        <ToggleGroup
+          aria-label="Unavailable panel placement"
+          defaultValue={['top']}
+          disabled
+          loopFocus={false}
+          orientation="vertical"
+        >
+          <Toggle value="top">Top</Toggle>
+          <Toggle value="middle">Middle</Toggle>
+          <Toggle value="bottom">Bottom</Toggle>
+        </ToggleGroup>
+      </div>
+
+      <div className="grid justify-items-start gap-3">
+        <p className="text-tinyrack-sm font-semibold">One item disabled</p>
+        <ToggleGroup
+          aria-label="Available panel placement"
+          defaultValue={['top']}
+          loopFocus={false}
+          orientation="vertical"
+        >
+          <Toggle value="top">Top</Toggle>
+          <Toggle value="middle">Middle</Toggle>
+          <Toggle disabled value="bottom">
+            Bottom unavailable
+          </Toggle>
+        </ToggleGroup>
+      </div>
+    </div>
+  );
+}` }]}
 />
 
 ## API

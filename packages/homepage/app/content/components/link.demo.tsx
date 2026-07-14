@@ -12,6 +12,7 @@ import { definePlayground } from '../../playground/demo.js';
 type LinkStoryArgs = {
   children: string;
   destination: 'download' | 'external' | 'internal';
+  disabled: boolean;
   underline: LinkUnderline;
   variant: LinkVariant;
 };
@@ -23,8 +24,9 @@ const meta = {
   args: {
     children: 'Open Tinyrack',
     destination: 'external',
+    disabled: false,
     underline: 'always',
-    variant: 'primary',
+    variant: 'default',
   },
   argTypes: {
     children: { control: 'text' },
@@ -32,10 +34,11 @@ const meta = {
       control: 'select',
       options: ['internal', 'external', 'download'],
     },
+    disabled: { control: 'boolean' },
     underline: { control: 'select', options: ['always', 'hover', 'none'] },
     variant: {
       control: 'select',
-      options: ['default', 'muted', 'primary', 'danger'],
+      options: ['default', 'muted', 'danger'],
     },
   },
   render: ({ children, destination, ...props }) => (

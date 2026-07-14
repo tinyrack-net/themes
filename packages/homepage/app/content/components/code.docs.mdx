@@ -51,4 +51,15 @@ Inline code tokens that stay readable inside prose, lists, and dense metadata.
 
 ## API
 
-The default font size is inherited from surrounding prose. `--tr-code-font-size` can override it; long and multiline fragments use cloned line boxes and safe wrapping.
+The default font size is inherited from surrounding prose. Long and multiline fragments use cloned line boxes and safe wrapping.
+
+| CSS token | Default | Purpose |
+| --- | --- | --- |
+| `--tr-code-background` | `--tinyrack-surface-muted` | Inline code surface |
+| `--tr-code-border` | `--tinyrack-border` | Decorative hairline |
+| `--tr-code-color` | `--tinyrack-text` | Code text |
+| `--tr-code-font-size` | `inherit` | Surrounding text size |
+| `--tr-code-line-height` | `--tinyrack-leading-sm` | Multiline rhythm |
+| `--tr-code-radius` | `--tinyrack-radius-sm` | Corner radius |
+| `--tr-code-padding-x` | `--tinyrack-space-xs` | Inline padding |
+| `--tr-code-padding-y` | `--tinyrack-space-3xs` | Block padding |

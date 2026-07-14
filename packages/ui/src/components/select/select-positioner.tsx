@@ -20,7 +20,7 @@ export function SelectPositioner({
       {...positionerProps}
       alignItemWithTrigger={alignItemWithTrigger}
       className={mergeComponentClassName(
-        'tr-select-positioner',
+        'tr-layer-positioner tr-select-positioner',
         className as ComponentClassName,
       )}
       sideOffset={sideOffset}

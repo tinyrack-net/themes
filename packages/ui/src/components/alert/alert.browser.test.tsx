@@ -1,9 +1,11 @@
+import '../../core/core.css';
 import './alert.css';
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { Alert, AlertRoot } from './index.js';
 
 test('assembles all alert parts in index.tsx', async () => {
+  document.documentElement.dataset['theme'] = 'tinyrack-light';
   expect(Alert.Root).toBe(AlertRoot);
   await render(
     <Alert.Root data-testid="alert" variant="warning">
@@ -17,7 +19,12 @@ test('assembles all alert parts in index.tsx', async () => {
 
   const root = document.querySelector<HTMLElement>('[data-testid="alert"]');
   expect(root?.dataset['variant']).toBe('warning');
-  expect(root?.querySelector('.tr-alert-title')?.textContent).toBe('Attention');
+  const title = root?.querySelector<HTMLElement>('.tr-alert-title');
+  const actions = root?.querySelector<HTMLElement>('.tr-alert-actions');
+  expect(title?.textContent).toBe('Attention');
+  expect(getComputedStyle(title as HTMLElement).fontWeight).not.toBe('400');
+  expect(getComputedStyle(actions as HTMLElement).display).toBe('flex');
+  expect(getComputedStyle(actions as HTMLElement).flexWrap).toBe('wrap');
 });
 
 test('forwards an application-selected announcement role', async () => {

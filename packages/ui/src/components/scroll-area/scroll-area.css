@@ -1,7 +1,7 @@
 @layer components {
   .tr-scroll-area {
     background: var(--tr-scroll-area-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-lg);
     box-sizing: border-box;
     color: var(--tr-scroll-area-color, var(--tinyrack-text));
@@ -48,7 +48,10 @@
   }
 
   .tr-scroll-area-thumb {
-    background: var(--tr-scroll-area-indicator-background, var(--tinyrack-primary));
+    background: var(
+      --tr-scroll-area-indicator-background,
+      var(--tinyrack-control-border)
+    );
     border-radius: var(--tinyrack-radius-full);
     flex: 1;
   }
@@ -57,13 +60,12 @@
     background: var(--tinyrack-surface-muted);
   }
 
-  .tr-scroll-area :focus-visible,
-  .tr-scroll-area:focus-visible {
+  .tr-scroll-area:focus-visible,
+  .tr-scroll-area-viewport:focus-visible {
     outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
     outline-offset: var(--tinyrack-focus-offset);
   }
 
-  .tr-scroll-area :disabled,
   .tr-scroll-area[data-disabled] {
     cursor: not-allowed;
     opacity: var(--tinyrack-opacity-disabled);

@@ -30,7 +30,7 @@ Accepts free-form text while filtering and announcing suggestions from a known c
 <ComponentExampleTabs
   id="autocomplete-basic"
   title="Rack search"
-  preview={<Stories.AutocompletePreview defaultValue="" disabled={false} placeholder="Search racks" readOnly={false} required={false} />}
+  preview={<Stories.AutocompletePreview autoHighlight={false} defaultValue="" disabled={false} disabledItem={false} mode="list" openOnInputClick={false} placeholder="Search racks" readOnly={false} required={false} submitOnItemClick={false} />}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { ChevronDown, Search, X } from 'lucide-react';
 
 const racks = ['Rack Alpha', 'Rack Beta', 'Rack Gamma', 'Staging rack'];
@@ -119,6 +119,48 @@ function RackAutocompleteForm() {
     </Form>
   );
 }` }]}
+/>
+
+<ComponentExampleTabs
+  id="autocomplete-behaviors"
+  title="Free-form, empty, and disabled-item behavior"
+  description="The first input keeps a value outside the collection. The open second input shows Empty; clear or edit it to inspect the permanently disabled Rack Gamma option."
+  preview={<Stories.AutocompleteBehaviorComparison />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`<div className="grid gap-5 sm:grid-cols-2">
+  <Autocomplete.Root
+    defaultValue="Edge rack"
+    items={['Rack Alpha', 'Rack Beta', 'Rack Gamma']}
+    mode="both"
+    openOnInputClick
+  >
+    <Autocomplete.Input aria-label="Free-form value" />
+    <Autocomplete.Portal><Autocomplete.Positioner><Autocomplete.Popup>
+      <Autocomplete.Status />
+      <Autocomplete.List>
+        <Autocomplete.Item value="Rack Alpha">Rack Alpha</Autocomplete.Item>
+        <Autocomplete.Item value="Rack Beta">Rack Beta</Autocomplete.Item>
+        <Autocomplete.Empty>No matching racks</Autocomplete.Empty>
+      </Autocomplete.List>
+    </Autocomplete.Popup></Autocomplete.Positioner></Autocomplete.Portal>
+  </Autocomplete.Root>
+  <Autocomplete.Root
+    autoHighlight="always"
+    defaultOpen
+    defaultValue="No matching region"
+    items={['Rack Alpha', 'Rack Gamma']}
+    submitOnItemClick
+  >
+    <Autocomplete.Input aria-label="Empty and disabled-item flow" />
+    <Autocomplete.Portal><Autocomplete.Positioner><Autocomplete.Popup>
+      <Autocomplete.Status />
+      <Autocomplete.List>
+        <Autocomplete.Item value="Rack Alpha">Rack Alpha</Autocomplete.Item>
+        <Autocomplete.Item disabled value="Rack Gamma">Rack Gamma</Autocomplete.Item>
+        <Autocomplete.Empty>No matching racks</Autocomplete.Empty>
+      </Autocomplete.List>
+    </Autocomplete.Popup></Autocomplete.Positioner></Autocomplete.Portal>
+  </Autocomplete.Root>
+</div>` }]}
 />
 
 ## API

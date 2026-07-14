@@ -82,6 +82,42 @@ A binary or mixed selection control with an associated label and native form val
 }` }]}
 />
 
+<ComponentExampleTabs
+  id="checkbox-form-values"
+  title="External form and explicit off value"
+  description="The checkbox is rendered outside its owner form. `value` and `uncheckedValue` make both on and off states explicit in FormData."
+  preview={<Stories.CheckboxFormValuesPreview />}
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
+import { Button } from '@tinyrack/ui/components/button';
+import { Checkbox } from '@tinyrack/ui/components/checkbox';
+import { Form } from '@tinyrack/ui/components/form';
+
+export function MonitoringSetting() {
+  const [result, setResult] = useState('');
+
+  return <>
+    <Form id="monitoring-form" onSubmit={(event) => {
+      event.preventDefault();
+      setResult(String(new FormData(event.currentTarget).get('monitoring')));
+    }}>
+      <Button type="submit">Read form value</Button>
+    </Form>
+    <label>
+      <Checkbox.Root
+        form="monitoring-form"
+        name="monitoring"
+        uncheckedValue="disabled"
+        value="enabled"
+      >
+        <Checkbox.Indicator aria-hidden="true">✓</Checkbox.Indicator>
+      </Checkbox.Root>
+      Monitoring
+    </label>
+    <output aria-live="polite">{result}</output>
+  </>;
+}` }]}
+/>
+
 ## API
 
 `Root`, `Indicator`, their prop types, and Base UI state types are exported from `@tinyrack/ui/components/checkbox`; CSS remains opt-in.

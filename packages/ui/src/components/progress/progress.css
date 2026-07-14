@@ -2,10 +2,16 @@
   .tr-progress {
     --_tr-progress-fill: var(--tinyrack-text-muted);
     --_tr-progress-height: var(--tinyrack-space-sm);
+    --_tr-progress-duration: var(--tinyrack-duration-normal);
+    --_tr-progress-easing: var(--tinyrack-ease-out);
+    --_tr-progress-indeterminate-duration: var(--tinyrack-duration-loading);
+    --_tr-progress-indeterminate-easing: var(--tinyrack-ease-linear);
+    --_tr-progress-indeterminate-width: calc(100% * 2 / 5);
     color: var(--tinyrack-text);
     display: grid;
     font-family: var(--tinyrack-font-body);
     gap: var(--tinyrack-space-xs);
+    grid-template-columns: minmax(0, 1fr) auto;
     width: 100%;
   }
 
@@ -39,19 +45,29 @@
     height: var(--tr-progress-height, var(--_tr-progress-height));
     overflow: hidden;
     width: 100%;
+    grid-column: 1 / -1;
   }
 
   .tr-progress-indicator {
     background-color: var(--tr-progress-fill, var(--_tr-progress-fill));
     border-radius: inherit;
     height: 100%;
-    transition: width var(--tinyrack-duration-normal) var(--tinyrack-ease-out);
+    transition: width var(--tr-progress-duration, var(--_tr-progress-duration))
+      var(--tr-progress-easing, var(--_tr-progress-easing));
   }
 
   .tr-progress-indicator[data-indeterminate] {
-    width: var(--tr-progress-indeterminate-width, 40%);
-    animation: tr-progress-indeterminate var(--tinyrack-duration-loading)
-      var(--tinyrack-ease-linear) infinite;
+    width: var(
+      --tr-progress-indeterminate-width,
+      var(--_tr-progress-indeterminate-width)
+    );
+    animation: tr-progress-indeterminate
+      var(
+        --tr-progress-indeterminate-duration,
+        var(--_tr-progress-indeterminate-duration)
+      )
+      var(--tr-progress-indeterminate-easing, var(--_tr-progress-indeterminate-easing))
+      infinite;
   }
 
   .tr-progress-label,
@@ -68,6 +84,7 @@
   .tr-progress-value {
     color: var(--tinyrack-text-muted);
     font-variant-numeric: tabular-nums;
+    text-align: end;
   }
 
   @media (prefers-reduced-motion: reduce) {

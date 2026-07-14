@@ -48,17 +48,17 @@ The single option primitive for a `RadioGroup`; its indicator reflects the group
   title="Selection and availability"
   preview={<Stories.RadioStateComparison />}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`<div className="grid gap-4">
-  <RadioGroup defaultValue="selected" name="radio-states">
-    <label htmlFor="radio-selected"><Radio.Root id="radio-selected" value="selected"><Radio.Indicator aria-hidden="true" /></Radio.Root> Selected</label>
-    <label htmlFor="radio-available"><Radio.Root id="radio-available" value="available"><Radio.Indicator aria-hidden="true" /></Radio.Root> Available</label>
-    <label htmlFor="radio-disabled"><Radio.Root disabled id="radio-disabled" value="disabled"><Radio.Indicator aria-hidden="true" /></Radio.Root> Disabled</label>
+  <RadioGroup defaultValue="disabled" name="radio-states">
+    <label htmlFor="radio-selected"><Radio.Root id="radio-selected" value="selected"><Radio.Indicator aria-hidden="true" /></Radio.Root> Available unselected</label>
+    <label htmlFor="radio-available"><Radio.Root id="radio-available" value="available"><Radio.Indicator aria-hidden="true" /></Radio.Root> Available alternate</label>
+    <label htmlFor="radio-disabled"><Radio.Root disabled id="radio-disabled" value="disabled"><Radio.Indicator aria-hidden="true" /></Radio.Root> Disabled selected</label>
   </RadioGroup>
-  <RadioGroup defaultValue="readonly" name="readonly-radio" readOnly>
-    <label htmlFor="radio-readonly"><Radio.Root id="radio-readonly" value="readonly"><Radio.Indicator aria-hidden="true" /></Radio.Root> Read only</label>
+  <RadioGroup name="readonly-radio" readOnly value="">
+    <label htmlFor="radio-readonly"><Radio.Root id="radio-readonly" value="readonly"><Radio.Indicator aria-hidden="true" /></Radio.Root> Read-only unselected</label>
   </RadioGroup>
 </div>` }]}
 />
 
 ## API
 
-`Root`, `Indicator`, and their prop and state types are exported from `@tinyrack/ui/components/radio`. Use them only inside `RadioGroup`.
+`Root`, `Indicator`, and their prop and state types are exported from `@tinyrack/ui/components/radio`. Use them only inside `RadioGroup`. Keep the complete label row at least 24px tall so the visible text enlarges the pointer target beyond the radio glyph.

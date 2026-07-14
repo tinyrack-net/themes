@@ -1,6 +1,6 @@
 @layer components {
   .tr-number-field {
-    --_tr-number-field-input-width: 8rem;
+    --_tr-number-field-input-width: var(--tinyrack-measure-sm);
     box-sizing: border-box;
     color: var(--tr-number-field-color, var(--tinyrack-text));
     display: grid;
@@ -12,7 +12,7 @@
   .tr-number-field-decrement {
     align-items: center;
     background: var(--tr-number-field-control-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-md);
     color: var(--tinyrack-text);
     cursor: pointer;
@@ -25,12 +25,20 @@
 
   .tr-number-field-input {
     background: var(--tr-number-field-input-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-md);
     color: var(--tinyrack-text);
     font: inherit;
     min-height: var(--tinyrack-control-height-md);
     padding-inline: var(--tinyrack-control-padding-inline-md);
+  }
+
+  .tr-number-field-input:read-only {
+    background: var(--tinyrack-surface-muted);
+  }
+
+  .tr-number-field-input:is([aria-invalid="true"], [data-invalid], :invalid) {
+    border-color: var(--tinyrack-danger-border);
   }
 
   .tr-number-field-group {
@@ -61,8 +69,11 @@
     outline-offset: var(--tinyrack-focus-offset);
   }
 
-  .tr-number-field :disabled,
   .tr-number-field[data-disabled] {
+    cursor: not-allowed;
+  }
+
+  .tr-number-field :disabled {
     cursor: not-allowed;
     opacity: var(--tinyrack-opacity-disabled);
   }

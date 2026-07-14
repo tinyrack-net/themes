@@ -3,7 +3,7 @@
   width: 100%;
   max-width: 100%;
   overflow-x: auto;
-  border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+  border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
   border-radius: var(--tr-table-radius, var(--tinyrack-radius-md));
   background-color: var(--tinyrack-surface);
   color: var(--tinyrack-text);
@@ -16,8 +16,12 @@
 
 .tr-table {
   --_tr-table-cell-padding-x: var(--tinyrack-space-lg);
-  --_tr-table-cell-padding-y: 0.625rem;
-  --_tr-table-cell-line-height: 1.375rem;
+  --_tr-table-cell-padding-y: var(--tinyrack-control-gap-lg);
+  --_tr-table-cell-line-height: calc(
+    var(--tinyrack-control-line-height-md) +
+    var(--tinyrack-space-3xs) *
+    2
+  );
   width: 100%;
   min-width: 100%;
   margin: 0;
@@ -31,20 +35,27 @@
 
 .tr-table[data-density="compact"] {
   --_tr-table-cell-padding-x: var(--tinyrack-space-md);
-  --_tr-table-cell-padding-y: 0.375rem;
-  --_tr-table-cell-line-height: 1.25rem;
+  --_tr-table-cell-padding-y: var(--tinyrack-control-gap-sm);
+  --_tr-table-cell-line-height: var(--tinyrack-control-line-height-md);
 }
 
 .tr-table[data-density="comfortable"] {
   --_tr-table-cell-padding-x: var(--tinyrack-space-lg);
-  --_tr-table-cell-padding-y: 0.625rem;
-  --_tr-table-cell-line-height: 1.375rem;
+  --_tr-table-cell-padding-y: var(--tinyrack-control-gap-lg);
+  --_tr-table-cell-line-height: calc(
+    var(--tinyrack-control-line-height-md) +
+    var(--tinyrack-space-3xs) *
+    2
+  );
 }
 
 .tr-table[data-density="spacious"] {
-  --_tr-table-cell-padding-x: 1.25rem;
-  --_tr-table-cell-padding-y: 0.875rem;
-  --_tr-table-cell-line-height: 1.5rem;
+  --_tr-table-cell-padding-x: var(--tinyrack-control-padding-inline-lg);
+  --_tr-table-cell-padding-y: calc(
+    var(--tinyrack-space-sm) +
+    var(--tinyrack-control-gap-sm)
+  );
+  --_tr-table-cell-line-height: var(--tinyrack-control-line-height-lg);
 }
 
 .tr-table thead {
@@ -93,12 +104,12 @@
     var(--tinyrack-ease-standard);
 }
 
-.tr-table tbody tr:hover {
-  background-color: var(--tr-table-row-hover, var(--tinyrack-surface-hover));
+.tr-table[data-striped="true"] tbody tr:where(:nth-child(even)) {
+  background-color: var(--tr-table-row-striped, var(--tinyrack-surface-muted));
 }
 
-.tr-table[data-striped="true"] tbody tr:nth-child(even) {
-  background-color: var(--tr-table-row-striped, var(--tinyrack-surface-muted));
+.tr-table tbody tr:hover {
+  background-color: var(--tr-table-row-hover, var(--tinyrack-surface-hover));
 }
 
 .tr-table tbody tr:last-child :where(th, td) {

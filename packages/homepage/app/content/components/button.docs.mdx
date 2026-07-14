@@ -101,7 +101,10 @@ export function DeployAction() {
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<div className="grid gap-5">
+      code: String.raw`import { Button } from '@tinyrack/ui/components/button';
+
+export function ButtonAppearanceMatrix() {
+  return <div className="grid gap-5">
   <div className="grid gap-2"><strong>Solid</strong><div className="flex flex-wrap gap-2">
     <Button appearance="solid" variant="secondary">Secondary</Button><Button appearance="solid" variant="primary">Primary</Button><Button appearance="solid" variant="danger">Danger</Button>
   </div>
@@ -114,7 +117,8 @@ export function DeployAction() {
     <Button appearance="ghost" variant="secondary">Secondary</Button><Button appearance="ghost" variant="primary">Primary</Button><Button appearance="ghost" variant="danger">Danger</Button>
   </div>
   </div>
-</div>`,
+</div>;
+}`,
     },
   ]}
 />
@@ -134,11 +138,15 @@ export function DeployAction() {
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<div className="flex flex-wrap items-center gap-3">
+      code: String.raw`import { Button } from '@tinyrack/ui/components/button';
+
+export function ButtonSizes() {
+  return <div className="flex flex-wrap items-center gap-3">
   <Button size="sm" variant="primary">Small</Button>
   <Button size="md" variant="primary">Medium</Button>
   <Button size="lg" variant="primary">Large</Button>
-</div>`,
+</div>;
+}`,
     },
   ]}
 />
@@ -159,11 +167,16 @@ export function DeployAction() {
     {
       label: 'React',
       language: 'tsx',
-      code: String.raw`<div className="flex flex-wrap items-center gap-3">
+      code: String.raw`import { Button } from '@tinyrack/ui/components/button';
+import { Spinner } from '@tinyrack/ui/components/spinner';
+
+export function ButtonStates() {
+  return <div className="flex flex-wrap items-center gap-3">
   <Button>Ready</Button><Button disabled>Unavailable</Button>
   <Button loading loadingLabel="Deploying changes" variant="primary">Deploying</Button>
   <Button appearance="outline" variant="danger"><Spinner decorative size="sm" /> Retry</Button>
-</div>`,
+</div>;
+}`,
     },
   ]}
 />

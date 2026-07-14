@@ -1,6 +1,18 @@
 @import "../button/button.css";
 
 @layer components {
+  .tr-copy-button-label-stack {
+    display: inline-grid;
+  }
+
+  .tr-copy-button-label-stack > span {
+    grid-area: 1 / 1;
+  }
+
+  .tr-copy-button-label-stack > span:not([data-copy-label-active]) {
+    visibility: hidden;
+  }
+
   .tr-copy-button-announcement {
     block-size: var(--tinyrack-border-width-default);
     clip-path: inset(50%);

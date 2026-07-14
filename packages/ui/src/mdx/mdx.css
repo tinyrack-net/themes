@@ -337,4 +337,53 @@
   .tr-mdx .tr-mdx-table.tr-mdx-table :where(th, td) {
     padding: var(--tinyrack-control-gap-lg) var(--tinyrack-space-md);
   }
+
+  .tr-mdx-table-container:has(.tr-mdx-table[data-contract-table]),
+  .tr-mdx
+    .tr-mdx-table-container.tr-mdx-table-container:has(
+      .tr-mdx-table[data-contract-table]
+    ) {
+    overflow: visible;
+  }
+
+  .tr-mdx-table[data-contract-table],
+  .tr-mdx .tr-mdx-table.tr-mdx-table[data-contract-table] {
+    display: block;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .tr-mdx-table[data-contract-table] thead {
+    position: absolute;
+    overflow: hidden;
+    width: var(--tinyrack-border-width-default);
+    height: var(--tinyrack-border-width-default);
+    margin: calc(var(--tinyrack-border-width-default) * -1);
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .tr-mdx-table[data-contract-table] tbody,
+  .tr-mdx-table[data-contract-table] tr,
+  .tr-mdx-table[data-contract-table] td {
+    display: grid;
+    min-width: 0;
+  }
+
+  .tr-mdx-table[data-contract-table] tbody,
+  .tr-mdx-table[data-contract-table] tr {
+    gap: 0;
+  }
+
+  .tr-mdx-table[data-contract-table] td {
+    grid-template-columns: minmax(var(--tinyrack-measure-xs), 2fr) minmax(0, 3fr);
+    gap: var(--tinyrack-space-sm);
+    overflow-wrap: anywhere;
+  }
+
+  .tr-mdx-table[data-contract-table] td::before {
+    color: var(--tinyrack-text-muted);
+    content: attr(data-contract-label);
+    font-weight: var(--tinyrack-weight-medium);
+  }
 }

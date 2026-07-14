@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type ComboboxPositionerProps = ComponentProps<typeof BaseCombobox.Positioner>;
 export const ComboboxPositioner = createComponentPart(
   BaseCombobox.Positioner,
-  'tr-combobox-positioner',
+  'tr-layer-positioner tr-combobox-positioner',
 );

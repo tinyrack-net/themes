@@ -1,8 +1,8 @@
 import { Button } from '@tinyrack/ui/components/button';
 import { Field } from '@tinyrack/ui/components/field';
-import { Form } from '@tinyrack/ui/components/form';
+import { Form, type FormActions } from '@tinyrack/ui/components/form';
 import { Input } from '@tinyrack/ui/components/input';
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
@@ -16,6 +16,7 @@ type StoryArgs = {
   label: string;
   required: boolean;
   submitLabel: string;
+  validationMode: 'onSubmit' | 'onBlur' | 'onChange';
   value: string;
 };
 
@@ -31,27 +32,33 @@ export function FormPreview({
   onValueChange,
   required,
   submitLabel,
+  validationMode,
   value,
 }: FormPreviewProps) {
   const inputId = useId();
+  const [submittedValue, setSubmittedValue] = useState('');
 
   return (
     <Form
       className="grid w-full max-w-80 min-w-0 gap-3"
-      onSubmit={(event) => event.preventDefault()}
+      onFormSubmit={(values) => setSubmittedValue(String(values['rack'] ?? ''))}
+      validationMode={validationMode}
     >
-      <label className="grid gap-2" htmlFor={inputId}>
-        {label}
-        <Input
+      <Field.Root name="rack">
+        <Field.Label>{label}</Field.Label>
+        <Field.Control
           defaultValue={value === undefined ? defaultValue : undefined}
           id={inputId}
-          name="rack"
           onChange={(event) => onValueChange?.(event.currentTarget.value)}
           required={required}
           value={value}
         />
-      </label>
+        <Field.Error match>Enter a rack name.</Field.Error>
+      </Field.Root>
       <Button type="submit">{submitLabel}</Button>
+      <output aria-live="polite">
+        {submittedValue ? `Submitted ${submittedValue}.` : ''}
+      </output>
     </Form>
   );
 }
@@ -180,6 +187,49 @@ export function FormServerErrorPreview() {
   );
 }
 
+export function FormActionsPreview() {
+  const actionsRef = useRef<FormActions>(null);
+  const [result, setResult] = useState('');
+
+  return (
+    <Form<{ rack: string; region: string }>
+      actionsRef={actionsRef}
+      className="grid w-full max-w-80 min-w-0 gap-3"
+      onFormSubmit={(values) =>
+        setResult(`Validated ${values.rack} in ${values.region}.`)
+      }
+      validationMode="onBlur"
+    >
+      <Field.Root name="rack">
+        <Field.Label>Rack name</Field.Label>
+        <Field.Control required />
+        <Field.Error match="valueMissing">Enter a rack name.</Field.Error>
+      </Field.Root>
+      <Field.Root name="region">
+        <Field.Label>Region</Field.Label>
+        <Field.Control required />
+        <Field.Error match="valueMissing">Enter a region.</Field.Error>
+      </Field.Root>
+      <div className="flex flex-wrap gap-2">
+        <Button onClick={() => actionsRef.current?.validate('rack')} type="button">
+          Validate rack
+        </Button>
+        <Button
+          onClick={() => actionsRef.current?.validate()}
+          type="button"
+          variant="secondary"
+        >
+          Validate all
+        </Button>
+        <Button type="submit" variant="primary">
+          Submit
+        </Button>
+      </div>
+      <output aria-live="polite">{result}</output>
+    </Form>
+  );
+}
+
 const meta = {
   title: 'Components/Form',
   excludeStories: /.*Preview$/,
@@ -188,12 +238,17 @@ const meta = {
     label: 'Rack name',
     required: true,
     submitLabel: 'Save',
+    validationMode: 'onSubmit',
     value: 'rack-alpha',
   },
   argTypes: {
     label: { control: 'text' },
     required: { control: 'boolean' },
     submitLabel: { control: 'text' },
+    validationMode: {
+      control: 'select',
+      options: ['onSubmit', 'onBlur', 'onChange'],
+    },
     value: { control: 'text' },
   },
   render: function Render(args) {

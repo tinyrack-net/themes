@@ -1,6 +1,8 @@
+@import "../../internal/layer-parts.css";
+
 @layer components {
   .tr-navigation-menu {
-    --_tr-navigation-menu-popup-max-width: 32rem;
+    --_tr-navigation-menu-popup-max-width: var(--tinyrack-overlay-width-md);
     box-sizing: border-box;
     color: var(--tr-navigation-menu-color, var(--tinyrack-text));
     font-family: var(--tinyrack-font-body);
@@ -10,7 +12,7 @@
   .tr-navigation-menu-trigger {
     align-items: center;
     background: var(--tr-navigation-menu-control-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-md);
     color: var(--tinyrack-text);
     cursor: pointer;
@@ -37,7 +39,7 @@
   .tr-navigation-menu-content,
   .tr-navigation-menu-popup {
     background: var(--tr-navigation-menu-popup-background, var(--tinyrack-surface));
-    border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
+    border: var(--tinyrack-border-width-default) solid var(--tinyrack-control-border);
     border-radius: var(--tinyrack-radius-lg);
     box-shadow: var(--tinyrack-shadow-overlay);
     color: var(--tinyrack-text);
@@ -95,6 +97,15 @@
   .tr-navigation-menu-link:hover,
   .tr-navigation-menu-trigger:hover:not(:disabled, [data-disabled]) {
     background: var(--tinyrack-surface-hover);
+  }
+
+  .tr-navigation-menu-trigger[aria-expanded="true"],
+  .tr-navigation-menu-trigger[data-popup-open],
+  .tr-navigation-menu-link[aria-current="page"],
+  .tr-navigation-menu-link[data-active] {
+    background: var(--tinyrack-surface-selected);
+    border-color: var(--tinyrack-primary);
+    color: var(--tinyrack-primary);
   }
 
   .tr-navigation-menu :focus-visible,

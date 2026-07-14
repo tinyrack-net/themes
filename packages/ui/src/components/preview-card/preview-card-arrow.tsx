@@ -7,5 +7,5 @@ import { createComponentPart } from '../../internal/component-part.js';
 export type PreviewCardArrowProps = ComponentProps<typeof BasePreviewCard.Arrow>;
 export const PreviewCardArrow = createComponentPart(
   BasePreviewCard.Arrow,
-  'tr-preview-card-arrow',
+  'tr-layer-arrow tr-preview-card-arrow',
 );

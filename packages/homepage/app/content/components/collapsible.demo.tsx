@@ -9,7 +9,12 @@ import {
   usePlaygroundArgs as useArgs,
 } from '../../playground/demo.js';
 
-type CollapsibleStoryArgs = { disabled: boolean; open: boolean; trigger: string };
+type CollapsibleStoryArgs = {
+  disabled: boolean;
+  lifecycle: 'unmount' | 'keepMounted' | 'hiddenUntilFound';
+  open: boolean;
+  trigger: string;
+};
 
 type CollapsiblePreviewProps = CollapsibleStoryArgs & {
   onOpenChange?: (open: boolean) => void;
@@ -17,6 +22,7 @@ type CollapsiblePreviewProps = CollapsibleStoryArgs & {
 
 export function CollapsiblePreview({
   disabled,
+  lifecycle,
   onOpenChange,
   open,
   trigger,
@@ -30,10 +36,16 @@ export function CollapsiblePreview({
         open={open}
       >
         <Collapsible.Trigger>{trigger}</Collapsible.Trigger>
-        <Collapsible.Panel>Retry and timeout controls.</Collapsible.Panel>
+        <Collapsible.Panel
+          hiddenUntilFound={lifecycle === 'hiddenUntilFound'}
+          keepMounted={lifecycle === 'keepMounted'}
+        >
+          Retry and timeout controls.
+        </Collapsible.Panel>
       </Collapsible.Root>
       <output aria-live="polite" className="text-tinyrack-sm text-tinyrack-text-muted">
         Details: {open ? 'shown' : 'hidden'}
+        {' · '}DOM: {open || lifecycle !== 'unmount' ? 'mounted' : 'unmounted'}
       </output>
     </div>
   );
@@ -45,6 +57,7 @@ export function CollapsibleInteractiveExample() {
   return (
     <CollapsiblePreview
       disabled={false}
+      lifecycle="hiddenUntilFound"
       onOpenChange={setOpen}
       open={open}
       trigger="Advanced settings"
@@ -56,9 +69,18 @@ const meta = {
   title: 'Components/Collapsible',
   excludeStories: /.*(?:Preview|Example)$/,
   parameters: { layout: 'centered' },
-  args: { disabled: false, open: false, trigger: 'Advanced settings' },
+  args: {
+    disabled: false,
+    lifecycle: 'unmount',
+    open: false,
+    trigger: 'Advanced settings',
+  },
   argTypes: {
     disabled: { control: 'boolean' },
+    lifecycle: {
+      control: 'select',
+      options: ['unmount', 'keepMounted', 'hiddenUntilFound'],
+    },
     open: { control: 'boolean' },
     trigger: { control: 'text' },
   },

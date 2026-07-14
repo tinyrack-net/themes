@@ -78,7 +78,6 @@
   }
 
   .tr-input-group .tr-input-group-input.tr-input {
-    appearance: none;
     background: transparent;
     block-size: var(--_tr-input-group-control-height);
     border: 0;
@@ -110,7 +109,6 @@
     );
 
     align-items: center;
-    appearance: none;
     background: transparent;
     block-size: var(--_tr-input-group-action-size);
     border: 0;
@@ -122,8 +120,10 @@
     display: inline-flex;
     flex: 0 0 var(--_tr-input-group-action-size);
     font: inherit;
+    inline-size: var(--_tr-input-group-action-size);
     justify-content: center;
     min-height: var(--_tr-input-group-action-size);
+    min-width: 0;
     padding: 0;
     transition:
       background-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard),

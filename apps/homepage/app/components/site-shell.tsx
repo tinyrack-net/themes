@@ -1,8 +1,10 @@
 'use client';
 
+import { Progress } from '@tinyrack/ui/components/progress';
+import { Spinner } from '@tinyrack/ui/components/spinner';
 import { MenuIcon, MoonIcon, SearchIcon, SunIcon, XIcon } from 'lucide-react';
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router';
+import { Link, NavLink, useLocation, useNavigation } from 'react-router';
 import { componentDocsManifest } from '../content/shared/component-docs-manifest.js';
 
 const foundationLinks = [
@@ -32,19 +34,22 @@ function NavigationLink({
   currentPathname,
   label,
   onNavigate,
+  pendingPathname,
   to,
 }: {
   currentPathname: string;
   label: string;
   onNavigate: () => void;
+  pendingPathname: string | undefined;
   to: string;
 }) {
   const isActive = currentPathname === to;
+  const isPending = !isActive && pendingPathname === to;
 
   return (
     <Link
       aria-current={isActive ? 'page' : undefined}
-      className={`block border-l-2 px-3 py-1.5 text-tinyrack-sm no-underline transition-colors ${
+      className={`flex items-center justify-between gap-2 border-l-2 px-3 py-1.5 text-tinyrack-sm no-underline transition-colors ${
         isActive
           ? 'border-tinyrack-primary bg-tinyrack-surface-hover text-tinyrack-text'
           : 'border-transparent text-tinyrack-text-muted hover:bg-tinyrack-surface-hover hover:text-tinyrack-text'
@@ -52,7 +57,8 @@ function NavigationLink({
       onClick={onNavigate}
       to={to}
     >
-      {label}
+      <span className="min-w-0">{label}</span>
+      {isPending ? <Spinner decorative size="sm" variant="primary" /> : null}
     </Link>
   );
 }
@@ -60,9 +66,11 @@ function NavigationLink({
 function SiteNavigation({
   currentPathname,
   onNavigate,
+  pendingPathname,
 }: {
   currentPathname: string;
   onNavigate: () => void;
+  pendingPathname: string | undefined;
 }) {
   const [query, setQuery] = useState('');
   const componentLinks = useMemo(() => {
@@ -99,6 +107,7 @@ function SiteNavigation({
           currentPathname={currentPathname}
           label="Tinyrack UI"
           onNavigate={onNavigate}
+          pendingPathname={pendingPathname}
           to="/"
         />
       </section>
@@ -111,6 +120,7 @@ function SiteNavigation({
             currentPathname={currentPathname}
             key={link.to}
             onNavigate={onNavigate}
+            pendingPathname={pendingPathname}
             {...link}
           />
         ))}
@@ -126,6 +136,7 @@ function SiteNavigation({
               key={entry.id}
               label={entry.title}
               onNavigate={onNavigate}
+              pendingPathname={pendingPathname}
               to={`/components/${entry.id}`}
             />
           ))
@@ -144,6 +155,7 @@ function SiteNavigation({
             currentPathname={currentPathname}
             key={link.to}
             onNavigate={onNavigate}
+            pendingPathname={pendingPathname}
             {...link}
           />
         ))}
@@ -154,11 +166,17 @@ function SiteNavigation({
 
 export function SiteShell({ children }: { children: ReactNode }) {
   const location = useLocation();
+  const navigation = useNavigation();
   const [currentPathname, setCurrentPathname] = useState(() =>
     normalizePathname(location.pathname),
   );
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>('tinyrack-dark');
+  const pendingPathname = navigation.location
+    ? normalizePathname(navigation.location.pathname)
+    : undefined;
+  const isNavigating =
+    pendingPathname !== undefined && pendingPathname !== currentPathname;
 
   useEffect(() => {
     setTheme(
@@ -192,6 +210,14 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-tinyrack-surface text-tinyrack-text">
+      {isNavigating ? (
+        <Progress.Root className="tr-site-navigation-progress" size="sm" value={null}>
+          <Progress.Label className="sr-only">Loading page</Progress.Label>
+          <Progress.Track>
+            <Progress.Indicator />
+          </Progress.Track>
+        </Progress.Root>
+      ) : null}
       <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-tinyrack-border bg-tinyrack-surface px-4 lg:hidden">
         <NavLink className="font-semibold text-inherit no-underline" to="/">
           Tinyrack UI
@@ -250,10 +276,14 @@ export function SiteShell({ children }: { children: ReactNode }) {
         <SiteNavigation
           currentPathname={currentPathname}
           onNavigate={() => setMenuOpen(false)}
+          pendingPathname={pendingPathname}
         />
       </aside>
       <div className="min-w-0 lg:pl-72">
-        <div className="mx-auto w-full max-w-5xl min-w-0 p-4 sm:p-8 lg:p-10">
+        <div
+          aria-busy={isNavigating || undefined}
+          className="tr-site-content mx-auto w-full max-w-5xl min-w-0 p-4 sm:p-8 lg:p-10"
+        >
           {children}
         </div>
       </div>

@@ -81,6 +81,18 @@ async function closeServer(server: Server) {
   });
 }
 
+async function holdRouteModule(page: Page, assetPattern: RegExp) {
+  let releaseRequest = () => {};
+  const requestGate = new Promise<void>((resolveRequest) => {
+    releaseRequest = resolveRequest;
+  });
+  await page.route(assetPattern, async (route) => {
+    await requestGate;
+    await route.continue();
+  });
+  return releaseRequest;
+}
+
 async function setTheme(page: Page, theme: 'tinyrack-dark' | 'tinyrack-light') {
   await page.addInitScript((selectedTheme) => {
     localStorage.setItem('tinyrack-theme', selectedTheme);
@@ -343,6 +355,97 @@ describe('built React Router documentation', () => {
       await page.goForward();
       await page.getByRole('heading', { level: 1, name: 'Button' }).waitFor();
     } finally {
+      await page.close();
+    }
+  });
+
+  it('shows global and link-level feedback while a document route is loading', async () => {
+    const page = await browser.newPage({ viewport: { height: 900, width: 1280 } });
+    const buttonRouteModule = /\/assets\/button\.docs-[^/]+\.js$/;
+    const releaseRouteModule = await holdRouteModule(page, buttonRouteModule);
+    try {
+      await page.goto(origin);
+      const navigation = page.getByRole('navigation', { name: 'Documentation' });
+      const currentLink = navigation.getByRole('link', {
+        name: 'Tinyrack UI',
+        exact: true,
+      });
+      const pendingLink = navigation.getByRole('link', {
+        name: 'Button',
+        exact: true,
+      });
+      const routeModuleRequest = page.waitForRequest(buttonRouteModule);
+
+      await pendingLink.click();
+      await routeModuleRequest;
+
+      await page.getByRole('progressbar', { name: 'Loading page' }).waitFor();
+      await expect(
+        page.getByRole('heading', { level: 1, name: 'Tinyrack UI' }).isVisible(),
+      ).resolves.toBe(true);
+      await expect(currentLink.getAttribute('aria-current')).resolves.toBe('page');
+      await expect(pendingLink.getAttribute('aria-current')).resolves.toBeNull();
+      await expect(pendingLink.locator('.tr-spinner').count()).resolves.toBe(1);
+      await expect(
+        pendingLink.locator('.tr-spinner').getAttribute('aria-hidden'),
+      ).resolves.toBe('true');
+      await expect(
+        page.locator('.tr-site-content').getAttribute('aria-busy'),
+      ).resolves.toBe('true');
+
+      releaseRouteModule();
+      await page.getByRole('heading', { level: 1, name: 'Button' }).waitFor();
+
+      await expect(
+        page.getByRole('progressbar', { name: 'Loading page' }).count(),
+      ).resolves.toBe(0);
+      await expect(
+        page.locator('.tr-site-content').getAttribute('aria-busy'),
+      ).resolves.toBeNull();
+      await expect(pendingLink.locator('.tr-spinner').count()).resolves.toBe(0);
+      await expect(pendingLink.getAttribute('aria-current')).resolves.toBe('page');
+      await expect(currentLink.getAttribute('aria-current')).resolves.toBeNull();
+    } finally {
+      releaseRouteModule();
+      await page.close();
+    }
+  });
+
+  it('keeps global route feedback visible after the mobile navigation closes', async () => {
+    const viewport = { height: 844, width: 390 };
+    const page = await browser.newPage({ viewport });
+    const cardRouteModule = /\/assets\/card\.docs-[^/]+\.js$/;
+    const releaseRouteModule = await holdRouteModule(page, cardRouteModule);
+    try {
+      await page.goto(origin);
+      await page.getByRole('button', { name: 'Open navigation' }).click();
+      const navigation = page.getByRole('navigation', { name: 'Documentation' });
+      const routeModuleRequest = page.waitForRequest(cardRouteModule);
+
+      await navigation.getByRole('link', { name: 'Card', exact: true }).click();
+      await routeModuleRequest;
+
+      await expect(navigation.isVisible()).resolves.toBe(false);
+      const progress = page.getByRole('progressbar', { name: 'Loading page' });
+      await progress.waitFor();
+      const progressBox = await progress.boundingBox();
+      expect(progressBox).not.toBeNull();
+      expect(progressBox?.x).toBe(0);
+      expect(progressBox?.y).toBe(0);
+      expect(progressBox?.width).toBe(viewport.width);
+      expect(progressBox?.height).toBeGreaterThan(0);
+      await expect(
+        page.locator('.tr-site-content').getAttribute('aria-busy'),
+      ).resolves.toBe('true');
+
+      releaseRouteModule();
+      await page.getByRole('heading', { level: 1, name: 'Card' }).waitFor();
+      await expect(progress.count()).resolves.toBe(0);
+      await expect(
+        page.locator('.tr-site-content').getAttribute('aria-busy'),
+      ).resolves.toBeNull();
+    } finally {
+      releaseRouteModule();
       await page.close();
     }
   });

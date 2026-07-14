@@ -5,10 +5,17 @@ import { IconButton } from '@tinyrack/ui/components/icon-button';
 import { Input } from '@tinyrack/ui/components/input';
 import { Link as UiLink } from '@tinyrack/ui/components/link';
 import { Progress } from '@tinyrack/ui/components/progress';
+import { ScrollArea } from '@tinyrack/ui/components/scroll-area';
 import { Spinner } from '@tinyrack/ui/components/spinner';
 import { MenuIcon, MoonIcon, SearchIcon, SunIcon, XIcon } from 'lucide-react';
-import { type ReactNode, useEffect, useMemo, useState } from 'react';
-import { NavLink, Link as RouterLink, useLocation, useNavigation } from 'react-router';
+import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  NavLink,
+  Link as RouterLink,
+  useLocation,
+  useNavigation,
+  useNavigationType,
+} from 'react-router';
 import { componentDocsManifest } from '../content/shared/component-docs-manifest.js';
 
 const foundationLinks = [
@@ -32,6 +39,15 @@ type Theme = 'tinyrack-dark' | 'tinyrack-light';
 function normalizePathname(pathname: string) {
   const normalized = pathname.replace(/\/+$/, '');
   return normalized.length === 0 ? '/' : normalized;
+}
+
+function targetIdFromHash(hash: string) {
+  const id = hash.slice(1);
+  try {
+    return decodeURIComponent(id);
+  } catch {
+    return id;
+  }
 }
 
 function NavigationLink({
@@ -172,6 +188,9 @@ function SiteNavigation({
 export function SiteShell({ children }: { children: ReactNode }) {
   const location = useLocation();
   const navigation = useNavigation();
+  const navigationType = useNavigationType();
+  const mainScrollPositions = useRef(new Map<string, number>());
+  const mainScrollViewportRef = useRef<HTMLDivElement>(null);
   const [currentPathname, setCurrentPathname] = useState(() =>
     normalizePathname(location.pathname),
   );
@@ -205,6 +224,39 @@ export function SiteShell({ children }: { children: ReactNode }) {
     setMenuOpen(false);
   }, [location.pathname]);
 
+  useEffect(() => {
+    const viewport = mainScrollViewportRef.current;
+    if (viewport === null) return;
+    const locationKey = location.key;
+    if (location.hash.length > 1) {
+      document
+        .getElementById(targetIdFromHash(location.hash))
+        ?.scrollIntoView({ block: 'start' });
+    } else {
+      viewport.scrollTop =
+        navigationType === 'POP'
+          ? (mainScrollPositions.current.get(locationKey) ?? 0)
+          : 0;
+    }
+
+    return () => {
+      mainScrollPositions.current.set(locationKey, viewport.scrollTop);
+    };
+  }, [location.hash, location.key, navigationType]);
+
+  useEffect(() => {
+    const scrollToHash = () => {
+      if (window.location.hash.length <= 1) return;
+      requestAnimationFrame(() => {
+        document
+          .getElementById(targetIdFromHash(window.location.hash))
+          ?.scrollIntoView({ block: 'start' });
+      });
+    };
+    window.addEventListener('hashchange', scrollToHash);
+    return () => window.removeEventListener('hashchange', scrollToHash);
+  }, []);
+
   function applyTheme(nextTheme: Theme) {
     document.documentElement.dataset['theme'] = nextTheme;
     document.documentElement.style.colorScheme =
@@ -216,7 +268,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
   return (
     <AppShell.Root
       breakpoint="lg"
-      className="min-h-screen bg-tinyrack-surface text-tinyrack-text"
+      className="h-dvh min-h-0 overflow-hidden bg-tinyrack-surface text-tinyrack-text"
       layout="sidebar-first"
       onOpenChange={(open) => setMenuOpen(open)}
       open={menuOpen}
@@ -259,49 +311,69 @@ export function SiteShell({ children }: { children: ReactNode }) {
       </AppShell.Header>
       <AppShell.Sidebar
         aria-label="Documentation sidebar"
-        className="bg-tinyrack-surface p-4"
+        className="bg-tinyrack-surface"
       >
-        <div className="mb-4 flex items-center justify-between gap-3 lg:hidden">
-          <strong>Tinyrack UI</strong>
-          <AppShell.Close appearance="ghost" aria-label="Close navigation" size="lg">
-            <XIcon aria-hidden="true" />
-          </AppShell.Close>
+        <div className="p-4">
+          <div className="mb-4 flex items-center justify-between gap-3 lg:hidden">
+            <strong>Tinyrack UI</strong>
+            <AppShell.Close appearance="ghost" aria-label="Close navigation" size="lg">
+              <XIcon aria-hidden="true" />
+            </AppShell.Close>
+          </div>
+          <div className="mb-6 hidden items-center justify-between gap-3 lg:flex">
+            <UiLink
+              className="text-tinyrack-lg font-semibold text-inherit"
+              render={<NavLink to="/" />}
+              underline="none"
+            >
+              Tinyrack UI
+            </UiLink>
+            <IconButton
+              appearance="ghost"
+              aria-label={`Use ${theme === 'tinyrack-dark' ? 'light' : 'dark'} theme`}
+              onClick={() =>
+                applyTheme(
+                  theme === 'tinyrack-dark' ? 'tinyrack-light' : 'tinyrack-dark',
+                )
+              }
+            >
+              {theme === 'tinyrack-dark' ? (
+                <SunIcon aria-hidden="true" />
+              ) : (
+                <MoonIcon aria-hidden="true" />
+              )}
+            </IconButton>
+          </div>
+          <SiteNavigation
+            currentPathname={currentPathname}
+            onNavigate={() => setMenuOpen(false)}
+            pendingPathname={pendingPathname}
+          />
         </div>
-        <div className="mb-6 hidden items-center justify-between gap-3 lg:flex">
-          <UiLink
-            className="text-tinyrack-lg font-semibold text-inherit"
-            render={<NavLink to="/" />}
-            underline="none"
-          >
-            Tinyrack UI
-          </UiLink>
-          <IconButton
-            appearance="ghost"
-            aria-label={`Use ${theme === 'tinyrack-dark' ? 'light' : 'dark'} theme`}
-            onClick={() =>
-              applyTheme(theme === 'tinyrack-dark' ? 'tinyrack-light' : 'tinyrack-dark')
-            }
-          >
-            {theme === 'tinyrack-dark' ? (
-              <SunIcon aria-hidden="true" />
-            ) : (
-              <MoonIcon aria-hidden="true" />
-            )}
-          </IconButton>
-        </div>
-        <SiteNavigation
-          currentPathname={currentPathname}
-          onNavigate={() => setMenuOpen(false)}
-          pendingPathname={pendingPathname}
-        />
       </AppShell.Sidebar>
-      <AppShell.Main>
-        <div
-          aria-busy={isNavigating || undefined}
-          className="tr-site-content mx-auto w-full max-w-5xl min-w-0 p-4 sm:p-8 lg:p-10"
-        >
-          {children}
-        </div>
+      <AppShell.Main className="min-h-0 overflow-hidden">
+        <ScrollArea.Root className="tr-site-main-scroll-area h-full" variant="plain">
+          <ScrollArea.Viewport
+            aria-label="Page content"
+            className={`tr-site-main-scroll-viewport overscroll-contain ${
+              menuOpen ? '!overflow-hidden' : ''
+            }`}
+            ref={mainScrollViewportRef}
+            role="region"
+          >
+            <ScrollArea.Content className="min-h-full" style={{ minWidth: '100%' }}>
+              <div
+                aria-busy={isNavigating || undefined}
+                className="tr-site-content mx-auto w-full max-w-5xl min-w-0 p-4 sm:p-8 lg:p-10"
+              >
+                {children}
+              </div>
+            </ScrollArea.Content>
+          </ScrollArea.Viewport>
+          <ScrollArea.Scrollbar orientation="vertical">
+            <ScrollArea.Thumb />
+          </ScrollArea.Scrollbar>
+        </ScrollArea.Root>
       </AppShell.Main>
     </AppShell.Root>
   );

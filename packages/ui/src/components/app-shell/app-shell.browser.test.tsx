@@ -30,6 +30,14 @@ function setMobileMatch(matches: boolean) {
   return media;
 }
 
+function MenuIcon() {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" />;
+}
+
+function CloseIcon() {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" />;
+}
+
 function ShellFixture({ controlled = false }: { controlled?: boolean }) {
   const [open, setOpen] = useState(false);
   return (
@@ -44,11 +52,13 @@ function ShellFixture({ controlled = false }: { controlled?: boolean }) {
           aria-label="Open navigation"
           style={{ display: 'inline-flex' }}
         >
-          ☰
+          <MenuIcon />
         </AppShell.Trigger>
       </AppShell.Header>
       <AppShell.Sidebar aria-label="Documentation sidebar">
-        <AppShell.Close aria-label="Close navigation">×</AppShell.Close>
+        <AppShell.Close aria-label="Close navigation">
+          <CloseIcon />
+        </AppShell.Close>
         <a href="#docs">Docs</a>
       </AppShell.Sidebar>
       <AppShell.Main>Main content</AppShell.Main>
@@ -85,6 +95,77 @@ test('renders a static desktop sidebar landmark and both layout contracts', asyn
     'sm',
   );
   await alternateView.unmount();
+  vi.restoreAllMocks();
+});
+
+test('defaults Trigger and Close to 48px controls with 24px icons', async () => {
+  setMobileMatch(true);
+  const view = await render(
+    <AppShell.Root defaultOpen>
+      <AppShell.Header>
+        <AppShell.Trigger
+          aria-label="Open sized menu"
+          style={{ display: 'inline-flex' }}
+        >
+          <MenuIcon />
+        </AppShell.Trigger>
+      </AppShell.Header>
+      <AppShell.Sidebar aria-label="Sized menu">
+        <AppShell.Close aria-label="Close sized menu">
+          <CloseIcon />
+        </AppShell.Close>
+      </AppShell.Sidebar>
+      <AppShell.Main>Content</AppShell.Main>
+    </AppShell.Root>,
+  );
+  await expect
+    .poll(() =>
+      document.querySelector('.tr-app-shell-drawer-popup')?.hasAttribute('data-open'),
+    )
+    .toBe(true);
+
+  for (const label of ['Open sized menu', 'Close sized menu']) {
+    const button = document.querySelector<HTMLButtonElement>(`[aria-label="${label}"]`);
+    const icon = button?.querySelector('svg');
+    expect(button?.dataset['size']).toBe('lg');
+    expect(button?.getBoundingClientRect().width).toBe(48);
+    expect(button?.getBoundingClientRect().height).toBe(48);
+    expect(icon?.getBoundingClientRect().width).toBe(24);
+    expect(icon?.getBoundingClientRect().height).toBe(24);
+  }
+  await view.unmount();
+
+  await render(
+    <AppShell.Root defaultOpen>
+      <AppShell.Header>
+        <AppShell.Trigger
+          aria-label="Open compact menu"
+          size="sm"
+          style={{ display: 'inline-flex' }}
+        >
+          <MenuIcon />
+        </AppShell.Trigger>
+      </AppShell.Header>
+      <AppShell.Sidebar aria-label="Compact menu">
+        <AppShell.Close aria-label="Close compact menu" size="sm">
+          <CloseIcon />
+        </AppShell.Close>
+      </AppShell.Sidebar>
+      <AppShell.Main>Content</AppShell.Main>
+    </AppShell.Root>,
+  );
+  await expect
+    .poll(() =>
+      document.querySelector('.tr-app-shell-drawer-popup')?.hasAttribute('data-open'),
+    )
+    .toBe(true);
+
+  for (const label of ['Open compact menu', 'Close compact menu']) {
+    const button = document.querySelector<HTMLButtonElement>(`[aria-label="${label}"]`);
+    expect(button?.dataset['size']).toBe('sm');
+    expect(button?.getBoundingClientRect().width).toBe(32);
+    expect(button?.getBoundingClientRect().height).toBe(32);
+  }
   vi.restoreAllMocks();
 });
 
@@ -157,11 +238,13 @@ test('supports uncontrolled default open and close button dismissal', async () =
     <AppShell.Root defaultOpen>
       <AppShell.Header>
         <AppShell.Trigger aria-label="Open menu" style={{ display: 'inline-flex' }}>
-          ☰
+          <MenuIcon />
         </AppShell.Trigger>
       </AppShell.Header>
       <AppShell.Sidebar aria-label="Menu">
-        <AppShell.Close aria-label="Close menu">×</AppShell.Close>
+        <AppShell.Close aria-label="Close menu">
+          <CloseIcon />
+        </AppShell.Close>
       </AppShell.Sidebar>
       <AppShell.Main>Content</AppShell.Main>
     </AppShell.Root>,

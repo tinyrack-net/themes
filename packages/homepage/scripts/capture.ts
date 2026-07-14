@@ -116,6 +116,7 @@ const started = await startServer();
 const browser = await chromium.launch();
 const entries: CaptureEntry[] = [];
 const failures: string[] = [];
+let interactionCount = 0;
 
 try {
   for (const scenario of [
@@ -167,6 +168,36 @@ try {
         failures.push(`${scenario.name}${route.path}: theme mismatch`);
       }
 
+      await page.evaluate(() => {
+        document.body.style.overflow = 'visible';
+        const shell = document.querySelector<HTMLElement>('.tr-app-shell');
+        const main = document.querySelector<HTMLElement>('.tr-app-shell-main');
+        const scrollArea = document.querySelector<HTMLElement>(
+          '.tr-site-main-scroll-area',
+        );
+        const viewport = document.querySelector<HTMLElement>(
+          '.tr-site-main-scroll-viewport',
+        );
+        const scrollbar = scrollArea?.querySelector<HTMLElement>(
+          '.tr-scroll-area-scrollbar',
+        );
+        if (shell !== null) {
+          shell.style.height = 'auto';
+          shell.style.overflow = 'visible';
+        }
+        if (main !== null) main.style.overflow = 'visible';
+        if (scrollArea !== null) {
+          scrollArea.style.height = 'auto';
+          scrollArea.style.overflow = 'visible';
+        }
+        if (viewport !== null) {
+          viewport.style.height = 'auto';
+          viewport.style.overflow = 'visible';
+        }
+        if (scrollbar !== undefined && scrollbar !== null) {
+          scrollbar.style.display = 'none';
+        }
+      });
       const screenshot = join(scenarioRoot, `${screenshotName(route.path)}.png`);
       await page.screenshot({ fullPage: true, path: screenshot });
       entries.push({
@@ -246,12 +277,38 @@ try {
       },
     },
     {
-      name: 'app-shell-open-mobile',
-      path: '/components/button',
+      name: 'app-shell-site-nav-open-mobile',
+      path: '/components/app-shell',
       viewport: { height: 844, width: 390 },
       act: async (page: Page) => {
-        await page.getByRole('button', { name: 'Open navigation' }).click();
-        return page.locator('.tr-app-shell-drawer-popup[data-open]');
+        await page
+          .locator('.tr-app-shell-header')
+          .first()
+          .getByRole('button', { name: 'Open navigation' })
+          .click();
+        const popup = page.getByRole('dialog', { name: 'Documentation sidebar' });
+        await popup.waitFor();
+        await popup.evaluate((element) =>
+          Promise.all(element.getAnimations().map((animation) => animation.finished)),
+        );
+        return popup;
+      },
+    },
+    {
+      name: 'app-shell-preview-nav-open-mobile',
+      path: '/components/app-shell',
+      viewport: { height: 844, width: 390 },
+      act: async (page: Page) => {
+        await page
+          .locator('[data-component-example-id="app-shell-basic"]')
+          .getByRole('button', { name: 'Open navigation' })
+          .click();
+        const popup = page.getByRole('dialog', { name: 'Example navigation' });
+        await popup.waitFor();
+        await popup.evaluate((element) =>
+          Promise.all(element.getAnimations().map((animation) => animation.finished)),
+        );
+        return popup;
       },
     },
     {
@@ -265,6 +322,7 @@ try {
       },
     },
   ];
+  interactionCount = interactions.length;
 
   for (const interaction of interactions) {
     const page = await browser.newPage({ viewport: interaction.viewport });
@@ -277,6 +335,11 @@ try {
     });
     const surface = await interaction.act(page);
     await surface.waitFor();
+    await surface.evaluate((element) =>
+      Promise.allSettled(
+        element.getAnimations().map((animation) => animation.finished),
+      ),
+    );
     if (interaction.name !== 'form-error-recovery-desktop') {
       await assertInsideViewport(page, surface);
     }
@@ -308,5 +371,5 @@ if (entries.length !== staticDocumentRoutes.length * 2 || failures.length > 0) {
 }
 
 console.log(
-  `captured ${entries.length} full pages and 7 interaction states at ${outputRoot}`,
+  `captured ${entries.length} full pages and ${interactionCount} interaction states at ${outputRoot}`,
 );

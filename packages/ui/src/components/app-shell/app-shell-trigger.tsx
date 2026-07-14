@@ -7,7 +7,11 @@ import { useAppShellContext } from './app-shell-context.js';
 
 export type AppShellTriggerProps = IconButtonProps;
 
-export function AppShellTrigger(props: AppShellTriggerProps) {
+export function AppShellTrigger({
+  className,
+  size = 'lg',
+  ...props
+}: AppShellTriggerProps) {
   const { drawerHandle } = useAppShellContext('Trigger');
   return (
     <Drawer.Trigger
@@ -15,7 +19,8 @@ export function AppShellTrigger(props: AppShellTriggerProps) {
       render={
         <IconButton
           {...props}
-          className={mergeComponentClassName('tr-app-shell-trigger', props.className)}
+          className={mergeComponentClassName('tr-app-shell-trigger', className)}
+          size={size}
         />
       }
     />

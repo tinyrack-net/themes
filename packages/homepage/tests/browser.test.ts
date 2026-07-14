@@ -320,6 +320,224 @@ describe('built React Router documentation', () => {
     }
   });
 
+  it('keeps AppShell previews and mobile drawers within their intended geometry', async () => {
+    const desktopPage = await browser.newPage({
+      viewport: { height: 1000, width: 1440 },
+    });
+    const mobilePage = await browser.newPage({ viewport: { height: 844, width: 390 } });
+    await setTheme(desktopPage, 'tinyrack-light');
+    await setTheme(mobilePage, 'tinyrack-dark');
+
+    const previewSelectors = [
+      '[data-playground-preview] .tr-app-shell',
+      '[data-component-example-id="app-shell-basic"] .tr-app-shell',
+      '[data-component-example-id="app-shell-layouts"] .tr-app-shell',
+    ];
+    const expectPreviewGeometry = async (page: Page) => {
+      for (const selector of previewSelectors) {
+        const metrics = await page.locator(selector).evaluate((element) => {
+          const box = element.getBoundingClientRect();
+          const parentBox = element.parentElement?.getBoundingClientRect();
+          return {
+            height: box.height,
+            parentWidth: parentBox?.width ?? 0,
+            width: box.width,
+          };
+        });
+        expect(metrics.height, selector).toBe(320);
+        expect(metrics.width, selector).toBeLessThanOrEqual(metrics.parentWidth + 1);
+      }
+      await expectNoLocalOverflow(page.locator('html'), 'AppShell document');
+    };
+    const expectDrawerGeometry = async (page: Page, popup: Locator) => {
+      await popup.waitFor();
+      await popup.evaluate((element) =>
+        Promise.all(element.getAnimations().map((animation) => animation.finished)),
+      );
+      const box = await popup.boundingBox();
+      const viewport = page.viewportSize();
+      expect(box).not.toBeNull();
+      expect(viewport).not.toBeNull();
+      expect(box?.x).toBe(0);
+      expect(box?.y).toBe(0);
+      expect(box?.width).toBe(288);
+      expect(
+        Math.abs((box?.height ?? 0) - (viewport?.height ?? 0)),
+      ).toBeLessThanOrEqual(1);
+      const sidebarBox = await popup
+        .locator('aside.tr-app-shell-sidebar')
+        .boundingBox();
+      expect(sidebarBox).not.toBeNull();
+      expect(sidebarBox?.x).toBe(0);
+      expect(sidebarBox?.y).toBe(0);
+      expect(
+        Math.abs((sidebarBox?.width ?? 0) - (box?.width ?? 0)),
+      ).toBeLessThanOrEqual(1);
+      expect(
+        Math.abs((sidebarBox?.height ?? 0) - (viewport?.height ?? 0)),
+      ).toBeLessThanOrEqual(1);
+    };
+    const expectFocusReturned = async (trigger: Locator) => {
+      await expect
+        .poll(() => trigger.evaluate((element) => document.activeElement === element))
+        .toBe(true);
+    };
+    const expectClosed = async (trigger: Locator, popup: Locator) => {
+      await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('false');
+      await expect.poll(() => popup.isVisible()).toBe(false);
+      await expectFocusReturned(trigger);
+    };
+
+    try {
+      await desktopPage.goto(`${origin}/components/app-shell`);
+      await desktopPage.getByRole('heading', { level: 1, name: 'AppShell' }).waitFor();
+      await expectPreviewGeometry(desktopPage);
+      const desktopSidebar = desktopPage
+        .locator('.tr-app-shell > aside.tr-app-shell-sidebar')
+        .first();
+      const desktopSidebarViewport = desktopSidebar.locator(
+        '.tr-app-shell-scroll-viewport',
+      );
+      const desktopMainViewport = desktopPage.locator('.tr-site-main-scroll-viewport');
+      const sidebarScrollTop = await desktopSidebarViewport.evaluate((element) => {
+        const maxScrollTop = element.scrollHeight - element.clientHeight;
+        element.scrollTop = Math.min(160, maxScrollTop);
+        return element.scrollTop;
+      });
+      expect(sidebarScrollTop).toBeGreaterThan(0);
+      const mainViewportBox = await desktopMainViewport.boundingBox();
+      expect(mainViewportBox).not.toBeNull();
+      await desktopPage.mouse.move(
+        (mainViewportBox?.x ?? 0) + (mainViewportBox?.width ?? 0) / 2,
+        (mainViewportBox?.y ?? 0) + (mainViewportBox?.height ?? 0) / 2,
+      );
+      await desktopPage.mouse.wheel(0, 500);
+      await expect
+        .poll(() => desktopMainViewport.evaluate((element) => element.scrollTop))
+        .toBeGreaterThan(0);
+      const wheelScrollTop = await desktopMainViewport.evaluate(
+        (element) => element.scrollTop,
+      );
+      await desktopMainViewport.focus();
+      await desktopPage.keyboard.press('PageDown');
+      await expect
+        .poll(() => desktopMainViewport.evaluate((element) => element.scrollTop))
+        .toBeGreaterThan(wheelScrollTop);
+      const mainScrollTop = await desktopMainViewport.evaluate(
+        (element) => element.scrollTop,
+      );
+      expect(await desktopPage.evaluate(() => window.scrollY)).toBe(0);
+      const stickySidebarBox = await desktopSidebar.boundingBox();
+      expect(stickySidebarBox).not.toBeNull();
+      expect(stickySidebarBox?.y).toBe(0);
+      expect(
+        await desktopSidebarViewport.evaluate((element) => element.scrollTop),
+      ).toBe(sidebarScrollTop);
+      await desktopSidebar.getByRole('link', { name: 'Colors', exact: true }).click();
+      await desktopPage.getByRole('heading', { level: 1, name: 'Colors' }).waitFor();
+      await expect
+        .poll(() => desktopMainViewport.evaluate((element) => element.scrollTop))
+        .toBe(0);
+      await desktopPage.goBack();
+      await desktopPage.getByRole('heading', { level: 1, name: 'AppShell' }).waitFor();
+      await expect
+        .poll(() => desktopMainViewport.evaluate((element) => element.scrollTop))
+        .toBe(mainScrollTop);
+
+      await mobilePage.goto(`${origin}/components/app-shell`);
+      await mobilePage.getByRole('heading', { level: 1, name: 'AppShell' }).waitFor();
+      await expectPreviewGeometry(mobilePage);
+
+      const basicExample = mobilePage.locator(
+        '[data-component-example-id="app-shell-basic"]',
+      );
+      const staticTrigger = basicExample.locator(
+        'button[aria-label="Open navigation"]',
+      );
+      await staticTrigger.click();
+      await expect.poll(() => staticTrigger.getAttribute('aria-expanded')).toBe('true');
+      const staticPopup = mobilePage.getByRole('dialog', {
+        name: 'Example navigation',
+      });
+      await expectDrawerGeometry(mobilePage, staticPopup);
+      await staticPopup.getByRole('button', { name: 'Close navigation' }).click();
+      await expectClosed(staticTrigger, staticPopup);
+
+      await staticTrigger.click();
+      await staticPopup.waitFor();
+      await mobilePage.keyboard.press('Escape');
+      await expectClosed(staticTrigger, staticPopup);
+
+      await staticTrigger.click();
+      await staticPopup.waitFor();
+      await mobilePage.mouse.click(350, 422);
+      await expectClosed(staticTrigger, staticPopup);
+
+      const siteTrigger = mobilePage
+        .locator('.tr-app-shell-header')
+        .first()
+        .locator('button[aria-label="Open navigation"]');
+      await siteTrigger.click();
+      const sitePopup = mobilePage.getByRole('dialog', {
+        name: 'Documentation sidebar',
+      });
+      await expectDrawerGeometry(mobilePage, sitePopup);
+      const mobileMainViewport = mobilePage.locator('.tr-site-main-scroll-viewport');
+      const mobileMainScrollTop = await mobileMainViewport.evaluate((element) => {
+        element.scrollTop = Math.min(160, element.scrollHeight - element.clientHeight);
+        return element.scrollTop;
+      });
+      await mobilePage.mouse.move(350, 422);
+      await mobilePage.mouse.wheel(0, 300);
+      expect(await mobileMainViewport.evaluate((element) => element.scrollTop)).toBe(
+        mobileMainScrollTop,
+      );
+      expect(await mobilePage.evaluate(() => window.scrollY)).toBe(0);
+      const siteSidebarBox = await sitePopup
+        .locator('aside.tr-app-shell-sidebar')
+        .boundingBox();
+      const siteScrollbarBox = await sitePopup
+        .locator('.tr-scroll-area-scrollbar[data-orientation="vertical"]')
+        .boundingBox();
+      expect(siteSidebarBox).not.toBeNull();
+      expect(siteScrollbarBox).not.toBeNull();
+      expect(
+        Math.abs(
+          (siteSidebarBox?.x ?? 0) +
+            (siteSidebarBox?.width ?? 0) -
+            ((siteScrollbarBox?.x ?? 0) + (siteScrollbarBox?.width ?? 0)),
+        ),
+      ).toBeLessThanOrEqual(1);
+      await sitePopup.getByRole('button', { name: 'Close navigation' }).click();
+      await expectClosed(siteTrigger, sitePopup);
+
+      const playgroundTrigger = mobilePage
+        .locator('[data-playground-preview]')
+        .locator('button[aria-label="Open navigation"]');
+      await playgroundTrigger.click();
+      const playgroundPopup = mobilePage.getByRole('dialog', {
+        name: 'Example navigation',
+      });
+      await expectDrawerGeometry(mobilePage, playgroundPopup);
+      await playgroundPopup.getByRole('button', { name: 'Close navigation' }).click();
+      await expectClosed(playgroundTrigger, playgroundPopup);
+
+      const permalink = basicExample.getByRole('link', {
+        name: 'Responsive shell permalink',
+      });
+      await permalink.click();
+      await expect.poll(() => mobilePage.url()).toContain('#app-shell-basic');
+      const headingBox = await basicExample
+        .getByRole('heading', { level: 3, name: /Responsive shell/ })
+        .boundingBox();
+      expect(headingBox).not.toBeNull();
+      expect(headingBox?.y).toBeGreaterThanOrEqual(56);
+    } finally {
+      await desktopPage.close();
+      await mobilePage.close();
+    }
+  });
+
   it('keeps narrow foundation references and repaired preview canvases locally usable', async () => {
     const page = await browser.newPage({ viewport: { height: 844, width: 390 } });
     try {

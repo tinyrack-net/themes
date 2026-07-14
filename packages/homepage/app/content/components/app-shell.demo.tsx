@@ -1,5 +1,6 @@
 import { AppShell } from '@tinyrack/ui/components/app-shell';
 import { Link } from '@tinyrack/ui/components/link';
+import { MenuIcon, XIcon } from 'lucide-react';
 import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
@@ -20,25 +21,41 @@ export function AppShellPreview({
   layout,
   onOpenChange,
   open,
-}: StoryArgs & { onOpenChange?: (open: boolean) => void }) {
+}: Omit<StoryArgs, 'open'> & {
+  onOpenChange?: (open: boolean) => void;
+  open?: boolean;
+}) {
+  const stateProps =
+    open === undefined
+      ? {}
+      : {
+          open,
+          ...(onOpenChange === undefined ? {} : { onOpenChange }),
+        };
+
   return (
     <AppShell.Root
+      {...stateProps}
       breakpoint={breakpoint}
-      className="h-80 w-[min(46rem,90vw)] overflow-hidden rounded-tinyrack-lg border border-tinyrack-border"
+      className="h-80 min-h-0 w-full max-w-[46rem] overflow-hidden rounded-tinyrack-lg border border-tinyrack-border"
       layout={layout}
-      onOpenChange={(nextOpen) => onOpenChange?.(nextOpen)}
-      open={open}
     >
       <AppShell.Header className="flex items-center gap-3 border-b border-tinyrack-border p-3">
-        <AppShell.Trigger aria-label="Open navigation">☰</AppShell.Trigger>
+        <AppShell.Trigger aria-label="Open navigation">
+          <MenuIcon aria-hidden="true" />
+        </AppShell.Trigger>
         <strong>Tinyrack</strong>
       </AppShell.Header>
-      <AppShell.Sidebar aria-label="Example navigation" className="p-4">
-        <AppShell.Close aria-label="Close navigation">×</AppShell.Close>
-        <nav className="grid gap-2" aria-label="Rack pages">
-          <Link href="#overview">Overview</Link>
-          <Link href="#deployments">Deployments</Link>
-        </nav>
+      <AppShell.Sidebar aria-label="Example navigation">
+        <div className="p-4">
+          <AppShell.Close aria-label="Close navigation">
+            <XIcon aria-hidden="true" />
+          </AppShell.Close>
+          <nav className="grid gap-2" aria-label="Rack pages">
+            <Link href="#overview">Overview</Link>
+            <Link href="#deployments">Deployments</Link>
+          </nav>
+        </div>
       </AppShell.Sidebar>
       <AppShell.Main className="p-5" render={<div />}>
         Operational content

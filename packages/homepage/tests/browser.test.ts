@@ -256,12 +256,8 @@ describe('built React Router documentation', () => {
       });
       try {
         for (const documentRoute of staticDocumentRoutes) {
-          await page.goto(`${origin}${documentRoute.path}`, {
-            waitUntil: 'domcontentloaded',
-          });
-          await page
-            .getByRole('heading', { level: 1, name: documentRoute.title })
-            .waitFor();
+          await gotoHydrated(page, `${origin}${documentRoute.path}`);
+          await page.locator('h1').filter({ hasText: documentRoute.title }).waitFor();
           const componentEntry = componentDocsManifest.find(
             (entry) => documentRoute.path === `/components/${entry.id}`,
           );
@@ -873,7 +869,7 @@ describe('built React Router documentation', () => {
     };
 
     try {
-      await desktopPage.goto(`${origin}/components/app-shell`);
+      await gotoHydrated(desktopPage, `${origin}/components/app-shell`);
       await desktopPage.getByRole('heading', { level: 1, name: 'AppShell' }).waitFor();
       await expect(
         desktopPage.locator('.tr-docs-shell-header').first().isVisible(),
@@ -929,7 +925,7 @@ describe('built React Router documentation', () => {
         .poll(() => desktopMainViewport.evaluate((element) => element.scrollTop))
         .toBe(mainScrollTop);
 
-      await mobilePage.goto(`${origin}/components/app-shell`);
+      await gotoHydrated(mobilePage, `${origin}/components/app-shell`);
       await mobilePage.getByRole('heading', { level: 1, name: 'AppShell' }).waitFor();
       await expectPreviewGeometry(mobilePage);
 
@@ -941,9 +937,9 @@ describe('built React Router documentation', () => {
       );
       await staticTrigger.click();
       await expect.poll(() => staticTrigger.getAttribute('aria-expanded')).toBe('true');
-      const staticPopup = mobilePage.getByRole('dialog', {
-        name: 'Example navigation',
-      });
+      const staticPopup = mobilePage.locator(
+        '.tr-app-shell-drawer-popup[data-open][aria-label="Example navigation"]',
+      );
       await expectDrawerGeometry(mobilePage, staticPopup);
       await staticPopup.getByRole('button', { name: 'Close navigation' }).click();
       await expectClosed(staticTrigger, staticPopup);
@@ -963,9 +959,9 @@ describe('built React Router documentation', () => {
         .first()
         .locator('button[aria-label="Open navigation"]');
       await siteTrigger.click();
-      const sitePopup = mobilePage.getByRole('dialog', {
-        name: 'Documentation sidebar',
-      });
+      const sitePopup = mobilePage.locator(
+        '.tr-app-shell-drawer-popup[data-open][aria-label="Documentation sidebar"]',
+      );
       await expectDrawerGeometry(mobilePage, sitePopup);
       const mobileMainViewport = mobilePage.locator('.tr-docs-shell-scroll-viewport');
       const mobileMainScrollTop = await mobileMainViewport.evaluate((element) => {
@@ -1000,9 +996,9 @@ describe('built React Router documentation', () => {
         .locator('[data-playground-preview]')
         .locator('button[aria-label="Open navigation"]');
       await playgroundTrigger.click();
-      const playgroundPopup = mobilePage.getByRole('dialog', {
-        name: 'Example navigation',
-      });
+      const playgroundPopup = mobilePage.locator(
+        '.tr-app-shell-drawer-popup[data-open][aria-label="Example navigation"]',
+      );
       await expectDrawerGeometry(mobilePage, playgroundPopup);
       await playgroundPopup.getByRole('button', { name: 'Close navigation' }).click();
       await expectClosed(playgroundTrigger, playgroundPopup);

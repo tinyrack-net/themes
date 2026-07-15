@@ -194,6 +194,10 @@ describe('React Router documentation contract', () => {
     expect(packageJson.scripts['dev']).toContain(
       'NODE_OPTIONS=--conditions=@tinyrack/source',
     );
+    const verifySteps = packageJson.scripts['verify']?.split(' && ') ?? [];
+    expect(verifySteps.indexOf('pnpm build')).toBeLessThan(
+      verifySteps.indexOf('pnpm check:structure'),
+    );
     expect(packageJson.scripts['dev']).not.toContain('build');
     expect(packageJson.scripts['build:app']).toContain('tinyrack-docs build');
     expect(packageJson.scripts['preview:search']).toContain('tinyrack-docs preview');

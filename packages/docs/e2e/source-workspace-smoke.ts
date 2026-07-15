@@ -15,6 +15,17 @@ const distPaths = [
   resolve(repoRoot, 'packages/ui/dist'),
 ] as const;
 
+function resolvesFromWorkspacePackage(
+  path: string,
+  packageName: 'docs' | 'ui',
+  directory: 'dist' | 'src',
+) {
+  return (
+    path.includes(`/packages/${packageName}/${directory}/`) ||
+    path.includes(`/node_modules/@tinyrack/${packageName}/${directory}/`)
+  );
+}
+
 function verifyWorkspaceResolutions() {
   const specifiers = [
     '@tinyrack/docs/config',
@@ -62,7 +73,7 @@ function verifyWorkspaceResolutions() {
     const packageName = specifier.startsWith('@tinyrack/docs') ? 'docs' : 'ui';
     if (
       sourcePath === undefined ||
-      !sourcePath.includes(`/packages/${packageName}/src/`)
+      !resolvesFromWorkspacePackage(sourcePath, packageName, 'src')
     ) {
       throw new Error(
         `${specifier} did not resolve from workspace source: ${sourcePath}`,
@@ -70,7 +81,7 @@ function verifyWorkspaceResolutions() {
     }
     if (
       defaultPath === undefined ||
-      !defaultPath.includes(`/packages/${packageName}/dist/`)
+      !resolvesFromWorkspacePackage(defaultPath, packageName, 'dist')
     ) {
       throw new Error(
         `${specifier} did not resolve from workspace dist: ${defaultPath}`,

@@ -3,6 +3,7 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   resolve: {
+    conditions: ['@tinyrack/source'],
     alias: {
       'virtual:tinyrack-docs/manifest': fileURLToPath(
         new URL('./tests/virtual-manifest.ts', import.meta.url),

@@ -240,8 +240,9 @@ describe('built React Router documentation', () => {
       viewport: { height: 844, width: 390 },
     },
   ] as const) {
-    it(`renders every document in ${scenario.name}`, async () => {
-      const page = await browser.newPage({ viewport: scenario.viewport });
+    it.concurrent(`renders every document in ${scenario.name}`, async ({ expect }) => {
+      const context = await browser.newContext({ viewport: scenario.viewport });
+      const page = await context.newPage();
       await setTheme(page, scenario.theme);
       const pageErrors: string[] = [];
       const consoleErrors: string[] = [];
@@ -316,7 +317,7 @@ describe('built React Router documentation', () => {
         expect(pageErrors).toEqual([]);
         expect(consoleErrors).toEqual([]);
       } finally {
-        await page.close();
+        await context.close();
       }
     });
   }

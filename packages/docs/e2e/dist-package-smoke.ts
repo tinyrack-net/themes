@@ -40,18 +40,43 @@ function packageArchive(prefix: string) {
   return join(artifactsRoot, archive).replaceAll('\\', '/');
 }
 
+function writeDocsConfig(root: string, basePath: '/' | '/docs') {
+  write(
+    join(root, 'docs.config.ts'),
+    `import { defineDocsConfig } from '@tinyrack/docs/config';
+
+export default defineDocsConfig({
+  contentDir: 'app/content',
+  sections: [
+    { id: 'start', label: 'Start', order: 0 },
+    { id: 'guides', label: 'Guides', order: 1 },
+  ],
+  site: {
+    basePath: ${JSON.stringify(basePath)},
+    description: 'Packed documentation fixture.',
+    favicon: '/favicon.svg',
+    locale: { language: 'en', openGraph: 'en_US' },
+    logo: { dark: '/logo.svg', light: '/logo.svg' },
+    title: 'Packed Docs',
+    url: 'https://example.com',
+  },
+  theme: { default: 'dark' },
+});
+`,
+  );
+}
+
 function createConsumer(
-  name: string,
   basePath: '/' | '/docs',
   docsArchive: string,
   uiArchive: string,
 ) {
-  const root = join(smokeRoot, name);
+  const root = join(smokeRoot, 'fixture');
   write(
     join(root, 'package.json'),
     `${JSON.stringify(
       {
-        name: `tinyrack-docs-${name}-smoke`,
+        name: 'tinyrack-docs-consumer-smoke',
         private: true,
         type: 'module',
         scripts: { build: 'tinyrack-docs build' },
@@ -78,29 +103,7 @@ function createConsumer(
     join(root, 'pnpm-workspace.yaml'),
     `overrides:\n  '@tinyrack/ui': 'file:${uiArchive}'\npackages:\n  - '.'\n`,
   );
-  write(
-    join(root, 'docs.config.ts'),
-    `import { defineDocsConfig } from '@tinyrack/docs/config';
-
-export default defineDocsConfig({
-  contentDir: 'app/content',
-  sections: [
-    { id: 'start', label: 'Start', order: 0 },
-    { id: 'guides', label: 'Guides', order: 1 },
-  ],
-  site: {
-    basePath: ${JSON.stringify(basePath)},
-    description: 'Packed documentation fixture.',
-    favicon: '/favicon.svg',
-    locale: { language: 'en', openGraph: 'en_US' },
-    logo: { dark: '/logo.svg', light: '/logo.svg' },
-    title: 'Packed Docs',
-    url: 'https://example.com',
-  },
-  theme: { default: 'dark' },
-});
-`,
-  );
+  writeDocsConfig(root, basePath);
   write(
     join(root, 'app/routes.ts'),
     `import { resolve } from 'node:path';
@@ -205,7 +208,7 @@ pnpm add @tinyrack/docs
   return root;
 }
 
-function verifyConsumer(root: string, basePath: '/' | '/docs') {
+function prepareConsumer(root: string) {
   run(pnpm, ['install', '--ignore-scripts'], root);
   for (const packageName of ['docs', 'ui']) {
     const manifestPath = join(
@@ -232,6 +235,11 @@ function verifyConsumer(root: string, basePath: '/' | '/docs') {
   }
   run(pnpm, ['exec', 'react-router', 'typegen'], root);
   run(pnpm, ['exec', 'tsc', '--noEmit'], root);
+}
+
+function verifyConsumerBuild(root: string, basePath: '/' | '/docs') {
+  rmSync(join(root, 'build'), { force: true, recursive: true });
+  writeDocsConfig(root, basePath);
   run(pnpm, ['run', 'build'], root);
 
   const clientRoot = join(root, 'build/client');
@@ -303,8 +311,14 @@ try {
       process.env['TINYRACK_DOCS_SMOKE_ONLY'] === undefined ||
       process.env['TINYRACK_DOCS_SMOKE_ONLY'] === fixtureName,
   );
-  for (const [name, basePath] of selectedFixtures) {
-    verifyConsumer(createConsumer(name, basePath, docsArchive, uiArchive), basePath);
+  const consumerRoot = createConsumer(
+    selectedFixtures[0]?.[1] ?? '/',
+    docsArchive,
+    uiArchive,
+  );
+  prepareConsumer(consumerRoot);
+  for (const [, basePath] of selectedFixtures) {
+    verifyConsumerBuild(consumerRoot, basePath);
   }
   completed = true;
   console.log(

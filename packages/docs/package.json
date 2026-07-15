@@ -39,7 +39,7 @@
     "check:types": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:dist": "node e2e/dist-package-smoke.ts",
-    "verify": "pnpm check:types && pnpm check:css && pnpm test && pnpm build && pnpm test:dist",
+    "verify": "pnpm check:types && pnpm check:css && pnpm test && pnpm test:dist",
     "prepack": "pnpm build"
   },
   "peerDependencies": {

@@ -41,9 +41,11 @@ function AllDocsComponents() {
         <Steps.Root>
           <Steps.Item>Install</Steps.Item>
         </Steps.Root>
-        <FileTree.Root>
-          <FileTree.File>index.ts</FileTree.File>
-        </FileTree.Root>
+        <FileTree>
+          <ul>
+            <li>index.ts</li>
+          </ul>
+        </FileTree>
         <TableOfContents items={[{ depth: 2, id: 'install', label: 'Install' }]} />
         <DocumentPagination next={{ path: '/next', title: 'Next' }} />
       </DocsShell.Main>

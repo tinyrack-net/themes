@@ -8,6 +8,7 @@
     padding: 0;
   }
   .tr-file-tree {
+    --_tr-file-tree-indent: var(--tr-file-tree-indent, var(--tinyrack-space-md));
     background: var(--tinyrack-surface-muted);
     border: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
     border-radius: var(--tinyrack-radius-md);
@@ -20,14 +21,25 @@
     border-inline-start: var(--tinyrack-border-width-default) solid
       var(--tinyrack-border);
     margin-inline-start: var(--tinyrack-space-sm);
-    padding-inline-start: var(--tinyrack-space-lg);
+    padding-inline-start: var(--_tr-file-tree-indent);
+  }
+  .tr-file-tree > li > details > .tr-file-tree {
+    background: transparent;
+    border: 0;
+    border-inline-start: var(--tinyrack-border-width-default) solid
+      var(--tinyrack-border);
+    border-radius: 0;
+    margin-block: 0;
+    padding-block: 0;
   }
   .tr-file-tree summary {
     cursor: pointer;
   }
+  .tr-file-tree-file {
+    padding-inline-start: var(--_tr-file-tree-indent);
+  }
   .tr-file-tree-file::before {
-    color: var(--tinyrack-text-muted);
-    content: "· ";
+    content: none;
   }
   .tr-file-tree-directory > details > summary::marker {
     color: var(--tinyrack-primary);

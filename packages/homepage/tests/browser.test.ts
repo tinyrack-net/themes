@@ -269,9 +269,14 @@ describe('built React Router documentation', () => {
             (entry) => documentRoute.path === `/en/components/${entry.id}`,
           );
           if (componentEntry !== undefined) {
-            await expect(
-              page.locator('[data-component-playground]').count(),
-            ).resolves.toBe(1);
+            if (
+              !('hasPlayground' in componentEntry) ||
+              componentEntry.hasPlayground !== false
+            ) {
+              await expect(
+                page.locator('[data-component-playground]').count(),
+              ).resolves.toBe(1);
+            }
             await expect(
               page.locator('[data-component-example]').count(),
             ).resolves.toBeGreaterThanOrEqual(componentEntry.requiredExamples.length);

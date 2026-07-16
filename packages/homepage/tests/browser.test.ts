@@ -386,6 +386,38 @@ describe('built React Router documentation', () => {
           .getByRole('link', { name: 'GitHub' })
           .getAttribute('href'),
       ).resolves.toBe('https://github.com/tinyrack-net/design');
+      const desktopHeaderLinkMetrics = await desktopPrimaryNavigation.evaluate(
+        (nav) => ({
+          navWidth: nav.getBoundingClientRect().width,
+          linkWidths: [...nav.querySelectorAll('a')].map(
+            (link) => link.getBoundingClientRect().width,
+          ),
+        }),
+      );
+      expect(desktopHeaderLinkMetrics.linkWidths).toHaveLength(2);
+      expect(Math.max(...desktopHeaderLinkMetrics.linkWidths)).toBeLessThan(
+        desktopHeaderLinkMetrics.navWidth / 4,
+      );
+      await expect(
+        desktopPrimaryNavigation.locator('a').evaluateAll((links) =>
+          links.map((link) => ({
+            className: link.className,
+            display: getComputedStyle(link).display,
+            padding: getComputedStyle(link).padding,
+          })),
+        ),
+      ).resolves.toEqual([
+        { className: 'tr-link', display: 'block', padding: '0px' },
+        { className: 'tr-link', display: 'block', padding: '0px' },
+      ]);
+      await expect(
+        desktopPage
+          .locator('.tr-docs-sidebar-header-navigation a')
+          .evaluateAll((links) => links.map((link) => link.className)),
+      ).resolves.toEqual([
+        'tr-link tr-docs-navigation-link',
+        'tr-link tr-docs-navigation-link',
+      ]);
       await expect(
         desktopPage.getByRole('button', { name: 'Site navigation' }).isVisible(),
       ).resolves.toBe(false);

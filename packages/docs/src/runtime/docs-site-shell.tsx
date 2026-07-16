@@ -46,10 +46,12 @@ function localizedLabel(label: DocsLocalizedLabel, locale: string) {
 function HeaderLinks({
   className,
   label,
+  linkClassName,
   locale,
 }: {
   className: string;
   label: string;
+  linkClassName?: string;
   locale: string;
 }) {
   const links = docsManifest.header?.links;
@@ -63,7 +65,7 @@ function HeaderLinks({
           .replaceAll(':locale', locale);
         return path.startsWith('/') ? (
           <UiLink
-            className="tr-docs-navigation-link"
+            className={linkClassName}
             key={link.path}
             render={<RouterLink to={canonicalDocumentPath(path)} />}
             underline="none"
@@ -72,7 +74,7 @@ function HeaderLinks({
           </UiLink>
         ) : (
           <UiLink
-            className="tr-docs-navigation-link"
+            className={linkClassName}
             href={path}
             key={link.path}
             underline="none"
@@ -340,6 +342,7 @@ export function DocsSiteShell({ children }: { children: ReactNode }) {
           <HeaderLinks
             className="tr-docs-sidebar-header-navigation"
             label={localeConfig.messages.headerNavigation}
+            linkClassName="tr-docs-navigation-link"
             locale={locale}
           />
         </div>

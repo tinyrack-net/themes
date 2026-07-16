@@ -49,7 +49,7 @@ export function IconButtonMatrix() {
                   appearance={appearance}
                   aria-label={`${appearance} ${variant} ${size}`}
                   key={`${variant}-${size}`}
-                  size={size}
+                  uiSize={size}
                   variant={variant}
                 >
                   <SettingsIcon aria-hidden="true" />

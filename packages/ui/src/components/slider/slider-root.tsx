@@ -1,8 +1,20 @@
 'use client';
 
 import { Slider as BaseSlider } from '@base-ui/react/slider';
-import type { ComponentProps } from 'react';
-import { createComponentPart } from '../../internal/component-part.js';
+import type { ComponentPropsWithRef } from 'react';
+import { mergeComponentClassName } from '../../internal/component-class-name.js';
 
-export type SliderRootProps = ComponentProps<typeof BaseSlider.Root>;
-export const SliderRoot = createComponentPart(BaseSlider.Root, 'tr-slider');
+export type SliderUiSize = 'sm' | 'md' | 'lg';
+export type SliderRootProps = ComponentPropsWithRef<typeof BaseSlider.Root> & {
+  uiSize?: SliderUiSize;
+};
+
+export function SliderRoot({ className, uiSize = 'md', ...props }: SliderRootProps) {
+  return (
+    <BaseSlider.Root
+      {...props}
+      className={mergeComponentClassName('tr-slider', className)}
+      data-ui-size={uiSize}
+    />
+  );
+}

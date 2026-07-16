@@ -78,6 +78,23 @@ test('renders the Tinyrack Slider wrapper', async () => {
   expect(document.querySelector('.tr-slider')).not.toBeNull();
 });
 
+test('supports compact ui size', async () => {
+  await render(
+    <Slider.Root uiSize="sm" defaultValue={[50]}>
+      <Slider.Control>
+        <Slider.Track>
+          <Slider.Indicator />
+        </Slider.Track>
+        <Slider.Thumb aria-label="Compact volume" />
+      </Slider.Control>
+    </Slider.Root>,
+  );
+  const slider = document.querySelector<HTMLElement>('.tr-slider');
+  const thumb = document.querySelector<HTMLElement>('.tr-slider-thumb');
+  expect(slider?.dataset['uiSize']).toBe('sm');
+  expect(getComputedStyle(thumb as HTMLElement).width).toBe('12px');
+});
+
 test('uses theme-aware track contrast and preserves the component override', async () => {
   await render(
     <div>

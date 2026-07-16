@@ -30,6 +30,26 @@
     width: var(--tr-radio-indicator-size, var(--tinyrack-space-sm));
   }
 
+  .tr-radio[data-ui-size="sm"] {
+    height: var(--tinyrack-space-md);
+    width: var(--tinyrack-space-md);
+  }
+
+  .tr-radio[data-ui-size="sm"] .tr-radio-indicator {
+    height: var(--tinyrack-space-xs);
+    width: var(--tinyrack-space-xs);
+  }
+
+  .tr-radio[data-ui-size="lg"] {
+    height: var(--tinyrack-space-xl);
+    width: var(--tinyrack-space-xl);
+  }
+
+  .tr-radio[data-ui-size="lg"] .tr-radio-indicator {
+    height: var(--tinyrack-space-md);
+    width: var(--tinyrack-space-md);
+  }
+
   .tr-radio:focus-visible {
     outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
     outline-offset: var(--tinyrack-focus-offset);

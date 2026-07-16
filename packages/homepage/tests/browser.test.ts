@@ -1585,6 +1585,35 @@ describe('built React Router documentation', () => {
     }
   });
 
+  it('keeps playground controls compact without shrinking the preview', async () => {
+    const page = await browser.newPage({ viewport: { height: 900, width: 1280 } });
+    try {
+      for (const route of [
+        'input',
+        'select',
+        'textarea',
+        'checkbox',
+        'radio',
+        'slider',
+      ]) {
+        await gotoHydrated(page, `${origin}/components/${route}`);
+        const controls = page.locator('[data-playground-controls]');
+        await expect(
+          controls.locator('[data-ui-size="sm"]').count(),
+        ).resolves.toBeGreaterThan(0);
+        await expect(
+          controls
+            .locator(
+              '.tr-input[data-ui-size="md"], .tr-textarea[data-ui-size="md"], .tr-select-trigger[data-ui-size="md"], .tr-checkbox[data-ui-size="md"], .tr-radio[data-ui-size="md"], .tr-slider[data-ui-size="md"]',
+            )
+            .count(),
+        ).resolves.toBe(0);
+      }
+    } finally {
+      await page.close();
+    }
+  });
+
   it('keeps stateful Playground controls synchronized in both directions', async () => {
     const page = await browser.newPage({ viewport: { height: 900, width: 1280 } });
     try {

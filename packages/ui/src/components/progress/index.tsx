@@ -23,7 +23,7 @@ export type { ProgressIndicatorProps } from './progress-indicator.js';
 export type { ProgressLabelProps } from './progress-label.js';
 export type {
   ProgressRootProps,
-  ProgressSize,
+  ProgressUiSize,
   ProgressVariant,
 } from './progress-root.js';
 export type { ProgressTrackProps } from './progress-track.js';

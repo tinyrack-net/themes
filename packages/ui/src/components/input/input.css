@@ -14,6 +14,18 @@
       background-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard);
   }
 
+  .tr-input[data-ui-size="sm"] {
+    font-size: var(--tinyrack-control-font-size-sm);
+    min-height: var(--tinyrack-control-height-sm);
+    padding-inline: var(--tinyrack-control-padding-inline-sm);
+  }
+
+  .tr-input[data-ui-size="lg"] {
+    font-size: var(--tinyrack-control-font-size-lg);
+    min-height: var(--tinyrack-control-height-lg);
+    padding-inline: var(--tinyrack-control-padding-inline-lg);
+  }
+
   .tr-input:focus-visible {
     outline: var(--tinyrack-focus-width) solid var(--tinyrack-focus);
     outline-offset: var(--tinyrack-focus-offset);

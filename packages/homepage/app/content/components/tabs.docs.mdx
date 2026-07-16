@@ -71,9 +71,9 @@ export function TabsExample() {
   id="tabs-sizes"
   title="Size and activation comparison"
   previewLayout="stretch"
-  preview={<div className="grid gap-5"><Tabs.Root defaultValue="one" size="sm"><Tabs.List aria-label="Small manual tabs"><Tabs.Tab value="one">Small</Tabs.Tab><Tabs.Tab value="two">Details</Tabs.Tab></Tabs.List><Tabs.Panel value="one">Manual activation at small density.</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root><Tabs.Root defaultValue="one" size="md"><Tabs.List activateOnFocus aria-label="Automatic tabs"><Tabs.Tab value="one">Automatic</Tabs.Tab><Tabs.Tab value="two">Details</Tabs.Tab></Tabs.List><Tabs.Panel value="one">Arrow focus also selects.</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root><Tabs.Root defaultValue="one" size="lg"><Tabs.List aria-label="Bounded focus tabs" loopFocus={false}><Tabs.Tab value="one">Bounded focus</Tabs.Tab><Tabs.Tab value="two">Details</Tabs.Tab></Tabs.List><Tabs.Panel value="one">Focus stops at each end.</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root></div>}
+  preview={<div className="grid gap-5"><Tabs.Root defaultValue="one" uiSize="sm"><Tabs.List aria-label="Small manual tabs"><Tabs.Tab value="one">Small</Tabs.Tab><Tabs.Tab value="two">Details</Tabs.Tab></Tabs.List><Tabs.Panel value="one">Manual activation at small density.</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root><Tabs.Root defaultValue="one" uiSize="md"><Tabs.List activateOnFocus aria-label="Automatic tabs"><Tabs.Tab value="one">Automatic</Tabs.Tab><Tabs.Tab value="two">Details</Tabs.Tab></Tabs.List><Tabs.Panel value="one">Arrow focus also selects.</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root><Tabs.Root defaultValue="one" uiSize="lg"><Tabs.List aria-label="Bounded focus tabs" loopFocus={false}><Tabs.Tab value="one">Bounded focus</Tabs.Tab><Tabs.Tab value="two">Details</Tabs.Tab></Tabs.List><Tabs.Panel value="one">Focus stops at each end.</Tabs.Panel><Tabs.Panel value="two">Details</Tabs.Panel></Tabs.Root></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`<div className="grid gap-5">
-  <Tabs.Root defaultValue="one" size="sm">
+  <Tabs.Root defaultValue="one" uiSize="sm">
     <Tabs.List aria-label="Small manual tabs">
       <Tabs.Tab value="one">Small</Tabs.Tab>
       <Tabs.Tab value="two">Details</Tabs.Tab>
@@ -81,7 +81,7 @@ export function TabsExample() {
     <Tabs.Panel value="one">Manual activation at small density.</Tabs.Panel>
     <Tabs.Panel value="two">Details</Tabs.Panel>
   </Tabs.Root>
-  <Tabs.Root defaultValue="one" size="md">
+  <Tabs.Root defaultValue="one" uiSize="md">
     <Tabs.List activateOnFocus aria-label="Automatic tabs">
       <Tabs.Tab value="one">Automatic</Tabs.Tab>
       <Tabs.Tab value="two">Details</Tabs.Tab>
@@ -89,7 +89,7 @@ export function TabsExample() {
     <Tabs.Panel value="one">Arrow focus also selects.</Tabs.Panel>
     <Tabs.Panel value="two">Details</Tabs.Panel>
   </Tabs.Root>
-  <Tabs.Root defaultValue="one" size="lg">
+  <Tabs.Root defaultValue="one" uiSize="lg">
     <Tabs.List aria-label="Bounded focus tabs" loopFocus={false}>
       <Tabs.Tab value="one">Bounded focus</Tabs.Tab>
       <Tabs.Tab value="two">Details</Tabs.Tab>

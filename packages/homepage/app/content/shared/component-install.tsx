@@ -62,7 +62,7 @@ function InstallCodeBlock({ code, label, language }: InstallCodeBlockProps) {
         className="absolute top-2 right-2 z-10"
         data-install-copy={label}
         idleLabel="Copy"
-        size="sm"
+        uiSize="sm"
         value={code}
       />
       <CodeBlock
@@ -96,7 +96,7 @@ export function ComponentInstall({ surfaces }: ComponentInstallProps) {
       data-component-install=""
       data-pagefind-ignore="all"
       defaultValue={surfaceValue(firstSurface.label)}
-      size="sm"
+      uiSize="sm"
     >
       <ScrollArea.Root variant="plain">
         <ScrollArea.Viewport aria-label="Installation targets" tabIndex={0}>

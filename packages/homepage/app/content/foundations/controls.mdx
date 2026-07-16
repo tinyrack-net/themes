@@ -20,7 +20,7 @@ Use `sm` for dense secondary actions, `md` for the default operational interface
   {['sm', 'md', 'lg'].map((size) => (
     <section className="grid items-center gap-tinyrack-md border border-tinyrack-border p-tinyrack-lg md:grid-cols-[7rem_minmax(0,1fr)]" key={size} role="listitem">
       <div><strong>{size}</strong><div className="text-tinyrack-sm text-tinyrack-text-muted"><Code>{tinyrackControlMetrics[size].height}</Code></div></div>
-      <div className="flex flex-wrap items-center gap-tinyrack-sm"><Button size={size}>Deploy</Button><Field.Root><Field.Control aria-label={`${size} rack name`} data-size={size} placeholder="rack-a" /></Field.Root></div>
+      <div className="flex flex-wrap items-center gap-tinyrack-sm"><Button uiSize={size}>Deploy</Button><Field.Root><Field.Control aria-label={`${size} rack name`} data-uiSize={size} placeholder="rack-a" /></Field.Root></div>
     </section>
   ))}
 </div>

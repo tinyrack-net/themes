@@ -15,5 +15,5 @@ export type {
 } from '@base-ui/react/avatar';
 export type { AvatarFallbackProps } from './avatar-fallback.js';
 export type { AvatarImageProps } from './avatar-image.js';
-export type { AvatarRootProps, AvatarShape, AvatarSize } from './avatar-root.js';
+export type { AvatarRootProps, AvatarShape, AvatarUiSize } from './avatar-root.js';
 export { AvatarFallback, AvatarImage, AvatarRoot };

@@ -23,12 +23,12 @@ Provide `aria-label` or `aria-labelledby`. Appearance, variant, size, loading, d
 
 ## Usage
 
-<ComponentExampleTabs id="icon-button-basic" title="Settings action" preview={<Stories.IconButtonPreview appearance="outline" disabled={false} label="Settings" size="md" variant="secondary" />} sources={[{ label: 'React', language: 'tsx', code: String.raw`<IconButton aria-label="Settings"><SettingsIcon aria-hidden="true" /></IconButton>` }]} />
+<ComponentExampleTabs id="icon-button-basic" title="Settings action" preview={<Stories.IconButtonPreview appearance="outline" disabled={false} label="Settings" uiSize="md" variant="secondary" />} sources={[{ label: 'React', language: 'tsx', code: String.raw`<IconButton aria-label="Settings"><SettingsIcon aria-hidden="true" /></IconButton>` }]} />
 
 ## Examples
 
-<ComponentExampleTabs id="icon-button-states" title="Primary and disabled" preview={<div className="flex gap-3"><Stories.IconButtonPreview appearance="solid" disabled={false} label="Settings" size="sm" variant="primary" /><Stories.IconButtonPreview appearance="outline" disabled label="Unavailable settings" size="lg" variant="secondary" /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<IconButton aria-label="Settings" size="sm" variant="primary"><SettingsIcon /></IconButton>
-<IconButton aria-label="Unavailable settings" disabled size="lg"><SettingsIcon /></IconButton>` }]} />
+<ComponentExampleTabs id="icon-button-states" title="Primary and disabled" preview={<div className="flex gap-3"><Stories.IconButtonPreview appearance="solid" disabled={false} label="Settings" uiSize="sm" variant="primary" /><Stories.IconButtonPreview appearance="outline" disabled label="Unavailable settings" uiSize="lg" variant="secondary" /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<IconButton aria-label="Settings" uiSize="sm" variant="primary"><SettingsIcon /></IconButton>
+<IconButton aria-label="Unavailable settings" disabled uiSize="lg"><SettingsIcon /></IconButton>` }]} />
 
 <ComponentExampleTabs
   id="icon-button-matrix"
@@ -45,7 +45,7 @@ export function IconButtonMatrix() {
       appearance={appearance}
       aria-label={appearance + ' ' + variant + ' ' + size}
       key={variant + '-' + size}
-      size={size}
+      uiSize={size}
       variant={variant}
     >
       <SettingsIcon aria-hidden="true" />

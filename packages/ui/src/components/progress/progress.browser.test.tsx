@@ -14,7 +14,7 @@ const actEnvironment = globalThis as typeof globalThis & {
 test('assembles an accessible progress indicator', async () => {
   expect(Progress.Root).toBe(ProgressRoot);
   await render(
-    <Progress.Root size="lg" value={65} variant="success">
+    <Progress.Root uiSize="lg" value={65} variant="success">
       <Progress.Label>Deploy</Progress.Label>
       <Progress.Track>
         <Progress.Indicator />
@@ -54,7 +54,7 @@ test('preserves its accessible name through narrow SSR hydration', async () => {
   actEnvironment.IS_REACT_ACT_ENVIRONMENT = true;
   const fixture = (
     <div style={{ width: 320 }}>
-      <Progress.Root size="sm" value={25} variant="info">
+      <Progress.Root uiSize="sm" value={25} variant="info">
         <Progress.Label>Mobile upload</Progress.Label>
         <Progress.Track>
           <Progress.Indicator />

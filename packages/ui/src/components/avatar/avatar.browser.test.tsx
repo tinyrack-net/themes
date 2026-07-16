@@ -21,7 +21,7 @@ test('preserves namespace, native props, refs, and Tinyrack variants', async () 
       data-testid="avatar"
       ref={rootRef}
       shape="square"
-      size="lg"
+      uiSize="lg"
       style={{ '--tr-avatar-size': '52px' } as React.CSSProperties}
     >
       <Avatar.Fallback delay={0} ref={fallbackRef}>
@@ -34,7 +34,7 @@ test('preserves namespace, native props, refs, and Tinyrack variants', async () 
   expect(root).toBe(rootRef.current);
   expect(root).toHaveClass('tr-avatar', 'consumer-avatar');
   expect(root.dataset['shape']).toBe('square');
-  expect(root.dataset['size']).toBe('lg');
+  expect(root.dataset['uiSize']).toBe('lg');
   expect(getComputedStyle(root).width).toBe('52px');
   await expect.poll(() => fallbackRef.current).not.toBeNull();
   expect(fallbackRef.current).toHaveClass('tr-avatar-fallback');

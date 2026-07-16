@@ -36,10 +36,10 @@ test('owns Field.Control styling independently from the standalone Input class',
 test('applies the public size recipe to Field.Control', async () => {
   await render(
     <>
-      <Field.Root size="sm">
+      <Field.Root uiSize="sm">
         <Field.Control aria-label="Small rack" />
       </Field.Root>
-      <Field.Root size="lg">
+      <Field.Root uiSize="lg">
         <Field.Control aria-label="Large rack" />
       </Field.Root>
     </>,

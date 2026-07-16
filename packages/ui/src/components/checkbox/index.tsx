@@ -11,5 +11,5 @@ export type {
   CheckboxRootState,
 } from '@base-ui/react/checkbox';
 export type { CheckboxIndicatorProps } from './checkbox-indicator.js';
-export type { CheckboxRootProps } from './checkbox-root.js';
+export type { CheckboxRootProps, CheckboxUiSize } from './checkbox-root.js';
 export { CheckboxIndicator, CheckboxRoot };

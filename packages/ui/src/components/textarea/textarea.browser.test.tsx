@@ -46,3 +46,10 @@ test('preserves native refs, events, FormData, validation, and reset', async () 
   if (ref.current) ref.current.value = '';
   expect(ref.current?.checkValidity()).toBe(false);
 });
+
+test('supports compact ui size', async () => {
+  await render(<Textarea aria-label="Compact notes" uiSize="sm" />);
+  const textarea = document.querySelector<HTMLTextAreaElement>('.tr-textarea');
+  expect(textarea?.dataset['uiSize']).toBe('sm');
+  expect(getComputedStyle(textarea as HTMLTextAreaElement).minBlockSize).toBe('64px');
+});

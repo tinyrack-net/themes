@@ -13,7 +13,7 @@ export type ColorSchemeToggleProps = {
   lightLabel?: string;
   onValueChange: (value: ColorScheme) => void;
   ref?: Ref<HTMLButtonElement>;
-  size?: IconButtonProps['size'];
+  uiSize?: IconButtonProps['uiSize'];
   value: ColorScheme;
 };
 
@@ -24,7 +24,7 @@ export function ColorSchemeToggle({
   lightLabel = 'Use light color scheme',
   onValueChange,
   ref,
-  size,
+  uiSize,
   value,
 }: ColorSchemeToggleProps) {
   const nextValue = value === 'dark' ? 'light' : 'dark';
@@ -32,7 +32,7 @@ export function ColorSchemeToggle({
     <IconButton
       {...(disabled === undefined ? {} : { disabled })}
       {...(ref === undefined ? {} : { ref })}
-      {...(size === undefined ? {} : { size })}
+      {...(uiSize === undefined ? {} : { uiSize })}
       appearance="ghost"
       aria-label={nextValue === 'dark' ? darkLabel : lightLabel}
       aria-pressed={value === 'dark'}

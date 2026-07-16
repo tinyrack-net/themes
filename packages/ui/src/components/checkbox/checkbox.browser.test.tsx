@@ -58,6 +58,13 @@ test('preserves label, checked, and native form contracts', async () => {
   expect(input?.value).toBe('yes');
 });
 
+test('supports compact ui size', async () => {
+  await render(<Checkbox.Root aria-label="Compact option" uiSize="sm" />);
+  const checkbox = document.querySelector<HTMLElement>('.tr-checkbox');
+  expect(checkbox?.dataset['uiSize']).toBe('sm');
+  expect(getComputedStyle(checkbox as HTMLElement).width).toBe('12px');
+});
+
 test('serializes explicit checked and unchecked values to an external form', async () => {
   await render(
     <>

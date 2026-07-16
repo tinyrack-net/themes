@@ -64,21 +64,21 @@ import * as Stories from './badge.demo.js';
   previewLayout="stretch"
   preview={(
     <div className="grid gap-5">
-      <div className="grid gap-2"><strong>Small</strong><div className="flex flex-wrap gap-2"><Badge size="sm" variant="neutral">Neutral</Badge><Badge size="sm" variant="info">Info</Badge><Badge size="sm" variant="success">Success</Badge><Badge size="sm" variant="warning">Warning</Badge><Badge size="sm" variant="danger">Danger</Badge></div></div>
-      <div className="grid gap-2"><strong>Medium</strong><div className="flex flex-wrap gap-2"><Badge size="md" variant="neutral">Neutral</Badge><Badge size="md" variant="info">Info</Badge><Badge size="md" variant="success">Success</Badge><Badge size="md" variant="warning">Warning</Badge><Badge size="md" variant="danger">Danger</Badge></div></div>
-      <div className="grid gap-2"><strong>Large</strong><div className="flex flex-wrap gap-2"><Badge size="lg" variant="neutral">Neutral</Badge><Badge size="lg" variant="info">Info</Badge><Badge size="lg" variant="success">Success</Badge><Badge size="lg" variant="warning">Warning</Badge><Badge size="lg" variant="danger">Danger</Badge></div></div>
+      <div className="grid gap-2"><strong>Small</strong><div className="flex flex-wrap gap-2"><Badge uiSize="sm" variant="neutral">Neutral</Badge><Badge uiSize="sm" variant="info">Info</Badge><Badge uiSize="sm" variant="success">Success</Badge><Badge uiSize="sm" variant="warning">Warning</Badge><Badge uiSize="sm" variant="danger">Danger</Badge></div></div>
+      <div className="grid gap-2"><strong>Medium</strong><div className="flex flex-wrap gap-2"><Badge uiSize="md" variant="neutral">Neutral</Badge><Badge uiSize="md" variant="info">Info</Badge><Badge uiSize="md" variant="success">Success</Badge><Badge uiSize="md" variant="warning">Warning</Badge><Badge uiSize="md" variant="danger">Danger</Badge></div></div>
+      <div className="grid gap-2"><strong>Large</strong><div className="flex flex-wrap gap-2"><Badge uiSize="lg" variant="neutral">Neutral</Badge><Badge uiSize="lg" variant="info">Info</Badge><Badge uiSize="lg" variant="success">Success</Badge><Badge uiSize="lg" variant="warning">Warning</Badge><Badge uiSize="lg" variant="danger">Danger</Badge></div></div>
     </div>
   )}
-  sources={[{ label: 'React', language: 'tsx', code: String.raw`import type { BadgeSize } from '@tinyrack/ui/components/badge';
+  sources={[{ label: 'React', language: 'tsx', code: String.raw`import type { BadgeUiSize } from '@tinyrack/ui/components/badge';
 
-const sizes = [['sm', 'Small'], ['md', 'Medium'], ['lg', 'Large']] as const satisfies readonly (readonly [BadgeSize, string])[];
+const sizes = [['sm', 'Small'], ['md', 'Medium'], ['lg', 'Large']] as const satisfies readonly (readonly [BadgeUiSize, string])[];
 
 <div className="grid gap-5">
   {sizes.map(([size, label]) => (
     <div className="grid gap-2" key={size}>
       <strong>{label}</strong>
       <div className="flex flex-wrap gap-2">
-        <Badge size={size} variant="neutral">Neutral</Badge><Badge size={size} variant="info">Info</Badge><Badge size={size} variant="success">Success</Badge><Badge size={size} variant="warning">Warning</Badge><Badge size={size} variant="danger">Danger</Badge>
+        <Badge uiSize={size} variant="neutral">Neutral</Badge><Badge uiSize={size} variant="info">Info</Badge><Badge uiSize={size} variant="success">Success</Badge><Badge uiSize={size} variant="warning">Warning</Badge><Badge uiSize={size} variant="danger">Danger</Badge>
       </div>
     </div>
   ))}

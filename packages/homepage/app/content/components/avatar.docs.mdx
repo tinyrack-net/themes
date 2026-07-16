@@ -48,10 +48,10 @@ export const unavailableAvatar = 'data:image/png;base64,aW52YWxpZA==';
   id="avatar-image-failure"
   title="Image failure fallback"
   description="The fallback remains mounted so an image decode failure resolves to deterministic initials without making a broken network request."
-  preview={<Avatar.Root size="lg"><Avatar.Image alt="Unavailable operator portrait" src={unavailableAvatar} /><Avatar.Fallback>OP</Avatar.Fallback></Avatar.Root>}
+  preview={<Avatar.Root uiSize="lg"><Avatar.Image alt="Unavailable operator portrait" src={unavailableAvatar} /><Avatar.Fallback>OP</Avatar.Fallback></Avatar.Root>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`const unavailableAvatar = 'data:image/png;base64,aW52YWxpZA==';
 
-<Avatar.Root size="lg">
+<Avatar.Root uiSize="lg">
   <Avatar.Image alt="Unavailable operator portrait" src={unavailableAvatar} />
   <Avatar.Fallback>OP</Avatar.Fallback>
 </Avatar.Root>` }]}
@@ -65,13 +65,13 @@ export const unavailableAvatar = 'data:image/png;base64,aW52YWxpZA==';
   description="Every supported size and shape combination uses the same fallback contract."
   preview={(
     <div className="grid gap-5">
-      <div className="grid gap-2"><strong>Circle</strong><div className="flex items-center gap-3"><Avatar.Root size="sm"><Avatar.Fallback>SM</Avatar.Fallback></Avatar.Root><Avatar.Root size="md"><Avatar.Fallback>MD</Avatar.Fallback></Avatar.Root><Avatar.Root size="lg"><Avatar.Fallback>LG</Avatar.Fallback></Avatar.Root></div></div>
-      <div className="grid gap-2"><strong>Square</strong><div className="flex items-center gap-3"><Avatar.Root shape="square" size="sm"><Avatar.Fallback>SM</Avatar.Fallback></Avatar.Root><Avatar.Root shape="square" size="md"><Avatar.Fallback>MD</Avatar.Fallback></Avatar.Root><Avatar.Root shape="square" size="lg"><Avatar.Fallback>LG</Avatar.Fallback></Avatar.Root></div></div>
+      <div className="grid gap-2"><strong>Circle</strong><div className="flex items-center gap-3"><Avatar.Root uiSize="sm"><Avatar.Fallback>SM</Avatar.Fallback></Avatar.Root><Avatar.Root uiSize="md"><Avatar.Fallback>MD</Avatar.Fallback></Avatar.Root><Avatar.Root uiSize="lg"><Avatar.Fallback>LG</Avatar.Fallback></Avatar.Root></div></div>
+      <div className="grid gap-2"><strong>Square</strong><div className="flex items-center gap-3"><Avatar.Root shape="square" uiSize="sm"><Avatar.Fallback>SM</Avatar.Fallback></Avatar.Root><Avatar.Root shape="square" uiSize="md"><Avatar.Fallback>MD</Avatar.Fallback></Avatar.Root><Avatar.Root shape="square" uiSize="lg"><Avatar.Fallback>LG</Avatar.Fallback></Avatar.Root></div></div>
     </div>
   )}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`<div className="grid gap-5">
-  <div className="grid gap-2"><strong>Circle</strong><div className="flex items-center gap-3"><Avatar.Root size="sm"><Avatar.Fallback>SM</Avatar.Fallback></Avatar.Root><Avatar.Root size="md"><Avatar.Fallback>MD</Avatar.Fallback></Avatar.Root><Avatar.Root size="lg"><Avatar.Fallback>LG</Avatar.Fallback></Avatar.Root></div></div>
-  <div className="grid gap-2"><strong>Square</strong><div className="flex items-center gap-3"><Avatar.Root shape="square" size="sm"><Avatar.Fallback>SM</Avatar.Fallback></Avatar.Root><Avatar.Root shape="square" size="md"><Avatar.Fallback>MD</Avatar.Fallback></Avatar.Root><Avatar.Root shape="square" size="lg"><Avatar.Fallback>LG</Avatar.Fallback></Avatar.Root></div></div>
+  <div className="grid gap-2"><strong>Circle</strong><div className="flex items-center gap-3"><Avatar.Root uiSize="sm"><Avatar.Fallback>SM</Avatar.Fallback></Avatar.Root><Avatar.Root uiSize="md"><Avatar.Fallback>MD</Avatar.Fallback></Avatar.Root><Avatar.Root uiSize="lg"><Avatar.Fallback>LG</Avatar.Fallback></Avatar.Root></div></div>
+  <div className="grid gap-2"><strong>Square</strong><div className="flex items-center gap-3"><Avatar.Root shape="square" uiSize="sm"><Avatar.Fallback>SM</Avatar.Fallback></Avatar.Root><Avatar.Root shape="square" uiSize="md"><Avatar.Fallback>MD</Avatar.Fallback></Avatar.Root><Avatar.Root shape="square" uiSize="lg"><Avatar.Fallback>LG</Avatar.Fallback></Avatar.Root></div></div>
 </div>` }]}
 />
 

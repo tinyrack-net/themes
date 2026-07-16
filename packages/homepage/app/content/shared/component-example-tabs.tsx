@@ -147,7 +147,7 @@ function ComponentExampleSourcePanel({
         className="absolute top-2 right-2 z-10"
         data-copy-source={label}
         idleLabel="Copy"
-        size="sm"
+        uiSize="sm"
         value={normalizedCode}
       />
       <CodeBlock
@@ -221,7 +221,7 @@ export function ComponentExampleTabs({
         data-component-example-tabs=""
         data-pagefind-ignore="all"
         defaultValue="preview"
-        size="sm"
+        uiSize="sm"
       >
         <Tabs.List
           aria-label={ariaLabel ?? `${title} example tabs`}

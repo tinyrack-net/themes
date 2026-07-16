@@ -53,11 +53,11 @@ const meta = {
       <Alert.Description>{description}</Alert.Description>
       {actionMode === 'none' ? null : (
         <Alert.Actions>
-          <Button appearance="outline" size="sm">
+          <Button appearance="outline" uiSize="sm">
             View details
           </Button>
           {actionMode === 'multiple' ? (
-            <Button appearance="ghost" size="sm">
+            <Button appearance="ghost" uiSize="sm">
               Dismiss
             </Button>
           ) : null}

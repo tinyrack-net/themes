@@ -82,7 +82,7 @@ function ChoiceControl({
         onValueChange={(index) => onChange(options[Number(index)])}
         value={String(selectedIndex)}
       >
-        <Select.Trigger aria-label={name} id={`playground-${name}`}>
+        <Select.Trigger aria-label={name} uiSize="sm" id={`playground-${name}`}>
           <Select.Value />
           <Select.Icon aria-hidden="true">
             <ChevronDown />
@@ -122,7 +122,7 @@ function ChoiceControl({
             htmlFor={optionId}
             key={optionLabel(option)}
           >
-            <Radio.Root id={optionId} value={String(index)}>
+            <Radio.Root id={optionId} uiSize="sm" value={String(index)}>
               <Radio.Indicator aria-hidden="true" />
             </Radio.Root>
             <span>{optionLabel(option)}</span>
@@ -158,6 +158,7 @@ function ChecklistControl({
             key={optionLabel(option)}
           >
             <Checkbox.Root
+              uiSize="sm"
               checked={checked}
               id={optionId}
               onCheckedChange={() =>
@@ -222,6 +223,7 @@ function JsonControl({
         className="min-h-24 font-mono"
         id={`playground-${name}`}
         onChange={updateDraft}
+        uiSize="sm"
         value={draft}
       />
       {invalid ? (
@@ -255,12 +257,14 @@ function ControlField({
         className="col-span-1"
         data-control-kind={kind}
         data-playground-control={name}
+        uiSize="sm"
       >
         <label
           className="flex min-h-8 cursor-pointer items-center gap-2 text-tinyrack-sm font-medium"
           htmlFor={`playground-${name}`}
         >
           <Checkbox.Root
+            uiSize="sm"
             checked={Boolean(value)}
             id={`playground-${name}`}
             onCheckedChange={(checked) => onChange(checked)}
@@ -306,6 +310,7 @@ function ControlField({
     const numericValue = typeof value === 'number' ? value : 0;
     control = (
       <Slider.Root
+        uiSize="sm"
         {...limits}
         onValueChange={(values) =>
           onChange(Array.isArray(values) ? (values[0] ?? numericValue) : values)
@@ -323,6 +328,7 @@ function ControlField({
   } else if (kind === 'textarea') {
     control = (
       <Textarea
+        uiSize="sm"
         id={`playground-${name}`}
         onChange={(event) => onChange(event.currentTarget.value)}
         value={typeof value === 'string' ? value : ''}
@@ -331,6 +337,7 @@ function ControlField({
   } else {
     control = (
       <Input
+        uiSize="sm"
         {...limits}
         id={`playground-${name}`}
         onChange={(event) => {
@@ -355,6 +362,7 @@ function ControlField({
       className="col-span-2 grid gap-2"
       data-control-kind={kind}
       data-playground-control={name}
+      uiSize="sm"
     >
       <Field.Label
         className="text-tinyrack-sm font-medium"
@@ -433,7 +441,7 @@ export function ComponentPlayground<TArgs extends DemoArgs>({
               setArgs({ ...definition.args });
               setResetKey((current) => current + 1);
             }}
-            size="sm"
+            uiSize="sm"
           >
             Reset
           </Button>

@@ -77,7 +77,7 @@ export type { SelectRootProps } from './select-root.js';
 export type { SelectScrollDownArrowProps } from './select-scroll-down-arrow.js';
 export type { SelectScrollUpArrowProps } from './select-scroll-up-arrow.js';
 export type { SelectSeparatorProps } from './select-separator.js';
-export type { SelectTriggerProps } from './select-trigger.js';
+export type { SelectTriggerProps, SelectTriggerUiSize } from './select-trigger.js';
 export type { SelectValueProps } from './select-value.js';
 export {
   SelectArrow,

@@ -98,7 +98,7 @@ export function DocsShellRoot({
         layout="header-first"
       >
         {isPending ? (
-          <Progress.Root className="tr-docs-shell-progress" size="sm" value={null}>
+          <Progress.Root className="tr-docs-shell-progress" uiSize="sm" value={null}>
             <Progress.Label className="tr-docs-shell-visually-hidden">
               {loadingLabel}
             </Progress.Label>
@@ -131,7 +131,7 @@ export function DocsShellHeader({
         appearance="ghost"
         aria-label={openNavigationLabel}
         className="tr-docs-shell-menu-trigger"
-        size="sm"
+        uiSize="sm"
       >
         <Menu aria-hidden="true" className="tr-docs-shell-menu-icon" />
       </AppShell.Trigger>
@@ -172,7 +172,7 @@ export function DocsShellSidebar({
         appearance="ghost"
         aria-label={closeNavigationLabel}
         className="tr-docs-shell-menu-close"
-        size="sm"
+        uiSize="sm"
       >
         <X aria-hidden="true" className="tr-docs-shell-close-icon" />
       </AppShell.Close>

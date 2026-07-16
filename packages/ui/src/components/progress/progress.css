@@ -15,11 +15,11 @@
     width: 100%;
   }
 
-  .tr-progress[data-size="sm"] {
+  .tr-progress[data-ui-size="sm"] {
     --_tr-progress-height: var(--tinyrack-space-xs);
   }
 
-  .tr-progress[data-size="lg"] {
+  .tr-progress[data-ui-size="lg"] {
     --_tr-progress-height: var(--tinyrack-space-md);
   }
 

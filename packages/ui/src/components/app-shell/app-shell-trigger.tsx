@@ -12,7 +12,7 @@ export function AppShellTrigger({
   appearance = 'ghost',
   className,
   ref,
-  size = 'sm',
+  uiSize = 'sm',
   ...props
 }: AppShellTriggerProps) {
   const { drawerHandle, triggerRef } = useAppShellContext('Trigger');
@@ -33,7 +33,7 @@ export function AppShellTrigger({
           appearance={appearance}
           className={mergeComponentClassName('tr-app-shell-trigger', className)}
           ref={setTriggerRef}
-          size={size}
+          uiSize={uiSize}
         />
       }
     />

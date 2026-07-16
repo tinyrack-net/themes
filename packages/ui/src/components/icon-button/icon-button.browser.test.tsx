@@ -15,7 +15,7 @@ test('reuses Button variants while exposing an icon-only accessible name', async
       aria-label="Open navigation"
       onClick={onClick}
       ref={ref}
-      size="sm"
+      uiSize="sm"
       variant="primary"
     >
       <svg aria-hidden="true" />
@@ -68,7 +68,7 @@ test('preserves aria-labelledby while explicitly not loading', async () => {
 
 test('keeps a large icon square without shrinking it inside the touch target', async () => {
   await render(
-    <IconButton aria-label="Open navigation" size="lg">
+    <IconButton aria-label="Open navigation" uiSize="lg">
       <svg aria-hidden="true" viewBox="0 0 24 24" />
     </IconButton>,
   );

@@ -16,11 +16,11 @@ afterEach(() => {
 function renderSharedControls() {
   return render(
     <div>
-      <Button size="md">Deploy</Button>
+      <Button uiSize="md">Deploy</Button>
       <Field.Root>
         <Field.Control aria-label="Rack" />
       </Field.Root>
-      <Tabs.Root defaultValue="overview" size="md">
+      <Tabs.Root defaultValue="overview" uiSize="md">
         <Tabs.List aria-label="Sections">
           <Tabs.Tab value="overview">Overview</Tabs.Tab>
         </Tabs.List>

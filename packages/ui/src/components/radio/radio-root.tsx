@@ -1,8 +1,20 @@
 'use client';
 
 import { Radio as BaseRadio } from '@base-ui/react/radio';
-import type { ComponentProps } from 'react';
-import { createComponentPart } from '../../internal/component-part.js';
+import type { ComponentPropsWithRef } from 'react';
+import { mergeComponentClassName } from '../../internal/component-class-name.js';
 
-export type RadioRootProps = ComponentProps<typeof BaseRadio.Root>;
-export const RadioRoot = createComponentPart(BaseRadio.Root, 'tr-radio');
+export type RadioUiSize = 'sm' | 'md' | 'lg';
+export type RadioRootProps = ComponentPropsWithRef<typeof BaseRadio.Root> & {
+  uiSize?: RadioUiSize;
+};
+
+export function RadioRoot({ className, uiSize = 'md', ...props }: RadioRootProps) {
+  return (
+    <BaseRadio.Root
+      {...props}
+      className={mergeComponentClassName('tr-radio', className)}
+      data-ui-size={uiSize}
+    />
+  );
+}

@@ -33,7 +33,7 @@ export function CopyButtonCombinationPreview() {
       <CopyButton
         appearance="solid"
         resetDelay={750}
-        size="sm"
+        uiSize="sm"
         value="solid-primary"
         variant="primary"
       />
@@ -48,7 +48,7 @@ export function CopyButtonCombinationPreview() {
       <CopyButton
         appearance="ghost"
         idleLabel="Copy cleanup command"
-        size="lg"
+        uiSize="lg"
         value="pnpm clean"
         variant="danger"
       />

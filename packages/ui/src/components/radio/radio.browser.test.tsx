@@ -38,6 +38,17 @@ test('renders a centered, visible indicator inside its radio group', async () =>
   );
 });
 
+test('supports compact ui size', async () => {
+  await render(
+    <RadioGroup defaultValue="compact" name="compact-choice">
+      <Radio.Root uiSize="sm" value="compact" />
+    </RadioGroup>,
+  );
+  const radio = document.querySelector<HTMLElement>('.tr-radio');
+  expect(radio?.dataset['uiSize']).toBe('sm');
+  expect(getComputedStyle(radio as HTMLElement).width).toBe('12px');
+});
+
 test('forwards root and hidden-input refs with native form identity', async () => {
   const rootRef = createRef<HTMLSpanElement>();
   const inputRef = createRef<HTMLInputElement>();

@@ -12,6 +12,7 @@ export type ComponentDocCapability = (typeof componentDocCapabilities)[number];
 export type ComponentDocsManifestEntry = {
   capabilities: readonly ComponentDocCapability[];
   file: string;
+  hasPlayground?: boolean;
   id: string;
   requiredControls: readonly string[];
   requiredExamples: readonly string[];
@@ -798,7 +799,8 @@ export const componentDocsManifest = [
     capabilities: ['responsive'],
     file: 'app/content/en/components/steps.docs.mdx',
     id: 'steps',
-    requiredControls: ['count'],
+    hasPlayground: false,
+    requiredControls: [],
     requiredExamples: ['steps-basic'],
     title: 'Steps',
   },

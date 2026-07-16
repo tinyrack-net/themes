@@ -57,22 +57,20 @@ describe('React Router documentation contract', () => {
   )('$title keeps the required page sections, examples, and controls', (entry) => {
     const docs = readText(entry.file);
     const demo = readText(`app/content/components/${entry.id}.demo.tsx`);
-    const sectionOffsets = [
-      'Contract',
-      'Install',
-      'Playground',
-      'Usage',
-      'Examples',
-      'API',
-    ].map((section) => docs.indexOf(`## ${section}`));
+    const sections = ['Contract', 'Install', 'Usage', 'Examples', 'API'];
+    const hasPlayground = !('hasPlayground' in entry) || entry.hasPlayground !== false;
+    if (hasPlayground) sections.splice(2, 0, 'Playground');
+    const sectionOffsets = sections.map((section) => docs.indexOf(`## ${section}`));
 
     expect(sectionOffsets.every((offset) => offset >= 0)).toBe(true);
     expect(sectionOffsets).toEqual([...sectionOffsets].sort((a, b) => a - b));
-    expect(docs).toContain('ComponentPlayground');
-    expect(docs).toContain('definition={Stories.playground}');
+    if (hasPlayground) {
+      expect(docs).toContain('ComponentPlayground');
+      expect(docs).toContain('definition={Stories.playground}');
+      expect(demo).toContain('definePlayground(meta)');
+    }
     expect(docs).toContain(`@tinyrack/ui/components/${entry.id}`);
     expect(docs).toContain(`@tinyrack/ui/components/${entry.id}.css`);
-    expect(demo).toContain('definePlayground(meta)');
     expect(demo).toContain(`@tinyrack/ui/components/${entry.id}`);
 
     for (const control of entry.requiredControls) {

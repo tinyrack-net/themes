@@ -10,6 +10,7 @@ export type AppShellContextValue = {
   breakpoint: AppShellBreakpoint;
   defaultOpen: boolean | undefined;
   drawerHandle: DrawerHandle<unknown>;
+  drawerPopupClassName: string | undefined;
   mobile: boolean;
   onOpenChange: DrawerRootProps['onOpenChange'] | undefined;
   open: boolean | undefined;

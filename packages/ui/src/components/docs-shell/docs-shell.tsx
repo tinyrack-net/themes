@@ -94,6 +94,7 @@ export function DocsShellRoot({
         breakpoint="lg"
         className={mergeClassNames('tr-docs-shell', className)}
         data-docs-layout={layout}
+        drawerPopupClassName="tr-docs-shell-drawer-popup"
         layout="header-first"
       >
         {isPending ? (

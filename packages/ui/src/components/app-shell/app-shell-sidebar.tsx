@@ -29,6 +29,7 @@ export function AppShellSidebar({
   const {
     defaultOpen,
     drawerHandle,
+    drawerPopupClassName,
     mobile,
     onOpenChange,
     open,
@@ -63,7 +64,10 @@ export function AppShellSidebar({
         <Drawer.Viewport className="tr-app-shell-drawer-viewport">
           <Drawer.Popup
             {...popupNameProps}
-            className="tr-app-shell-drawer-popup"
+            className={mergeClassNames(
+              'tr-app-shell-drawer-popup',
+              drawerPopupClassName,
+            )}
             finalFocus={() => triggerRef.current}
           >
             <Drawer.Content className="tr-app-shell-drawer-content">

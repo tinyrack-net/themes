@@ -641,6 +641,13 @@ describe('built React Router documentation', () => {
       expect(pagefindRequests).toEqual([]);
 
       const trigger = page.getByRole('button', { name: 'Search documentation' });
+      expect(
+        await page
+          .locator('.tr-docs-sidebar-inner')
+          .getByRole('button', { name: 'Search documentation' })
+          .count(),
+      ).toBe(0);
+      expect(await trigger.count()).toBe(1);
       await trigger.click();
       const dialog = page.getByRole('dialog', { name: 'Search documentation' });
       const search = dialog.getByRole('combobox', { name: 'Search documentation' });

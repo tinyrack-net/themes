@@ -23,6 +23,7 @@ function subscribeToQuery(query: string, callback: () => void) {
 export type AppShellRootProps = Omit<ComponentProps<'div'>, 'onChange'> & {
   breakpoint?: AppShellBreakpoint;
   defaultOpen?: boolean;
+  drawerPopupClassName?: string;
   layout?: AppShellLayout;
   onOpenChange?: DrawerRootProps['onOpenChange'];
   open?: boolean;
@@ -33,6 +34,7 @@ export function AppShellRoot({
   breakpoint = 'lg',
   className,
   defaultOpen,
+  drawerPopupClassName,
   layout = 'header-first',
   onOpenChange,
   open,
@@ -52,6 +54,7 @@ export function AppShellRoot({
       breakpoint,
       defaultOpen,
       drawerHandle,
+      drawerPopupClassName,
       mobile,
       onOpenChange,
       open,
@@ -62,6 +65,7 @@ export function AppShellRoot({
       breakpoint,
       defaultOpen,
       drawerHandle,
+      drawerPopupClassName,
       mobile,
       onOpenChange,
       open,

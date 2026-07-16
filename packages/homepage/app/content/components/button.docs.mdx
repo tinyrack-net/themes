@@ -130,9 +130,9 @@ export function ButtonAppearanceMatrix() {
   description="Choose density from the surrounding layout, not from action importance."
   preview={(
     <div className="flex flex-wrap items-center gap-3">
-      <Button size="sm" variant="primary">Small</Button>
-      <Button size="md" variant="primary">Medium</Button>
-      <Button size="lg" variant="primary">Large</Button>
+      <Button uiSize="sm" variant="primary">Small</Button>
+      <Button uiSize="md" variant="primary">Medium</Button>
+      <Button uiSize="lg" variant="primary">Large</Button>
     </div>
   )}
   sources={[
@@ -141,11 +141,11 @@ export function ButtonAppearanceMatrix() {
       language: 'tsx',
       code: String.raw`import { Button } from '@tinyrack/ui/components/button';
 
-export function ButtonSizes() {
+export function ButtonUiSizes() {
   return <div className="flex flex-wrap items-center gap-3">
-  <Button size="sm" variant="primary">Small</Button>
-  <Button size="md" variant="primary">Medium</Button>
-  <Button size="lg" variant="primary">Large</Button>
+  <Button uiSize="sm" variant="primary">Small</Button>
+  <Button uiSize="md" variant="primary">Medium</Button>
+  <Button uiSize="lg" variant="primary">Large</Button>
 </div>;
 }`,
     },
@@ -161,7 +161,7 @@ export function ButtonSizes() {
       <Button>Ready</Button>
       <Button disabled>Unavailable</Button>
       <Button loading loadingLabel="Deploying changes" variant="primary">Deploying</Button>
-      <Button appearance="outline" variant="danger"><Spinner decorative size="sm" /> Retry</Button>
+      <Button appearance="outline" variant="danger"><Spinner decorative uiSize="sm" /> Retry</Button>
     </div>
   )}
   sources={[
@@ -175,7 +175,7 @@ export function ButtonStates() {
   return <div className="flex flex-wrap items-center gap-3">
   <Button>Ready</Button><Button disabled>Unavailable</Button>
   <Button loading loadingLabel="Deploying changes" variant="primary">Deploying</Button>
-  <Button appearance="outline" variant="danger"><Spinner decorative size="sm" /> Retry</Button>
+  <Button appearance="outline" variant="danger"><Spinner decorative uiSize="sm" /> Retry</Button>
 </div>;
 }`,
     },

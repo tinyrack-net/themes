@@ -1,6 +1,6 @@
 import {
   Badge,
-  type BadgeSize,
+  type BadgeUiSize,
   type BadgeVariant,
 } from '@tinyrack/ui/components/badge';
 import { CircleCheck } from 'lucide-react';
@@ -13,7 +13,7 @@ import { definePlayground } from '../../playground/demo.js';
 type BadgeStoryArgs = {
   children: string;
   icon: boolean;
-  size: BadgeSize;
+  size: BadgeUiSize;
   variant: BadgeVariant;
 };
 

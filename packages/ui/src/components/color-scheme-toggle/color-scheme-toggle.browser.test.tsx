@@ -15,7 +15,7 @@ test('is controlled, forwards its ref, and announces the next scheme', async () 
         className="custom-toggle"
         onValueChange={setValue}
         ref={ref}
-        size="sm"
+        uiSize="sm"
         value={value}
       />
     );

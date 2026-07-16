@@ -28,7 +28,7 @@ export type {
 export type { SliderControlProps } from './slider-control.js';
 export type { SliderIndicatorProps } from './slider-indicator.js';
 export type { SliderLabelProps } from './slider-label.js';
-export type { SliderRootProps } from './slider-root.js';
+export type { SliderRootProps, SliderUiSize } from './slider-root.js';
 export type { SliderThumbProps } from './slider-thumb.js';
 export type { SliderTrackProps } from './slider-track.js';
 export type { SliderValueProps } from './slider-value.js';

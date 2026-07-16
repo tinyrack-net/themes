@@ -1,7 +1,7 @@
 import { Button } from '@tinyrack/ui/components/button';
 import {
   Spinner,
-  type SpinnerSize,
+  type SpinnerUiSize,
   type SpinnerVariant,
 } from '@tinyrack/ui/components/spinner';
 import { useState } from 'react';
@@ -14,7 +14,7 @@ import { definePlayground } from '../../playground/demo.js';
 type SpinnerStoryArgs = {
   decorative: boolean;
   label: string;
-  size: SpinnerSize;
+  size: SpinnerUiSize;
   taskState: 'idle' | 'running' | 'complete';
   variant: SpinnerVariant;
 };

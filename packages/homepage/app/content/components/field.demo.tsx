@@ -46,7 +46,7 @@ export function FieldPreview({
       className="w-full min-w-0 max-w-80"
       disabled={disabled}
       invalid={invalid}
-      size={size}
+      uiSize={size}
     >
       <Field.Label>{label}</Field.Label>
       <Field.Control

@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import { mergeClassNames } from '../../internal/component-class-name.js';
 
-export type SpinnerSize = 'sm' | 'md' | 'lg';
+export type SpinnerUiSize = 'sm' | 'md' | 'lg';
 export type SpinnerVariant = 'current' | 'muted' | 'primary' | 'danger';
 export type SpinnerProps = Omit<
   ComponentProps<'span'>,
@@ -9,7 +9,7 @@ export type SpinnerProps = Omit<
 > & {
   decorative?: boolean;
   label?: string;
-  size?: SpinnerSize;
+  uiSize?: SpinnerUiSize;
   variant?: SpinnerVariant;
 };
 
@@ -17,14 +17,14 @@ export function Spinner({
   className,
   decorative = false,
   label = 'Loading',
-  size = 'md',
+  uiSize = 'md',
   variant = 'current',
   ...props
 }: SpinnerProps) {
   const spinnerProps = {
     ...props,
     className: mergeClassNames('tr-spinner', className),
-    'data-size': size,
+    'data-ui-size': uiSize,
     'data-variant': variant,
   };
 

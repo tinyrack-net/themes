@@ -53,7 +53,7 @@ import * as Stories from './progress.demo.js';
       {(['sm', 'md', 'lg']).map((size) => (
         <div className="grid gap-3" key={size}>
           <strong>{size}</strong>
-          {(['neutral', 'info', 'success', 'warning', 'danger']).map((variant) => <Progress.Root key={variant} size={size} value={68} variant={variant}><Progress.Label>{size + ' ' + variant}</Progress.Label><Progress.Track><Progress.Indicator /></Progress.Track><Progress.Value /></Progress.Root>)}
+          {(['neutral', 'info', 'success', 'warning', 'danger']).map((variant) => <Progress.Root key={variant} uiSize={size} value={68} variant={variant}><Progress.Label>{size + ' ' + variant}</Progress.Label><Progress.Track><Progress.Indicator /></Progress.Track><Progress.Value /></Progress.Root>)}
         </div>
       ))}
     </div>
@@ -66,7 +66,7 @@ const variants = ['neutral', 'info', 'success', 'warning', 'danger'];
     <div className="grid gap-3" key={size}>
       <strong>{size}</strong>
       {variants.map((variant) => (
-        <Progress.Root key={variant} size={size} value={68} variant={variant}>
+        <Progress.Root key={variant} uiSize={size} value={68} variant={variant}>
           <Progress.Label>{size + ' ' + variant}</Progress.Label>
           <Progress.Track><Progress.Indicator /></Progress.Track>
           <Progress.Value />

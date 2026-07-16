@@ -1,16 +1,16 @@
 import type { ComponentProps } from 'react';
 import { mergeClassNames } from '../../internal/component-class-name.js';
 
-export type BadgeSize = 'sm' | 'md' | 'lg';
+export type BadgeUiSize = 'sm' | 'md' | 'lg';
 export type BadgeVariant = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
 export type BadgeProps = ComponentProps<'span'> & {
-  size?: BadgeSize;
+  uiSize?: BadgeUiSize;
   variant?: BadgeVariant;
 };
 
 export function Badge({
   className,
-  size = 'md',
+  uiSize = 'md',
   variant = 'neutral',
   ...props
 }: BadgeProps) {
@@ -18,7 +18,7 @@ export function Badge({
     <span
       {...props}
       className={mergeClassNames('tr-badge', className)}
-      data-size={size}
+      data-ui-size={uiSize}
       data-variant={variant}
     />
   );

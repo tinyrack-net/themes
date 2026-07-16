@@ -1,4 +1,4 @@
-import { Tabs, type TabsSize } from '@tinyrack/ui/components/tabs';
+import { Tabs, type TabsUiSize } from '@tinyrack/ui/components/tabs';
 import { useState } from 'react';
 import type {
   DemoMeta as Meta,
@@ -14,7 +14,7 @@ type TabsStoryArgs = {
   disabled: boolean;
   loopFocus: boolean;
   orientation: 'horizontal' | 'vertical';
-  size: TabsSize;
+  size: TabsUiSize;
   value: string | null;
 };
 
@@ -39,7 +39,7 @@ export function TabsPreview({
           onValueChange?.(nextValue === null ? null : String(nextValue))
         }
         orientation={orientation}
-        size={size}
+        uiSize={size}
         value={value}
       >
         <Tabs.List

@@ -25,7 +25,7 @@ test('preserves defaults, native props, events, refs, and consumer tokens', asyn
   ref.current?.click();
   expect(onClick).toHaveBeenCalledOnce();
   expect(ref.current).toHaveClass('tr-badge', 'consumer-badge');
-  expect(ref.current?.dataset['size']).toBe('md');
+  expect(ref.current?.dataset['uiSize']).toBe('md');
   expect(ref.current?.dataset['variant']).toBe('neutral');
   expect(ref.current?.getAttribute('aria-live')).toBe('polite');
   expect(getComputedStyle(ref.current as HTMLElement).fontSize).toBe('18px');
@@ -41,7 +41,7 @@ test('maps every documented size and status variant to stable data attributes', 
         <Badge
           data-testid={`${size}-${variant}`}
           key={`${size}-${variant}`}
-          size={size}
+          uiSize={size}
           variant={variant}
         >
           {variant}
@@ -55,7 +55,7 @@ test('maps every documented size and status variant to stable data attributes', 
       const badge = document.querySelector<HTMLElement>(
         `[data-testid="${size}-${variant}"]`,
       );
-      expect(badge?.dataset['size']).toBe(size);
+      expect(badge?.dataset['uiSize']).toBe(size);
       expect(badge?.dataset['variant']).toBe(variant);
       expect(getComputedStyle(badge as HTMLElement).color).not.toBe('rgba(0, 0, 0, 0)');
     }

@@ -13,7 +13,7 @@ test('renders Base UI behavior through the Tinyrack button contract', async () =
       ref={ref}
       appearance="outline"
       onClick={onClick}
-      size="lg"
+      uiSize="lg"
       variant="primary"
     >
       Save

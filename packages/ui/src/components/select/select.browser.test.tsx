@@ -29,6 +29,19 @@ test('renders the Tinyrack Select wrapper', async () => {
   expect(document.querySelector('.tr-select-trigger')).not.toBeNull();
 });
 
+test('supports compact ui size on the root and trigger', async () => {
+  await render(
+    <Select.Root defaultValue="alpha">
+      <Select.Trigger aria-label="Compact choice" uiSize="sm">
+        <Select.Value />
+      </Select.Trigger>
+    </Select.Root>,
+  );
+  const trigger = document.querySelector<HTMLElement>('.tr-select-trigger');
+  expect(trigger?.dataset['uiSize']).toBe('sm');
+  expect(getComputedStyle(trigger as HTMLElement).minHeight).toBe('32px');
+});
+
 test('keeps SVG icons centered at the trailing edge of fixed-width triggers', async () => {
   const items = {
     long: 'Rack with a longer label',

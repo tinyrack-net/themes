@@ -1,7 +1,7 @@
 import {
   Button,
   type ButtonAppearance,
-  type ButtonSize,
+  type ButtonUiSize,
   type ButtonVariant,
 } from '@tinyrack/ui/components/button';
 import { useState } from 'react';
@@ -17,7 +17,7 @@ type ButtonStoryArgs = {
   disabled: boolean;
   loading: boolean;
   loadingLabel: string;
-  size: ButtonSize;
+  size: ButtonUiSize;
   variant: ButtonVariant;
 };
 

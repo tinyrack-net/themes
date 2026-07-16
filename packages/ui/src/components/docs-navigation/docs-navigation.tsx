@@ -118,7 +118,7 @@ function NavigationItems({
             >
               <span>{item.label}</span>
               {state.pending ? (
-                <Spinner decorative size="sm" variant="primary" />
+                <Spinner decorative uiSize="sm" variant="primary" />
               ) : null}
             </Link>
           </li>

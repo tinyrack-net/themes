@@ -27,14 +27,14 @@ const meta = {
         className="flex h-16 items-center gap-4"
         role="toolbar"
       >
-        <Button size="sm" type="button">
+        <Button uiSize="sm" type="button">
           CPU
         </Button>
         <Separator
           orientation="vertical"
           role={decorative ? 'presentation' : 'separator'}
         />
-        <Button size="sm" type="button">
+        <Button uiSize="sm" type="button">
           Memory
         </Button>
       </div>

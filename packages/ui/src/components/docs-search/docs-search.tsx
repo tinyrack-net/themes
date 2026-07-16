@@ -243,7 +243,7 @@ export function DocsSearchDialog({
             />
             <Dialog.Close
               render={
-                <Button appearance="ghost" aria-label={messages.close} size="sm">
+                <Button appearance="ghost" aria-label={messages.close} uiSize="sm">
                   <kbd>Esc</kbd>
                 </Button>
               }
@@ -260,7 +260,7 @@ export function DocsSearchDialog({
             ) : null}
             {loading ? (
               <p className="tr-docs-search-message">
-                <Spinner decorative size="sm" /> {messages.loading}
+                <Spinner decorative uiSize="sm" /> {messages.loading}
               </p>
             ) : query.trim().length === 0 ? (
               <p className="tr-docs-search-message">{messages.idle}</p>

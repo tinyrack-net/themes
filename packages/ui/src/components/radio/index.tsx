@@ -11,5 +11,5 @@ export type {
   RadioRootState,
 } from '@base-ui/react/radio';
 export type { RadioIndicatorProps } from './radio-indicator.js';
-export type { RadioRootProps } from './radio-root.js';
+export type { RadioRootProps, RadioUiSize } from './radio-root.js';
 export { RadioIndicator, RadioRoot };

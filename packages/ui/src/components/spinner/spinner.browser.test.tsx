@@ -7,10 +7,10 @@ import { Spinner } from './index.js';
 
 test('renders an announced loading indicator', async () => {
   const ref = createRef<HTMLSpanElement>();
-  await render(<Spinner ref={ref} label="Saving" size="lg" variant="primary" />);
+  await render(<Spinner ref={ref} label="Saving" uiSize="lg" variant="primary" />);
   expect(ref.current?.getAttribute('role')).toBe('status');
   expect(ref.current?.getAttribute('aria-label')).toBe('Saving');
-  expect(ref.current?.dataset['size']).toBe('lg');
+  expect(ref.current?.dataset['uiSize']).toBe('lg');
 });
 
 test('styles the public muted variant independently from current color', async () => {

@@ -86,7 +86,7 @@ export function ContextMenuPreview({
               appearance="outline"
               aria-label={`Open actions for ${label}`}
               onClick={(event) => openAtTrigger(event.currentTarget)}
-              size="sm"
+              uiSize="sm"
               type="button"
             >
               More actions

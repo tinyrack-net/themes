@@ -10,7 +10,7 @@ export type AppShellCloseProps = IconButtonProps;
 export function AppShellClose({
   appearance = 'ghost',
   className,
-  size = 'sm',
+  uiSize = 'sm',
   ...props
 }: AppShellCloseProps) {
   const { mobile } = useAppShellContext('Close');
@@ -19,7 +19,7 @@ export function AppShellClose({
       {...props}
       appearance={appearance}
       className={mergeComponentClassName('tr-app-shell-close', className)}
-      size={size}
+      uiSize={uiSize}
     />
   );
   if (!mobile) return button;

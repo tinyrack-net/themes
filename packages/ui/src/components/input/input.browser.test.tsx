@@ -1,3 +1,4 @@
+import '../../core/core.css';
 import './input.css';
 import { createRef } from 'react';
 import { expect, test, vi } from 'vitest';
@@ -9,6 +10,13 @@ test('renders the Tinyrack Input wrapper', async () => {
   expect(typeof Input).toBe('function');
   await render(<Input aria-label="Name" defaultValue="Tinyrack" />);
   expect(document.querySelector('.tr-input')).not.toBeNull();
+});
+
+test('supports compact ui size without changing native input behavior', async () => {
+  await render(<Input aria-label="Compact name" uiSize="sm" />);
+  const input = document.querySelector<HTMLInputElement>('.tr-input');
+  expect(input?.dataset['uiSize']).toBe('sm');
+  expect(getComputedStyle(input as HTMLInputElement).minHeight).toBe('32px');
 });
 
 test('reports string values and merges behavior onto a rendered native input', async () => {

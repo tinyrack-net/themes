@@ -47,10 +47,10 @@ export function ScrollAreaPreview({
     <div className="grid gap-3">
       {showControls ? (
         <div className="flex flex-wrap gap-2">
-          <Button appearance="outline" onClick={() => move('start')} size="sm">
+          <Button appearance="outline" onClick={() => move('start')} uiSize="sm">
             Start
           </Button>
-          <Button appearance="outline" onClick={() => move('end')} size="sm">
+          <Button appearance="outline" onClick={() => move('end')} uiSize="sm">
             End
           </Button>
         </div>

@@ -144,7 +144,7 @@ test('defaults Trigger and Close to ghost 32px controls with sm icons', async ()
     const button = document.querySelector<HTMLButtonElement>(`[aria-label="${label}"]`);
     const icon = button?.querySelector('svg');
     expect(button?.dataset['appearance']).toBe('ghost');
-    expect(button?.dataset['size']).toBe('sm');
+    expect(button?.dataset['uiSize']).toBe('sm');
     expect(button?.getBoundingClientRect().width).toBe(32);
     expect(button?.getBoundingClientRect().height).toBe(32);
     expect(icon?.getBoundingClientRect().width).toBe(16);
@@ -157,14 +157,14 @@ test('defaults Trigger and Close to ghost 32px controls with sm icons', async ()
       <AppShell.Header>
         <AppShell.Trigger
           aria-label="Open compact menu"
-          size="sm"
+          uiSize="sm"
           style={{ display: 'inline-flex' }}
         >
           <MenuIcon />
         </AppShell.Trigger>
       </AppShell.Header>
       <AppShell.Sidebar aria-label="Compact menu">
-        <AppShell.Close aria-label="Close compact menu" size="sm">
+        <AppShell.Close aria-label="Close compact menu" uiSize="sm">
           <CloseIcon />
         </AppShell.Close>
       </AppShell.Sidebar>
@@ -179,7 +179,7 @@ test('defaults Trigger and Close to ghost 32px controls with sm icons', async ()
 
   for (const label of ['Open compact menu', 'Close compact menu']) {
     const button = document.querySelector<HTMLButtonElement>(`[aria-label="${label}"]`);
-    expect(button?.dataset['size']).toBe('sm');
+    expect(button?.dataset['uiSize']).toBe('sm');
     expect(button?.getBoundingClientRect().width).toBe(32);
     expect(button?.getBoundingClientRect().height).toBe(32);
   }

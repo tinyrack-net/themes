@@ -33,7 +33,7 @@ export function CodeBlockPreview({ copyable, ...args }: CodeBlockStoryArgs) {
       {copyable ? (
         <div className="flex items-center justify-between gap-3">
           <output aria-live="polite">{copyResult}</output>
-          <Button appearance="outline" onClick={copyCode} size="sm">
+          <Button appearance="outline" onClick={copyCode} uiSize="sm">
             Copy code
           </Button>
         </div>

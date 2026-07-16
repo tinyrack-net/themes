@@ -5,16 +5,16 @@ import type { ComponentProps } from 'react';
 import { mergeComponentClassName } from '../../internal/component-class-name.js';
 
 export type AvatarShape = 'circle' | 'square';
-export type AvatarSize = 'sm' | 'md' | 'lg';
+export type AvatarUiSize = 'sm' | 'md' | 'lg';
 export type AvatarRootProps = ComponentProps<typeof BaseAvatar.Root> & {
   shape?: AvatarShape;
-  size?: AvatarSize;
+  uiSize?: AvatarUiSize;
 };
 
 export function AvatarRoot({
   className,
   shape = 'circle',
-  size = 'md',
+  uiSize = 'md',
   ...props
 }: AvatarRootProps) {
   return (
@@ -22,7 +22,7 @@ export function AvatarRoot({
       {...props}
       className={mergeComponentClassName('tr-avatar', className)}
       data-shape={shape}
-      data-size={size}
+      data-ui-size={uiSize}
     />
   );
 }

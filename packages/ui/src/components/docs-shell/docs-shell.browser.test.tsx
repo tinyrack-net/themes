@@ -64,7 +64,7 @@ test('composes all semantic parts and exposes router state without importing a r
     getComputedStyle(document.querySelector('header') as HTMLElement).blockSize,
   ).toBe('48px');
   expect(document.querySelector('.tr-docs-shell-menu-trigger')).toHaveAttribute(
-    'data-size',
+    'data-ui-size',
     'sm',
   );
   expect(document.querySelector('aside.tr-docs-shell-sidebar')).toHaveTextContent(
@@ -89,7 +89,7 @@ test('composes all semantic parts and exposes router state without importing a r
       .display,
   ).toBe('none');
   expect(document.querySelector('.tr-docs-shell-menu-close')).toHaveAttribute(
-    'data-size',
+    'data-ui-size',
     'sm',
   );
   vi.restoreAllMocks();

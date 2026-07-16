@@ -6,13 +6,13 @@ import { mergeComponentClassName } from '../../internal/component-class-name.js'
 import { Spinner } from '../spinner/index.js';
 
 export type ButtonAppearance = 'solid' | 'outline' | 'ghost';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonUiSize = 'sm' | 'md' | 'lg';
 export type ButtonVariant = 'secondary' | 'primary' | 'danger';
 export type ButtonProps = ComponentProps<typeof BaseButton> & {
   appearance?: ButtonAppearance;
   loading?: boolean;
   loadingLabel?: string;
-  size?: ButtonSize;
+  uiSize?: ButtonUiSize;
   variant?: ButtonVariant;
 };
 
@@ -23,7 +23,7 @@ export function Button({
   disabled,
   loading = false,
   loadingLabel,
-  size = 'md',
+  uiSize = 'md',
   type = 'button',
   variant = 'secondary',
   ...props
@@ -35,12 +35,12 @@ export function Button({
       aria-label={loading ? (loadingLabel ?? props['aria-label']) : props['aria-label']}
       className={mergeComponentClassName('tr-btn', className)}
       data-appearance={appearance}
-      data-size={size}
+      data-ui-size={uiSize}
       data-variant={variant}
       disabled={disabled || loading}
       type={type}
     >
-      {loading ? <Spinner decorative size="sm" /> : null}
+      {loading ? <Spinner decorative uiSize="sm" /> : null}
       {children}
     </BaseButton>
   );

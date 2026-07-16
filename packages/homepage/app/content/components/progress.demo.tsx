@@ -1,6 +1,6 @@
 import {
   Progress,
-  type ProgressSize,
+  type ProgressUiSize,
   type ProgressVariant,
 } from '@tinyrack/ui/components/progress';
 import type {
@@ -15,7 +15,7 @@ type ProgressStoryArgs = {
   label: string;
   max: number;
   min: number;
-  size: ProgressSize;
+  size: ProgressUiSize;
   value: number;
   variant: ProgressVariant;
 };

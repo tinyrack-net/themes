@@ -8,7 +8,7 @@ import { Tabs, TabsRoot } from './index.js';
 test('uses Base UI keyboard and selection semantics', async () => {
   expect(Tabs.Root).toBe(TabsRoot);
   await render(
-    <Tabs.Root defaultValue="general" size="lg">
+    <Tabs.Root defaultValue="general" uiSize="lg">
       <Tabs.List>
         <Tabs.Tab value="general">General</Tabs.Tab>
         <Tabs.Tab value="network">Network</Tabs.Tab>
@@ -21,7 +21,7 @@ test('uses Base UI keyboard and selection semantics', async () => {
   expect(triggers[0]?.getAttribute('aria-selected')).toBe('true');
   triggers[1]?.click();
   await expect.poll(() => triggers[1]?.getAttribute('aria-selected')).toBe('true');
-  expect(document.querySelector<HTMLElement>('.tr-tabs')?.dataset['size']).toBe('lg');
+  expect(document.querySelector<HTMLElement>('.tr-tabs')?.dataset['uiSize']).toBe('lg');
 
   const list = document.querySelector<HTMLElement>('.tr-tabs-list');
   expect(list).not.toBeNull();

@@ -1,7 +1,7 @@
 import {
   Avatar,
   type AvatarShape,
-  type AvatarSize,
+  type AvatarUiSize,
 } from '@tinyrack/ui/components/avatar';
 import type {
   DemoMeta as Meta,
@@ -15,7 +15,7 @@ type AvatarStoryArgs = {
   fallback: string;
   imageState: 'loaded' | 'missing' | 'error';
   shape: AvatarShape;
-  size: AvatarSize;
+  size: AvatarUiSize;
 };
 
 const meta = {

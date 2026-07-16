@@ -249,9 +249,9 @@ export function DocsSiteShell({ children }: { children: ReactNode }) {
             compact
             label={localeConfig.messages.search}
             onClick={(event) => openSearch(event.currentTarget)}
-            size="sm"
+            uiSize="sm"
           />
-          <ColorSchemeToggle onValueChange={applyScheme} size="sm" value={scheme} />
+          <ColorSchemeToggle onValueChange={applyScheme} uiSize="sm" value={scheme} />
           {localeOptions.length > 1 ? (
             <LanguageSelect
               label={localeConfig.messages.language}
@@ -276,8 +276,14 @@ export function DocsSiteShell({ children }: { children: ReactNode }) {
               <Badge>{docsManifest.header.version}</Badge>
             )}
           </DocsShell.Brand>
+          <DocsSearch.Trigger
+            aria-label={localeConfig.messages.search}
+            label={localeConfig.messages.search}
+            onClick={(event) => openSearch(event.currentTarget)}
+            uiSize="sm"
+          />
           <DocsShell.Actions>
-            <ColorSchemeToggle onValueChange={applyScheme} size="sm" value={scheme} />
+            <ColorSchemeToggle onValueChange={applyScheme} uiSize="sm" value={scheme} />
             {localeOptions.length > 1 ? (
               <LanguageSelect
                 label={localeConfig.messages.language}

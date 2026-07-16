@@ -35,7 +35,7 @@ The control reports `idle`, `copied`, or `unavailable` through `data-copy-status
   description="Appearance, variant, size, resetDelay, and all three status labels compose without changing the button width when status changes."
   preview={<Stories.CopyButtonCombinationPreview />}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`<div className="flex flex-wrap items-center gap-3">
-  <CopyButton appearance="solid" resetDelay={750} size="sm" value="solid-primary" variant="primary" />
+  <CopyButton appearance="solid" resetDelay={750} uiSize="sm" value="solid-primary" variant="primary" />
   <CopyButton
     appearance="outline"
     copiedLabel="Import copied"
@@ -44,7 +44,7 @@ The control reports `idle`, `copied`, or `unavailable` through `data-copy-status
     value="import { Button } from '@tinyrack/ui/components/button';"
     variant="secondary"
   />
-  <CopyButton appearance="ghost" idleLabel="Copy cleanup command" size="lg" value="pnpm clean" variant="danger" />
+  <CopyButton appearance="ghost" idleLabel="Copy cleanup command" uiSize="lg" value="pnpm clean" variant="danger" />
 </div>` }]}
 />
 

@@ -22,6 +22,6 @@ export type {
 export type { TabsIndicatorProps } from './tabs-indicator.js';
 export type { TabsListProps } from './tabs-list.js';
 export type { TabsPanelProps } from './tabs-panel.js';
-export type { TabsRootProps, TabsSize } from './tabs-root.js';
+export type { TabsRootProps, TabsUiSize } from './tabs-root.js';
 export type { TabsTabProps } from './tabs-tab.js';
 export { TabsIndicator, TabsList, TabsPanel, TabsRoot, TabsTab };

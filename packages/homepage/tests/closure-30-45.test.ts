@@ -2,7 +2,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { extname, join, resolve, sep } from 'node:path';
-import { type Browser, chromium } from 'playwright';
+import { type Browser, chromium, type Page } from 'playwright';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 const buildRoot = join(process.cwd(), 'build/client');
@@ -81,6 +81,11 @@ async function closeServer(server: Server) {
   });
 }
 
+async function gotoHydrated(page: Page, url: string) {
+  await page.goto(url);
+  await page.locator('html[data-hydrated="true"]').waitFor();
+}
+
 describe('reports 30-45 closure regressions', () => {
   let browser: Browser;
   let origin: string;
@@ -102,7 +107,7 @@ describe('reports 30-45 closure regressions', () => {
   it('keeps controlled demos, native forms, accessibility, and mobile previews aligned', async () => {
     const page = await browser.newPage({ viewport: { height: 844, width: 390 } });
     try {
-      await page.goto(`${origin}/en/components/toast`);
+      await gotoHydrated(page, `${origin}/en/components/toast`);
       const toastPreview = page.locator('[data-playground-preview]');
       const showToast = toastPreview.getByRole('button', { name: 'Show toast' });
       const toastViewport = page.locator(
@@ -121,7 +126,7 @@ describe('reports 30-45 closure regressions', () => {
       await expect.poll(() => toastControl.isChecked()).toBe(false);
       await expect.poll(() => toastViewport.locator('.tr-toast').count()).toBe(0);
 
-      await page.goto(`${origin}/en/components/alert-dialog`);
+      await gotoHydrated(page, `${origin}/en/components/alert-dialog`);
       const alertExample = page.locator(
         '[data-component-example-id="alert-dialog-basic"]',
       );
@@ -133,7 +138,7 @@ describe('reports 30-45 closure regressions', () => {
         'Rack deleted',
       );
 
-      await page.goto(`${origin}/en/components/checkbox-group`);
+      await gotoHydrated(page, `${origin}/en/components/checkbox-group`);
       const groupExample = page.locator(
         '[data-component-example-id="checkbox-group-form"]',
       );
@@ -162,7 +167,7 @@ describe('reports 30-45 closure regressions', () => {
       await groupExample.getByRole('button', { name: 'Save features' }).click();
       await groupExample.getByText('Select at least one feature.').waitFor();
 
-      await page.goto(`${origin}/en/components/fieldset`);
+      await gotoHydrated(page, `${origin}/en/components/fieldset`);
       const fieldsetOverflow = await page
         .locator('[data-playground-preview]')
         .evaluate((element) => ({
@@ -173,7 +178,7 @@ describe('reports 30-45 closure regressions', () => {
         fieldsetOverflow.clientWidth + 1,
       );
 
-      await page.goto(`${origin}/en/components/form`);
+      await gotoHydrated(page, `${origin}/en/components/form`);
       const nativeForm = page.locator('[data-component-example-id="form-basic"]');
       const nativeInput = nativeForm.getByRole('textbox', { name: 'Rack name' });
       await nativeInput.fill('rack-zeta');
@@ -207,7 +212,7 @@ describe('reports 30-45 closure regressions', () => {
         'Created rack-beta.',
       );
 
-      await page.goto(`${origin}/en/components/menubar`);
+      await gotoHydrated(page, `${origin}/en/components/menubar`);
       const menubarExample = page.locator(
         '[data-component-example-id="menubar-states"]',
       );

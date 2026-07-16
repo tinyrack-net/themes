@@ -47,6 +47,23 @@ test('renders a compact trigger for narrow shell actions', async () => {
   );
 });
 
+test('keeps the search field modal vertically compact', async () => {
+  await render(
+    <DocsSearch.Dialog
+      onOpenChange={() => {}}
+      onSearch={async () => []}
+      onSelect={() => {}}
+      open
+    />,
+  );
+  const heading = document.querySelector('.tr-docs-search-heading') as HTMLElement;
+  const style = getComputedStyle(heading);
+  expect(style.paddingBlockStart).toBe('0px');
+  expect(style.paddingBlockEnd).toBe('0px');
+  expect(style.paddingInlineStart).toBe('12px');
+  expect(style.paddingInlineEnd).toBe('12px');
+});
+
 test('searches asynchronously, highlights results, and opens the active result', async () => {
   const onSelect = vi.fn();
   const onSearch = vi.fn(async () => [result, resultWithoutHighlights]);

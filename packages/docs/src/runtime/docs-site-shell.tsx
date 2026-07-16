@@ -276,12 +276,6 @@ export function DocsSiteShell({ children }: { children: ReactNode }) {
               <Badge>{docsManifest.header.version}</Badge>
             )}
           </DocsShell.Brand>
-          <DocsSearch.Trigger
-            aria-label={localeConfig.messages.search}
-            label={localeConfig.messages.search}
-            onClick={(event) => openSearch(event.currentTarget)}
-            size="sm"
-          />
           <DocsShell.Actions>
             <ColorSchemeToggle onValueChange={applyScheme} size="sm" value={scheme} />
             {localeOptions.length > 1 ? (

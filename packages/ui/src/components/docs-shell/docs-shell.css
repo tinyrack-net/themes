@@ -77,7 +77,11 @@
 
 .tr-docs-shell-sidebar {
   background: var(--tinyrack-surface);
+  border-inline-end: 0;
   position: relative;
+}
+.tr-docs-shell-drawer-popup {
+  border-inline-end: 0;
 }
 .tr-docs-shell-menu-close {
   inset-block-start: var(--tinyrack-space-md);

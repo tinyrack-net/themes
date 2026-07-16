@@ -312,7 +312,7 @@ describe('built React Router documentation', () => {
               message: documentRoute.path,
               timeout: 10_000,
             })
-            .toBe(1);
+            .toBe(documentRoute.navigation ? 1 : 0);
         }
         expect(pageErrors).toEqual([]);
         expect(consoleErrors).toEqual([]);
@@ -1422,10 +1422,10 @@ describe('built React Router documentation', () => {
     const buttonRouteModule = /\/assets\/button\.docs-[^/]+\.js$/;
     const releaseRouteModule = await holdRouteModule(page, buttonRouteModule);
     try {
-      await page.goto(origin);
+      await page.goto(`${origin}/components/accordion`);
       const navigation = page.getByRole('navigation', { name: 'Documentation' });
       const currentLink = navigation.getByRole('link', {
-        name: 'Tinyrack UI',
+        name: 'Accordion',
         exact: true,
       });
       const pendingLink = navigation.getByRole('link', {
@@ -1439,7 +1439,7 @@ describe('built React Router documentation', () => {
 
       await page.getByRole('progressbar', { name: 'Loading page' }).waitFor();
       await expect(
-        page.getByRole('heading', { level: 1, name: 'Tinyrack UI' }).isVisible(),
+        page.getByRole('heading', { level: 1, name: 'Accordion' }).isVisible(),
       ).resolves.toBe(true);
       await expect(currentLink.getAttribute('aria-current')).resolves.toBe('page');
       await expect(pendingLink.getAttribute('aria-current')).resolves.toBeNull();

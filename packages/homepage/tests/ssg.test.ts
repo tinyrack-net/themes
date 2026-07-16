@@ -56,10 +56,13 @@ describe('static documentation output', () => {
   });
 
   it('pre-renders adjacent document navigation in sidebar order', () => {
-    for (const [index, route] of staticDocumentRoutes.entries()) {
+    const navigableRoutes = staticDocumentRoutes.filter(
+      (route) => route.layout === 'docs' && route.navigation,
+    );
+    for (const [index, route] of navigableRoutes.entries()) {
       const html = readFileSync(htmlPathFor(route.path) as string, 'utf8');
-      const previousRoute = staticDocumentRoutes[index - 1];
-      const nextRoute = staticDocumentRoutes[index + 1];
+      const previousRoute = navigableRoutes[index - 1];
+      const nextRoute = navigableRoutes[index + 1];
       const links = html.match(/data-document-pagination-link="(?:previous|next)"/g);
 
       expect(html, route.path).toContain('aria-label="Previous and next documents"');

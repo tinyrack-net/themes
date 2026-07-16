@@ -5,22 +5,36 @@ import type {
 } from '../../playground/demo.js';
 import { definePlayground } from '../../playground/demo.js';
 
-type Args = { open: boolean };
-export function FileTreePreview({ open }: Args) {
+type Args = Record<string, never>;
+
+export function FileTreePreview() {
   return (
-    <FileTree.Root>
-      <FileTree.Directory defaultOpen={open} name="src">
-        <FileTree.Root>
-          <FileTree.File>index.ts</FileTree.File>
-        </FileTree.Root>
-      </FileTree.Directory>
-      <FileTree.File>package.json</FileTree.File>
-    </FileTree.Root>
+    <FileTree>
+      <ul>
+        <li>astro.config.mjs</li>
+        <li>package.json</li>
+        <li>
+          <strong>src</strong>
+          <ul>
+            <li>
+              components
+              <ul>
+                <li>Header.astro</li>
+                <li>Title.astro</li>
+              </ul>
+            </li>
+            <li>pages/</li>
+          </ul>
+        </li>
+        <li>README.md an important file</li>
+        <li>...</li>
+      </ul>
+    </FileTree>
   );
 }
 const meta = {
-  args: { open: true },
-  argTypes: { open: { control: 'boolean' } },
+  args: {},
+  argTypes: {},
   parameters: { layout: 'centered' },
   render: FileTreePreview,
   title: 'Components/FileTree',

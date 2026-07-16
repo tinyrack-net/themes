@@ -782,7 +782,7 @@ export const componentDocsManifest = [
     capabilities: ['responsive', 'keyboard', 'overflow', 'stateful'],
     file: 'app/content/en/components/file-tree.docs.mdx',
     id: 'file-tree',
-    requiredControls: ['open'],
+    requiredControls: [],
     requiredExamples: ['file-tree-basic'],
     title: 'FileTree',
   },

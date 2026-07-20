@@ -1,0 +1,710 @@
+import type { Browser } from 'playwright';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import {
+  componentDocsManifest,
+  createBrowserAuditRuntime,
+  expectHidden,
+  expectHorizontallyInsideViewport,
+  expectNoLocalOverflow,
+  expectVisible,
+  gotoHydrated,
+  setTheme,
+  settledScrollTop,
+  sharp,
+} from './browser-audit-runtime.ts';
+
+const runtime = createBrowserAuditRuntime();
+
+describe('built React Router documentation', () => {
+  let browser: Browser;
+  let origin: string;
+
+  beforeAll(async () => {
+    await runtime.start();
+    browser = runtime.browser;
+    origin = runtime.origin;
+  });
+
+  afterAll(async () => {
+    await runtime.stop();
+  });
+  it('preserves the 0.2 documentation chrome geometry', async () => {
+    const desktopPage = await browser.newPage({
+      viewport: { height: 900, width: 1440 },
+    });
+    const mobilePage = await browser.newPage({
+      viewport: { height: 844, width: 390 },
+    });
+    try {
+      await setTheme(desktopPage, 'tinyrack-dark');
+      await gotoHydrated(desktopPage, `${origin}/en/components/button`);
+      const desktopSidebarInner = desktopPage.locator('.tr-docs-sidebar-inner');
+      const desktopHeader = desktopPage.locator('.tr-docs-shell-header').first();
+      const desktopMenu = desktopHeader.getByRole('button', {
+        name: 'Open navigation',
+      });
+      const desktopClose = desktopPage.locator('.tr-docs-shell-menu-close');
+      const desktopNavigationGroup = desktopPage.locator('.tr-collapsible').first();
+      const desktopLayout = desktopPage.locator('.tr-docs-content-layout');
+      const desktopContent = desktopPage.locator('.tr-docs-content-column');
+
+      await expectHidden(desktopClose);
+      await expectHidden(desktopMenu);
+      await expect
+        .poll(() =>
+          desktopNavigationGroup.evaluate(
+            (element) => getComputedStyle(element).borderTopWidth,
+          ),
+        )
+        .toBe('0px');
+      const [headerBox, sidebarBox, layoutBox, contentBox] = await Promise.all([
+        desktopHeader.boundingBox(),
+        desktopSidebarInner.boundingBox(),
+        desktopLayout.boundingBox(),
+        desktopContent.boundingBox(),
+      ]);
+      expect(headerBox?.x).toBe(0);
+      expect(headerBox?.y).toBe(0);
+      expect(headerBox?.width).toBe(1440);
+      expect(sidebarBox?.y).toBe(headerBox?.height);
+      expect(layoutBox?.width ?? 0).toBeGreaterThan(contentBox?.width ?? 0);
+      const desktopTableOfContents = desktopPage.getByRole('navigation', {
+        name: 'On this page',
+      });
+      await expectVisible(desktopTableOfContents);
+      await expectVisible(
+        desktopTableOfContents.getByRole('link', { name: 'Contract' }),
+      );
+      const desktopOutlineBoxBefore = await desktopTableOfContents.boundingBox();
+      const desktopUsageHeading = desktopPage.getByRole('heading', {
+        level: 2,
+        name: 'Usage',
+      });
+      const desktopUsageOffsetTop = await desktopUsageHeading.evaluate(
+        (element) => (element as HTMLElement).offsetTop,
+      );
+      await desktopPage
+        .locator('.tr-docs-shell-scroll-viewport')
+        .evaluate((element, offsetTop) => {
+          element.scrollTop = offsetTop - 200;
+        }, desktopUsageOffsetTop);
+      await expect
+        .poll(() =>
+          desktopTableOfContents
+            .getByRole('link', { name: 'Usage' })
+            .getAttribute('aria-current'),
+        )
+        .toBe('location');
+      const desktopOutlineBoxAfter = await desktopTableOfContents.boundingBox();
+      expect(desktopOutlineBoxAfter?.y ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(
+        (desktopOutlineBoxBefore?.y ?? 0) + 2,
+      );
+      const desktopActions = desktopHeader.locator('.tr-docs-shell-actions');
+      await expect(
+        desktopActions
+          .locator(':scope > .tr-language-select-trigger')
+          .first()
+          .getAttribute('data-ui-size'),
+      ).resolves.toBe('sm');
+      await expect(
+        desktopActions
+          .locator(':scope > .tr-language-select-trigger')
+          .first()
+          .getAttribute('aria-label'),
+      ).resolves.toBe('Language');
+      await expect(
+        desktopActions
+          .locator(':scope > *')
+          .evaluateAll((elements) =>
+            elements.map((element) => element.className).filter(Boolean),
+          ),
+      ).resolves.toEqual([
+        'tr-select-trigger tr-language-select-trigger',
+        'tr-btn tr-docs-search-trigger tr-docs-header-search',
+        'tr-btn tr-icon-btn tr-color-scheme-toggle',
+      ]);
+      const desktopPrimaryNavigation = desktopPage.getByRole('navigation', {
+        name: 'Primary navigation',
+      });
+      await expectVisible(desktopPrimaryNavigation);
+      await expect(
+        desktopPrimaryNavigation
+          .getByRole('link', { name: 'Docs' })
+          .getAttribute('href'),
+      ).resolves.toBe('/en/foundations/');
+      await expect(
+        desktopPrimaryNavigation
+          .getByRole('link', { name: 'GitHub' })
+          .getAttribute('href'),
+      ).resolves.toBe('https://github.com/tinyrack-net/design');
+      const desktopHeaderLinkMetrics = await desktopPrimaryNavigation.evaluate(
+        (nav) => ({
+          navWidth: nav.getBoundingClientRect().width,
+          linkWidths: [...nav.querySelectorAll('a')].map(
+            (link) => link.getBoundingClientRect().width,
+          ),
+        }),
+      );
+      expect(desktopHeaderLinkMetrics.linkWidths).toHaveLength(2);
+      expect(Math.max(...desktopHeaderLinkMetrics.linkWidths)).toBeLessThan(
+        desktopHeaderLinkMetrics.navWidth / 4,
+      );
+      await expect(
+        desktopPrimaryNavigation.locator('a').evaluateAll((links) =>
+          links.map((link) => ({
+            className: link.className,
+            display: getComputedStyle(link).display,
+            padding: getComputedStyle(link).padding,
+          })),
+        ),
+      ).resolves.toEqual([
+        { className: 'tr-link', display: 'block', padding: '0px' },
+        { className: 'tr-link', display: 'block', padding: '0px' },
+      ]);
+      await expect(
+        desktopPage
+          .locator('.tr-docs-sidebar-header-navigation a')
+          .evaluateAll((links) => links.map((link) => link.className)),
+      ).resolves.toEqual([
+        'tr-link tr-docs-navigation-link',
+        'tr-link tr-docs-navigation-link',
+      ]);
+      await expectHidden(desktopPage.getByRole('button', { name: 'Site navigation' }));
+      await expect(
+        desktopPage.getByRole('button', { name: 'Back to docs menu' }).count(),
+      ).resolves.toBe(0);
+      await expectVisible(
+        desktopPage.locator('.tr-docs-sidebar-inner > .tr-docs-navigation'),
+      );
+
+      await setTheme(mobilePage, 'tinyrack-dark');
+      await gotoHydrated(mobilePage, `${origin}/en/components/button`);
+      await expectVisible(mobilePage.getByRole('combobox', { name: 'On this page' }));
+      const mobileHeadingBox = await mobilePage
+        .getByRole('heading', {
+          level: 1,
+          name: 'Button',
+        })
+        .boundingBox();
+      const mobileTableOfContentsBox = await mobilePage
+        .getByRole('combobox', { name: 'On this page' })
+        .boundingBox();
+      expect(mobileTableOfContentsBox?.y ?? Number.POSITIVE_INFINITY).toBeLessThan(
+        mobileHeadingBox?.y ?? 0,
+      );
+      expect(mobileHeadingBox?.y ?? 0).toBeGreaterThan(
+        (mobileTableOfContentsBox?.y ?? 0) + (mobileTableOfContentsBox?.height ?? 0),
+      );
+      await mobilePage.getByRole('combobox', { name: 'On this page' }).click();
+      await mobilePage.getByRole('option', { name: 'Install' }).click();
+      await expect.poll(() => mobilePage.url()).toContain('#install');
+      const mobileTheme = mobilePage.getByRole('button', {
+        name: 'Use light color scheme',
+      });
+      const mobileMenu = mobilePage.getByRole('button', {
+        name: 'Open navigation',
+      });
+      const [mobileHeaderBox, menuBox, themeBox] = await Promise.all([
+        mobilePage.locator('.tr-docs-shell-header').boundingBox(),
+        mobileMenu.boundingBox(),
+        mobileTheme.boundingBox(),
+      ]);
+      expect(menuBox?.x ?? Number.POSITIVE_INFINITY).toBeCloseTo(
+        (mobileHeaderBox?.x ?? 0) + 16,
+        0,
+      );
+      expect(menuBox?.x ?? 0).toBeLessThan(themeBox?.x ?? 0);
+      await expectHidden(
+        mobilePage
+          .locator('.tr-docs-shell-header')
+          .getByRole('navigation', { name: 'Primary navigation' }),
+      );
+      await expectHidden(
+        mobilePage.locator('.tr-docs-shell-header .tr-language-select-trigger'),
+      );
+      await mobileMenu.click();
+      const mobileDrawer = mobilePage.locator('.tr-app-shell-drawer-popup[data-open]');
+      const mobilePrimaryNavigation = mobileDrawer.locator('.tr-docs-navigation');
+      await expectVisible(mobilePrimaryNavigation);
+      const mobileLanguageSelect = mobileDrawer.locator(
+        '.tr-docs-shell-actions .tr-language-select-trigger',
+      );
+      await expectVisible(mobileLanguageSelect);
+      await expect(
+        mobileLanguageSelect.evaluate(
+          (element) =>
+            Math.abs(
+              element.getBoundingClientRect().width -
+                (element.parentElement?.getBoundingClientRect().width ?? 0),
+            ) < 0.5,
+        ),
+      ).resolves.toBe(true);
+      await expect(
+        mobileDrawer
+          .locator('.tr-docs-sidebar-inner')
+          .evaluate((element) => getComputedStyle(element).display),
+      ).resolves.toBe('flex');
+      await expect(
+        mobileDrawer
+          .locator('.tr-docs-shell-actions')
+          .evaluate((element) => element === element.parentElement?.lastElementChild),
+      ).resolves.toBe(true);
+      await expect(mobileLanguageSelect.getAttribute('data-ui-size')).resolves.toBe(
+        'sm',
+      );
+      await mobileLanguageSelect.click();
+      const mobileLanguagePopup = mobilePage.locator('.tr-select-popup[data-open]');
+      await expect.poll(() => mobileLanguagePopup.count()).toBe(1);
+      await expectVisible(mobileLanguagePopup);
+      await expect(
+        mobileLanguagePopup.evaluate((element) => {
+          const option = element.querySelector<HTMLElement>('[role="option"]');
+          if (!option) return false;
+          const rect = option.getBoundingClientRect();
+          return (
+            document
+              .elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2)
+              ?.closest('.tr-select-popup') === element
+          );
+        }),
+      ).resolves.toBe(true);
+      await mobilePage.keyboard.press('Escape');
+      const mobileSiteNavigation = mobilePage.getByRole('button', {
+        name: 'Main menu',
+      });
+      await expectVisible(mobileSiteNavigation);
+      await mobileSiteNavigation.click();
+      await expectHidden(
+        mobilePage.locator('.tr-app-shell-drawer-popup[data-open] .tr-docs-navigation'),
+      );
+      const mobileHeaderNavigation = mobilePage
+        .locator('.tr-app-shell-drawer-popup[data-open]')
+        .locator('.tr-docs-sidebar-header-navigation');
+      await expectVisible(
+        mobilePage.getByRole('button', { name: 'Back to docs menu' }),
+      );
+      await expectVisible(mobileHeaderNavigation);
+      await mobilePage.getByRole('button', { name: 'Back to docs menu' }).click();
+      await expectVisible(
+        mobilePage.locator('.tr-app-shell-drawer-popup[data-open] .tr-docs-navigation'),
+      );
+      await mobilePage.getByRole('button', { name: 'Close navigation' }).click();
+    } finally {
+      await desktopPage.close();
+      await mobilePage.close();
+    }
+  });
+
+  it('previews adjacent documents and keeps pagination responsive', async () => {
+    const desktopPage = await browser.newPage({
+      viewport: { height: 900, width: 1280 },
+    });
+    const mobilePage = await browser.newPage({ viewport: { height: 844, width: 390 } });
+
+    try {
+      await setTheme(desktopPage, 'tinyrack-light');
+      await desktopPage.goto(`${origin}/en/components/button`);
+      const desktopViewport = desktopPage.locator('.tr-docs-shell-scroll-viewport');
+
+      const desktopPagination = desktopPage.getByRole('navigation', {
+        name: 'Previous and next documents',
+      });
+      const previousDocument = desktopPagination.getByRole('link', {
+        name: 'Previous document: Badge',
+      });
+      const nextDocument = desktopPagination.getByRole('link', {
+        name: 'Next document: Card',
+      });
+
+      await expect(previousDocument.getAttribute('href')).resolves.toBe(
+        '/en/components/badge/',
+      );
+      await expect(nextDocument.getAttribute('href')).resolves.toBe(
+        '/en/components/card/',
+      );
+      await expect(
+        previousDocument.locator('.tr-document-pagination-description').textContent(),
+      ).resolves.toBe('Compact status labels with semantic color and density axes.');
+      await expect(
+        nextDocument.locator('.tr-document-pagination-description').textContent(),
+      ).resolves.toBe(
+        'Structured content surfaces with semantic sections, elevation, and padding density.',
+      );
+      await expectNoLocalOverflow(desktopPagination, 'desktop document pagination');
+
+      const previousBox = await previousDocument.boundingBox();
+      const nextBox = await nextDocument.boundingBox();
+      expect(previousBox).not.toBeNull();
+      expect(nextBox).not.toBeNull();
+      expect(Math.abs((previousBox?.y ?? 0) - (nextBox?.y ?? 0))).toBeLessThanOrEqual(
+        1,
+      );
+      expect(
+        await desktopViewport.evaluate((element) => {
+          element.scrollTop = element.scrollHeight;
+          return element.scrollTop;
+        }),
+      ).toBeGreaterThan(0);
+
+      await nextDocument.click();
+      await desktopPage.getByRole('heading', { level: 1, name: 'Card' }).waitFor();
+      await expect.poll(() => desktopPage.url()).toBe(`${origin}/en/components/card/`);
+      await expect
+        .poll(() => desktopViewport.evaluate((element) => element.scrollTop))
+        .toBe(0);
+
+      await setTheme(mobilePage, 'tinyrack-dark');
+      await mobilePage.goto(`${origin}/en/components/button`);
+      const mobilePagination = mobilePage.getByRole('navigation', {
+        name: 'Previous and next documents',
+      });
+      const mobilePrevious = mobilePagination.getByRole('link', {
+        name: 'Previous document: Badge',
+      });
+      const mobileNext = mobilePagination.getByRole('link', {
+        name: 'Next document: Card',
+      });
+      const mobilePreviousBox = await mobilePrevious.boundingBox();
+      const mobileNextBox = await mobileNext.boundingBox();
+
+      expect(mobilePreviousBox).not.toBeNull();
+      expect(mobileNextBox).not.toBeNull();
+      expect(mobileNextBox?.y ?? 0).toBeGreaterThanOrEqual(
+        (mobilePreviousBox?.y ?? 0) + (mobilePreviousBox?.height ?? 0),
+      );
+      await expectNoLocalOverflow(mobilePagination, 'mobile document pagination');
+      await expectNoLocalOverflow(mobilePrevious, 'mobile previous document');
+      await expectNoLocalOverflow(mobileNext, 'mobile next document');
+    } finally {
+      await desktopPage.close();
+      await mobilePage.close();
+    }
+  });
+
+  it('presents Welcome as a cinematic responsive product showcase', async () => {
+    const desktopPage = await browser.newPage({
+      viewport: { height: 1024, width: 1440 },
+    });
+    const compactPage = await browser.newPage({
+      viewport: { height: 720, width: 1280 },
+    });
+    const mobilePage = await browser.newPage({ viewport: { height: 844, width: 390 } });
+    const pageErrors: string[] = [];
+    const consoleErrors: string[] = [];
+    desktopPage.on('pageerror', (error) => pageErrors.push(error.message));
+    mobilePage.on('pageerror', (error) => pageErrors.push(error.message));
+    desktopPage.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    mobilePage.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
+    await setTheme(desktopPage, 'tinyrack-light');
+    await setTheme(compactPage, 'tinyrack-dark');
+    await setTheme(mobilePage, 'tinyrack-dark');
+    await mobilePage.emulateMedia({ reducedMotion: 'reduce' });
+
+    try {
+      await gotoHydrated(desktopPage, `${origin}/en`);
+      await gotoHydrated(compactPage, `${origin}/ko`);
+      await gotoHydrated(mobilePage, `${origin}/en`);
+
+      expect(
+        await desktopPage.locator('.tr-docs-shell').getAttribute('data-docs-layout'),
+      ).toBe('splash');
+      await expectHidden(desktopPage.locator('.tr-docs-shell-sidebar'));
+
+      const desktopHero = desktopPage.locator('[data-welcome-hero]');
+      const productWindow = desktopHero.locator('[data-welcome-app]');
+      const gradient = desktopHero.locator('[data-welcome-gradient]');
+      const title = desktopPage.getByRole('heading', {
+        level: 1,
+        name: 'TINYRACK DESIGN SYSTEM',
+      });
+      const startBuilding = desktopPage.getByRole('button', {
+        name: 'Start building',
+      });
+      const mainViewport = desktopPage.locator('.tr-docs-shell-scroll-viewport');
+
+      await expectVisible(title);
+      await expectVisible(desktopHero.getByText('React 19', { exact: true }));
+      await expectVisible(desktopHero.getByText('Base UI', { exact: true }));
+      await expectVisible(
+        desktopHero.getByText(`${componentDocsManifest.length} components`, {
+          exact: true,
+        }),
+      );
+      expect(
+        await desktopPage
+          .getByText(
+            'A React design system for precise operational interfaces—without rebuilding the fundamentals.',
+            { exact: true },
+          )
+          .count(),
+      ).toBe(0);
+      await expectVisible(productWindow);
+      await expectVisible(gradient);
+      const gradientBackground = await gradient.evaluate(
+        (element) => getComputedStyle(element).backgroundImage,
+      );
+      expect(gradientBackground).toContain('linear-gradient');
+
+      const titleTypography = await title.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          fontSize: Number.parseFloat(style.fontSize),
+          lineHeight: Number.parseFloat(style.lineHeight),
+        };
+      });
+      expect(
+        titleTypography.lineHeight / titleTypography.fontSize,
+      ).toBeGreaterThanOrEqual(0.96);
+      expect(
+        await productWindow.evaluate((element) => getComputedStyle(element).zIndex),
+      ).toBe('0');
+      expect(
+        await gradient.evaluate((element) => getComputedStyle(element).zIndex),
+      ).toBe('1');
+      expect(
+        await desktopHero
+          .locator('[data-welcome-hero-content]')
+          .evaluate((element) => getComputedStyle(element).zIndex),
+      ).toBe('2');
+
+      const rackLabel = productWindow.locator(
+        '[data-welcome-environment] .tr-app-shell-sidebar-label',
+      );
+      const rackLabelMetrics = await rackLabel.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          height: element.getBoundingClientRect().height,
+          lineHeight: Number.parseFloat(style.lineHeight),
+          whiteSpace: style.whiteSpace,
+        };
+      });
+      expect(rackLabelMetrics.whiteSpace).toBe('nowrap');
+      expect(rackLabelMetrics.height).toBeLessThanOrEqual(
+        rackLabelMetrics.lineHeight * 1.1,
+      );
+      expect
+        .soft(
+          await rackLabel.locator('strong').evaluate((element) => element.textContent),
+        )
+        .toBe('Rack\u00a0A');
+
+      const heroBox = await desktopHero.boundingBox();
+      const productBox = await productWindow.boundingBox();
+      const titleBox = await title.boundingBox();
+      expect(heroBox).not.toBeNull();
+      expect(productBox).not.toBeNull();
+      expect(titleBox).not.toBeNull();
+      expect(heroBox?.height ?? 0).toBeGreaterThanOrEqual(900);
+      expect(productBox?.y ?? 0).toBeLessThan(titleBox?.y ?? 0);
+      expect((productBox?.y ?? 0) + (productBox?.height ?? 0)).toBeGreaterThan(
+        titleBox?.y ?? 0,
+      );
+
+      const compactTitle = compactPage.getByRole('heading', {
+        level: 1,
+        name: 'TINYRACK DESIGN SYSTEM',
+      });
+      const compactProductWindow = compactPage.locator('[data-welcome-app]');
+      const titleLines = compactTitle.locator('span');
+      const firstTitleLineBox = await titleLines.nth(0).boundingBox();
+      const secondTitleLineBox = await titleLines.nth(1).boundingBox();
+      const sidebarBox = await compactProductWindow
+        .locator('[data-welcome-sidebar]')
+        .boundingBox();
+      expect(firstTitleLineBox).not.toBeNull();
+      expect(secondTitleLineBox).not.toBeNull();
+      expect(sidebarBox).not.toBeNull();
+      const screenshot = await compactPage.screenshot();
+      const { data: screenshotPixels, info: screenshotInfo } = await sharp(screenshot)
+        .removeAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+      const sidebarBorderX =
+        Math.round((sidebarBox?.x ?? 0) + (sidebarBox?.width ?? 0)) - 1;
+      const titleGapY = Math.round(
+        ((firstTitleLineBox?.y ?? 0) +
+          (firstTitleLineBox?.height ?? 0) +
+          (secondTitleLineBox?.y ?? 0)) /
+          2,
+      );
+      const pixelAt = (x: number, y: number) => {
+        const offset = (y * screenshotInfo.width + x) * screenshotInfo.channels;
+        return [...screenshotPixels.subarray(offset, offset + 3)];
+      };
+      const borderPixel = pixelAt(sidebarBorderX, titleGapY);
+      const neighboringPixel = pixelAt(sidebarBorderX + 4, titleGapY);
+      expect
+        .soft(
+          Math.max(
+            ...borderPixel.map((channel, index) =>
+              Math.abs(channel - (neighboringPixel[index] ?? channel)),
+            ),
+          ),
+        )
+        .toBeLessThanOrEqual(4);
+      await expectHorizontallyInsideViewport(desktopPage, desktopHero);
+
+      expect(await startBuilding.getAttribute('href')).toBe('#quick-start');
+      expect(
+        await desktopPage
+          .getByRole('button', { name: 'Explore the app shell' })
+          .getAttribute('href'),
+      ).toBe('/en/components/app-shell/');
+      await startBuilding.focus();
+      await expect(
+        startBuilding.evaluate((element) => element === document.activeElement),
+      ).resolves.toBe(true);
+      await startBuilding.click();
+      await expect.poll(() => new URL(desktopPage.url()).hash).toBe('#quick-start');
+      await expect.poll(() => settledScrollTop(mainViewport)).toBeGreaterThan(0);
+
+      expect(
+        await desktopPage
+          .locator('main [data-welcome-page] h1, main [data-welcome-content] h2')
+          .allTextContents(),
+      ).toEqual(['TINYRACKDESIGN SYSTEM', 'Start with the essentials.']);
+      expect(await desktopPage.locator('[data-welcome-composition]').count()).toBe(0);
+      expect(await desktopPage.getByText('02 / System principles').count()).toBe(0);
+
+      await expectNoLocalOverflow(mobilePage.locator('html'), 'Welcome document');
+      await expectNoLocalOverflow(
+        mobilePage.locator('[data-welcome-hero]'),
+        'Welcome hero',
+      );
+      await expectHorizontallyInsideViewport(
+        mobilePage,
+        mobilePage.locator('[data-welcome-app]'),
+      );
+      const mobileTitle = mobilePage.getByRole('heading', {
+        level: 1,
+        name: 'TINYRACK DESIGN SYSTEM',
+      });
+      const mobileTitleTypography = await mobileTitle.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          fontSize: Number.parseFloat(style.fontSize),
+          lineHeight: Number.parseFloat(style.lineHeight),
+        };
+      });
+      expect(
+        mobileTitleTypography.lineHeight / mobileTitleTypography.fontSize,
+      ).toBeGreaterThanOrEqual(0.96);
+      const mobileFade = {
+        appMask: await mobilePage
+          .locator('[data-welcome-app]')
+          .evaluate((element) => getComputedStyle(element).maskImage),
+        heroOverlay: await mobilePage
+          .locator('[data-welcome-gradient]')
+          .evaluate((element) => getComputedStyle(element).backgroundImage),
+      };
+      const percentageStops = (value: string) =>
+        Array.from(value.matchAll(/([\d.]+)%/g), (match) => Number(match[1]));
+
+      expect(mobileFade.appMask).toContain('linear-gradient');
+      expect(percentageStops(mobileFade.appMask).at(-1)).toBeGreaterThanOrEqual(72);
+      expect(percentageStops(mobileFade.heroOverlay).at(-1)).toBeGreaterThanOrEqual(82);
+      await expectHorizontallyInsideViewport(
+        mobilePage,
+        mobilePage.locator('[data-component-install]'),
+      );
+      expect(await mobilePage.locator('html').getAttribute('data-theme')).toBe(
+        'tinyrack-dark',
+      );
+      expect(
+        await mobilePage
+          .locator('[data-welcome-app]')
+          .evaluate((element) => getComputedStyle(element).animationName),
+      ).toBe('none');
+      const mobileShell = mobilePage.locator('[data-welcome-app] .tr-app-shell');
+      const mobileRail = mobileShell.locator(':scope > .tr-app-shell-sidebar');
+      const mobileMain = mobileShell.locator(':scope > .tr-app-shell-main');
+      const mobileRailBox = await mobileRail.boundingBox();
+      const mobileMainBox = await mobileMain.boundingBox();
+      expect(await mobileShell.getAttribute('data-mobile-sidebar')).toBe('rail');
+      expect(await mobileShell.getAttribute('data-sidebar-mode')).toBe('rail');
+      expect(mobileRailBox?.width).toBe(64);
+      expect(mobileMainBox).not.toBeNull();
+      expect((mobileMainBox?.x ?? 0) + 0.5).toBeGreaterThanOrEqual(
+        (mobileRailBox?.x ?? 0) + (mobileRailBox?.width ?? 0),
+      );
+      expect(await mobileShell.locator('.tr-app-shell-drawer-popup').count()).toBe(0);
+      for (const label of ['Rack\u00a0A', 'Overview', 'Deployments']) {
+        const hiddenLabel = mobileShell
+          .locator('.tr-app-shell-sidebar-label')
+          .filter({ hasText: label })
+          .first();
+        const hiddenBox = await hiddenLabel.boundingBox();
+        expect(hiddenBox).not.toBeNull();
+        expect(hiddenBox?.width ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(1);
+        expect(hiddenBox?.height ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(1);
+      }
+      const railIcons = mobileRail.locator('nav > span > svg');
+      for (let index = 0; index < (await railIcons.count()); index += 1) {
+        const itemBox = await railIcons.nth(index).locator('..').boundingBox();
+        const glyphBox = await railIcons.nth(index).boundingBox();
+        expect(itemBox).not.toBeNull();
+        expect(glyphBox).not.toBeNull();
+        expect
+          .soft(
+            Math.abs(
+              (itemBox?.x ?? 0) +
+                (itemBox?.width ?? 0) / 2 -
+                ((glyphBox?.x ?? 0) + (glyphBox?.width ?? 0) / 2),
+            ),
+          )
+          .toBeLessThanOrEqual(1);
+      }
+
+      await gotoHydrated(mobilePage, `${origin}/ko`);
+      await expectVisible(
+        mobilePage.locator('[data-welcome-app]').getByText('프로덕션 개요', {
+          exact: true,
+        }),
+      );
+      await expectVisible(
+        mobilePage.locator('[data-welcome-app]').getByText('서비스 상태', {
+          exact: true,
+        }),
+      );
+      const consoleIcon = mobilePage.locator('[data-welcome-brand-icon]');
+      const consoleTitle = mobilePage
+        .locator('[data-welcome-brand]')
+        .getByText('운영 콘솔', { exact: true });
+      await expectVisible(consoleIcon);
+      const iconBox = await consoleIcon.boundingBox();
+      const iconGlyphBox = await consoleIcon.locator('svg').boundingBox();
+      const consoleTitleBox = await consoleTitle.boundingBox();
+      expect(iconBox).not.toBeNull();
+      expect(iconGlyphBox).not.toBeNull();
+      expect(consoleTitleBox).not.toBeNull();
+      expect
+        .soft(
+          Math.abs(
+            (iconBox?.y ?? 0) +
+              (iconBox?.height ?? 0) / 2 -
+              ((consoleTitleBox?.y ?? 0) + (consoleTitleBox?.height ?? 0) / 2),
+          ),
+        )
+        .toBeLessThanOrEqual(1);
+      expect
+        .soft(
+          Math.abs(
+            (iconBox?.x ?? 0) +
+              (iconBox?.width ?? 0) / 2 -
+              ((iconGlyphBox?.x ?? 0) + (iconGlyphBox?.width ?? 0) / 2),
+          ),
+        )
+        .toBeLessThanOrEqual(1);
+      expect(pageErrors).toEqual([]);
+      expect(consoleErrors).toEqual([]);
+    } finally {
+      await desktopPage.close();
+      await compactPage.close();
+      await mobilePage.close();
+    }
+  });
+});

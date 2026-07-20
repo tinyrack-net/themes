@@ -428,7 +428,15 @@ describe('React Router documentation contract', () => {
     const packageJson = JSON.parse(readText('package.json')) as {
       scripts: Record<string, string>;
     };
-    const browserAudit = readText('tests/browser.test.ts');
+    const browserAuditFiles = [
+      'tests/browser-documents-light.test.ts',
+      'tests/browser-documents-dark.test.ts',
+      'tests/browser-rendering.test.ts',
+      'tests/browser-navigation.test.ts',
+      'tests/browser-playground.test.ts',
+      'tests/browser-overlays.test.ts',
+    ];
+    const browserAudit = browserAuditFiles.map((path) => readText(path)).join('\n');
     const interactiveAudit = browserAudit.slice(
       browserAudit.indexOf(
         "it('keeps code examples, dialogs, selects, and mobile navigation interactive'",
@@ -441,8 +449,9 @@ describe('React Router documentation contract', () => {
       join(workspaceRoot, '.github/workflows/ci.yml'),
       'utf8',
     );
+    const vitestConfig = readText('vitest.config.ts');
     const browserAuditFile = ts.createSourceFile(
-      'browser.test.ts',
+      'browser-audits.test.ts',
       browserAudit,
       ts.ScriptTarget.Latest,
       true,
@@ -466,6 +475,8 @@ describe('React Router documentation contract', () => {
     );
     expect(packageJson.scripts['verify']).toBe('pnpm verify:static && pnpm test:audit');
     expect(browserAudit).not.toContain('it.concurrent(');
+    expect(vitestConfig).toContain('workerBudget');
+    expect(vitestConfig).toContain('maxWorkers: browserWorkers');
     expect(browserAudit).not.toContain('waitForTimeout(');
     expect(oneShotVisibilityAssertions).toEqual([]);
     expect(interactiveAudit).not.toContain('await page.goto(');

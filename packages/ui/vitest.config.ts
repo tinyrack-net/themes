@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
+import { workerBudget } from '../test-worker-budget.js';
 
 const strictCoverageThresholds = {
   branches: 95,
@@ -10,6 +11,11 @@ const strictCoverageThresholds = {
   lines: 95,
   statements: 95,
 } as const;
+
+const browserWorkers = workerBudget({
+  maxWorkers: 8,
+  override: process.env['TINYRACK_TEST_WORKERS'] ?? process.env['TINYRACK_WORKERS'],
+});
 
 const componentCoverageThresholds = Object.fromEntries(
   readdirSync(new URL('./src/components', import.meta.url), { withFileTypes: true })
@@ -51,6 +57,7 @@ export default defineConfig(({ mode }) => {
           test: {
             name: 'unit',
             environment: 'node',
+            maxWorkers: browserWorkers,
             setupFiles: ['./vitest.setup.ts'],
             include: ['src/**/*.test.ts'],
             exclude: ['src/**/*.browser.test.tsx'],
@@ -60,6 +67,7 @@ export default defineConfig(({ mode }) => {
           test: {
             name: 'e2e',
             environment: 'node',
+            maxWorkers: browserWorkers,
             setupFiles: ['./vitest.setup.ts'],
             include: ['e2e/**/*.test.ts'],
           },
@@ -68,6 +76,7 @@ export default defineConfig(({ mode }) => {
           plugins: [react(), tailwindcss()],
           test: {
             name: 'browser',
+            maxWorkers: browserWorkers,
             setupFiles: ['./vitest.setup.ts'],
             include: ['src/**/*.browser.test.tsx'],
             browser: {
@@ -76,7 +85,7 @@ export default defineConfig(({ mode }) => {
               headless: true,
               api: {
                 host: '127.0.0.1',
-                port: 61080,
+                port: 30_000,
               },
               instances: componentCoverage
                 ? [{ browser: 'chromium' }]

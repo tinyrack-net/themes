@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import type { Config } from '@react-router/dev/config';
 import { type RouteConfig, relative } from '@react-router/dev/routes';
+import { buildWorkerBudget } from '../config/build-worker-budget.ts';
 import type { DocsConfig } from '../config/docs-config.ts';
 import {
   type LoadDocsManifestOptions,
@@ -28,7 +29,15 @@ export function createDocsRouterConfig(config: DocsConfig): Config {
   const basePath = config.site.basePath ?? '/';
   return {
     basename: basePath === '/' ? '/' : `${basePath.replace(/\/+$/, '')}/`,
-    prerender: true,
+    prerender: {
+      concurrency: buildWorkerBudget({
+        maxWorkers: 8,
+        override:
+          process.env['TINYRACK_DOCS_PRERENDER_WORKERS'] ??
+          process.env['TINYRACK_WORKERS'],
+      }),
+      paths: true,
+    },
     routeDiscovery: { mode: 'initial' },
     ssr: false,
   };

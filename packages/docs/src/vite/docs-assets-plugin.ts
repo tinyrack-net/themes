@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import sharp from 'sharp';
 import type { Plugin } from 'vite';
+import { buildWorkerBudget } from '../config/build-worker-budget.ts';
 import type { DocsConfig, DocsManifest, DocsPage } from '../config/docs-config.ts';
 import { loadDocsManifest } from '../config/docs-manifest.ts';
 
@@ -15,6 +16,39 @@ type DocsAssets = {
   robots: string;
   sitemap: string;
 };
+
+export function createBuildAssetCache<T>(create: () => Promise<T>) {
+  let current: Promise<T> | undefined;
+  return {
+    get() {
+      current ??= create();
+      return current;
+    },
+    invalidate() {
+      current = undefined;
+    },
+  };
+}
+
+export async function mapWithConcurrency<Input, Output>(
+  values: readonly Input[],
+  concurrency: number,
+  transform: (value: Input, index: number) => Promise<Output>,
+) {
+  const results = new Array<Output>(values.length);
+  let nextIndex = 0;
+  const workerCount = Math.min(values.length, Math.max(1, Math.floor(concurrency)));
+  await Promise.all(
+    Array.from({ length: workerCount }, async () => {
+      while (nextIndex < values.length) {
+        const index = nextIndex;
+        nextIndex += 1;
+        results[index] = await transform(values[index] as Input, index);
+      }
+    }),
+  );
+  return results;
+}
 
 function escapeXml(value: string) {
   return value
@@ -147,15 +181,21 @@ async function createDocsAssets(
   iconDataUrl: string,
 ): Promise<DocsAssets> {
   const images = new Map<string, Buffer>();
-  await Promise.all(
-    manifest.pages.map(async (page) => {
+  await mapWithConcurrency(
+    manifest.pages,
+    buildWorkerBudget({
+      maxWorkers: 16,
+      override:
+        process.env['TINYRACK_DOCS_ASSET_WORKERS'] ?? process.env['TINYRACK_WORKERS'],
+    }),
+    async (page) => {
       images.set(
         page.imagePath,
         await sharp(socialCardSvg(page, manifest, iconDataUrl))
           .png()
           .toBuffer(),
       );
-    }),
+    },
   );
   return {
     images,
@@ -185,19 +225,17 @@ export function docsAssetsPlugin(config: DocsConfig, root: string): Plugin {
   );
   const iconDataUrl = `data:image/svg+xml;base64,${icon}`;
   let manifest = loadDocsManifest(config, { root });
-  let assetsPromise = createDocsAssets(manifest, iconDataUrl);
+  const assets = createBuildAssetCache(() => createDocsAssets(manifest, iconDataUrl));
+  void assets.get();
 
   const refresh = () => {
     manifest = loadDocsManifest(config, { root });
-    assetsPromise = createDocsAssets(manifest, iconDataUrl);
+    assets.invalidate();
   };
 
   return {
     name: 'tinyrack-docs-assets',
     enforce: 'pre',
-    buildStart() {
-      refresh();
-    },
     configureServer(server) {
       server.middlewares.use(async (request, response, next) => {
         const pathname = new URL(request.url ?? '/', 'http://tinyrack.local').pathname;
@@ -206,7 +244,7 @@ export function docsAssetsPlugin(config: DocsConfig, root: string): Plugin {
           basePath !== '/' && pathname.startsWith(`${basePath}/`)
             ? pathname.slice(basePath.length)
             : pathname;
-        const assets = await assetsPromise;
+        const currentAssets = await assets.get();
         const redirectTarget = manifest.redirects[pathname];
         if (redirectTarget !== undefined) {
           response.statusCode = 302;
@@ -216,15 +254,15 @@ export function docsAssetsPlugin(config: DocsConfig, root: string): Plugin {
         }
         if (assetPath === '/sitemap.xml') {
           response.setHeader('content-type', 'application/xml; charset=utf-8');
-          response.end(assets.sitemap);
+          response.end(currentAssets.sitemap);
           return;
         }
         if (assetPath === '/robots.txt') {
           response.setHeader('content-type', 'text/plain; charset=utf-8');
-          response.end(assets.robots);
+          response.end(currentAssets.robots);
           return;
         }
-        const image = assets.images.get(assetPath);
+        const image = currentAssets.images.get(assetPath);
         if (image !== undefined) {
           response.setHeader('content-type', 'image/png');
           response.end(image);
@@ -235,7 +273,7 @@ export function docsAssetsPlugin(config: DocsConfig, root: string): Plugin {
     },
     generateBundle() {
       if (this.environment.name !== 'client') return;
-      return assetsPromise.then((assets) => {
+      return assets.get().then((assets) => {
         this.emitFile({
           fileName: '.tinyrack-docs.json',
           source: `${JSON.stringify({

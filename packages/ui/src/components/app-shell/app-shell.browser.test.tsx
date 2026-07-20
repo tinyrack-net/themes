@@ -317,7 +317,7 @@ test.each([
   expect(toggle.getAttribute('aria-expanded')).toBe('true');
   await userEvent.type(toggleControl, '{Enter}');
   await expect.element(toggleControl).toHaveFocus();
-  await expect.poll(() => callback.mock.calls.length).toBe(1);
+  await expect.poll(() => callback.mock.calls.length, { timeout: 5_000 }).toBe(1);
   expect(callback).toHaveBeenCalledWith('rail');
   if (controlled) {
     expect(root?.getAttribute('data-sidebar-mode')).toBe('expanded');

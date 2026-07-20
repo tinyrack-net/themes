@@ -12,7 +12,7 @@
     "check:structure": "vitest run tests/structure.test.ts",
     "generate:app-icons": "node scripts/generate-app-icons.mjs",
     "check:app-icons": "node scripts/generate-app-icons.mjs --check",
-    "test:audit": "vitest run",
+    "test:audit": "vitest run --exclude tests/browser-overlays.test.ts && vitest run tests/browser-overlays.test.ts",
     "capture": "node --conditions=@tinyrack/source --experimental-strip-types scripts/capture.ts",
     "verify:static": "pnpm check:types && pnpm check:app-icons && pnpm build && pnpm check:structure",
     "verify": "pnpm verify:static && pnpm test:audit",

@@ -474,6 +474,9 @@ describe('React Router documentation contract', () => {
       'pnpm check:types && pnpm check:app-icons && pnpm build && pnpm check:structure',
     );
     expect(packageJson.scripts['verify']).toBe('pnpm verify:static && pnpm test:audit');
+    expect(packageJson.scripts['test:audit']).toBe(
+      'vitest run --exclude tests/browser-overlays.test.ts && vitest run tests/browser-overlays.test.ts',
+    );
     expect(browserAudit).not.toContain('it.concurrent(');
     expect(vitestConfig).toContain('workerBudget');
     expect(vitestConfig).toContain('maxWorkers: browserWorkers');

@@ -2,7 +2,7 @@ import { defineConfig } from 'vitest/config';
 import { workerBudget } from '../test-worker-budget.js';
 
 const browserWorkers = workerBudget({
-  maxWorkers: 4,
+  maxWorkers: 3,
   override: process.env['TINYRACK_TEST_WORKERS'] ?? process.env['TINYRACK_WORKERS'],
 });
 

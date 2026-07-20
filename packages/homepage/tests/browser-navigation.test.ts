@@ -285,6 +285,75 @@ describe('built React Router documentation', () => {
     }
   });
 
+  it('keeps the searchable Tailwind token reference usable on desktop and mobile', async () => {
+    const desktopPage = await browser.newPage({
+      viewport: { height: 900, width: 1440 },
+    });
+    const mobilePage = await browser.newPage({ viewport: { height: 844, width: 390 } });
+    await setTheme(desktopPage, 'tinyrack-light');
+    await setTheme(mobilePage, 'tinyrack-dark');
+
+    try {
+      await gotoHydrated(desktopPage, `${origin}/en/foundations/tailwind`);
+      const desktopReference = desktopPage.locator('[data-tailwind-token-reference]');
+      await expect(
+        desktopReference.locator('[data-tailwind-token-group]').count(),
+      ).resolves.toBe(9);
+      await expect(desktopReference.locator('tbody tr').count()).resolves.toBe(161);
+      await expectNoLocalOverflow(
+        desktopPage.locator('html'),
+        'Tailwind desktop document',
+      );
+
+      const search = desktopPage.getByRole('searchbox', {
+        name: 'Search Tailwind token reference',
+      });
+      await search.fill('--z-index-tinyrack-tooltip');
+      await expect(
+        desktopReference.locator('[data-tailwind-token-group]').count(),
+      ).resolves.toBe(1);
+      await expect(desktopReference.locator('tbody tr').count()).resolves.toBe(1);
+      await expectVisible(
+        desktopReference.getByText('z-tinyrack-tooltip', { exact: true }),
+      );
+      await search.fill('');
+
+      await gotoHydrated(desktopPage, `${origin}/en/foundations/tailwind#motion`);
+      await expect.poll(() => new URL(desktopPage.url()).hash).toBe('#motion');
+      await expectVisible(desktopPage.locator('[data-tailwind-token-group="motion"]'));
+
+      await gotoHydrated(mobilePage, `${origin}/ko/foundations/tailwind`);
+      expect(await mobilePage.locator('html').getAttribute('data-theme')).toBe(
+        'tinyrack-dark',
+      );
+      await expectNoLocalOverflow(
+        mobilePage.locator('html'),
+        'Tailwind mobile document',
+      );
+      const mobileTable = mobilePage.locator(
+        '[data-tailwind-token-table="typography"]',
+      );
+      const mobileScroller = mobileTable.locator('xpath=..');
+      await expect(mobileScroller.getAttribute('tabindex')).resolves.toBe('0');
+      await expect(
+        mobileScroller.evaluate((element) => element.scrollWidth),
+      ).resolves.toBeGreaterThan(
+        await mobileScroller.evaluate((element) => element.clientWidth),
+      );
+      await mobileScroller.focus();
+      const before = await mobileScroller.evaluate((element) => element.scrollLeft);
+      for (let press = 0; press < 10; press += 1) {
+        await mobilePage.keyboard.press('ArrowRight');
+      }
+      await expect
+        .poll(() => mobileScroller.evaluate((element) => element.scrollLeft))
+        .toBeGreaterThan(before);
+    } finally {
+      await desktopPage.close();
+      await mobilePage.close();
+    }
+  });
+
   it('keeps navigation controls and foundation references usable at their target sizes', async () => {
     const mobilePage = await browser.newPage({ viewport: { height: 844, width: 390 } });
     const desktopPage = await browser.newPage({

@@ -467,12 +467,12 @@ describe('built React Router documentation', () => {
       ).toBe('1');
       expect(
         await desktopHero
-          .locator('.welcome-hero-content')
+          .locator('[data-welcome-hero-content]')
           .evaluate((element) => getComputedStyle(element).zIndex),
       ).toBe('2');
 
       const rackLabel = productWindow.locator(
-        '.welcome-product-environment .tr-app-shell-sidebar-label',
+        '[data-welcome-environment] .tr-app-shell-sidebar-label',
       );
       const rackLabelMetrics = await rackLabel.evaluate((element) => {
         const style = getComputedStyle(element);
@@ -513,7 +513,7 @@ describe('built React Router documentation', () => {
       const firstTitleLineBox = await titleLines.nth(0).boundingBox();
       const secondTitleLineBox = await titleLines.nth(1).boundingBox();
       const sidebarBox = await compactProductWindow
-        .locator('.welcome-product-sidebar')
+        .locator('[data-welcome-sidebar]')
         .boundingBox();
       expect(firstTitleLineBox).not.toBeNull();
       expect(secondTitleLineBox).not.toBeNull();
@@ -564,7 +564,7 @@ describe('built React Router documentation', () => {
 
       expect(
         await desktopPage
-          .locator('main [data-welcome-page] h1, main .welcome-content h2')
+          .locator('main [data-welcome-page] h1, main [data-welcome-content] h2')
           .allTextContents(),
       ).toEqual(['TINYRACKDESIGN SYSTEM', 'Start with the essentials.']);
       expect(await desktopPage.locator('[data-welcome-composition]').count()).toBe(0);
@@ -670,9 +670,9 @@ describe('built React Router documentation', () => {
           exact: true,
         }),
       );
-      const consoleIcon = mobilePage.locator('.welcome-product-brand-icon');
+      const consoleIcon = mobilePage.locator('[data-welcome-brand-icon]');
       const consoleTitle = mobilePage
-        .locator('.welcome-product-brand')
+        .locator('[data-welcome-brand]')
         .getByText('운영 콘솔', { exact: true });
       await expectVisible(consoleIcon);
       const iconBox = await consoleIcon.boundingBox();

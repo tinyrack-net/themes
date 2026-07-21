@@ -1,0 +1,40 @@
+---
+title: "Breakpoints"
+description: "Use Tinyrack's shared viewport thresholds consistently across TypeScript, authored CSS media queries, and Tailwind responsive variants."
+section: foundations
+order: 6
+---
+import { TRCode } from '@tinyrack/ui/components/code';
+import { BreakpointReference } from '../../shared/breakpoint-reference.js';
+
+## Scale
+
+Breakpoint tokens define where a layout gains available space. Start mobile-first and add a <TRCode>{'*-min'}</TRCode> rule only when the content needs it.
+
+<BreakpointReference locale="en" />
+
+## TypeScript
+
+```ts
+import { tinyrackBreakpoints } from '@tinyrack/ui/core';
+
+const desktopQuery = `(width >= ${tinyrackBreakpoints.lg})`;
+```
+
+## CSS and Tailwind
+
+Tinyrack source CSS uses named media such as <TRCode>--tinyrack-breakpoint-md-min</TRCode> and <TRCode>--tinyrack-breakpoint-md-max</TRCode>. Package builds expand these names to standard media queries, so consumers do not need a custom-media plugin.
+
+```css
+@media (--tinyrack-breakpoint-md-min) {
+  /* Tinyrack source authoring */
+}
+```
+
+Tailwind uses the same values through <TRCode>--breakpoint-xs</TRCode> to <TRCode>--breakpoint-xl</TRCode>.
+
+```tsx
+<section className="grid gap-4 md:grid-cols-2 max-md:grid-cols-1" />
+```
+
+The compatibility aliases <TRCode>xs-at-most</TRCode> and <TRCode>sm-at-most</TRCode> include the exact boundary. Use strict <TRCode>{'*-max'}</TRCode> for new rules so it remains the complement of <TRCode>{'*-min'}</TRCode>.

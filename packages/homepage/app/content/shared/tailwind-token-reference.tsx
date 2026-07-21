@@ -14,9 +14,14 @@ type TailwindReferenceLocale = 'en' | 'ja' | 'ko';
 
 const copy = {
   en: {
-    columns: ['Tailwind theme variable', 'Runtime variable', 'Example utility'],
+    columns: [
+      'Tailwind theme variable',
+      'Runtime variable / media token',
+      'Example utility',
+    ],
     empty: 'No Tailwind token matches this search.',
     groups: {
+      breakpoint: 'Breakpoints',
       color: 'Colors',
       typography: 'Typography',
       spacing: 'Spacing and controls',
@@ -31,9 +36,10 @@ const copy = {
     searchPlaceholder: 'Search utilities or CSS variables',
   },
   ko: {
-    columns: ['Tailwind theme 변수', 'Runtime 변수', 'Utility 예시'],
+    columns: ['Tailwind theme 변수', 'Runtime 변수 / media 토큰', 'Utility 예시'],
     empty: '검색과 일치하는 Tailwind 토큰이 없습니다.',
     groups: {
+      breakpoint: '브레이크포인트',
       color: '색상',
       typography: '타이포그래피',
       spacing: '간격과 컨트롤',
@@ -48,9 +54,10 @@ const copy = {
     searchPlaceholder: 'Utility 또는 CSS 변수 검색',
   },
   ja: {
-    columns: ['Tailwind theme 変数', 'Runtime 変数', 'Utility 例'],
+    columns: ['Tailwind theme 変数', 'Runtime 変数 / media token', 'Utility 例'],
     empty: '検索に一致する Tailwind token はありません。',
     groups: {
+      breakpoint: 'ブレークポイント',
       color: 'カラー',
       typography: 'タイポグラフィ',
       spacing: 'スペーシングとコントロール',
@@ -76,6 +83,9 @@ const copy = {
 >;
 
 function exampleUtility(themeVariable: string) {
+  if (themeVariable.startsWith('--breakpoint-')) {
+    return `${themeVariable.replace('--breakpoint-', '')}:grid-cols-2`;
+  }
   if (themeVariable.startsWith('--text-decoration-thickness-')) {
     return `decoration-${themeVariable.replace('--text-decoration-thickness-', '')}`;
   }
@@ -116,6 +126,12 @@ function exampleUtility(themeVariable: string) {
   throw new Error(`Unsupported Tailwind theme variable: ${themeVariable}`);
 }
 
+function sourceToken(entry: (typeof tailwindTokenBridge)[number]) {
+  return entry.group === 'breakpoint'
+    ? `${entry.mediaQuery} (${entry.value})`
+    : entry.runtimeVariable;
+}
+
 export function TailwindTokenReference({
   locale,
 }: {
@@ -130,7 +146,7 @@ export function TailwindTokenReference({
       if (normalizedQuery.length === 0) return true;
       return [
         entry.themeVariable,
-        entry.runtimeVariable,
+        sourceToken(entry),
         exampleUtility(entry.themeVariable),
       ]
         .join(' ')
@@ -195,7 +211,7 @@ export function TailwindTokenReference({
                       <TRCode>{entry.themeVariable}</TRCode>
                     </TRTable.Head>
                     <TRTable.Cell>
-                      <TRCode>{entry.runtimeVariable}</TRCode>
+                      <TRCode>{sourceToken(entry)}</TRCode>
                     </TRTable.Cell>
                     <TRTable.Cell>
                       <TRCode>{exampleUtility(entry.themeVariable)}</TRCode>

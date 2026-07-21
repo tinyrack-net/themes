@@ -196,23 +196,34 @@ describe('React Router documentation contract', () => {
       expect(existsSync(join(homepageRoot, path))).toBe(true);
       const docs = readText(path);
       const overview = readText(`app/content/${locale}/foundations/overview.mdx`);
-      expect(docs).toContain('order: 10');
+      expect(docs).toContain('order: 11');
       expect(docs).toContain(
         "import { TailwindTokenReference } from '../../shared/tailwind-token-reference.js';",
       );
       expect(docs).toContain(`<TailwindTokenReference locale="${locale}" />`);
       expect(overview).toContain(`href="/${locale}/foundations/tailwind/"`);
+      expect(overview).toContain(`href="/${locale}/foundations/breakpoints/"`);
+      expect(readText(`app/content/${locale}/foundations/breakpoints.mdx`)).toContain(
+        `<BreakpointReference locale="${locale}" />`,
+      );
       expect(staticDocumentRoutes).toContainEqual(
         expect.objectContaining({
           id: `${locale}-foundations-tailwind`,
-          order: 10,
+          order: 11,
           path: `/${locale}/foundations/tailwind`,
+        }),
+      );
+      expect(staticDocumentRoutes).toContainEqual(
+        expect.objectContaining({
+          id: `${locale}-foundations-breakpoints`,
+          order: 6,
+          path: `/${locale}/foundations/breakpoints`,
         }),
       );
     }
 
-    expect(tailwindTokenBridge).toHaveLength(161);
-    expect(tailwindTokenGroups).toHaveLength(9);
+    expect(tailwindTokenBridge).toHaveLength(166);
+    expect(tailwindTokenGroups).toHaveLength(10);
     for (const group of tailwindTokenGroups) {
       expect(tailwindTokenBridge.some((entry) => entry.group === group.id)).toBe(true);
     }
@@ -305,13 +316,13 @@ describe('React Router documentation contract', () => {
     expect(legacySources).toEqual([]);
   });
 
-  it('defines all 225 localized content routes as static route modules', () => {
+  it('defines all 228 localized content routes as static route modules', () => {
     const routes = readText('app/routes.ts');
     expect(componentDocsManifest).toHaveLength(61);
-    expect(staticDocumentRoutes).toHaveLength(225);
-    expect(new Set(staticDocumentRoutes.map((entry) => entry.path)).size).toBe(225);
+    expect(staticDocumentRoutes).toHaveLength(228);
+    expect(new Set(staticDocumentRoutes.map((entry) => entry.path)).size).toBe(228);
     expect(new Set(staticDocumentRoutes.map((entry) => entry.sourceFile)).size).toBe(
-      225,
+      228,
     );
     expect(staticDocumentRoutes).toContainEqual(
       expect.objectContaining({

@@ -145,7 +145,7 @@
   white-space: nowrap;
 }
 
-@media (width < 40rem) {
+@media (--tinyrack-breakpoint-sm-max) {
   .tr-docs-search-trigger > kbd {
     display: none;
   }

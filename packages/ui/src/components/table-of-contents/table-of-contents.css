@@ -46,7 +46,7 @@
   .tr-table-of-contents-mobile .tr-select-trigger {
     inline-size: 100%;
   }
-  @media (width >= 64rem) {
+  @media (--tinyrack-breakpoint-lg-min) {
     .tr-table-of-contents-desktop {
       display: block;
     }

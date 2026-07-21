@@ -1,0 +1,40 @@
+---
+title: "브레이크포인트"
+description: "TypeScript, CSS 미디어 쿼리, Tailwind 반응형 variant에서 Tinyrack의 공통 viewport 임계값을 일관되게 사용합니다."
+section: foundations
+order: 6
+---
+import { TRCode } from '@tinyrack/ui/components/code';
+import { BreakpointReference } from '../../shared/breakpoint-reference.js';
+
+## 스케일
+
+브레이크포인트 토큰은 레이아웃에 여유 공간이 생기는 지점을 정의합니다. 모바일 우선으로 구성하고 콘텐츠에 필요한 시점에만 <TRCode>{'*-min'}</TRCode> 규칙을 추가합니다.
+
+<BreakpointReference locale="ko" />
+
+## TypeScript
+
+```ts
+import { tinyrackBreakpoints } from '@tinyrack/ui/core';
+
+const desktopQuery = `(width >= ${tinyrackBreakpoints.lg})`;
+```
+
+## CSS와 Tailwind
+
+Tinyrack 소스 CSS는 <TRCode>--tinyrack-breakpoint-md-min</TRCode>, <TRCode>--tinyrack-breakpoint-md-max</TRCode> 같은 named media를 사용합니다. 패키지 빌드는 이를 표준 미디어 쿼리로 변환하므로 소비자는 custom-media 플러그인이 필요하지 않습니다.
+
+```css
+@media (--tinyrack-breakpoint-md-min) {
+  /* Tinyrack source authoring */
+}
+```
+
+Tailwind는 <TRCode>--breakpoint-xs</TRCode>부터 <TRCode>--breakpoint-xl</TRCode>까지 동일한 값을 사용합니다.
+
+```tsx
+<section className="grid gap-4 md:grid-cols-2 max-md:grid-cols-1" />
+```
+
+호환 alias인 <TRCode>xs-at-most</TRCode>와 <TRCode>sm-at-most</TRCode>는 정확한 경계를 포함합니다. 새 규칙에는 <TRCode>{'*-min'}</TRCode>의 보수가 되는 strict <TRCode>{'*-max'}</TRCode>를 사용합니다.

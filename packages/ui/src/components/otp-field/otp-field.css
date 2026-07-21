@@ -50,7 +50,7 @@
     height: var(--tinyrack-control-height-md);
   }
 
-  @media (max-width: 24rem) {
+  @media (--tinyrack-breakpoint-xs-at-most) {
     .tr-otp-field {
       --tr-otp-field-size: var(--tinyrack-control-height-md);
       --tr-otp-field-gap: var(--tinyrack-radius-xs);

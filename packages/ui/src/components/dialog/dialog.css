@@ -174,7 +174,7 @@
     }
   }
 
-  @media (max-width: 40rem) {
+  @media (--tinyrack-breakpoint-sm-at-most) {
     .tr-dialog-box {
       --_tr-dialog-box-padding: var(--tinyrack-space-lg);
       max-height: calc(100dvh - var(--tinyrack-space-xl));

@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
+import { breakpointCustomMediaPlugin } from '../../scripts/breakpoint-css.js';
 import { workerBudget } from '../test-worker-budget.js';
 
 const strictCoverageThresholds = {
@@ -73,7 +74,7 @@ export default defineConfig(({ mode }) => {
           },
         },
         {
-          plugins: [react(), tailwindcss()],
+          plugins: [breakpointCustomMediaPlugin(), react(), tailwindcss()],
           test: {
             name: 'browser',
             maxWorkers: browserWorkers,

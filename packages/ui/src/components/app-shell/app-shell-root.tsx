@@ -8,6 +8,7 @@ import {
   useState,
   useSyncExternalStore,
 } from 'react';
+import { tinyrackBreakpoints } from '../../core/tokens/breakpoints.js';
 import { mergeClassNames } from '../../internal/component-class-name.js';
 import { TRDrawer, type TRDrawerRootProps } from '../drawer/index.js';
 import {
@@ -19,8 +20,8 @@ import {
 } from './app-shell-context.js';
 
 const breakpointQueries: Record<TRAppShellBreakpoint, string> = {
-  sm: '(width < 48rem)',
-  lg: '(width < 64rem)',
+  sm: `(width < ${tinyrackBreakpoints.md})`,
+  lg: `(width < ${tinyrackBreakpoints.lg})`,
 };
 
 function subscribeToQuery(query: string, callback: () => void) {

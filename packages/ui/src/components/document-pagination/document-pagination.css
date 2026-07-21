@@ -62,7 +62,7 @@
   line-clamp: 2;
 }
 
-@media (width >= 40rem) {
+@media (--tinyrack-breakpoint-sm-min) {
   .tr-document-pagination {
     gap: var(--tinyrack-space-lg);
     grid-template-columns: repeat(2, minmax(0, 1fr));

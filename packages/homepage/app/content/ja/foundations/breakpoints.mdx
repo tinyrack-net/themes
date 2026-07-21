@@ -1,0 +1,40 @@
+---
+title: "ブレークポイント"
+description: "TypeScript、CSS media query、Tailwind responsive variant で Tinyrack の共通 viewport threshold を一貫して使用します。"
+section: foundations
+order: 6
+---
+import { TRCode } from '@tinyrack/ui/components/code';
+import { BreakpointReference } from '../../shared/breakpoint-reference.js';
+
+## スケール
+
+Breakpoint token はレイアウトに利用可能なスペースが増える位置を定義します。Mobile-first で構成し、コンテンツに必要な時点でのみ <TRCode>{'*-min'}</TRCode> rule を追加します。
+
+<BreakpointReference locale="ja" />
+
+## TypeScript
+
+```ts
+import { tinyrackBreakpoints } from '@tinyrack/ui/core';
+
+const desktopQuery = `(width >= ${tinyrackBreakpoints.lg})`;
+```
+
+## CSS と Tailwind
+
+Tinyrack source CSS は <TRCode>--tinyrack-breakpoint-md-min</TRCode> や <TRCode>--tinyrack-breakpoint-md-max</TRCode> などの named media を使用します。Package build で標準 media query に展開されるため、利用側に custom-media plugin は不要です。
+
+```css
+@media (--tinyrack-breakpoint-md-min) {
+  /* Tinyrack source authoring */
+}
+```
+
+Tailwind は <TRCode>--breakpoint-xs</TRCode> から <TRCode>--breakpoint-xl</TRCode> まで同じ値を使用します。
+
+```tsx
+<section className="grid gap-4 md:grid-cols-2 max-md:grid-cols-1" />
+```
+
+互換 alias の <TRCode>xs-at-most</TRCode> と <TRCode>sm-at-most</TRCode> は境界値を含みます。新しい rule では <TRCode>{'*-min'}</TRCode> の補集合となる strict な <TRCode>{'*-max'}</TRCode> を使います。

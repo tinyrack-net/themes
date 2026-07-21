@@ -1,5 +1,6 @@
 import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
+import { transformBreakpointCss } from '../../../scripts/breakpoint-css.ts';
 
 const root = resolve(import.meta.dirname, '..');
 const checkMode = process.argv.includes('--check');
@@ -31,7 +32,7 @@ for (const asset of assets) {
 
 const sourceStylesPath = resolve(root, 'src/styles/styles.css');
 const sourceStyles = await readFile(sourceStylesPath, 'utf8');
-const distStyles = sourceStyles
+const rewrittenStyles = sourceStyles
   .replace(
     /^@import "@fontsource\/ibm-plex-sans-(?:kr|jp)\/(?:korean|japanese)-\d+\.css";\r?\n/gm,
     '',
@@ -41,13 +42,14 @@ const distStyles = sourceStyles
     '@import "./fonts.css";\n@import "./runtime-core.css";',
   );
 if (
-  distStyles === sourceStyles ||
-  distStyles.includes('@fontsource/ibm-plex-sans-kr') ||
-  distStyles.includes('@fontsource/ibm-plex-sans-jp') ||
-  distStyles.includes('@tinyrack/ui/core.css')
+  rewrittenStyles === sourceStyles ||
+  rewrittenStyles.includes('@fontsource/ibm-plex-sans-kr') ||
+  rewrittenStyles.includes('@fontsource/ibm-plex-sans-jp') ||
+  rewrittenStyles.includes('@tinyrack/ui/core.css')
 ) {
   throw new Error('Unable to transform source documentation styles for dist');
 }
+const distStyles = await transformBreakpointCss(rewrittenStyles, sourceStylesPath);
 if (!checkMode) {
   await writeFile(resolve(root, 'dist/styles.css'), distStyles);
 }
@@ -57,8 +59,12 @@ console.log(
 
 const uiCoreSource = resolve(root, '../ui/src/core/core.css');
 const uiCore = await readFile(uiCoreSource, 'utf8');
-const runtimeCore = uiCore.replace(/^@theme static \{[\s\S]*?\r?\n\}\r?\n/, '');
-if (runtimeCore === uiCore || runtimeCore.includes('@theme')) {
+const transformedUiCore = await transformBreakpointCss(uiCore, uiCoreSource);
+const runtimeCore = transformedUiCore.replace(
+  /^@theme static \{[\s\S]*?\r?\n\}\r?\n/,
+  '',
+);
+if (runtimeCore === transformedUiCore || runtimeCore.includes('@theme')) {
   throw new Error('Unable to remove the Tailwind-only @theme block from UI core CSS');
 }
 if (!checkMode) {

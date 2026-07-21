@@ -299,6 +299,19 @@ function verifyConsumerBuild(root: string, basePath: '/' | '/docs') {
   if (basePath !== '/' && existsSync(join(clientRoot, 'assets'))) {
     throw new Error(`${basePath} build leaked Vite assets outside the base path`);
   }
+  for (const path of [
+    join(root, 'node_modules', '@tinyrack', 'docs', 'dist', 'styles.css'),
+    join(root, 'node_modules', '@tinyrack', 'docs', 'dist', 'runtime-core.css'),
+    join(root, 'node_modules', '@tinyrack', 'ui', 'dist', 'core.css'),
+  ]) {
+    const css = readFileSync(path, 'utf8');
+    if (
+      css.includes('@custom-media') ||
+      css.includes('@media (--tinyrack-breakpoint-')
+    ) {
+      throw new Error(`${path} leaked custom media`);
+    }
+  }
 }
 
 let completed = false;

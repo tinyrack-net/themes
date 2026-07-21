@@ -60,6 +60,22 @@ export function Settings() {
 | CSP provider | `@tinyrack/ui/providers/csp` |
 | Direction provider | `@tinyrack/ui/providers/direction` |
 
+## Breakpoints
+
+The public breakpoint scale is available as TypeScript metadata and as explicit
+Tailwind v4 responsive thresholds.
+
+```ts
+import { tinyrackBreakpoints } from '@tinyrack/ui/core';
+
+// { xs: '24rem', sm: '40rem', md: '48rem', lg: '64rem', xl: '80rem' }
+```
+
+Tinyrack source styles use named custom media so component rules share this
+scale. Published CSS expands those names to standard media queries; consumers do
+not need a custom-media PostCSS plugin. Import `@tinyrack/ui/core.css` after
+Tailwind to enable the matching `xs:` through `xl:` variants.
+
 Supported Base UI modules:
 
 `accordion`, `alert-dialog`, `autocomplete`, `avatar`, `button`, `checkbox`,

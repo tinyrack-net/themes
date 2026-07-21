@@ -1,4 +1,5 @@
 export type TailwindTokenGroupId =
+  | 'breakpoint'
   | 'color'
   | 'typography'
   | 'spacing'
@@ -9,13 +10,26 @@ export type TailwindTokenGroupId =
   | 'visual-state'
   | 'decoration';
 
-export type TailwindTokenBridgeEntry = {
-  group: TailwindTokenGroupId;
-  runtimeVariable: `--tinyrack-${string}`;
-  themeVariable: `--${string}`;
-};
+export type TailwindTokenBridgeEntry =
+  | {
+      group: Exclude<TailwindTokenGroupId, 'breakpoint'>;
+      runtimeVariable: `--tinyrack-${string}`;
+      themeVariable: `--${string}`;
+    }
+  | {
+      group: 'breakpoint';
+      mediaQuery: `--tinyrack-breakpoint-${string}-min`;
+      themeVariable: `--breakpoint-${string}`;
+      value: `${number}rem`;
+    };
 
 export const tailwindTokenGroups = [
+  {
+    id: 'breakpoint',
+    anchor: 'breakpoints',
+    label: 'Breakpoints',
+    utilityPattern: 'sm/md/lg/xl:*',
+  },
   {
     id: 'color',
     anchor: 'colors',
@@ -73,6 +87,36 @@ export const tailwindTokenGroups = [
 ] as const;
 
 export const tailwindTokenBridge = [
+  {
+    group: 'breakpoint',
+    mediaQuery: '--tinyrack-breakpoint-xs-min',
+    themeVariable: '--breakpoint-xs',
+    value: '24rem',
+  },
+  {
+    group: 'breakpoint',
+    mediaQuery: '--tinyrack-breakpoint-sm-min',
+    themeVariable: '--breakpoint-sm',
+    value: '40rem',
+  },
+  {
+    group: 'breakpoint',
+    mediaQuery: '--tinyrack-breakpoint-md-min',
+    themeVariable: '--breakpoint-md',
+    value: '48rem',
+  },
+  {
+    group: 'breakpoint',
+    mediaQuery: '--tinyrack-breakpoint-lg-min',
+    themeVariable: '--breakpoint-lg',
+    value: '64rem',
+  },
+  {
+    group: 'breakpoint',
+    mediaQuery: '--tinyrack-breakpoint-xl-min',
+    themeVariable: '--breakpoint-xl',
+    value: '80rem',
+  },
   {
     group: 'typography',
     runtimeVariable: '--tinyrack-font-body',

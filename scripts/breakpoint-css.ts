@@ -1,6 +1,7 @@
 import postcssGlobalData from '@csstools/postcss-global-data';
 import postcss, { type AcceptedPlugin } from 'postcss';
 import postcssCustomMedia from 'postcss-custom-media';
+import type { Plugin } from 'vite';
 
 const breakpointData = new URL('../packages/ui/src/core/core.css', import.meta.url)
   .pathname;
@@ -23,7 +24,7 @@ export async function transformBreakpointCss(css: string, from: string) {
   return result.css;
 }
 
-export function breakpointCustomMediaPlugin() {
+export function breakpointCustomMediaPlugin(): Plugin {
   return {
     name: 'tinyrack-breakpoint-custom-media',
     config: () => ({

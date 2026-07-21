@@ -32,7 +32,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsdown && tsc -p tsconfig.test.json --noEmit",
+    "build": "tsdown",
     "test": "pnpm test:unit && pnpm test:e2e",
     "test:unit": "vitest run --project unit",
     "test:e2e": "pnpm build && vitest run --mode component-coverage --project browser --coverage && vitest run --mode component-firefox --project browser",

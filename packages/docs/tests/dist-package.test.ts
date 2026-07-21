@@ -10,21 +10,15 @@ import {
 } from 'node:fs';
 import { type AddressInfo, createServer } from 'node:net';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 const docsRoot = resolve(import.meta.dirname, '..');
 const pnpm = process.platform === 'win32' ? 'pnpm.exe' : 'pnpm';
 const smokeParent = join(docsRoot, '.tmp');
-mkdirSync(smokeParent, { recursive: true });
-const smokeRoot = mkdtempSync(join(smokeParent, 'consumer-'));
-const artifactsRoot = join(smokeRoot, 'artifacts');
+let smokeRoot = '';
+let artifactsRoot = '';
+let consumerRoot = '';
 const suppliedUiArchive = process.env['TINYRACK_UI_TARBALL'];
-if (
-  suppliedUiArchive === undefined ||
-  !isAbsolute(suppliedUiArchive) ||
-  !existsSync(suppliedUiArchive)
-) {
-  throw new Error('TINYRACK_UI_TARBALL must point to a prepared UI package archive');
-}
 
 function run(command: string, args: string[], cwd: string) {
   execFileSync(command, args, {
@@ -247,35 +241,35 @@ function prepareConsumer(root: string) {
       'package.json',
     );
     const manifest = readFileSync(manifestPath, 'utf8');
-    if (manifest.includes('@tinyrack/source') || manifest.includes('./src/')) {
-      throw new Error(
-        `packed @tinyrack/${packageName} leaked workspace source exports`,
-      );
-    }
+    expect(manifest, `packed @tinyrack/${packageName} manifest`).not.toContain(
+      '@tinyrack/source',
+    );
+    expect(manifest, `packed @tinyrack/${packageName} manifest`).not.toContain(
+      './src/',
+    );
     if (packageName === 'docs') {
       const packageJson = JSON.parse(manifest) as {
         bin?: Record<string, string>;
         dependencies?: Record<string, string>;
       };
-      if (packageJson.bin !== undefined) {
-        throw new Error('packed @tinyrack/docs still exposes a CLI');
-      }
-      if (existsSync(join(root, 'node_modules/@tinyrack/docs/dist/cli'))) {
-        throw new Error('packed @tinyrack/docs still contains CLI output');
-      }
+      expect(packageJson.bin).toBeUndefined();
+      expect(existsSync(join(root, 'node_modules/@tinyrack/docs/dist/cli'))).toBe(
+        false,
+      );
       for (const obsoleteAsset of [
         'docs.css',
         'fonts.css',
         'runtime-core.css',
         'fonts',
       ]) {
-        if (existsSync(join(root, 'node_modules/@tinyrack/docs/dist', obsoleteAsset))) {
-          throw new Error(`packed @tinyrack/docs still contains ${obsoleteAsset}`);
-        }
+        expect(
+          existsSync(join(root, 'node_modules/@tinyrack/docs/dist', obsoleteAsset)),
+          `packed @tinyrack/docs contains obsolete ${obsoleteAsset}`,
+        ).toBe(false);
       }
-      if (packageJson.dependencies?.['@tinyrack/ui'] !== `^${uiPackageJson.version}`) {
-        throw new Error('packed @tinyrack/docs does not depend on the released UI');
-      }
+      expect(packageJson.dependencies?.['@tinyrack/ui']).toBe(
+        `^${uiPackageJson.version}`,
+      );
     }
   }
   run(pnpm, ['exec', 'react-router', 'typegen'], root);
@@ -291,7 +285,7 @@ function verifyConsumerBuild(root: string, basePath: '/' | '/docs') {
   const deploymentRoot =
     basePath === '/' ? clientRoot : join(clientRoot, basePath.slice(1));
   const homePath = join(deploymentRoot, 'index.html');
-  if (!existsSync(homePath)) throw new Error(`${basePath} build has no homepage`);
+  expect(existsSync(homePath), `${basePath} build homepage`).toBe(true);
   const home = readFileSync(homePath, 'utf8');
   const canonical = `https://example.com${basePath === '/' ? '/' : '/docs/'}`;
   if (!home.includes(`<link href="${canonical}" rel="canonical"/>`)) {
@@ -310,17 +304,11 @@ function verifyConsumerBuild(root: string, basePath: '/' | '/docs') {
     throw new Error(`${basePath} TSX homepage is not indexed by Pagefind`);
   }
   const expectedAssetPrefix = basePath === '/' ? '/assets/' : '/docs/assets/';
-  if (!home.includes(expectedAssetPrefix)) {
-    throw new Error(`${basePath} build has an invalid Vite asset base`);
-  }
+  expect(home).toContain(expectedAssetPrefix);
 
-  if (!existsSync(join(deploymentRoot, 'guides/install/index.html'))) {
-    throw new Error(`${basePath} build has no direct guide entry`);
-  }
-  if (!existsSync(join(deploymentRoot, 'pagefind/pagefind.js'))) {
-    throw new Error(`${basePath} build has no Pagefind runtime`);
-  }
-  if (
+  expect(existsSync(join(deploymentRoot, 'guides/install/index.html'))).toBe(true);
+  expect(existsSync(join(deploymentRoot, 'pagefind/pagefind.js'))).toBe(true);
+  expect(
     readdirSync(join(deploymentRoot, 'pagefind/fragment')).filter((file) =>
       file.endsWith('.pf_fragment'),
     ).length !== 2
@@ -337,23 +325,15 @@ function verifyConsumerBuild(root: string, basePath: '/' | '/docs') {
     throw new Error(`${basePath} build has no colocated public assets`);
   }
   const notFound = readFileSync(join(deploymentRoot, '404.html'), 'utf8');
-  if (!notFound.includes('content="noindex,nofollow"')) {
-    throw new Error(`${basePath} build has no noindex 404 page`);
-  }
-  if (basePath !== '/' && existsSync(join(clientRoot, 'assets'))) {
-    throw new Error(`${basePath} build leaked Vite assets outside the base path`);
-  }
+  expect(notFound).toContain('content="noindex,nofollow"');
+  if (basePath !== '/') expect(existsSync(join(clientRoot, 'assets'))).toBe(false);
   for (const path of [
     join(root, 'node_modules', '@tinyrack', 'docs', 'dist', 'styles.css'),
     join(root, 'node_modules', '@tinyrack', 'ui', 'dist', 'core.css'),
   ]) {
     const css = readFileSync(path, 'utf8');
-    if (
-      css.includes('@custom-media') ||
-      css.includes('@media (--tinyrack-breakpoint-')
-    ) {
-      throw new Error(`${path} leaked custom media`);
-    }
+    expect(css, path).not.toContain('@custom-media');
+    expect(css, path).not.toContain('@media (--tinyrack-breakpoint-');
   }
 }
 
@@ -486,8 +466,28 @@ async function verifyConsumerPreview(root: string, basePath: '/' | '/docs') {
   }
 }
 
+const fixtures = [
+  ['root', '/'],
+  ['subpath', '/docs'],
+] as const;
+const selectedFixtures = fixtures.filter(
+  ([fixtureName]) =>
+    process.env['TINYRACK_DOCS_SMOKE_ONLY'] === undefined ||
+    process.env['TINYRACK_DOCS_SMOKE_ONLY'] === fixtureName,
+);
 let completed = false;
-try {
+
+beforeAll(() => {
+  if (
+    suppliedUiArchive === undefined ||
+    !isAbsolute(suppliedUiArchive) ||
+    !existsSync(suppliedUiArchive)
+  ) {
+    throw new Error('TINYRACK_UI_TARBALL must point to a prepared UI package archive');
+  }
+  mkdirSync(smokeParent, { recursive: true });
+  smokeRoot = mkdtempSync(join(smokeParent, 'consumer-'));
+  artifactsRoot = join(smokeRoot, 'artifacts');
   mkdirSync(artifactsRoot);
   run(
     pnpm,
@@ -496,35 +496,33 @@ try {
   );
   const uiArchive = suppliedUiArchive.replaceAll('\\', '/');
   const docsArchive = packageArchive('tinyrack-docs-');
-
-  const fixtures = [
-    ['root', '/'],
-    ['subpath', '/docs'],
-  ] as const;
-  const selectedFixtures = fixtures.filter(
-    ([fixtureName]) =>
-      process.env['TINYRACK_DOCS_SMOKE_ONLY'] === undefined ||
-      process.env['TINYRACK_DOCS_SMOKE_ONLY'] === fixtureName,
-  );
-  const consumerRoot = createConsumer(
+  consumerRoot = createConsumer(
     selectedFixtures[0]?.[1] ?? '/',
     docsArchive,
     uiArchive,
   );
   prepareConsumer(consumerRoot);
-  for (const [, basePath] of selectedFixtures) {
-    verifyConsumerBuild(consumerRoot, basePath);
-    await verifyConsumerPreview(consumerRoot, basePath);
-  }
-  completed = true;
-  console.log(
-    `packed @tinyrack/docs fixture passed for ${selectedFixtures.map(([, basePath]) => basePath).join(' and ')}`,
-  );
-} finally {
+});
+
+afterAll(() => {
+  if (smokeRoot === '') return;
   if (completed || process.env['TINYRACK_DOCS_KEEP_SMOKE'] !== 'true') {
     rmSync(smokeRoot, { force: true, recursive: true });
     rmSync(smokeParent, { force: true, recursive: true });
   } else {
     console.error(`Kept failing docs fixture at ${smokeRoot}`);
   }
-}
+});
+
+describe('packed @tinyrack/docs consumer', () => {
+  let completedFixtures = 0;
+
+  for (const [fixtureName, basePath] of selectedFixtures) {
+    it(`builds and previews the ${fixtureName} fixture`, async () => {
+      verifyConsumerBuild(consumerRoot, basePath);
+      await verifyConsumerPreview(consumerRoot, basePath);
+      completedFixtures += 1;
+      completed = completedFixtures === selectedFixtures.length;
+    });
+  }
+});

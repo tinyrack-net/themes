@@ -295,6 +295,54 @@ describe('built React Router documentation', () => {
     }
   });
 
+  it('keeps the TOC compact until the content column has room for it', async () => {
+    const page = await browser.newPage({ viewport: { height: 900, width: 1024 } });
+
+    try {
+      await setTheme(page, 'tinyrack-light');
+      await gotoHydrated(page, `${origin}/en/components/button`);
+
+      for (const width of [1024, 1279]) {
+        await page.setViewportSize({ width, height: 900 });
+        const layout = page.locator('.tr-docs-content-layout');
+        const content = page.locator('.tr-docs-content-column');
+
+        await expectVisible(page.getByRole('combobox', { name: 'On this page' }));
+        await expectHidden(
+          page.getByRole('navigation', { name: 'On this page' }).locator('ol'),
+        );
+        await expectNoLocalOverflow(page.locator('html'), `TOC at ${width}px`);
+        await expect
+          .poll(() =>
+            layout.evaluate((element) => {
+              const style = getComputedStyle(element);
+              return style.gridTemplateColumns === `${element.clientWidth}px`;
+            }),
+          )
+          .toBe(true);
+        await expect
+          .poll(async () => (await content.boundingBox())?.width ?? 0)
+          .toBeGreaterThan(500);
+      }
+
+      await page.setViewportSize({ width: 1280, height: 900 });
+      await expectVisible(
+        page.getByRole('navigation', { name: 'On this page' }).locator('ol'),
+      );
+      await expectHidden(page.getByRole('combobox', { name: 'On this page' }));
+      await expect
+        .poll(() =>
+          page.locator('.tr-docs-content-layout').evaluate((element) => {
+            const style = getComputedStyle(element);
+            return style.gridTemplateColumns.split(' ').length;
+          }),
+        )
+        .toBe(2);
+    } finally {
+      await page.close();
+    }
+  });
+
   it('previews adjacent documents and keeps pagination responsive', async () => {
     const desktopPage = await browser.newPage({
       viewport: { height: 900, width: 1280 },

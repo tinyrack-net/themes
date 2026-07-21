@@ -26,6 +26,14 @@ const themeScript = `(() => {
   document.documentElement.style.colorScheme = theme === 'tinyrack-dark' ? 'dark' : 'light';
 })();`;
 
+function documentTheme() {
+  if (typeof document === 'undefined') return defaultTheme;
+  const theme = document.documentElement.dataset['theme'];
+  return theme === 'tinyrack-light' || theme === 'tinyrack-dark'
+    ? theme
+    : defaultTheme;
+}
+
 const docsMdxComponents = createTinyrackMdxComponents({
   components: { TRCallout, wrapper: DocsMdxWrapper },
 });
@@ -55,7 +63,7 @@ export function Layout({ children }: { children: ReactNode }) {
     docsManifest.locales[page?.locale ?? docsManifest.defaultLocale]?.language ??
     docsManifest.site.locale.language;
   return (
-    <html data-theme={defaultTheme} lang={language} suppressHydrationWarning>
+    <html data-theme={documentTheme()} lang={language} suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />

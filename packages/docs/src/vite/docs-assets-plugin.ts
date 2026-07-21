@@ -1,9 +1,12 @@
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import sharp from 'sharp';
 import type { Plugin } from 'vite';
+import { buildWorkerBudget } from '../config/build-worker-budget.ts';
 import type { DocsConfig, DocsManifest, DocsPage } from '../config/docs-config.ts';
 import { loadDocsManifest } from '../config/docs-manifest.ts';
+import { isDocsPageFile } from '../config/docs-page-file.ts';
+import { createRedirectFiles } from '../react-router/docs-build.ts';
 
 export const docsManifestModuleId = 'virtual:tinyrack-docs/manifest';
 const resolvedDocsManifestModuleId = `\0${docsManifestModuleId}`;
@@ -15,6 +18,39 @@ type DocsAssets = {
   robots: string;
   sitemap: string;
 };
+
+export function createBuildAssetCache<T>(create: () => Promise<T>) {
+  let current: Promise<T> | undefined;
+  return {
+    get() {
+      current ??= create();
+      return current;
+    },
+    invalidate() {
+      current = undefined;
+    },
+  };
+}
+
+export async function mapWithConcurrency<Input, Output>(
+  values: readonly Input[],
+  concurrency: number,
+  transform: (value: Input, index: number) => Promise<Output>,
+) {
+  const results = new Array<Output>(values.length);
+  let nextIndex = 0;
+  const workerCount = Math.min(values.length, Math.max(1, Math.floor(concurrency)));
+  await Promise.all(
+    Array.from({ length: workerCount }, async () => {
+      while (nextIndex < values.length) {
+        const index = nextIndex;
+        nextIndex += 1;
+        results[index] = await transform(values[index] as Input, index);
+      }
+    }),
+  );
+  return results;
+}
 
 function escapeXml(value: string) {
   return value
@@ -122,50 +158,31 @@ function createNotFoundPage(manifest: DocsManifest) {
 `;
 }
 
-function createRedirectPage(target: string, manifest: DocsManifest) {
-  const canonicalTarget = `${manifest.site.url}${target}`;
-  return `<!doctype html>
-<html lang="${escapeXml(manifest.locales[manifest.defaultLocale]?.language ?? manifest.site.locale.language)}">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="0;url=${escapeXml(target)}" http-equiv="refresh" />
-    <link href="${escapeXml(canonicalTarget)}" rel="canonical" />
-    <meta content="noindex" name="robots" />
-    <title>Redirecting · ${escapeXml(manifest.site.title)}</title>
-  </head>
-  <body><a href="${escapeXml(target)}">Continue</a></body>
-</html>\n`;
-}
-
-function redirectFile(path: string) {
-  const normalized = path.replace(/^\/+|\/+$/g, '');
-  return normalized.length === 0 ? 'index.html' : `${normalized}/index.html`;
-}
-
 async function createDocsAssets(
   manifest: DocsManifest,
   iconDataUrl: string,
 ): Promise<DocsAssets> {
   const images = new Map<string, Buffer>();
-  await Promise.all(
-    manifest.pages.map(async (page) => {
+  await mapWithConcurrency(
+    manifest.pages,
+    buildWorkerBudget({
+      maxWorkers: 16,
+      override:
+        process.env['TINYRACK_DOCS_ASSET_WORKERS'] ?? process.env['TINYRACK_WORKERS'],
+    }),
+    async (page) => {
       images.set(
         page.imagePath,
         await sharp(socialCardSvg(page, manifest, iconDataUrl))
           .png()
           .toBuffer(),
       );
-    }),
+    },
   );
   return {
     images,
     notFound: createNotFoundPage(manifest),
-    redirects: new Map(
-      Object.entries(manifest.redirects).map(([path, target]) => [
-        redirectFile(path),
-        createRedirectPage(target, manifest),
-      ]),
-    ),
+    redirects: createRedirectFiles(manifest),
     robots: `User-agent: *\nAllow: /\n\nSitemap: ${sitemapUrl(manifest)}\n`,
     sitemap: createSitemap(manifest),
   };
@@ -179,25 +196,53 @@ function virtualManifestSource(manifest: DocsManifest) {
   return `export const docsManifest = ${JSON.stringify(manifest).replaceAll('<', '\\u003c')};`;
 }
 
+function routeConfigSignature(manifest: DocsManifest) {
+  return JSON.stringify(
+    manifest.pages.map(({ id, path, routeFile }) => [id, path, routeFile]),
+  );
+}
+
+function isDocsContentFileWithin(
+  file: string,
+  resolvedRoot: string,
+  resolvedContent: string,
+) {
+  const candidate = resolve(resolvedRoot, file);
+  const contentRelative = relative(resolvedContent, candidate);
+  return (
+    !isAbsolute(contentRelative) &&
+    contentRelative !== '..' &&
+    !contentRelative.startsWith(`..${sep}`) &&
+    isDocsPageFile(contentRelative)
+  );
+}
+
+export function isDocsContentFile(file: string, root: string, contentDir: string) {
+  const resolvedRoot = resolve(root);
+  return isDocsContentFileWithin(file, resolvedRoot, resolve(resolvedRoot, contentDir));
+}
+
 export function docsAssetsPlugin(config: DocsConfig, root: string): Plugin {
+  const resolvedRoot = resolve(root);
+  const resolvedContent = resolve(resolvedRoot, config.contentDir);
   const icon = readFileSync(publicAssetFile(root, config.site.favicon)).toString(
     'base64',
   );
   const iconDataUrl = `data:image/svg+xml;base64,${icon}`;
   let manifest = loadDocsManifest(config, { root });
-  let assetsPromise = createDocsAssets(manifest, iconDataUrl);
+  const assets = createBuildAssetCache(() => createDocsAssets(manifest, iconDataUrl));
+  void assets.get();
 
   const refresh = () => {
+    const previousRouteConfig = routeConfigSignature(manifest);
     manifest = loadDocsManifest(config, { root });
-    assetsPromise = createDocsAssets(manifest, iconDataUrl);
+    assets.invalidate();
+    return previousRouteConfig !== routeConfigSignature(manifest);
   };
 
   return {
     name: 'tinyrack-docs-assets',
     enforce: 'pre',
-    buildStart() {
-      refresh();
-    },
     configureServer(server) {
       server.middlewares.use(async (request, response, next) => {
         const pathname = new URL(request.url ?? '/', 'http://tinyrack.local').pathname;
@@ -206,7 +251,7 @@ export function docsAssetsPlugin(config: DocsConfig, root: string): Plugin {
           basePath !== '/' && pathname.startsWith(`${basePath}/`)
             ? pathname.slice(basePath.length)
             : pathname;
-        const assets = await assetsPromise;
+        const currentAssets = await assets.get();
         const redirectTarget = manifest.redirects[pathname];
         if (redirectTarget !== undefined) {
           response.statusCode = 302;
@@ -216,15 +261,15 @@ export function docsAssetsPlugin(config: DocsConfig, root: string): Plugin {
         }
         if (assetPath === '/sitemap.xml') {
           response.setHeader('content-type', 'application/xml; charset=utf-8');
-          response.end(assets.sitemap);
+          response.end(currentAssets.sitemap);
           return;
         }
         if (assetPath === '/robots.txt') {
           response.setHeader('content-type', 'text/plain; charset=utf-8');
-          response.end(assets.robots);
+          response.end(currentAssets.robots);
           return;
         }
-        const image = assets.images.get(assetPath);
+        const image = currentAssets.images.get(assetPath);
         if (image !== undefined) {
           response.setHeader('content-type', 'image/png');
           response.end(image);
@@ -235,15 +280,7 @@ export function docsAssetsPlugin(config: DocsConfig, root: string): Plugin {
     },
     generateBundle() {
       if (this.environment.name !== 'client') return;
-      return assetsPromise.then((assets) => {
-        this.emitFile({
-          fileName: '.tinyrack-docs.json',
-          source: `${JSON.stringify({
-            basePath: manifest.site.basePath,
-            redirects: Object.fromEntries(assets.redirects),
-          })}\n`,
-          type: 'asset',
-        });
+      return assets.get().then((assets) => {
         this.emitFile({
           fileName: 'sitemap.xml',
           source: assets.sitemap,
@@ -259,14 +296,20 @@ export function docsAssetsPlugin(config: DocsConfig, root: string): Plugin {
         }
       });
     },
-    handleHotUpdate(context) {
-      if (!context.file.endsWith('.mdx')) return undefined;
-      refresh();
-      const module = context.server.moduleGraph.getModuleById(
+    async hotUpdate(options) {
+      if (!isDocsContentFileWithin(options.file, resolvedRoot, resolvedContent)) {
+        return undefined;
+      }
+      const routeConfigChanged = refresh();
+      if (routeConfigChanged) {
+        await options.server.restart();
+        return [];
+      }
+      const module = this.environment.moduleGraph.getModuleById(
         resolvedDocsManifestModuleId,
       );
-      if (module !== undefined) context.server.moduleGraph.invalidateModule(module);
-      context.server.ws.send({ path: '*', type: 'full-reload' });
+      if (module !== undefined) this.environment.moduleGraph.invalidateModule(module);
+      this.environment.hot.send({ path: '*', type: 'full-reload' });
       return [];
     },
     load(id) {

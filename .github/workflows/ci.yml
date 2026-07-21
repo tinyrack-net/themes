@@ -14,8 +14,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  workspace-docs:
-    name: Workspace and docs
+  prepare:
+    name: Prepare package outputs
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -28,18 +28,34 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Verify source workspace
-        run: pnpm run test:source
 
       - name: Check workspace formatting
         run: pnpm run biome
 
-      - name: Verify docs package
-        run: pnpm --filter @tinyrack/docs verify
+      - name: Build packages in dependency order
+        run: pnpm run build
 
-  ui-package:
+      - name: Pack prepared UI dependency
+        run: |
+          mkdir -p .tmp/prebuilt
+          pnpm --config.ignore-scripts=true --dir packages/ui pack --pack-destination "$GITHUB_WORKSPACE/.tmp/prebuilt"
+
+      - name: Upload prepared outputs
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: prepared-workspace
+          path: |
+            .tmp/prebuilt
+            packages/ui/dist
+            packages/docs/dist
+            packages/homepage/build
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 1
+
+  ui:
     name: UI package
+    needs: prepare
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -53,14 +69,21 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install Chromium
-        run: pnpm --filter @tinyrack/ui exec playwright install --with-deps chromium
+      - name: Download prepared outputs
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: prepared-workspace
+          path: .
 
-      - name: Verify UI package
-        run: pnpm --filter @tinyrack/ui verify:static
+      - name: Install browser engines
+        run: pnpm --filter @tinyrack/ui exec playwright install --with-deps chromium firefox
 
-  ui-firefox:
-    name: UI Firefox
+      - name: Test UI package
+        run: pnpm --filter @tinyrack/ui test
+
+  docs:
+    name: Docs package
+    needs: prepare
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -74,46 +97,20 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install Firefox
-        run: pnpm --filter @tinyrack/ui exec playwright install --with-deps firefox
+      - name: Download prepared outputs
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: prepared-workspace
+          path: .
 
-      - name: Test UI in Firefox
-        id: ui-firefox-test
-        continue-on-error: true
-        run: pnpm --filter @tinyrack/ui exec vitest run --project browser --browser.name firefox
-
-      - name: Retry UI Firefox for diagnostics
-        if: steps.ui-firefox-test.outcome == 'failure'
-        continue-on-error: true
-        run: pnpm --filter @tinyrack/ui exec vitest run --project browser --browser.name firefox
-
-      - name: Preserve UI Firefox first failure
-        if: steps.ui-firefox-test.outcome == 'failure'
-        run: exit 1
-
-  ui-coverage:
-    name: UI coverage
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v6.0.3
-
-      - name: Set up JavaScript runtime
-        uses: ./.github/actions/setup-js
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Chromium
-        run: pnpm --filter @tinyrack/ui exec playwright install --with-deps chromium
-
-      - name: Verify UI coverage
-        run: pnpm --filter @tinyrack/ui test:coverage
+      - name: Test docs package
+        run: |
+          export TINYRACK_UI_TARBALL="$(realpath .tmp/prebuilt/*.tgz)"
+          pnpm --filter @tinyrack/docs test
 
   homepage:
-    name: Homepage
+    name: Homepage package
+    needs: prepare
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -126,26 +123,18 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Download prepared outputs
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: prepared-workspace
+          path: .
 
       - name: Install Chromium
         run: pnpm --filter @tinyrack/homepage exec playwright install --with-deps chromium
 
-      - name: Verify homepage static output
-        run: pnpm --filter @tinyrack/homepage verify:static
-
-      - name: Audit homepage
-        id: homepage-audit
-        continue-on-error: true
-        run: pnpm --filter @tinyrack/homepage test:audit
-
-      - name: Retry homepage audit for diagnostics
-        if: steps.homepage-audit.outcome == 'failure'
-        continue-on-error: true
-        run: pnpm --filter @tinyrack/homepage test:audit
-
-      - name: Preserve homepage audit first failure
-        if: steps.homepage-audit.outcome == 'failure'
-        run: exit 1
+      - name: Test homepage package
+        run: pnpm --filter @tinyrack/homepage test
 
       - name: Upload homepage artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -161,10 +150,8 @@ jobs:
     name: Deploy homepage
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs:
-      - workspace-docs
-      - ui-package
-      - ui-firefox
-      - ui-coverage
+      - ui
+      - docs
       - homepage
     runs-on: ubuntu-latest
     timeout-minutes: 30

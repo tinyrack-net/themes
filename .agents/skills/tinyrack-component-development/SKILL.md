@@ -66,9 +66,10 @@ packages/ui/src/components/tabs/
 
 - Pin `@base-ui/react` to an exact version. A Base UI upgrade is a reviewed
   design-system migration, not an automatic dependency refresh.
-- Treat `packages/ui/scripts/component-catalog.ts` as the single source of truth for Base UI,
-  Tinyrack-native, and provider module names. Do not duplicate component lists in
-  build or test scripts.
+- Discover the component and provider catalog by reading
+  `packages/ui/src/components` and `packages/ui/src/providers` at the
+  filesystem level. Do not reintroduce a hand-maintained catalog or
+  duplicate the lists in build, test, or documentation scripts.
 - Every public React anatomy part in the pinned Base UI version must have a
   semantic Tinyrack wrapper, named export, prop type, and compound namespace
   member. Do not expose an incomplete subset under a Base UI module name.
@@ -122,16 +123,23 @@ base colors -> functional/semantic tokens -> component/pattern tokens
   component directory's compiled `index.js` and `index.d.ts`.
 - Do not expose `/react`, `/dom`, root component barrels, or compatibility aliases.
 - Keep React and React DOM as required peers and Base UI as a runtime dependency.
-- Wire new CSS through `scripts/copy-css.ts` and validate the packed package with
-  a real consumer fixture.
+- Wire new CSS through the `copy` array in `tsdown.config.ts` (see
+  `packages/ui/tsdown.config.ts` for the per-component pattern and
+  `packages/docs/tsdown.config.ts` for the aggregate-stylesheet
+  pattern) and validate the packed package by `pnpm pack` +
+  `pnpm install` against a real consumer fixture when a public
+  subpath changes.
 - Keep React MDX at `@tinyrack/ui/mdx`. Do not add an Astro renderer.
-- Update README, homepage documentation, package export tests, and dist smoke tests whenever a
-  public subpath changes.
+- Update README and homepage documentation whenever a public subpath
+  changes. Review `packages/ui/package.json` `exports` and
+  `publishConfig.exports` by hand and confirm they match the desired
+  shape.
 
 ## Homepage Documentation
 
-- Every component module owns one `<component>.demo.tsx` definition and one
-  `<component>.docs.mdx` page under `packages/homepage/app/content/components`.
+- Every component module owns one `<component>.demo.tsx` definition under
+  `packages/homepage/app/documentation/components` and one `<component>.mdx`
+  page per locale under `packages/homepage/app/content/<locale>/components`.
 - Expose meaningful public behavior through `ComponentPlayground`. Controlled demo
   args must be wired to rendered component events rather than shown as inert metadata.
 - Documentation compares relevant variants, sizes, orientations, validation and
@@ -158,22 +166,22 @@ Test each concern once in React.
 - Structure tests must reject legacy `contract.ts`, `dom.ts`, `react.tsx`,
   `*-dom`, `*-react`, and `*-parity` suites, and must ensure `index.tsx` remains a
   composition-only entry point.
-- `pnpm test:component` runs Chromium and Firefox.
-- `pnpm test:coverage` requires statements, branches, functions, and lines to
+- `pnpm --filter @tinyrack/ui test:e2e` runs Chromium coverage, Firefox, and the
+  packed UI consumer smoke.
+- UI E2E coverage requires statements, branches, functions, and lines to
   reach at least 95% for Tinyrack-owned component code and for all components
   combined. Do not lower or bypass the thresholds.
 
 Before handoff, run:
 
 ```bash
-pnpm test:component
-pnpm test:coverage
-pnpm verify
-pnpm docs:build
-pnpm docs:audit
-pnpm verify:release
+pnpm --filter @tinyrack/ui test:unit
+pnpm --filter @tinyrack/ui test:e2e
 pnpm pack:ui
 ```
+
+If component documentation changed, build dependencies first and run the
+homepage package's `test:unit` and `test:e2e` commands separately.
 
 ## Review Checklist
 

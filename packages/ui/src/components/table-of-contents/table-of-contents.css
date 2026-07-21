@@ -1,4 +1,5 @@
 @import "../link/link.css";
+@reference "@tinyrack/ui/core.css";
 
 @layer components {
   .tr-table-of-contents h2 {
@@ -46,7 +47,7 @@
   .tr-table-of-contents-mobile .tr-select-trigger {
     inline-size: 100%;
   }
-  @media (width >= 64rem) {
+  @variant xl {
     .tr-table-of-contents-desktop {
       display: block;
     }

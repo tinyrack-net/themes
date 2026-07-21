@@ -19,3 +19,4 @@ audits/
 .env.*
 .codex/environments
 paseo.json
+.opencode/plans

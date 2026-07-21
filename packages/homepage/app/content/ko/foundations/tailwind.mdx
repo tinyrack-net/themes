@@ -1,11 +1,11 @@
 ---
 title: "Tailwind 토큰"
-description: "Tailwind 기본 theme utility의 의미를 바꾸지 않고 Tinyrack의 접두사가 붙은 Tailwind v4 토큰 브리지를 사용합니다."
+description: "명시적인 반응형 임계값과 접두사가 붙은 foundation token utility를 Tinyrack Tailwind v4 브리지로 사용합니다."
 section: foundations
-order: 10
+order: 11
 ---
 import { TRCode } from '@tinyrack/ui/components/code';
-import { TailwindTokenReference } from '../../shared/tailwind-token-reference.js';
+import { TailwindTokenReference } from '../../../documentation/shared/tailwind-token-reference.js';
 
 ## 설정
 
@@ -25,8 +25,9 @@ Tailwind를 먼저 불러오고 Tinyrack core CSS를 이어서 불러옵니다. 
 ## Utility 선택
 
 - 색상, 타이포그래피, 간격, 형태, elevation, motion이 디자인 시스템 결정을 나타내면 <TRCode>tinyrack-*</TRCode> utility를 사용합니다.
+- viewport 임계값에는 공통 <TRCode>xs:</TRCode>부터 <TRCode>xl:</TRCode>까지의 반응형 variant를 사용합니다.
 - 일회성 grid 열 개수처럼 Tinyrack 토큰을 의미하지 않는 부수적인 레이아웃에는 Tailwind 기본 utility를 유지합니다.
-- Tailwind 기본 theme을 전역 override하지 않습니다. 접두사가 기존 애플리케이션 코드와 외부 예제의 의미를 안정적으로 보존합니다.
+- 그 밖의 Tailwind 기본 theme은 전역 override하지 않습니다. 접두사가 기존 애플리케이션 코드와 외부 예제의 의미를 안정적으로 보존합니다.
 
 ```tsx
 <section className="grid gap-tinyrack-lg rounded-tinyrack-lg border-tinyrack-default border-tinyrack-border bg-tinyrack-surface p-tinyrack-xl">

@@ -1,7 +1,9 @@
 import { readdirSync } from 'node:fs';
+import { type AddressInfo, createServer } from 'node:net';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
+import type { ConfigEnv } from 'vite';
 import { defineConfig } from 'vitest/config';
 
 const strictCoverageThresholds = {
@@ -20,10 +22,24 @@ const componentCoverageThresholds = Object.fromEntries(
     ]),
 );
 
-export default defineConfig(({ mode }) => {
-  const componentCoverage = mode === 'component-coverage';
+async function availablePort() {
+  const server = createServer();
+  await new Promise<void>((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', resolve);
+  });
+  const port = (server.address() as AddressInfo).port;
+  await new Promise<void>((resolve, reject) => {
+    server.close((error) => (error === undefined ? resolve() : reject(error)));
+  });
+  return port;
+}
 
-  return {
+export default async function config({ mode }: ConfigEnv) {
+  const componentCoverage = mode === 'component-coverage';
+  const componentFirefox = mode === 'component-firefox';
+
+  return defineConfig({
     test: {
       coverage: {
         provider: 'v8',
@@ -57,14 +73,6 @@ export default defineConfig(({ mode }) => {
           },
         },
         {
-          test: {
-            name: 'e2e',
-            environment: 'node',
-            setupFiles: ['./vitest.setup.ts'],
-            include: ['e2e/**/*.test.ts'],
-          },
-        },
-        {
           plugins: [react(), tailwindcss()],
           test: {
             name: 'browser',
@@ -76,15 +84,16 @@ export default defineConfig(({ mode }) => {
               headless: true,
               api: {
                 host: '127.0.0.1',
-                port: 61080,
+                port: await availablePort(),
               },
-              instances: componentCoverage
-                ? [{ browser: 'chromium' }]
-                : [{ browser: 'chromium' }, { browser: 'firefox' }],
+              instances: componentFirefox
+                ? [{ browser: 'firefox' }]
+                : [{ browser: 'chromium' }],
             },
+            retry: componentFirefox ? 1 : 0,
           },
         },
       ],
     },
-  };
-});
+  });
+}

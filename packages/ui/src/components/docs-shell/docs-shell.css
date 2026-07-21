@@ -1,6 +1,7 @@
 @import "../app-shell/app-shell.css";
 @import "../progress/progress.css";
 @import "../scroll-area/scroll-area.css";
+@reference "@tinyrack/ui/core.css";
 
 .tr-docs-shell {
   background: var(--tinyrack-surface);
@@ -126,7 +127,7 @@
   display: none;
 }
 
-@media (width >= 64rem) {
+@variant lg {
   .tr-docs-shell .tr-docs-shell-menu-trigger {
     display: none;
   }
@@ -134,6 +135,9 @@
   .tr-docs-shell .tr-docs-shell-menu-close {
     display: none;
   }
+}
+
+@variant xl {
   .tr-docs-shell-outline {
     order: 0;
   }

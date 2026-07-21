@@ -32,30 +32,17 @@
     "README.md"
   ],
   "scripts": {
-    "build": "pnpm build:css",
-    "build:types": "node scripts/clean-dist.ts && tsc -p tsconfig.build.json",
-    "build:css": "pnpm build:types && node scripts/copy-css.ts",
-    "check:css": "node scripts/copy-css.ts --check",
-    "check:types": "tsc -p tsconfig.json --noEmit && pnpm check:tests",
-    "check:tests": "tsc -p tsconfig.test.json --noEmit",
-    "check:scripts": "tsc -p tsconfig.scripts.json",
-    "verify": "pnpm verify:static && pnpm test:component && pnpm test:coverage",
-    "verify:static": "pnpm biome && pnpm check:types && pnpm check:scripts && pnpm check:css && pnpm test:unit && pnpm check:e2e && pnpm test:dist",
-    "verify:release": "pnpm verify",
-    "test": "pnpm test:unit && pnpm test:component",
+    "build": "tsdown",
+    "test": "pnpm test:unit && pnpm test:e2e",
     "test:unit": "vitest run --project unit",
-    "test:component": "vitest run --project browser",
-    "test:coverage": "vitest run --mode component-coverage --project unit --project browser --coverage",
-    "test:dist": "node e2e/dist-package-smoke.ts",
-    "biome": "biome check .",
-    "biome:fix": "biome check --write .",
-    "check:e2e": "vitest run --project e2e",
+    "test:e2e": "pnpm build && vitest run --mode component-coverage --project browser --coverage && vitest run --mode component-firefox --project browser",
+    "typecheck": "tsc -p tsconfig.test.json --noEmit",
     "prepack": "pnpm build"
   },
   "peerDependencies": {
     "react": ">=19.0.0",
     "react-dom": ">=19.0.0",
-    "tailwindcss": ">=4.0.0"
+    "tailwindcss": ">=4.3.0 <5.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.2",
@@ -72,6 +59,7 @@
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "tailwindcss": "^4.3.2",
+    "tsdown": "^0.22.12",
     "typescript": "^6.0.3",
     "vite": "^8.1.3",
     "vitest": "^4.1.10",

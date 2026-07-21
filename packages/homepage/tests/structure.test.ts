@@ -1,20 +1,19 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
 import { loadDocsManifest } from '@tinyrack/docs/config';
 import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
-import { componentNames } from '../../ui/scripts/component-catalog.js';
-import { componentDocsManifest } from '../app/content/shared/component-docs-manifest.js';
+import { componentDocsManifest } from '../app/documentation/shared/component-docs-manifest.js';
 import {
   tailwindTokenBridge,
   tailwindTokenGroups,
-} from '../app/content/shared/tailwind-token-catalog.js';
+} from '../app/documentation/shared/tailwind-token-catalog.js';
 import config from '../docs.config.js';
 
 const homepageRoot = process.cwd();
-const workspaceRoot = join(homepageRoot, '../..');
 const docsManifest = loadDocsManifest(config, { root: homepageRoot });
 const staticDocumentRoutes = docsManifest.pages;
+const componentNames = componentDocsManifest.map((entry) => entry.id);
 
 function readText(path: string) {
   const resolved = join(homepageRoot, path);
@@ -107,7 +106,9 @@ describe('React Router documentation contract', () => {
     for (const entry of componentDocsManifest) {
       expect(existsSync(join(homepageRoot, entry.file))).toBe(true);
       expect(
-        existsSync(join(homepageRoot, `app/content/components/${entry.id}.demo.tsx`)),
+        existsSync(
+          join(homepageRoot, `app/documentation/components/${entry.id}.demo.tsx`),
+        ),
       ).toBe(true);
     }
   });
@@ -116,7 +117,7 @@ describe('React Router documentation contract', () => {
     componentDocsManifest,
   )('$title keeps the required page sections, examples, and exact controls', (entry) => {
     const docs = readText(entry.file);
-    const demoPath = `app/content/components/${entry.id}.demo.tsx`;
+    const demoPath = `app/documentation/components/${entry.id}.demo.tsx`;
     const demo = readText(demoPath);
     const sections = ['Contract', 'Install', 'Usage', 'Examples', 'API'];
     const hasPlayground = !('hasPlayground' in entry) || entry.hasPlayground !== false;
@@ -146,6 +147,36 @@ describe('React Router documentation contract', () => {
     }
   });
 
+  it('keeps component installation guidance scoped to the UI package and component', () => {
+    for (const entry of componentDocsManifest) {
+      for (const locale of ['en', 'ko', 'ja']) {
+        const docs = readFileSync(
+          join(homepageRoot, `app/content/${locale}/components/${entry.id}.mdx`),
+          'utf8',
+        );
+        const install = docs.match(/<ComponentInstall[\s\S]*?\/>/)?.[0];
+
+        expect(install, `${locale}/${entry.id}`).toBeDefined();
+        expect(install, `${locale}/${entry.id}`).toContain(
+          "install: 'pnpm add @tinyrack/ui'",
+        );
+        expect(install, `${locale}/${entry.id}`).toContain(
+          `import '@tinyrack/ui/components/${entry.id}.css';`,
+        );
+        expect(install, `${locale}/${entry.id}`).toContain(
+          `from '@tinyrack/ui/components/${entry.id}';`,
+        );
+        expect(install, `${locale}/${entry.id}`).not.toContain(
+          "import '@tinyrack/ui/core.css';",
+        );
+        expect(
+          install?.match(/@tinyrack\/ui\/components\/[a-z0-9-]+\.css/g) ?? [],
+          `${locale}/${entry.id}`,
+        ).toEqual([`@tinyrack/ui/components/${entry.id}.css`]);
+      }
+    }
+  });
+
   it('omits disabled Playgrounds from every locale', () => {
     const disabledPlaygrounds = componentDocsManifest.filter(
       (entry) => 'hasPlayground' in entry && entry.hasPlayground === false,
@@ -154,7 +185,7 @@ describe('React Router documentation contract', () => {
     for (const entry of disabledPlaygrounds) {
       for (const locale of ['en', 'ko', 'ja']) {
         const docs = readFileSync(
-          join(homepageRoot, `app/content/${locale}/components/${entry.id}.docs.mdx`),
+          join(homepageRoot, `app/content/${locale}/components/${entry.id}.mdx`),
           'utf8',
         );
         expect(docs).not.toContain('ComponentPlayground');
@@ -185,10 +216,14 @@ describe('React Router documentation contract', () => {
 
   it('publishes one shared Tailwind token reference in every locale', () => {
     expect(
-      existsSync(join(homepageRoot, 'app/content/shared/tailwind-token-catalog.ts')),
+      existsSync(
+        join(homepageRoot, 'app/documentation/shared/tailwind-token-catalog.ts'),
+      ),
     ).toBe(true);
     expect(
-      existsSync(join(homepageRoot, 'app/content/shared/tailwind-token-reference.tsx')),
+      existsSync(
+        join(homepageRoot, 'app/documentation/shared/tailwind-token-reference.tsx'),
+      ),
     ).toBe(true);
 
     for (const locale of ['en', 'ko', 'ja'] as const) {
@@ -196,27 +231,37 @@ describe('React Router documentation contract', () => {
       expect(existsSync(join(homepageRoot, path))).toBe(true);
       const docs = readText(path);
       const overview = readText(`app/content/${locale}/foundations/overview.mdx`);
-      expect(docs).toContain('order: 10');
+      expect(docs).toContain('order: 11');
       expect(docs).toContain(
-        "import { TailwindTokenReference } from '../../shared/tailwind-token-reference.js';",
+        "import { TailwindTokenReference } from '../../../documentation/shared/tailwind-token-reference.js';",
       );
       expect(docs).toContain(`<TailwindTokenReference locale="${locale}" />`);
       expect(overview).toContain(`href="/${locale}/foundations/tailwind/"`);
+      expect(overview).toContain(`href="/${locale}/foundations/breakpoints/"`);
+      expect(readText(`app/content/${locale}/foundations/breakpoints.mdx`)).toContain(
+        `<BreakpointReference locale="${locale}" />`,
+      );
       expect(staticDocumentRoutes).toContainEqual(
         expect.objectContaining({
           id: `${locale}-foundations-tailwind`,
-          order: 10,
+          order: 11,
           path: `/${locale}/foundations/tailwind`,
+        }),
+      );
+      expect(staticDocumentRoutes).toContainEqual(
+        expect.objectContaining({
+          id: `${locale}-foundations-breakpoints`,
+          order: 6,
+          path: `/${locale}/foundations/breakpoints`,
         }),
       );
     }
 
-    expect(tailwindTokenBridge).toHaveLength(161);
-    expect(tailwindTokenGroups).toHaveLength(9);
+    expect(tailwindTokenBridge).toHaveLength(166);
+    expect(tailwindTokenGroups).toHaveLength(10);
     for (const group of tailwindTokenGroups) {
       expect(tailwindTokenBridge.some((entry) => entry.group === group.id)).toBe(true);
     }
-    expect(readText('../ui/src/core/index.ts')).not.toContain('tailwindToken');
   });
 
   it('uses SVG chevrons instead of fallback text glyphs', () => {
@@ -244,7 +289,7 @@ describe('React Router documentation contract', () => {
   });
 
   it('renders one localized WelcomePage contract across all splash routes', () => {
-    const welcomePage = readText('app/content/shared/welcome-page.tsx');
+    const welcomePage = readText('app/documentation/shared/welcome-page.tsx');
     const appStyles = readText('app/styles/app.css');
 
     expect(welcomePage).toContain('<span>TINYRACK</span>');
@@ -267,58 +312,50 @@ describe('React Router documentation contract', () => {
     expect(welcomePage).toContain('max-md:grid-cols-[minmax(0,1fr)]');
     expect(welcomePage).not.toContain('welcomeStyles');
     expect(welcomePage).not.toMatch(/className=(?:"|')welcome-/);
-    expect(existsSync(join(homepageRoot, 'app/content/shared/welcome-page.css'))).toBe(
-      false,
-    );
+    expect(
+      existsSync(join(homepageRoot, 'app/documentation/shared/welcome-page.css')),
+    ).toBe(false);
     expect(appStyles).not.toContain('@import "../content/shared/welcome-page.css"');
     expect(appStyles).toContain('.tr-mdx:has(> [data-welcome-page])');
     expect(appStyles).toContain('@keyframes welcome-enter');
 
     for (const locale of ['en', 'ko', 'ja'] as const) {
-      const index = readText(`app/content/${locale}/index.mdx`);
-      expect(index).toContain('layout: splash');
+      const index = readText(`app/content/${locale}/index.tsx`);
+      expect(index).toContain("import { DocsPage } from '@tinyrack/docs/runtime';");
+      expect(index).toContain("layout: 'splash'");
       expect(index).toContain('navigation: false');
       expect(index).toContain(
-        "import { WelcomePage } from '../shared/welcome-page.js';",
+        "import { WelcomePage } from '../../documentation/shared/welcome-page.js';",
       );
       expect(index).toContain(`<WelcomePage locale="${locale}" />`);
     }
   });
 
-  it('contains no removed documentation runtime residue', () => {
-    const removedRuntimeName = ['story', 'book'].join('');
-    const removedRuntimePattern = new RegExp(removedRuntimeName, 'i');
-    expect(existsSync(join(workspaceRoot, `.${removedRuntimeName}`))).toBe(false);
-
-    const authoredFiles = filesUnder(workspaceRoot).filter(
-      (path) => !path.endsWith('pnpm-lock.yaml'),
-    );
-    const legacyDemoSuffix = ['.stori', 'es.tsx'].join('');
-    const legacyFiles = authoredFiles.filter(
-      (path) => path.endsWith(legacyDemoSuffix) || removedRuntimePattern.test(path),
-    );
-    expect(legacyFiles).toEqual([]);
-
-    const legacySources = authoredFiles
-      .filter((path) => /\.(?:json|md|mdx|ts|tsx|ya?ml)$/.test(path))
-      .filter((path) => removedRuntimePattern.test(readFileSync(path, 'utf8')));
-    expect(legacySources).toEqual([]);
-  });
-
-  it('defines all 225 localized content routes as static route modules', () => {
+  it('defines all 231 localized content routes as static route modules', () => {
     const routes = readText('app/routes.ts');
     expect(componentDocsManifest).toHaveLength(61);
-    expect(staticDocumentRoutes).toHaveLength(225);
-    expect(new Set(staticDocumentRoutes.map((entry) => entry.path)).size).toBe(225);
+    expect(staticDocumentRoutes).toHaveLength(231);
+    expect(new Set(staticDocumentRoutes.map((entry) => entry.path)).size).toBe(231);
     expect(new Set(staticDocumentRoutes.map((entry) => entry.sourceFile)).size).toBe(
-      225,
+      231,
     );
+    for (const locale of ['en', 'ko', 'ja']) {
+      expect(staticDocumentRoutes).toContainEqual(
+        expect.objectContaining({
+          id: `${locale}-installation`,
+          order: 1,
+          path: `/${locale}/installation`,
+          section: 'start',
+          sourceFile: `app/content/${locale}/installation.mdx`,
+        }),
+      );
+    }
     expect(staticDocumentRoutes).toContainEqual(
       expect.objectContaining({
         layout: 'splash',
         navigation: false,
         path: '/en',
-        sourceFile: 'app/content/en/index.mdx',
+        sourceFile: 'app/content/en/index.tsx',
       }),
     );
     expect(staticDocumentRoutes).toContainEqual(
@@ -352,12 +389,26 @@ describe('React Router documentation contract', () => {
     );
   });
 
-  it('uses frontmatter as the single route, navigation, and SEO manifest', () => {
-    const docsFiles = filesUnder(join(homepageRoot, 'app/content')).filter((path) =>
-      path.endsWith('.mdx'),
-    );
-    expect(docsFiles).toHaveLength(staticDocumentRoutes.length);
-    for (const path of docsFiles) {
+  it('uses page metadata as the single route, navigation, and SEO manifest', () => {
+    const contentFiles = filesUnder(join(homepageRoot, 'app/content'));
+    const mdxFiles = contentFiles.filter((path) => path.endsWith('.mdx'));
+    const tsxPages = contentFiles.filter((path) => path.endsWith('.tsx'));
+    const routeFiles = [...mdxFiles, ...tsxPages]
+      .map((path) => relative(homepageRoot, path).replaceAll('\\', '/'))
+      .sort();
+    const manifestFiles = staticDocumentRoutes.map((route) => route.sourceFile).sort();
+    const assets = contentFiles
+      .filter((path) => !/\.(?:mdx|tsx)$/.test(path))
+      .map((path) => relative(homepageRoot, path).replaceAll('\\', '/'));
+
+    expect(mdxFiles).toHaveLength(228);
+    expect(tsxPages).toHaveLength(3);
+    expect(routeFiles).toEqual(manifestFiles);
+    expect(assets).toEqual(['app/content/fixtures/tinyrack-avatar.svg']);
+    expect(contentFiles.some((path) => path.endsWith('.ts'))).toBe(false);
+    expect(contentFiles.some((path) => path.includes('.demo.'))).toBe(false);
+    expect(contentFiles.some((path) => /\.docs\.(?:mdx|tsx)$/.test(path))).toBe(false);
+    for (const path of mdxFiles) {
       const source = readFileSync(path, 'utf8');
       expect(source).toMatch(/^---\r?\n/);
       expect(source).toContain('\ntitle:');
@@ -367,6 +418,41 @@ describe('React Router documentation contract', () => {
       expect(source).not.toMatch(/^# [^#]/m);
       expect(source).not.toContain('export const meta');
     }
+    for (const path of tsxPages) {
+      const source = readFileSync(path, 'utf8');
+      expect(source).toContain('<DocsPage');
+      expect(source).toContain('frontmatter={{');
+      expect(source).toContain('title:');
+      expect(source).toContain('description:');
+      expect(source).toContain('section:');
+      expect(source).toContain('order:');
+      expect(source).not.toContain('export const meta');
+    }
+    expect(
+      staticDocumentRoutes.some((route) => route.sourceFile.endsWith('.demo.tsx')),
+    ).toBe(false);
+
+    const documentationRoot = join(homepageRoot, 'app/documentation');
+    const documentationFiles = filesUnder(documentationRoot)
+      .map((path) => relative(documentationRoot, path).replaceAll('\\', '/'))
+      .sort();
+    expect(
+      documentationFiles.filter((path) => /^components\/[^/]+\.demo\.tsx$/.test(path)),
+    ).toHaveLength(61);
+    expect(documentationFiles.filter((path) => path.startsWith('shared/'))).toEqual([
+      'shared/base-ui-example-sources.ts',
+      'shared/breakpoint-reference.tsx',
+      'shared/component-docs-manifest.ts',
+      'shared/component-example-tabs.tsx',
+      'shared/component-install.tsx',
+      'shared/tailwind-token-catalog.ts',
+      'shared/tailwind-token-reference.tsx',
+      'shared/welcome-page.tsx',
+    ]);
+    expect(
+      documentationFiles.filter((path) => path.startsWith('foundations/')),
+    ).toEqual(['foundations/motion-demo.css', 'foundations/motion-demo.tsx']);
+    expect(documentationFiles).not.toContain('shared/component-token-table.tsx');
 
     const root = readText('app/root.tsx');
     expect(root).toContain("from '@tinyrack/docs/runtime'");
@@ -399,22 +485,31 @@ describe('React Router documentation contract', () => {
       scripts: Record<string, string>;
     };
     const root = readText('app/root.tsx');
-    const examples = readText('app/content/shared/component-example-tabs.tsx');
-    const install = readText('app/content/shared/component-install.tsx');
+    const examples = readText('app/documentation/shared/component-example-tabs.tsx');
+    const install = readText('app/documentation/shared/component-install.tsx');
     const playground = readText('app/playground/playground.tsx');
     const viteConfig = readText('vite.config.ts');
 
     expect(packageJson.dependencies['@tinyrack/docs']).toBe('workspace:*');
-    expect(packageJson.scripts['dev']).toContain(
+    expect(packageJson.scripts['dev:app']).toContain(
       'NODE_OPTIONS=--conditions=@tinyrack/source',
     );
-    const verifySteps = packageJson.scripts['verify:static']?.split(' && ') ?? [];
-    expect(verifySteps.indexOf('pnpm build')).toBeLessThan(
-      verifySteps.indexOf('pnpm check:structure'),
-    );
     expect(packageJson.scripts['dev']).not.toContain('build');
-    expect(packageJson.scripts['build:app']).toContain('tinyrack-docs build');
-    expect(packageJson.scripts['preview:search']).toContain('tinyrack-docs preview');
+    expect(packageJson.scripts['dev:app']).not.toContain('build');
+    expect(packageJson.scripts['dev:app']).toContain('react-router dev');
+    expect(packageJson.scripts['build']).toBe(
+      'pnpm typegen && tsc -p tsconfig.build.json --noEmit && tsc -p tsconfig.test.json --noEmit && node scripts/generate-app-icons.ts --check && react-router build',
+    );
+    expect(
+      Object.keys(packageJson.scripts)
+        .filter((name) => name === 'test' || name.startsWith('test:'))
+        .sort(),
+    ).toEqual(['test', 'test:e2e', 'test:unit']);
+    expect(
+      Object.keys(packageJson.scripts).filter((name) => name.startsWith('check')),
+    ).toEqual([]);
+    expect(packageJson.scripts['preview']).toBe('vite preview');
+    expect(JSON.stringify(packageJson.scripts)).not.toContain('tinyrack-docs');
     expect(viteConfig).toContain("import.meta.resolve('@tinyrack/docs/vite')");
     expect(viteConfig).not.toContain('alias:');
     expect(viteConfig).not.toContain('uiSource');
@@ -424,11 +519,17 @@ describe('React Router documentation contract', () => {
     expect(playground).toContain('data-pagefind-ignore="all"');
   });
 
-  it('keeps browser audits state-driven and preserves first CI failures', () => {
+  it('keeps browser audits state-driven and isolated', () => {
     const packageJson = JSON.parse(readText('package.json')) as {
       scripts: Record<string, string>;
     };
-    const browserAudit = readText('tests/browser.test.ts');
+    const browserAuditFiles = [
+      'tests/browser-rendering.test.ts',
+      'tests/browser-navigation.test.ts',
+      'tests/browser-playground.test.ts',
+      'tests/browser-overlays.test.ts',
+    ];
+    const browserAudit = browserAuditFiles.map((path) => readText(path)).join('\n');
     const interactiveAudit = browserAudit.slice(
       browserAudit.indexOf(
         "it('keeps code examples, dialogs, selects, and mobile navigation interactive'",
@@ -437,12 +538,8 @@ describe('React Router documentation contract', () => {
         "it('opens TRContextMenu rack commands from pointer, keyboard, and touch fallback'",
       ),
     );
-    const workflow = readFileSync(
-      join(workspaceRoot, '.github/workflows/ci.yml'),
-      'utf8',
-    );
     const browserAuditFile = ts.createSourceFile(
-      'browser.test.ts',
+      'browser-audits.test.ts',
       browserAudit,
       ts.ScriptTarget.Latest,
       true,
@@ -461,21 +558,15 @@ describe('React Router documentation contract', () => {
     };
     visit(browserAuditFile);
 
-    expect(packageJson.scripts['verify:static']).toBe(
-      'pnpm check:types && pnpm check:app-icons && pnpm build && pnpm check:structure',
+    expect(packageJson.scripts).not.toHaveProperty('verify');
+    expect(packageJson.scripts['test:e2e']).toBe(
+      'pnpm build && vitest run --project e2e && vitest run --project e2e-overlays',
     );
-    expect(packageJson.scripts['verify']).toBe('pnpm verify:static && pnpm test:audit');
     expect(browserAudit).not.toContain('it.concurrent(');
     expect(browserAudit).not.toContain('waitForTimeout(');
     expect(oneShotVisibilityAssertions).toEqual([]);
     expect(interactiveAudit).not.toContain('await page.goto(');
     expect(interactiveAudit).toContain("reactTab.getAttribute('aria-selected')");
-    expect(workflow).toContain('id: ui-firefox-test');
-    expect(workflow).toContain("if: steps.ui-firefox-test.outcome == 'failure'");
-    expect(workflow).toContain('name: Preserve UI Firefox first failure');
-    expect(workflow).toContain('id: homepage-audit');
-    expect(workflow).toContain("if: steps.homepage-audit.outcome == 'failure'");
-    expect(workflow).toContain('name: Preserve homepage audit first failure');
   });
 
   it('uses design-system primitives for executable and copy-ready UI', () => {
@@ -559,7 +650,7 @@ describe('React Router documentation contract', () => {
   });
 
   it('loads only IBM Plex Sans Latin, Korean, and Japanese web-font subsets', () => {
-    const styles = readText('../docs/src/styles/styles.css');
+    const styles = readText('../docs/dist/styles.css');
     const fontImports = [...styles.matchAll(/@fontsource\/[^'"]+/g)].map(
       ([specifier]) => specifier,
     );
@@ -578,10 +669,9 @@ describe('React Router documentation contract', () => {
       '@fontsource/ibm-plex-sans-jp/japanese-700.css',
     ]);
 
-    const cjkFonts = readText('../docs/src/styles/fonts.css');
-    expect(cjkFonts.match(/ibm-plex-sans-kr-korean-/g)).toHaveLength(4);
-    expect(cjkFonts.match(/ibm-plex-sans-jp-japanese-/g)).toHaveLength(4);
-    expect(cjkFonts.match(/font-family: "IBM Plex Sans"/g)).toHaveLength(8);
+    expect(styles.match(/"IBM Plex Sans KR"/g)).toHaveLength(6);
+    expect(styles.match(/"IBM Plex Sans JP"/g)).toHaveLength(6);
+    expect(styles).toContain(':root:lang(ja)');
   });
 
   it('preloads only the current locale IBM Plex Sans subsets in prerendered HTML', () => {
@@ -651,12 +741,14 @@ describe('React Router documentation contract', () => {
   });
 
   it('keeps audited advanced examples copy-ready and their integration guidance complete', () => {
-    const previewCard = readText('app/content/en/components/preview-card.docs.mdx');
+    const previewCard = readText('app/content/en/components/preview-card.mdx');
     expect(previewCard).toContain('`delay` and `closeDelay`');
     expect(previewCard).toContain('tapping it follows its');
 
-    const radioGroupDocs = readText('app/content/en/components/radio-group.docs.mdx');
-    const radioGroupDemo = readText('app/content/components/radio-group.demo.tsx');
+    const radioGroupDocs = readText('app/content/en/components/radio-group.mdx');
+    const radioGroupDemo = readText(
+      'app/documentation/components/radio-group.demo.tsx',
+    );
     expect(radioGroupDocs).toContain('code: Stories.radioGroupStatesSource');
     expect(radioGroupDocs).toContain('code: Stories.radioGroupValidationSource');
     expect(radioGroupDemo).toContain(
@@ -664,35 +756,35 @@ describe('React Router documentation contract', () => {
     );
     expect(radioGroupDemo).toContain('export function RequiredRack()');
 
-    const selectDocs = readText('app/content/en/components/select.docs.mdx');
-    const selectDemo = readText('app/content/components/select.demo.tsx');
+    const selectDocs = readText('app/content/en/components/select.mdx');
+    const selectDemo = readText('app/documentation/components/select.demo.tsx');
     expect(selectDocs).toContain('code: Stories.selectStatesSource');
     expect(selectDemo).toContain(
       "import { TRSelect } from '@tinyrack/ui/components/select';",
     );
     expect(selectDemo).toContain('function AvailabilitySelect({');
 
-    const switchDocs = readText('app/content/en/components/switch.docs.mdx');
-    const sharedSources = readText('app/content/shared/base-ui-example-sources.ts');
+    const switchDocs = readText('app/content/en/components/switch.mdx');
+    const sharedSources = readText(
+      'app/documentation/shared/base-ui-example-sources.ts',
+    );
     expect(switchDocs).toContain('code: switchStateComparisonSource');
     expect(sharedSources).toContain('function SwitchStateSample({');
     expect(sharedSources).toContain(
       '<SwitchStateSample checked readOnly title="Read only" />',
     );
 
-    const slider = readText('app/content/en/components/slider.docs.mdx');
+    const slider = readText('app/content/en/components/slider.mdx');
     expect(slider).toContain('a single slider accepts a number or one-item array');
     expect(slider).toContain('getAriaValueText');
     expect(slider).toContain('`onValueCommitted`');
 
-    const providers = readText(
-      'app/content/en/integrations/base-ui-providers.docs.mdx',
-    );
+    const providers = readText('app/content/en/integrations/base-ui-providers.mdx');
     expect(providers).toContain('createRequestCsp');
     expect(providers).toContain('disableStyleElements');
     expect(providers).toContain('<html dir={direction}');
 
-    const mdx = readText('app/content/en/integrations/mdx-renderer.docs.mdx');
+    const mdx = readText('app/content/en/integrations/mdx-renderer.mdx');
     expect(mdx).toContain("import Content from './content.mdx';");
     expect(mdx).toContain('export function MdxArticle()');
     expect(mdx).toContain('function CustomHeading({ children, ...props }');

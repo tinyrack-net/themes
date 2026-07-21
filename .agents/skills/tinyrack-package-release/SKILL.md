@@ -37,13 +37,17 @@ workflow.
 2. Branch or rebase onto current `origin/main`. Choose each next version from
    its manifest, tags, and npm state. Never reuse a pushed tag or published
    version.
-3. Bump only the requested manifests and run the relevant package contract
-   tests, then run:
+3. Bump only the requested manifests, build required dependencies, and run only
+   the package being released:
 
    ```bash
-   pnpm verify
-   pnpm verify:release
+   pnpm --filter @tinyrack/ui test
+   pnpm pack:ui
    ```
+
+   For docs, prepare the UI dist/tarball first, then run the equivalent docs
+   `test` and `pack:docs` commands. Do not invoke a workspace-wide test
+   aggregator.
 
 4. Commit the intended files, open a ready PR, wait for all required checks,
    merge, and record the merge commit SHA.

@@ -2,11 +2,11 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { canonicalDocumentPath, loadDocsManifest } from '@tinyrack/docs/config';
 import { describe, expect, it } from 'vitest';
-import { componentDocsManifest } from '../app/content/shared/component-docs-manifest.js';
+import { componentDocsManifest } from '../app/documentation/shared/component-docs-manifest.js';
 import config from '../docs.config.js';
+import { routeModulePath } from './build-route-assets.ts';
 
 const buildRoot = join(process.cwd(), 'build/client');
-const buildMetadataPath = join(process.cwd(), 'build/tinyrack-docs.json');
 const staticDocumentRoutes = loadDocsManifest(config, {
   root: process.cwd(),
 }).pages;
@@ -23,11 +23,6 @@ function htmlPathFor(route: string) {
 
 describe('static documentation output', () => {
   it('redirects the site root to the default locale homepage', () => {
-    const metadata = JSON.parse(readFileSync(buildMetadataPath, 'utf8')) as {
-      redirects?: Record<string, string>;
-    };
-
-    expect(metadata.redirects?.['index.html']).toContain('content="0;url=/en/"');
     expect(readFileSync(join(buildRoot, 'index.html'), 'utf8')).toContain(
       'http-equiv="refresh"',
     );
@@ -37,8 +32,7 @@ describe('static documentation output', () => {
   });
 
   it('pre-renders every known content route with metadata and a route chunk', () => {
-    const assets = readdirSync(join(buildRoot, 'assets'));
-    expect(staticDocumentRoutes).toHaveLength(225);
+    expect(staticDocumentRoutes).toHaveLength(231);
     for (const route of staticDocumentRoutes) {
       const path = htmlPathFor(route.path);
       expect(path, route.path).toBeDefined();
@@ -60,19 +54,14 @@ describe('static documentation output', () => {
       } else {
         expect(html, route.path).toMatch(new RegExp(`<h1[^>]*>${route.title}</h1>`));
       }
-      expect(
-        assets.some(
-          (asset) => asset.startsWith(`${route.moduleStem}-`) && asset.endsWith('.js'),
-        ),
-        `${route.path} must own a client route chunk`,
-      ).toBe(true);
+      expect(routeModulePath(route.id), route.path).toMatch(/^\/assets\/.+\.js$/);
     }
   });
 
   it('does not eager-load component documentation from the homepage', () => {
     const home = readFileSync(htmlPathFor('/en') as string, 'utf8');
     for (const entry of componentDocsManifest) {
-      expect(home).not.toContain(`${entry.id}.docs-`);
+      expect(home).not.toContain(routeModulePath(`en-components-${entry.id}`));
     }
   });
 

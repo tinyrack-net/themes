@@ -1,19 +1,34 @@
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
+const alias = {
+  'virtual:tinyrack-docs/manifest': fileURLToPath(
+    new URL('./tests/virtual-manifest.ts', import.meta.url),
+  ),
+};
+
 export default defineConfig({
-  resolve: {
-    alias: {
-      '@tinyrack/ui/components/document-pagination': fileURLToPath(
-        new URL('../ui/src/components/document-pagination/index.tsx', import.meta.url),
-      ),
-      'virtual:tinyrack-docs/manifest': fileURLToPath(
-        new URL('./tests/virtual-manifest.ts', import.meta.url),
-      ),
-    },
-  },
   test: {
-    environment: 'node',
-    include: ['tests/**/*.test.ts'],
+    projects: [
+      {
+        resolve: { alias },
+        test: {
+          name: 'unit',
+          environment: 'node',
+          include: ['tests/**/*.test.ts', 'src/**/*.test.ts'],
+          exclude: ['tests/dist-package.test.ts'],
+        },
+      },
+      {
+        resolve: { alias },
+        test: {
+          name: 'e2e',
+          environment: 'node',
+          hookTimeout: 180_000,
+          include: ['tests/dist-package.test.ts'],
+          testTimeout: 180_000,
+        },
+      },
+    ],
   },
 });

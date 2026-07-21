@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   tinyrackBorders,
+  tinyrackBreakpoints,
   tinyrackControlMetrics,
   tinyrackLayers,
   tinyrackMeasurements,
@@ -149,6 +150,24 @@ function declarationsFor(header: string) {
 }
 
 describe('core.css source contract', () => {
+  it('exposes TypeScript breakpoints only through the Tailwind theme', () => {
+    const themeBreakpoints = Object.fromEntries(
+      Object.entries(declarationsFor('@theme static')).filter(([name]) =>
+        name.startsWith('--breakpoint-'),
+      ),
+    );
+
+    expect(coreCss).not.toContain('@custom-media');
+    expect(themeBreakpoints).toEqual(
+      Object.fromEntries(
+        Object.entries(tinyrackBreakpoints).map(([name, value]) => [
+          `--breakpoint-${name}`,
+          value,
+        ]),
+      ),
+    );
+  });
+
   it('is a source-owned core stylesheet with only the public token blocks', () => {
     expect(coreCss).not.toContain('Generated from');
     expect(coreCss).not.toContain('.tr-btn');
@@ -274,6 +293,7 @@ describe('core.css source contract', () => {
     const tailwindDeclarations = declarationsFor('@theme static');
 
     expect(tailwindDeclarations).toEqual({
+      ...tokenDeclarations(tinyrackBreakpoints, 'breakpoint'),
       ...tokenDeclarations(tinyrackTypography.fontFamily, 'font-tinyrack'),
       ...textDeclarations,
       ...controlTextDeclarations,

@@ -1,4 +1,5 @@
 @import "../separator/separator.css";
+@reference "@tinyrack/ui/core.css";
 
 @layer components {
   .tr-otp-field {
@@ -50,7 +51,7 @@
     height: var(--tinyrack-control-height-md);
   }
 
-  @media (max-width: 24rem) {
+  @variant max-xs {
     .tr-otp-field {
       --tr-otp-field-size: var(--tinyrack-control-height-md);
       --tr-otp-field-gap: var(--tinyrack-radius-xs);

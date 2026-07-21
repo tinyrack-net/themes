@@ -27,6 +27,24 @@
 @import "@tinyrack/ui/components/table.css";
 @import "@tinyrack/ui/mdx.css";
 
+:root {
+  --tinyrack-font-body:
+    "IBM Plex Sans", "IBM Plex Sans KR", "IBM Plex Sans JP", sans-serif;
+  --tinyrack-font-heading:
+    "IBM Plex Sans", "IBM Plex Sans KR", "IBM Plex Sans JP", sans-serif;
+  --tinyrack-font-mono:
+    "IBM Plex Sans", "IBM Plex Sans KR", "IBM Plex Sans JP", sans-serif;
+}
+
+:root:lang(ja) {
+  --tinyrack-font-body:
+    "IBM Plex Sans", "IBM Plex Sans JP", "IBM Plex Sans KR", sans-serif;
+  --tinyrack-font-heading:
+    "IBM Plex Sans", "IBM Plex Sans JP", "IBM Plex Sans KR", sans-serif;
+  --tinyrack-font-mono:
+    "IBM Plex Sans", "IBM Plex Sans JP", "IBM Plex Sans KR", sans-serif;
+}
+
 html,
 body {
   background: var(--tinyrack-surface);
@@ -159,7 +177,7 @@ body {
   );
 }
 
-@media (width >= 64rem) {
+@variant lg {
   .tr-docs-sidebar-inner {
     display: block;
   }
@@ -206,16 +224,6 @@ body {
     display: grid;
   }
 
-  .tr-docs-shell[data-docs-layout="docs"] .tr-docs-content-layout {
-    grid-template-columns: minmax(0, 1fr) var(--tinyrack-measure-xl);
-  }
-
-  .tr-docs-shell[data-docs-layout="docs"]
-    .tr-docs-content-layout
-    > .tr-docs-shell-outline {
-    display: block;
-  }
-
   .tr-docs-shell[data-docs-layout="splash"] {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
@@ -236,5 +244,19 @@ body {
   .tr-docs-shell[data-docs-layout="splash"] .tr-docs-content-layout,
   .tr-docs-shell[data-docs-layout="standalone"] .tr-docs-content-layout {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@variant xl {
+  .tr-docs-shell[data-docs-layout="docs"] .tr-docs-content-layout {
+    grid-template-columns:
+      minmax(0, 1fr)
+      var(--tr-app-shell-sidebar-width, calc(var(--tinyrack-space-2xl) * 9));
+  }
+
+  .tr-docs-shell[data-docs-layout="docs"]
+    .tr-docs-content-layout
+    > .tr-docs-shell-outline {
+    display: block;
   }
 }

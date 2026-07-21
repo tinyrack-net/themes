@@ -53,6 +53,22 @@ const publishedExports = {
 } as const;
 
 describe('@tinyrack/docs package exports', () => {
+  it('keeps package-local test and build commands', () => {
+    expect(
+      Object.keys(packageJson.scripts)
+        .filter((name) => name === 'test' || name.startsWith('test:'))
+        .sort(),
+    ).toEqual(['test', 'test:e2e', 'test:unit']);
+    expect(
+      Object.keys(packageJson.scripts).filter((name) => name.startsWith('check')),
+    ).toEqual([]);
+    expect(packageJson.scripts.build).not.toContain('--filter');
+    expect(packageJson.scripts).not.toHaveProperty('verify');
+    expect(packageJson.scripts['test:e2e']).toBe(
+      'pnpm build && vitest run --project e2e',
+    );
+  });
+
   it('exports the React Router runtime Layout', () => {
     const runtimeEntry = readFileSync(
       resolve(import.meta.dirname, '../src/runtime/index.ts'),
@@ -66,9 +82,15 @@ describe('@tinyrack/docs package exports', () => {
     expect(packageJson.dependencies['@tinyrack/ui']).toBe('workspace:^');
   });
 
-  it('uses source-first workspace entries for every public subpath and CLI', () => {
+  it('requires consumers to configure Tailwind through the Vite plugin', () => {
+    expect(packageJson.peerDependencies['tailwindcss']).toBe('>=4.3.0 <5.0.0');
+    expect(packageJson.peerDependencies['@tailwindcss/vite']).toBe('>=4.3.0 <5.0.0');
+    expect(packageJson.dependencies).not.toHaveProperty('tailwindcss');
+  });
+
+  it('uses source-first workspace entries for every public subpath without a CLI', () => {
     expect(packageJson.exports).toEqual(sourceExports);
-    expect(packageJson.bin['tinyrack-docs']).toBe('./src/cli/tinyrack-docs.ts');
+    expect('bin' in packageJson).toBe(false);
 
     for (const target of Object.values(sourceExports)) {
       if (typeof target === 'string') continue;
@@ -78,9 +100,7 @@ describe('@tinyrack/docs package exports', () => {
   });
 
   it('rewrites the packed manifest to dist-only entries', () => {
-    expect(packageJson.publishConfig.bin).toEqual({
-      'tinyrack-docs': './dist/cli/tinyrack-docs.js',
-    });
+    expect('bin' in packageJson.publishConfig).toBe(false);
     expect(packageJson.publishConfig.exports).toEqual(publishedExports);
     expect(JSON.stringify(packageJson.publishConfig)).not.toContain('@tinyrack/source');
     expect(JSON.stringify(packageJson.publishConfig)).not.toContain('./src/');

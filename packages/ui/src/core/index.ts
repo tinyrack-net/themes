@@ -1,4 +1,5 @@
 export { tinyrackBorders } from './tokens/borders.js';
+export { tinyrackBreakpoints } from './tokens/breakpoints.js';
 export { tinyrackPalettes } from './tokens/colors.js';
 export { tinyrackControlMetrics } from './tokens/control-metrics.js';
 export { tinyrackLayers } from './tokens/layers.js';

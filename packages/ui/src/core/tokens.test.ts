@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   tinyrackBorders,
+  tinyrackBreakpoints,
   tinyrackControlMetrics,
   tinyrackLayers,
   tinyrackMeasurements,
@@ -167,6 +168,13 @@ describe('tinyrack design tokens', () => {
   });
 
   it('keeps foundation token groups available from /core', () => {
+    expect(tinyrackBreakpoints).toEqual({
+      xs: '24rem',
+      sm: '40rem',
+      md: '48rem',
+      lg: '64rem',
+      xl: '80rem',
+    });
     expect(tinyrackPalettes.neutral[950]).toBe('#0a0a0a');
     expect(tinyrackSpacing).toMatchObject({ md: '0.75rem', xl: '1.5rem' });
     expect(tinyrackMeasurements).toMatchObject({

@@ -1,3 +1,5 @@
+@reference "@tinyrack/ui/core.css";
+
 .tr-mdx {
   --_tr-mdx-page-width: 76rem;
   --_tr-mdx-content-width: 64rem;
@@ -301,7 +303,7 @@
   white-space: nowrap;
 }
 
-@media (--tinyrack-breakpoint-md-min) {
+@variant md {
   .tr-mdx {
     --_tr-mdx-page-padding-top: 3rem;
     --_tr-mdx-page-padding-inline: 2.5rem;
@@ -309,7 +311,7 @@
   }
 }
 
-@media (--tinyrack-breakpoint-sm-max) {
+@variant max-sm {
   .tr-mdx {
     --_tr-mdx-page-padding-top: 1.25rem;
     --_tr-mdx-page-padding-inline: var(--tinyrack-space-lg);

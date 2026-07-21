@@ -126,10 +126,12 @@ try {
           '@tinyrack/ui': `file:${archivePath}`,
           '@types/react': '19.2.17',
           '@types/react-dom': '19.2.3',
+          '@tailwindcss/vite': '4.3.2',
           '@vitejs/plugin-react': '6.0.2',
           react: '19.2.7',
           'react-dom': '19.2.7',
           'remark-gfm': '4.0.1',
+          tailwindcss: '4.3.2',
           typescript: '6.0.3',
           vite: '8.1.3',
         },
@@ -328,6 +330,7 @@ await writeFile('server-markup.html', renderToString(tree));
 import { hydrateRoot } from 'react-dom/client';
 import { createTinyrackMdxComponents } from '@tinyrack/ui/mdx';
 import Content from './content.mdx';
+import './app.css';
 
 const tree = (
   <MDXProvider components={createTinyrackMdxComponents()}>
@@ -341,14 +344,21 @@ requestAnimationFrame(() => { document.documentElement.dataset.hydrated = 'true'
 `,
   );
   writeFileSync(
+    join(appRoot, 'app.css'),
+    `@import "@tinyrack/ui/core.css";
+@import "@tinyrack/ui/mdx.css";
+`,
+  );
+  writeFileSync(
     join(appRoot, 'vite.config.mjs'),
     `import mdx from '@mdx-js/rollup';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import remarkGfm from 'remark-gfm';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [mdx({ providerImportSource: '@mdx-js/react', remarkPlugins: [remarkGfm] }), react()],
+  plugins: [mdx({ providerImportSource: '@mdx-js/react', remarkPlugins: [remarkGfm] }), react(), tailwindcss()],
 });
 `,
   );
@@ -359,6 +369,17 @@ export default defineConfig({
     `<!doctype html><html><head><meta charset="utf-8"></head><body><div id="root">${serverMarkup}</div><script type="module" src="/app.jsx"></script></body></html>`,
   );
   run(pnpm, ['exec', 'vite', 'build'], appRoot);
+  const emittedCss = readdirSync(join(appRoot, 'dist/assets')).find((file) =>
+    file.endsWith('.css'),
+  );
+  if (emittedCss === undefined) throw new Error('packed UI consumer emitted no CSS');
+  if (
+    /@(?:custom-media|reference|theme|variant)\b/.test(
+      readFileSync(join(appRoot, 'dist/assets', emittedCss), 'utf8'),
+    )
+  ) {
+    throw new Error('packed UI consumer leaked uncompiled Tailwind CSS');
+  }
   await verifyPackedMdxHydration(appRoot);
 
   const packedPackage = JSON.parse(

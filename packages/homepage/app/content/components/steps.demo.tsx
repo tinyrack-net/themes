@@ -59,7 +59,7 @@ export function StepsGuidePreview({ count = 3 }: Args = { count: 3 }) {
           <p>Install the UI package, then import the shared and component styles.</p>
           <TRCodeBlock
             code={
-              "pnpm add @tinyrack/ui react react-dom\n\nimport '@tinyrack/ui/core.css';\nimport '@tinyrack/ui/components/steps.css';"
+              "pnpm add @tinyrack/ui tailwindcss react react-dom\n\nimport '@tinyrack/ui/core.css';\nimport '@tinyrack/ui/components/steps.css';"
             }
             language="tsx"
           />

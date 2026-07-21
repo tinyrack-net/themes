@@ -1,4 +1,5 @@
 @import "../../internal/layer-parts.css";
+@reference "@tinyrack/ui/core.css";
 
 @layer components {
   .tr-dialog-backdrop {
@@ -174,7 +175,7 @@
     }
   }
 
-  @media (--tinyrack-breakpoint-sm-at-most) {
+  @variant max-sm {
     .tr-dialog-box {
       --_tr-dialog-box-padding: var(--tinyrack-space-lg);
       max-height: calc(100dvh - var(--tinyrack-space-xl));

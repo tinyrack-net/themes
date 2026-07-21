@@ -1,6 +1,5 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
-import { transformBreakpointCss } from '../../../scripts/breakpoint-css.ts';
 import { componentNames } from './component-catalog.ts';
 
 const root = resolve(import.meta.dirname, '..');
@@ -19,50 +18,20 @@ const publicAssets = [
 ] as const;
 
 await Promise.all(
-  publicAssets.map(async ({ source }) => {
+  publicAssets.map(async ({ source, target }) => {
     const sourceFile = resolve(srcRoot, source);
-    const existing = await readExistingFile(sourceFile);
-
-    if (existing === null) {
-      throw new Error(`${relative(root, sourceFile)} is missing.`);
-    }
-
-    if (existing.includes('Generated from')) {
+    const content = await readFile(sourceFile, 'utf8');
+    if (content.includes('Generated from')) {
       throw new Error(
         `${relative(root, sourceFile)} must be maintained as source CSS.`,
       );
     }
 
-    await transformBreakpointCss(existing, sourceFile);
-    if (checkMode) {
-      console.log(`checked ${relative(root, sourceFile)}`);
+    if (!checkMode) {
+      const targetFile = resolve(distRoot, target);
+      await mkdir(dirname(targetFile), { recursive: true });
+      await cp(sourceFile, targetFile);
     }
+    console.log(`${checkMode ? 'checked' : 'copied'} ${relative(root, sourceFile)}`);
   }),
 );
-
-if (!checkMode) {
-  await Promise.all(
-    publicAssets.map(async ({ source, target }) => {
-      const sourceFile = resolve(srcRoot, source);
-      const targetFile = resolve(distRoot, target);
-      const content = await readFile(sourceFile, 'utf8');
-      const transformed = await transformBreakpointCss(content, sourceFile);
-      await mkdir(dirname(targetFile), { recursive: true });
-      await writeFile(targetFile, transformed);
-      console.log(
-        `copied ${relative(root, sourceFile)} -> ${relative(root, targetFile)}`,
-      );
-    }),
-  );
-}
-
-async function readExistingFile(path: string) {
-  try {
-    return await readFile(path, 'utf8');
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      return null;
-    }
-    throw error;
-  }
-}

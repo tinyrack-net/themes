@@ -63,10 +63,7 @@ function tokenReferences(
 }
 
 function parseCssBlocks(css: string) {
-  const source = css
-    .replaceAll(/\/\*[\s\S]*?\*\//g, '')
-    .replaceAll(/^@custom-media [^;]+;\s*/gm, '')
-    .trim();
+  const source = css.replaceAll(/\/\*[\s\S]*?\*\//g, '').trim();
   const blocks = new Map<string, string>();
   let cursor = 0;
 
@@ -144,14 +141,6 @@ function parseDeclarations(block: string, header: string) {
 
 const cssBlocks = parseCssBlocks(coreCss);
 
-function parseCustomMedia(css: string) {
-  return Object.fromEntries(
-    [...css.matchAll(/^@custom-media\s+(--[a-z0-9-]+)\s+([^;]+);$/gm)].map(
-      ([, name, query]) => [name, query],
-    ),
-  );
-}
-
 function declarationsFor(header: string) {
   const block = cssBlocks.get(header);
   if (block === undefined) {
@@ -161,17 +150,22 @@ function declarationsFor(header: string) {
 }
 
 describe('core.css source contract', () => {
-  it('matches named media and Tailwind breakpoints to TypeScript', () => {
-    const expectedMedia = Object.fromEntries(
-      Object.entries(tinyrackBreakpoints).flatMap(([name, value]) => [
-        [`--tinyrack-breakpoint-${name}-min`, `(width >= ${value})`],
-        [`--tinyrack-breakpoint-${name}-max`, `(width < ${value})`],
-      ]),
+  it('exposes TypeScript breakpoints only through the Tailwind theme', () => {
+    const themeBreakpoints = Object.fromEntries(
+      Object.entries(declarationsFor('@theme static')).filter(([name]) =>
+        name.startsWith('--breakpoint-'),
+      ),
     );
-    expectedMedia['--tinyrack-breakpoint-xs-at-most'] = '(width <= 24rem)';
-    expectedMedia['--tinyrack-breakpoint-sm-at-most'] = '(width <= 40rem)';
 
-    expect(parseCustomMedia(coreCss)).toEqual(expectedMedia);
+    expect(coreCss).not.toContain('@custom-media');
+    expect(themeBreakpoints).toEqual(
+      Object.fromEntries(
+        Object.entries(tinyrackBreakpoints).map(([name, value]) => [
+          `--breakpoint-${name}`,
+          value,
+        ]),
+      ),
+    );
   });
 
   it('is a source-owned core stylesheet with only the public token blocks', () => {

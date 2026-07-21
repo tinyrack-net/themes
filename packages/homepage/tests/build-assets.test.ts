@@ -47,6 +47,14 @@ describe('homepage build assets', () => {
       );
     }
 
+    for (const cssAsset of assets.filter((asset) => asset.endsWith('.css'))) {
+      const css = readFileSync(join(assetsRoot, cssAsset), 'utf8');
+      assert(
+        !/@(?:custom-media|reference|theme|variant)\b/.test(css),
+        `Uncompiled CSS directive in ${cssAsset}`,
+      );
+    }
+
     const forbiddenAssets = assets.filter((asset) =>
       /(?:bundle-web|wasm-|\.wasm$|angular-|cpp-|php-|python-|vue-vine)/i.test(asset),
     );

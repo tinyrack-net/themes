@@ -184,7 +184,9 @@ async function verifySourceDevServer() {
     }
     if (
       sourceCss.includes('@custom-media') ||
-      sourceCss.includes('@media (--tinyrack-breakpoint-')
+      sourceCss.includes('@media (--tinyrack-breakpoint-') ||
+      sourceCss.includes('@variant') ||
+      sourceCss.includes('@reference')
     ) {
       throw new Error(`source development CSS leaked custom media\n${output}`);
     }

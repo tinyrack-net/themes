@@ -1,6 +1,7 @@
 @import "../drawer/drawer.css";
 @import "../icon-button/icon-button.css";
 @import "../scroll-area/scroll-area.css";
+@reference "@tinyrack/ui/core.css";
 
 @layer components {
   .tr-app-shell {
@@ -111,7 +112,7 @@
     inline-size: 100%;
   }
 
-  @media (--tinyrack-breakpoint-md-min) {
+  @variant md {
     .tr-app-shell[data-breakpoint="sm"] > .tr-app-shell-sidebar {
       align-self: start;
       block-size: 100%;
@@ -154,7 +155,7 @@
     }
   }
 
-  @media (--tinyrack-breakpoint-lg-min) {
+  @variant lg {
     .tr-app-shell[data-breakpoint="lg"] > .tr-app-shell-sidebar {
       align-self: start;
       block-size: 100%;

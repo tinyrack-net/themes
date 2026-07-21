@@ -26,12 +26,28 @@ describe('breakpoint token usage', () => {
 
     for (const file of sourceRoots.flatMap(sourceFiles)) {
       const source = readFileSync(file, 'utf8');
+      if (
+        file.endsWith('.css') &&
+        file.includes('/packages/ui/src/') &&
+        source.includes('@variant') &&
+        !source.includes('@reference')
+      ) {
+        violations.push(`${relative(repoRoot, file)}: missing @reference`);
+      }
       const checks = [
+        /@custom-media\b/g,
+        /@media\s*\(\s*--tinyrack-breakpoint-/g,
         /@media\s*\(\s*(?:width|min-width|max-width)\s*[:<>=]/g,
         /matchMedia\(\s*['"][^'"]*(?:width|min-width|max-width)[^'"]*['"]\s*\)/g,
         /(?:min|max)-\[[^\]]+\]:/g,
         /\[@media[^\]]+\]:/g,
       ];
+
+      for (const match of source.matchAll(/@variant\s+([^\s{]+)\s*\{/g)) {
+        if (!/^(?:xs|sm|md|lg|xl|max-(?:xs|sm|md|lg|xl))$/.test(match[1] ?? '')) {
+          violations.push(`${relative(repoRoot, file)}: ${match[0]}`);
+        }
+      }
 
       for (const pattern of checks) {
         for (const match of source.matchAll(pattern)) {

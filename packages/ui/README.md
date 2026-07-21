@@ -6,11 +6,25 @@ interfaces.
 ## Install
 
 ```bash
-pnpm add @tinyrack/ui react react-dom
+pnpm add @tinyrack/ui tailwindcss react react-dom
 ```
 
-React 19 or newer is required. Interactive components use Base UI internally for
-accessible focus, keyboard, portal, positioning, and dismissal behavior.
+React 19 and Tailwind CSS 4.3 or newer are required. Register the Tailwind
+integration for your build tool before importing Tinyrack styles. For Vite:
+
+```bash
+pnpm add -D @tailwindcss/vite
+```
+
+```ts
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite';
+
+export default defineConfig({ plugins: [tailwindcss()] });
+```
+
+Interactive components use Base UI internally for accessible focus, keyboard,
+portal, positioning, and dismissal behavior.
 
 ## Use a component
 
@@ -71,10 +85,10 @@ import { tinyrackBreakpoints } from '@tinyrack/ui/core';
 // { xs: '24rem', sm: '40rem', md: '48rem', lg: '64rem', xl: '80rem' }
 ```
 
-Tinyrack source styles use named custom media so component rules share this
-scale. Published CSS expands those names to standard media queries; consumers do
-not need a custom-media PostCSS plugin. Import `@tinyrack/ui/core.css` after
-Tailwind to enable the matching `xs:` through `xl:` variants.
+Tinyrack styles use Tailwind's `@variant` directive for responsive rules. Import
+`@tinyrack/ui/core.css` before component styles so Tailwind can resolve the
+matching `xs` through `xl` and `max-*` variants. Published CSS is intentionally
+authored Tailwind CSS and must pass through the consumer's Tailwind build.
 
 Supported Base UI modules:
 

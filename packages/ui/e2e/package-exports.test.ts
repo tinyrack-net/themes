@@ -130,9 +130,10 @@ describe('React-only package contract', () => {
     expect(packageJson.bugs.url).toBe('https://github.com/tinyrack-net/design/issues');
   });
 
-  it('uses React as a required peer and Base UI as the behavioral dependency', () => {
+  it('uses React and Tailwind as required peers and Base UI for behavior', () => {
     expect(packageJson.peerDependencies.react).toBe('>=19.0.0');
     expect(packageJson.peerDependencies['react-dom']).toBe('>=19.0.0');
+    expect(packageJson.peerDependencies.tailwindcss).toBe('>=4.3.0 <5.0.0');
     expect(packageJson.dependencies['@base-ui/react']).toBe('1.6.0');
     expect(packageJson.dependencies).not.toHaveProperty('@floating-ui/dom');
     expect(packageJson).not.toHaveProperty('peerDependenciesMeta');

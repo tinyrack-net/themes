@@ -32,10 +32,12 @@ describe('component CSS distribution', () => {
     expect(readFileSync(path, 'utf8')).not.toContain('Generated from');
   });
 
-  it('copy script has no Astro or overlay assets', () => {
+  it('copies authored CSS without framework-specific transformations', () => {
     const source = readFileSync(join(repoRoot, 'scripts/copy-css.ts'), 'utf8');
     expect(source).not.toContain('.astro');
     expect(source).not.toContain("'overlay'");
+    expect(source).not.toContain('transformBreakpointCss');
+    expect(source).toContain('await cp(sourceFile, targetFile)');
     expect(source).toContain("{ source: 'core/core.css', target: 'core.css' }");
     expect(source).toContain("{ source: 'mdx/mdx.css', target: 'mdx.css' }");
   });

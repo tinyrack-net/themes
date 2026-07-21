@@ -1,4 +1,22 @@
+@custom-media --tinyrack-breakpoint-xs-min (width >= 24rem);
+@custom-media --tinyrack-breakpoint-xs-max (width < 24rem);
+@custom-media --tinyrack-breakpoint-xs-at-most (width <= 24rem);
+@custom-media --tinyrack-breakpoint-sm-min (width >= 40rem);
+@custom-media --tinyrack-breakpoint-sm-max (width < 40rem);
+@custom-media --tinyrack-breakpoint-sm-at-most (width <= 40rem);
+@custom-media --tinyrack-breakpoint-md-min (width >= 48rem);
+@custom-media --tinyrack-breakpoint-md-max (width < 48rem);
+@custom-media --tinyrack-breakpoint-lg-min (width >= 64rem);
+@custom-media --tinyrack-breakpoint-lg-max (width < 64rem);
+@custom-media --tinyrack-breakpoint-xl-min (width >= 80rem);
+@custom-media --tinyrack-breakpoint-xl-max (width < 80rem);
+
 @theme static {
+  --breakpoint-xs: 24rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
   --font-tinyrack-body: var(--tinyrack-font-body);
   --font-tinyrack-heading: var(--tinyrack-font-heading);
   --font-tinyrack-mono: var(--tinyrack-font-mono);

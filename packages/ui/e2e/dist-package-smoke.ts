@@ -150,6 +150,7 @@ import { TRTabs, TRTabsRoot } from '@tinyrack/ui/components/tabs';
 import { createTinyrackMdxComponents, tinyrackMdxComponents } from '@tinyrack/ui/mdx';
 import { TRCSPProvider } from '@tinyrack/ui/providers/csp';
 import { TRDirectionProvider, useDirection } from '@tinyrack/ui/providers/direction';
+import { tinyrackBreakpoints } from '@tinyrack/ui/core';
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -166,6 +167,7 @@ assert(typeof TRDirectionProvider === 'function', 'TRDirectionProvider is missin
 assert(typeof useDirection === 'function', 'useDirection is missing');
 assert(typeof createTinyrackMdxComponents === 'function', 'MDX factory is missing');
 assert(typeof tinyrackMdxComponents === 'object', 'MDX component map is missing');
+assert(JSON.stringify(tinyrackBreakpoints) === JSON.stringify({ xs: '24rem', sm: '40rem', md: '48rem', lg: '64rem', xl: '80rem' }), 'breakpoint metadata is invalid');
 
 for (const component of ${JSON.stringify(componentNames)}) {
   const module = await import('@tinyrack/ui/components/' + component);
@@ -176,19 +178,23 @@ for (const component of ${JSON.stringify(componentNames)}) {
   const cssPath = fileURLToPath(
     import.meta.resolve('@tinyrack/ui/components/' + component + '.css'),
   );
+  const css = readFileSync(cssPath, 'utf8');
   assert(
-    readFileSync(cssPath, 'utf8').includes('.tr-'),
+    css.includes('.tr-'),
     component + ' has invalid CSS',
   );
+  assert(!css.includes('@custom-media') && !css.includes('@media (--tinyrack-breakpoint-'), component + ' leaked custom media');
 }
 
 for (const [specifier, marker] of [
-  ['@tinyrack/ui/core.css', '--tinyrack-primary'],
+  ['@tinyrack/ui/core.css', '--breakpoint-xl: 80rem'],
   ['@tinyrack/ui/components/button.css', '.tr-btn'],
   ['@tinyrack/ui/components/tabs.css', '.tr-tabs'],
 ]) {
   const path = fileURLToPath(import.meta.resolve(specifier));
-  assert(readFileSync(path, 'utf8').includes(marker), specifier + ' has invalid CSS');
+  const css = readFileSync(path, 'utf8');
+  assert(css.includes(marker), specifier + ' has invalid CSS');
+  assert(!css.includes('@custom-media') && !css.includes('@media (--tinyrack-breakpoint-'), specifier + ' leaked custom media');
 }
 
 for (const specifier of [

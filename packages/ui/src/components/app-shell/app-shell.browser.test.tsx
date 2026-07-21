@@ -4,6 +4,7 @@ import { type CSSProperties, createRef, useState } from 'react';
 import { expect, test, vi } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
+import { tinyrackBreakpoints } from '../../core/tokens/breakpoints.js';
 import { TRAppShell } from './index.js';
 
 function setMobileMatch(matches: boolean) {
@@ -107,6 +108,7 @@ function ShellFixture({
 test('renders a static desktop sidebar landmark and both layout contracts', async () => {
   setMobileMatch(false);
   const view = await render(<ShellFixture forceControlVisibility={false} />);
+  expect(window.matchMedia).toHaveBeenCalledWith(`(width < ${tinyrackBreakpoints.lg})`);
   expect(document.querySelector('aside.tr-app-shell-sidebar')).not.toBeNull();
   expect(
     document.querySelector('.tr-app-shell-scroll-area')?.getAttribute('data-variant'),
@@ -136,6 +138,7 @@ test('renders a static desktop sidebar landmark and both layout contracts', asyn
       <TRAppShell.Main>Alternate content</TRAppShell.Main>
     </TRAppShell.Root>,
   );
+  expect(window.matchMedia).toHaveBeenCalledWith(`(width < ${tinyrackBreakpoints.md})`);
   expect(document.querySelector('.tr-app-shell')?.getAttribute('data-layout')).toBe(
     'header-first',
   );

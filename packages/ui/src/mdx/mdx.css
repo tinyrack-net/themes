@@ -301,7 +301,7 @@
   white-space: nowrap;
 }
 
-@media (width >= 48rem) {
+@media (--tinyrack-breakpoint-md-min) {
   .tr-mdx {
     --_tr-mdx-page-padding-top: 3rem;
     --_tr-mdx-page-padding-inline: 2.5rem;
@@ -309,7 +309,7 @@
   }
 }
 
-@media (width < 40rem) {
+@media (--tinyrack-breakpoint-sm-max) {
   .tr-mdx {
     --_tr-mdx-page-padding-top: 1.25rem;
     --_tr-mdx-page-padding-inline: var(--tinyrack-space-lg);

@@ -298,8 +298,8 @@ describe('built React Router documentation', () => {
       const desktopReference = desktopPage.locator('[data-tailwind-token-reference]');
       await expect(
         desktopReference.locator('[data-tailwind-token-group]').count(),
-      ).resolves.toBe(9);
-      await expect(desktopReference.locator('tbody tr').count()).resolves.toBe(161);
+      ).resolves.toBe(10);
+      await expect(desktopReference.locator('tbody tr').count()).resolves.toBe(166);
       await expectNoLocalOverflow(
         desktopPage.locator('html'),
         'Tailwind desktop document',

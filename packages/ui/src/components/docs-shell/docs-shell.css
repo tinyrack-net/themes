@@ -126,7 +126,7 @@
   display: none;
 }
 
-@media (width >= 64rem) {
+@media (--tinyrack-breakpoint-lg-min) {
   .tr-docs-shell .tr-docs-shell-menu-trigger {
     display: none;
   }

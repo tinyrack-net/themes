@@ -1,5 +1,6 @@
-import { cp, mkdir, readFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
+import { transformBreakpointCss } from '../../../scripts/breakpoint-css.ts';
 import { componentNames } from './component-catalog.ts';
 
 const root = resolve(import.meta.dirname, '..');
@@ -32,6 +33,7 @@ await Promise.all(
       );
     }
 
+    await transformBreakpointCss(existing, sourceFile);
     if (checkMode) {
       console.log(`checked ${relative(root, sourceFile)}`);
     }
@@ -43,8 +45,10 @@ if (!checkMode) {
     publicAssets.map(async ({ source, target }) => {
       const sourceFile = resolve(srcRoot, source);
       const targetFile = resolve(distRoot, target);
+      const content = await readFile(sourceFile, 'utf8');
+      const transformed = await transformBreakpointCss(content, sourceFile);
       await mkdir(dirname(targetFile), { recursive: true });
-      await cp(sourceFile, targetFile);
+      await writeFile(targetFile, transformed);
       console.log(
         `copied ${relative(root, sourceFile)} -> ${relative(root, targetFile)}`,
       );

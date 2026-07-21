@@ -113,7 +113,7 @@
     }
   }
 
-  @media (max-width: 40rem) {
+  @media (--tinyrack-breakpoint-sm-at-most) {
     .tr-alert-dialog-actions > * {
       flex: 1 1 auto;
       white-space: normal;

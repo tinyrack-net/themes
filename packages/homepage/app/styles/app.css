@@ -98,7 +98,7 @@
   min-width: 100%;
 }
 
-@media (width >= 64rem) {
+@media (--tinyrack-breakpoint-lg-min) {
   .tr-docs-shell[data-docs-layout="docs"] .tr-docs-content-layout {
     grid-template-columns: minmax(0, 1fr) var(--tinyrack-measure-xl);
   }

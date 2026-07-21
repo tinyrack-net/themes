@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { tinyrackBreakpoints } from '@tinyrack/ui/core';
 import { describe, expect, it } from 'vitest';
 import {
   type TailwindTokenGroupId,
@@ -11,6 +12,7 @@ const homepageRoot = process.cwd();
 const coreCss = readFileSync(join(homepageRoot, '../ui/src/core/core.css'), 'utf8');
 
 function groupForThemeVariable(themeVariable: string): TailwindTokenGroupId {
+  if (themeVariable.startsWith('--breakpoint-')) return 'breakpoint';
   if (themeVariable.startsWith('--color-')) return 'color';
   if (/^--(?:text-decoration-|text-underline-)/.test(themeVariable)) {
     return 'decoration';
@@ -36,13 +38,25 @@ function themeBridgeFromCss() {
   const declarations = [...theme.matchAll(/^\s*(--[a-z0-9-]+):/gm)].map(
     ([, themeVariable]) => themeVariable,
   );
-  const mappings = [
-    ...theme.matchAll(/^\s*(--[a-z0-9-]+):\s*var\(\s*(--tinyrack-[a-z0-9-]+)\s*\);/gm),
-  ].map(([, themeVariable, runtimeVariable]) => ({
-    group: groupForThemeVariable(themeVariable ?? ''),
-    runtimeVariable,
-    themeVariable,
-  }));
+  const mappings = [...theme.matchAll(/^\s*(--[a-z0-9-]+):\s*([^;]+);/gm)].map(
+    ([, themeVariable = '', value = '']) => {
+      const group = groupForThemeVariable(themeVariable);
+      if (group === 'breakpoint') {
+        const name = themeVariable.replace('--breakpoint-', '');
+        return {
+          group,
+          mediaQuery: `--tinyrack-breakpoint-${name}-min`,
+          themeVariable,
+          value,
+        };
+      }
+      const runtimeVariable = /var\(\s*(--tinyrack-[a-z0-9-]+)\s*\)/.exec(value)?.[1];
+      if (!runtimeVariable) {
+        throw new Error(`Missing runtime variable for ${themeVariable}`);
+      }
+      return { group, runtimeVariable, themeVariable };
+    },
+  );
 
   return { declarations, mappings };
 }
@@ -71,5 +85,17 @@ describe('Tailwind token documentation catalog', () => {
     for (const entry of tailwindTokenBridge) {
       expect(entry.group).toBe(groupForThemeVariable(entry.themeVariable));
     }
+  });
+
+  it('matches breakpoint catalog values to public metadata', () => {
+    expect(
+      Object.fromEntries(
+        tailwindTokenBridge.flatMap((entry) =>
+          entry.group === 'breakpoint'
+            ? [[entry.themeVariable.replace('--breakpoint-', ''), entry.value]]
+            : [],
+        ),
+      ),
+    ).toEqual(tinyrackBreakpoints);
   });
 });

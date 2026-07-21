@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   tinyrackBorders,
+  tinyrackBreakpoints,
   tinyrackControlMetrics,
   tinyrackLayers,
   tinyrackMeasurements,
@@ -62,7 +63,10 @@ function tokenReferences(
 }
 
 function parseCssBlocks(css: string) {
-  const source = css.replaceAll(/\/\*[\s\S]*?\*\//g, '').trim();
+  const source = css
+    .replaceAll(/\/\*[\s\S]*?\*\//g, '')
+    .replaceAll(/^@custom-media [^;]+;\s*/gm, '')
+    .trim();
   const blocks = new Map<string, string>();
   let cursor = 0;
 
@@ -140,6 +144,14 @@ function parseDeclarations(block: string, header: string) {
 
 const cssBlocks = parseCssBlocks(coreCss);
 
+function parseCustomMedia(css: string) {
+  return Object.fromEntries(
+    [...css.matchAll(/^@custom-media\s+(--[a-z0-9-]+)\s+([^;]+);$/gm)].map(
+      ([, name, query]) => [name, query],
+    ),
+  );
+}
+
 function declarationsFor(header: string) {
   const block = cssBlocks.get(header);
   if (block === undefined) {
@@ -149,6 +161,19 @@ function declarationsFor(header: string) {
 }
 
 describe('core.css source contract', () => {
+  it('matches named media and Tailwind breakpoints to TypeScript', () => {
+    const expectedMedia = Object.fromEntries(
+      Object.entries(tinyrackBreakpoints).flatMap(([name, value]) => [
+        [`--tinyrack-breakpoint-${name}-min`, `(width >= ${value})`],
+        [`--tinyrack-breakpoint-${name}-max`, `(width < ${value})`],
+      ]),
+    );
+    expectedMedia['--tinyrack-breakpoint-xs-at-most'] = '(width <= 24rem)';
+    expectedMedia['--tinyrack-breakpoint-sm-at-most'] = '(width <= 40rem)';
+
+    expect(parseCustomMedia(coreCss)).toEqual(expectedMedia);
+  });
+
   it('is a source-owned core stylesheet with only the public token blocks', () => {
     expect(coreCss).not.toContain('Generated from');
     expect(coreCss).not.toContain('.tr-btn');
@@ -274,6 +299,7 @@ describe('core.css source contract', () => {
     const tailwindDeclarations = declarationsFor('@theme static');
 
     expect(tailwindDeclarations).toEqual({
+      ...tokenDeclarations(tinyrackBreakpoints, 'breakpoint'),
       ...tokenDeclarations(tinyrackTypography.fontFamily, 'font-tinyrack'),
       ...textDeclarations,
       ...controlTextDeclarations,

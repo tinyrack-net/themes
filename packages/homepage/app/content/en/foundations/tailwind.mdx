@@ -1,8 +1,8 @@
 ---
 title: "Tailwind tokens"
-description: "Use Tinyrack's prefixed Tailwind v4 token bridge without changing the meaning of Tailwind's default theme utilities."
+description: "Use Tinyrack's Tailwind v4 bridge for explicit responsive thresholds and prefixed foundation-token utilities."
 section: foundations
-order: 10
+order: 11
 ---
 import { TRCode } from '@tinyrack/ui/components/code';
 import { TailwindTokenReference } from '../../shared/tailwind-token-reference.js';
@@ -25,8 +25,9 @@ Component styles remain separate and should be imported only when used.
 ## Choose the right utility
 
 - Use a <TRCode>tinyrack-*</TRCode> utility when color, type, spacing, shape, elevation, or motion expresses a design-system decision.
+- Use the shared <TRCode>xs:</TRCode> through <TRCode>xl:</TRCode> responsive variants for viewport thresholds.
 - Keep Tailwind defaults for incidental layout that does not represent a Tinyrack token, such as a one-off grid column count.
-- Do not override Tailwind's default theme globally. The prefix keeps existing application code and third-party examples predictable.
+- Do not override other Tailwind defaults globally. The prefix keeps existing application code and third-party examples predictable.
 
 ```tsx
 <section className="grid gap-tinyrack-lg rounded-tinyrack-lg border-tinyrack-default border-tinyrack-border bg-tinyrack-surface p-tinyrack-xl">

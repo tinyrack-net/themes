@@ -518,7 +518,9 @@ describe('React Router documentation contract', () => {
     visit(browserAuditFile);
 
     expect(packageJson.scripts).not.toHaveProperty('verify');
-    expect(packageJson.scripts['test:e2e']).toBe('node scripts/test-e2e.ts');
+    expect(packageJson.scripts['test:e2e']).toBe(
+      'pnpm build && vitest run --project e2e && vitest run --project e2e-overlays',
+    );
     expect(browserAudit).not.toContain('it.concurrent(');
     expect(browserAudit).not.toContain('waitForTimeout(');
     expect(oneShotVisibilityAssertions).toEqual([]);

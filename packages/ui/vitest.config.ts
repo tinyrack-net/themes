@@ -1,7 +1,9 @@
 import { readdirSync } from 'node:fs';
+import { type AddressInfo, createServer } from 'node:net';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
+import type { ConfigEnv } from 'vite';
 import { defineConfig } from 'vitest/config';
 
 const strictCoverageThresholds = {
@@ -20,11 +22,24 @@ const componentCoverageThresholds = Object.fromEntries(
     ]),
 );
 
-export default defineConfig(({ mode }) => {
+async function availablePort() {
+  const server = createServer();
+  await new Promise<void>((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', resolve);
+  });
+  const port = (server.address() as AddressInfo).port;
+  await new Promise<void>((resolve, reject) => {
+    server.close((error) => (error === undefined ? resolve() : reject(error)));
+  });
+  return port;
+}
+
+export default async function config({ mode }: ConfigEnv) {
   const componentCoverage = mode === 'component-coverage';
   const componentFirefox = mode === 'component-firefox';
 
-  return {
+  return defineConfig({
     test: {
       coverage: {
         provider: 'v8',
@@ -69,7 +84,7 @@ export default defineConfig(({ mode }) => {
               headless: true,
               api: {
                 host: '127.0.0.1',
-                port: 30_000,
+                port: await availablePort(),
               },
               instances: componentFirefox
                 ? [{ browser: 'firefox' }]
@@ -80,5 +95,5 @@ export default defineConfig(({ mode }) => {
         },
       ],
     },
-  };
-});
+  });
+}

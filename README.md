@@ -39,5 +39,6 @@ pnpm pack:ui
 pnpm pack:docs
 ```
 
-Every package exposes only `test`, `test:unit`, and `test:e2e`. CI prepares the
-ordered build once and runs the three package test jobs in parallel.
+Every package exposes only `test`, `test:unit`, and `test:e2e`. Each `test:e2e`
+command builds its package before running end-to-end coverage, so local and CI
+execution follow the same path.

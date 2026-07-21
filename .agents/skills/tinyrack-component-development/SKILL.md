@@ -66,9 +66,10 @@ packages/ui/src/components/tabs/
 
 - Pin `@base-ui/react` to an exact version. A Base UI upgrade is a reviewed
   design-system migration, not an automatic dependency refresh.
-- Treat `packages/ui/scripts/component-catalog.ts` as the single source of truth for Base UI,
-  Tinyrack-native, and provider module names. Do not duplicate component lists in
-  build or test scripts.
+- Discover the component and provider catalog by reading
+  `packages/ui/src/components` and `packages/ui/src/providers` at the
+  filesystem level. Do not reintroduce a hand-maintained catalog or
+  duplicate the lists in build, test, or documentation scripts.
 - Every public React anatomy part in the pinned Base UI version must have a
   semantic Tinyrack wrapper, named export, prop type, and compound namespace
   member. Do not expose an incomplete subset under a Base UI module name.
@@ -122,11 +123,15 @@ base colors -> functional/semantic tokens -> component/pattern tokens
   component directory's compiled `index.js` and `index.d.ts`.
 - Do not expose `/react`, `/dom`, root component barrels, or compatibility aliases.
 - Keep React and React DOM as required peers and Base UI as a runtime dependency.
-- Wire new CSS through `scripts/copy-css.ts` and validate the packed package with
-  a real consumer fixture.
-- Keep React MDX at `@tinyrack/ui/mdx`. Do not add an Astro renderer.
-- Update README, homepage documentation, package export tests, and dist smoke tests whenever a
+- Wire new CSS through `scripts/copy-css.ts` (it walks
+  `src/components/*/*.css` itself) and validate the packed package by
+  `pnpm pack` + `pnpm install` against a real consumer fixture when a
   public subpath changes.
+- Keep React MDX at `@tinyrack/ui/mdx`. Do not add an Astro renderer.
+- Update README and homepage documentation whenever a public subpath
+  changes. Review `packages/ui/package.json` `exports` and
+  `publishConfig.exports` by hand and confirm they match the desired
+  shape.
 
 ## Homepage Documentation
 

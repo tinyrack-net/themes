@@ -4,25 +4,29 @@ import { join } from 'node:path';
 import sharp from 'sharp';
 
 const assetRoot = join(process.cwd(), 'public/brand/apps');
-const products = ['dotweave', 'tinyauth'];
-const sizes = [16, 32, 48, 128, 512];
+const products = ['dotweave', 'tinyauth'] as const;
+const sizes = [16, 32, 48, 128, 512] as const;
 const checkOnly = process.argv.includes('--check');
 
-async function rasterize(svg, size) {
+async function rasterize(svg: Buffer, size: number): Promise<Buffer> {
   return sharp(svg, { density: 576 })
     .resize(size, size, { fit: 'fill' })
     .png({ compressionLevel: 9 })
     .toBuffer();
 }
 
-async function rawPixels(image) {
+async function rawPixels(image: Buffer | string): Promise<Buffer> {
   return sharp(image).ensureAlpha().raw().toBuffer();
 }
 
-async function assertRasterMatches(path, expected, size) {
+async function assertRasterMatches(
+  path: string,
+  expected: Buffer,
+  size: number,
+): Promise<void> {
   if (!existsSync(path)) throw new Error(`Missing generated app icon: ${path}`);
 
-  const metadata = await sharp(path).metadata();
+  const metadata: sharp.Metadata = await sharp(path).metadata();
   if (
     metadata.format !== 'png' ||
     metadata.width !== size ||
@@ -45,10 +49,9 @@ async function assertRasterMatches(path, expected, size) {
   for (let index = 0; index < actualPixels.length; index += 4) {
     let maximumDelta = 0;
     for (let channel = 0; channel < 4; channel += 1) {
-      maximumDelta = Math.max(
-        maximumDelta,
-        Math.abs(actualPixels[index + channel] - expectedPixels[index + channel]),
-      );
+      const actual = actualPixels[index + channel] ?? 0;
+      const reference = expectedPixels[index + channel] ?? 0;
+      maximumDelta = Math.max(maximumDelta, Math.abs(actual - reference));
     }
     if (maximumDelta > 8) changedPixels += 1;
   }

@@ -12,6 +12,6 @@ export default defineConfig({
   plugins: [
     ...tinyrackDocs(config, { root: import.meta.dirname }),
     breakpointCustomMediaPlugin(),
-    tailwindcss(),
+    tailwindcss({ optimize: false }),
   ],
 });

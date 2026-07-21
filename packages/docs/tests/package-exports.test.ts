@@ -64,6 +64,9 @@ describe('@tinyrack/docs package exports', () => {
     ).toEqual([]);
     expect(packageJson.scripts.build).not.toContain('--filter');
     expect(packageJson.scripts).not.toHaveProperty('verify');
+    expect(packageJson.scripts['test:e2e']).toBe(
+      'pnpm build && node e2e/dist-package-smoke.ts',
+    );
   });
 
   it('exports the React Router runtime Layout', () => {

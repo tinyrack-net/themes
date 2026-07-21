@@ -11,7 +11,7 @@
     "generate:app-icons": "node scripts/generate-app-icons.ts",
     "test": "pnpm test:unit && pnpm test:e2e",
     "test:unit": "vitest run --project unit",
-    "test:e2e": "node scripts/test-e2e.ts",
+    "test:e2e": "pnpm build && vitest run --project e2e && vitest run --project e2e-overlays",
     "deploy": "wrangler deploy",
     "deploy:dry-run": "wrangler deploy --dry-run"
   },

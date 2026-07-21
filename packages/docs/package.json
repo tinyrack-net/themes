@@ -34,7 +34,7 @@
     "build": "rimraf dist && tsc -p tsconfig.build.json && node scripts/copy-css.ts",
     "test": "pnpm test:unit && pnpm test:e2e",
     "test:unit": "tsc -p tsconfig.test.json --noEmit && vitest run",
-    "test:e2e": "node scripts/test-e2e.ts",
+    "test:e2e": "pnpm build && node e2e/dist-package-smoke.ts",
     "prepack": "pnpm build"
   },
   "peerDependencies": {

@@ -28,7 +28,7 @@ import { TRLink } from '@tinyrack/ui/components/link';
 
 맥락에서 brand를 충분히 보여 주는 가장 작은 승인 variant를 선택하세요.
 
-<div className="grid gap-3 md:grid-cols-2" role="list">
+<div className="mt-tinyrack-lg grid gap-3 md:grid-cols-2" role="list">
   <TRCard.Root className="grid gap-4" role="listitem" variant="outlined">
     <div className="grid min-h-36 place-items-center bg-[#fafafa] p-6">
       <img alt="Tinyrack primary lockup" className="h-auto w-full max-w-72" height="38" src="/brand/tinyrack-lockup.svg" width="156" />
@@ -59,7 +59,7 @@ import { TRLink } from '@tinyrack/ui/components/link';
 
 Identity는 의도적으로 achromatic입니다. 색상은 logo가 아니라 제품 상태와 상호작용에 사용합니다.
 
-<div className="grid gap-3 md:grid-cols-2">
+<div className="mt-tinyrack-lg grid gap-3 md:grid-cols-2">
   <section className="grid gap-4 border border-tinyrack-border p-4">
     <div className="grid min-h-32 place-items-center bg-[#fafafa] p-6"><img alt="Dark Tinyrack mark on a light background" className="h-14 w-14" height="32" src="/brand/tinyrack-mark.svg" width="32" /></div>
     <div className="grid gap-1"><strong>Dark artwork</strong><span className="text-tinyrack-sm text-tinyrack-text-muted"><TRCode>#0a0a0a</TRCode> on white or near-white backgrounds.</span></div>
@@ -76,7 +76,7 @@ rack bay와 status aperture의 형태가 흐려지는 복잡한 image, gradient,
 
 <TRCode>x</TRCode>를 mark 높이의 1/4로 정하세요. mark나 lockup의 모든 면에 최소 <TRCode>x</TRCode>만큼 빈 공간을 두고 screen edge, text, rule, 다른 logo는 그 경계 밖에 둡니다.
 
-<div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(14rem,0.6fr)]">
+<div className="mt-tinyrack-lg grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(14rem,0.6fr)]">
   <section className="grid place-items-center bg-tinyrack-surface-muted p-6" aria-label="Tinyrack logo clear space diagram">
     <div className="relative border border-dashed border-tinyrack-border-strong bg-[#fafafa] p-8">
       <span className="absolute left-2 top-2 text-tinyrack-xs font-semibold text-[#0a0a0a]">x</span>
@@ -95,7 +95,7 @@ rack bay와 status aperture의 형태가 흐려지는 복잡한 image, gradient,
 
 최소 크기는 negative-space indicator와 wordmark counter를 보호합니다. lockup을 한계보다 작게 줄이는 대신 mark로 전환하세요.
 
-<div className="grid gap-3 md:grid-cols-2" data-logo-minimum-size>
+<div className="mt-tinyrack-lg grid gap-3 md:grid-cols-2" data-logo-minimum-size>
   <section className="grid content-start gap-4 border border-tinyrack-border p-4">
     <div className="flex min-h-20 items-center gap-6 bg-[#fafafa] p-4">
       <img alt="Tinyrack mark at the 16 pixel minimum" className="h-4 w-4" height="16" src="/brand/tinyrack-mark.svg" width="16" />
@@ -151,7 +151,7 @@ rack 그림을 설명하려고 alt text에 추가 문구를 넣지 마세요. �
 
 모든 digital application에 SVG를 사용하세요. 이 파일에는 outline artwork가 포함되어 있어 설치된 font나 runtime stylesheet가 필요하지 않습니다.
 
-<div className="grid gap-3 sm:grid-cols-2" data-logo-downloads>
+<div className="mt-tinyrack-lg grid gap-3 sm:grid-cols-2" data-logo-downloads>
   <TRCard.Root className="grid gap-2" variant="outlined"><strong>Primary mark</strong><span className="text-tinyrack-sm text-tinyrack-text-muted">Dark artwork for light backgrounds.</span><TRLink download="tinyrack-mark.svg" href="/brand/tinyrack-mark.svg">Download SVG</TRLink></TRCard.Root>
   <TRCard.Root className="grid gap-2" variant="outlined"><strong>Inverse mark</strong><span className="text-tinyrack-sm text-tinyrack-text-muted">Light artwork for dark backgrounds.</span><TRLink download="tinyrack-mark-inverse.svg" href="/brand/tinyrack-mark-inverse.svg">Download SVG</TRLink></TRCard.Root>
   <TRCard.Root className="grid gap-2" variant="outlined"><strong>Primary lockup</strong><span className="text-tinyrack-sm text-tinyrack-text-muted">Mark and Tinyrack wordmark for light backgrounds.</span><TRLink download="tinyrack-lockup.svg" href="/brand/tinyrack-lockup.svg">Download SVG</TRLink></TRCard.Root>

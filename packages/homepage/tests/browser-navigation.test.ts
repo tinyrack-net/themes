@@ -826,6 +826,15 @@ describe('built React Router documentation', () => {
         await page.goto(`${origin}/en/foundations/logo`);
         await page.getByRole('heading', { level: 1, name: 'Logo' }).waitFor();
 
+        const proseLayouts = page.locator('.tr-mdx > .tr-mdx-p + div');
+        await expect(proseLayouts.count()).resolves.toBe(5);
+        for (const layout of await proseLayouts.all()) {
+          const paragraph = layout.locator('xpath=preceding-sibling::*[1]');
+          await expect
+            .poll(() => verticalGap(paragraph, layout))
+            .toBeGreaterThanOrEqual(15.9);
+        }
+
         const siteBrand = page.locator('[data-site-brand]:visible img[alt="Tinyrack"]');
         await expect.poll(() => siteBrand.count()).toBe(1);
         await expect

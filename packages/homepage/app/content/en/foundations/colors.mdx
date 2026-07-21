@@ -60,7 +60,7 @@ Base ramps are exported from `@tinyrack/ui/core` for token authors and tooling. 
 
 Functional colors are the default product API. Choose them by meaning rather than by whichever value happens to look correct in the current theme.
 
-<TRTable.Root className="mt-4" containerProps={{ 'aria-label': 'Functional color reference', tabIndex: 0 }} data-functional-color-reference="colors">
+<TRTable.Root className="mt-tinyrack-lg" containerProps={{ 'aria-label': 'Functional color reference', tabIndex: 0 }} data-functional-color-reference="colors">
     <thead><tr><th scope="col">Role</th><th scope="col">Light</th><th scope="col">Dark</th></tr></thead>
     <tbody>
       {Object.entries(tinyrackSemanticColors.light).map(([token, lightValue], index) => (
@@ -85,7 +85,7 @@ Functional colors are the default product API. Choose them by meaning rather tha
 
 ## Base-to-functional mapping
 
-<TRTable.Root className="mt-4" containerProps={{ 'aria-label': 'Semantic color reference', tabIndex: 0 }} data-foundation-reference="colors">
+<TRTable.Root className="mt-tinyrack-lg" containerProps={{ 'aria-label': 'Semantic color reference', tabIndex: 0 }} data-foundation-reference="colors">
     <thead><tr><th scope="col">Role</th><th scope="col">Light</th><th scope="col">Dark</th></tr></thead>
     <tbody>
       {[

@@ -18,4 +18,5 @@ audits/
 .env
 .env.*
 .codex/environments
+paseo.json
 .opencode/plans

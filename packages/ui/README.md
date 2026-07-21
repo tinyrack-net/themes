@@ -122,14 +122,13 @@ import { tinyrackMdxComponents } from '@tinyrack/ui/mdx';
 ## Development
 
 ```bash
-pnpm test:component
-pnpm test:coverage
-pnpm verify
-pnpm --filter @tinyrack/homepage build
-pnpm docs:audit
-pnpm verify:release
-pnpm --dir packages/ui pack --dry-run
+pnpm --filter @tinyrack/ui check
+pnpm --filter @tinyrack/ui test:unit
+pnpm --filter @tinyrack/ui test:e2e
+pnpm --config.ignore-scripts=true --dir packages/ui pack --dry-run
 ```
+
+`test:e2e` runs Chromium with coverage, Firefox, and the packed consumer smoke.
 
 Every component directory owns semantic implementation files, a composition-only
 `index.tsx`, colocated CSS, and one React browser suite. Interactive documentation

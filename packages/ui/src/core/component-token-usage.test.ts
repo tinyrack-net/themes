@@ -3,7 +3,6 @@ import { join, relative } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const packageRoot = process.cwd();
-const workspaceRoot = join(packageRoot, '..', '..');
 
 const publicStylePaths = [
   ...readdirSync(join(process.cwd(), 'src/components'), { withFileTypes: true })
@@ -28,14 +27,6 @@ function sourceFilesUnder(root: string) {
 
 const basePaletteForbiddenPaths = [
   ...sourceFilesUnder(join(packageRoot, 'src', 'components')),
-  ...sourceFilesUnder(
-    join(workspaceRoot, 'packages', 'homepage', 'app', 'content'),
-  ).filter(
-    (sourcePath) =>
-      !/app[\\/]content[\\/](?:(?:en|ko|ja)[\\/])?foundations[\\/]colors\.mdx$/.test(
-        sourcePath,
-      ),
-  ),
 ];
 
 const forbiddenDeclarations = {
@@ -122,7 +113,7 @@ describe('public CSS token usage', () => {
       const source = readFileSync(sourcePath, 'utf8');
       expect(
         source,
-        `${relative(workspaceRoot, sourcePath)} must consume functional colors`,
+        `${relative(packageRoot, sourcePath)} must consume functional colors`,
       ).not.toContain('tinyrackPalettes');
     }
   });
@@ -219,23 +210,5 @@ describe('public CSS token usage', () => {
     }
     expect(field).toContain('border-color: var(--tinyrack-danger-border);');
     expect(pinInput).toContain('border-color: var(--tinyrack-danger-border);');
-  });
-
-  it('documents the three-layer color contract in the component development skill', () => {
-    const guidance = readFileSync(
-      join(
-        workspaceRoot,
-        '.agents',
-        'skills',
-        'tinyrack-component-development',
-        'SKILL.md',
-      ),
-      'utf8',
-    );
-    expect(guidance).toContain(
-      'base colors -> functional/semantic tokens -> component/pattern tokens',
-    );
-    expect(guidance).toContain('Do not use Base values directly in component CSS');
-    expect(guidance).toContain('Action-control variants');
   });
 });

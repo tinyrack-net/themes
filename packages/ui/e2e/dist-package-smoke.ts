@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import {
+  existsSync,
   mkdirSync,
   mkdtempSync,
   readdirSync,
@@ -19,6 +20,7 @@ const pnpm = process.platform === 'win32' ? 'pnpm.exe' : 'pnpm';
 const consumerRoot = mkdtempSync(join(tmpdir(), 'tinyrack-ui-consumer-'));
 const artifactsRoot = join(consumerRoot, 'artifacts');
 const appRoot = join(consumerRoot, 'app');
+const suppliedArchive = process.env['TINYRACK_UI_TARBALL'];
 
 function run(command: string, args: string[], cwd: string) {
   execFileSync(command, args, {
@@ -101,17 +103,24 @@ async function verifyPackedMdxHydration(root: string) {
 }
 
 try {
-  mkdirSync(artifactsRoot);
   mkdirSync(appRoot);
-
-  run(pnpm, ['pack', '--pack-destination', artifactsRoot], repoRoot);
-
-  const archive = readdirSync(artifactsRoot).find((file) => file.endsWith('.tgz'));
-  if (!archive) {
-    throw new Error('pnpm pack did not create a package archive');
+  let archivePath: string;
+  if (suppliedArchive === undefined) {
+    mkdirSync(artifactsRoot);
+    run(
+      pnpm,
+      ['--config.ignore-scripts=true', 'pack', '--pack-destination', artifactsRoot],
+      repoRoot,
+    );
+    const archive = readdirSync(artifactsRoot).find((file) => file.endsWith('.tgz'));
+    if (!archive) throw new Error('pnpm pack did not create a package archive');
+    archivePath = join(artifactsRoot, archive).replaceAll('\\', '/');
+  } else {
+    archivePath = resolve(suppliedArchive).replaceAll('\\', '/');
+    if (!existsSync(archivePath)) {
+      throw new Error(`TINYRACK_UI_TARBALL does not exist: ${archivePath}`);
+    }
   }
-
-  const archivePath = join(artifactsRoot, archive).replaceAll('\\', '/');
   writeFileSync(
     join(appRoot, 'package.json'),
     `${JSON.stringify(

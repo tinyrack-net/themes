@@ -80,7 +80,7 @@ test('React MDX renderer maps inline code, fenced code, and tables to Tinyrack c
 
   await render(
     <Wrapper>
-      <TRCode>pnpm verify</TRCode>
+      <TRCode>pnpm test</TRCode>
       <Pre>
         <TRCode className="language-ts">{'const answer = 1;'}</TRCode>
       </Pre>
@@ -123,7 +123,7 @@ test('React MDX renderer maps inline code, fenced code, and tables to Tinyrack c
   const table = document.querySelector<HTMLElement>('table.tr-table');
   const rightAlignedHeader = document.querySelector<HTMLElement>('th[align="right"]');
 
-  expect(inlineCode?.textContent).toBe('pnpm verify');
+  expect(inlineCode?.textContent).toBe('pnpm test');
   expect(codeBlock?.classList.contains('tr-mdx-code-block')).toBe(true);
   expect(codeBlock?.getAttribute('data-language')).toBe('ts');
   expect(tableContainer?.classList.contains('tr-mdx-table-container')).toBe(true);

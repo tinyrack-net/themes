@@ -29,19 +29,13 @@ afterEach(() => {
 });
 
 describe('worktree development ports', () => {
-  it('routes root and homepage development through the worktree-aware entrypoint', () => {
-    const rootPackageJson = JSON.parse(
-      readFileSync(join(workspaceRoot, 'package.json'), 'utf8'),
-    ) as {
-      scripts: Record<string, string>;
-    };
+  it('routes homepage development through the worktree-aware entrypoint', () => {
     const homepagePackageJson = JSON.parse(
       readFileSync(join(homepageRoot, 'package.json'), 'utf8'),
     ) as {
       scripts: Record<string, string>;
     };
 
-    expect(rootPackageJson.scripts['dev']).toBe('pnpm --filter @tinyrack/homepage dev');
     expect(homepagePackageJson.scripts['dev']).toBe('node scripts/dev-worktree.ts');
     expect(homepagePackageJson.scripts['dev:app']).toBe(
       'cross-env NODE_OPTIONS=--conditions=@tinyrack/source react-router dev',

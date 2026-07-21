@@ -27,12 +27,20 @@ when running the homepage package's `dev` script directly.
 
 ## Validation
 
+Each package owns its checks and tests. Build workspace dependencies in order,
+then run only the package you changed:
+
 ```bash
-pnpm test:component
-pnpm test:coverage
-pnpm verify
-pnpm test:docs
-pnpm verify:release
+pnpm build
+pnpm --filter @tinyrack/ui check
+pnpm --filter @tinyrack/ui test
+pnpm --filter @tinyrack/docs check
+pnpm --filter @tinyrack/docs test:unit
+pnpm --filter @tinyrack/homepage check
+pnpm --filter @tinyrack/homepage test
 pnpm pack:ui
 pnpm pack:docs
 ```
+
+Every package exposes only `test`, `test:unit`, and `test:e2e`. CI prepares the
+ordered build once and runs the three package test jobs in parallel.

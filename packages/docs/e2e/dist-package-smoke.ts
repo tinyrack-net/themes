@@ -9,18 +9,22 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { type AddressInfo, createServer } from 'node:net';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, isAbsolute, join, resolve } from 'node:path';
 
 const docsRoot = resolve(import.meta.dirname, '..');
-const uiRoot = resolve(docsRoot, '../ui');
-const uiPackageJson = JSON.parse(
-  readFileSync(join(uiRoot, 'package.json'), 'utf8'),
-) as { version: string };
 const pnpm = process.platform === 'win32' ? 'pnpm.exe' : 'pnpm';
 const smokeParent = join(docsRoot, '.tmp');
 mkdirSync(smokeParent, { recursive: true });
 const smokeRoot = mkdtempSync(join(smokeParent, 'consumer-'));
 const artifactsRoot = join(smokeRoot, 'artifacts');
+const suppliedUiArchive = process.env['TINYRACK_UI_TARBALL'];
+if (
+  suppliedUiArchive === undefined ||
+  !isAbsolute(suppliedUiArchive) ||
+  !existsSync(suppliedUiArchive)
+) {
+  throw new Error('TINYRACK_UI_TARBALL must point to a prepared UI package archive');
+}
 
 function run(command: string, args: string[], cwd: string) {
   execFileSync(command, args, {
@@ -223,6 +227,9 @@ pnpm add @tinyrack/docs
 
 function prepareConsumer(root: string) {
   run(pnpm, ['install', '--ignore-scripts'], root);
+  const uiPackageJson = JSON.parse(
+    readFileSync(join(root, 'node_modules/@tinyrack/ui/package.json'), 'utf8'),
+  ) as { version: string };
   for (const packageName of ['docs', 'ui']) {
     const manifestPath = join(
       root,
@@ -468,9 +475,12 @@ async function verifyConsumerPreview(root: string, basePath: '/' | '/docs') {
 let completed = false;
 try {
   mkdirSync(artifactsRoot);
-  run(pnpm, ['pack', '--pack-destination', artifactsRoot], uiRoot);
-  run(pnpm, ['pack', '--pack-destination', artifactsRoot], docsRoot);
-  const uiArchive = packageArchive('tinyrack-ui-');
+  run(
+    pnpm,
+    ['--config.ignore-scripts=true', 'pack', '--pack-destination', artifactsRoot],
+    docsRoot,
+  );
+  const uiArchive = suppliedUiArchive.replaceAll('\\', '/');
   const docsArchive = packageArchive('tinyrack-docs-');
 
   const fixtures = [

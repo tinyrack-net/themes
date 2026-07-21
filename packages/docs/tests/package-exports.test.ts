@@ -53,6 +53,16 @@ const publishedExports = {
 } as const;
 
 describe('@tinyrack/docs package exports', () => {
+  it('keeps package-local test and build commands', () => {
+    expect(
+      Object.keys(packageJson.scripts)
+        .filter((name) => name === 'test' || name.startsWith('test:'))
+        .sort(),
+    ).toEqual(['test', 'test:e2e', 'test:unit']);
+    expect(packageJson.scripts.build).not.toContain('--filter');
+    expect(packageJson.scripts).not.toHaveProperty('verify');
+  });
+
   it('exports the React Router runtime Layout', () => {
     const runtimeEntry = readFileSync(
       resolve(import.meta.dirname, '../src/runtime/index.ts'),

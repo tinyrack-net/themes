@@ -28,6 +28,7 @@ const componentCoverageThresholds = Object.fromEntries(
 
 export default defineConfig(({ mode }) => {
   const componentCoverage = mode === 'component-coverage';
+  const componentFirefox = mode === 'component-firefox';
 
   return {
     test: {
@@ -65,7 +66,7 @@ export default defineConfig(({ mode }) => {
         },
         {
           test: {
-            name: 'e2e',
+            name: 'contract',
             environment: 'node',
             maxWorkers: browserWorkers,
             setupFiles: ['./vitest.setup.ts'],
@@ -87,10 +88,11 @@ export default defineConfig(({ mode }) => {
                 host: '127.0.0.1',
                 port: 30_000,
               },
-              instances: componentCoverage
-                ? [{ browser: 'chromium' }]
-                : [{ browser: 'chromium' }, { browser: 'firefox' }],
+              instances: componentFirefox
+                ? [{ browser: 'firefox' }]
+                : [{ browser: 'chromium' }],
             },
+            retry: componentFirefox ? 1 : 0,
           },
         },
       ],

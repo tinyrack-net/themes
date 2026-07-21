@@ -11,7 +11,7 @@ const meta = {
   title: 'Components/Code',
   component: TRCode,
   parameters: { layout: 'centered' },
-  args: { children: 'pnpm test:component\npnpm verify' },
+  args: { children: 'pnpm test:unit\npnpm test:e2e' },
   argTypes: {
     children: { control: 'textarea' },
   },

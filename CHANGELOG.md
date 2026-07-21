@@ -8,6 +8,7 @@
 - Removed the `tinyrack-docs` CLI in favor of native React Router and Vite commands, with static build finalization handled by React Router `buildEnd`.
 - Made Tailwind CSS 4 and its Vite plugin explicit docs peers and replaced CSS source rewriting with authored source/published entries plus asset copying.
 - Made Tailwind CSS 4 required for UI styles and replaced custom-media processing with native Tailwind variants.
+- Isolated package builds and tests, reduced test commands to `test`, `test:unit`, and `test:e2e`, and removed duplicate exhaustive documentation browser audits.
 - Added contrast-safe control, track, inverse, skeleton, overlay, measure, and spinner foundation tokens.
 - Enforced foundation fallbacks for component-owned length, time, and opacity custom properties.
 - Standardized public overlay anatomy on `tr-layer-arrow`, `tr-layer-backdrop`, `tr-layer-positioner`, and `tr-layer-viewport` classes.

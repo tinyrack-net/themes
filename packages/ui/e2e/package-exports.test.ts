@@ -5,7 +5,6 @@ import packageJson from '../package.json' with { type: 'json' };
 import { componentNames, providerNames } from '../scripts/component-catalog.js';
 
 const repoRoot = process.cwd();
-const workspaceRoot = join(repoRoot, '../..');
 const componentsRoot = join(repoRoot, 'src/components');
 const providersRoot = join(repoRoot, 'src/providers');
 
@@ -37,6 +36,16 @@ function collectPascalCaseExports(source: string) {
 }
 
 describe('React-only package contract', () => {
+  it('keeps package-local test and build commands', () => {
+    expect(
+      Object.keys(packageJson.scripts)
+        .filter((name) => name === 'test' || name.startsWith('test:'))
+        .sort(),
+    ).toEqual(['test', 'test:e2e', 'test:unit']);
+    expect(packageJson.scripts.build).not.toContain('--filter');
+    expect(packageJson.scripts).not.toHaveProperty('verify');
+  });
+
   it('exposes suffix-free component, CSS, core, and MDX patterns only', () => {
     expect(packageJson.exports).toEqual({
       './components/*': {
@@ -108,19 +117,6 @@ describe('React-only package contract', () => {
     expect(JSON.stringify(packageJson.publishConfig)).not.toContain('./src/');
   });
 
-  it('publishes UI releases through package-specific tags', () => {
-    const workflow = readFileSync(
-      join(workspaceRoot, '.github/workflows/publish-npm.yml'),
-      'utf8',
-    );
-
-    expect(workflow).toContain('- "ui-v*.*.*"');
-    expect(workflow).toContain(
-      'package_version="ui-v$(node -p "require(\'./packages/ui/package.json\').version")"',
-    );
-    expect(workflow).not.toContain('- "v*.*.*"');
-  });
-
   it('publishes provenance from the current GitHub repository', () => {
     expect(packageJson.repository).toEqual({
       type: 'git',
@@ -139,24 +135,12 @@ describe('React-only package contract', () => {
     expect(packageJson).not.toHaveProperty('peerDependenciesMeta');
   });
 
-  it('publishes UI releases through package-specific tags', () => {
-    const workflow = readFileSync(
-      join(workspaceRoot, '.github/workflows/publish-npm.yml'),
-      'utf8',
-    );
-    expect(workflow).toContain('- "ui-v*.*.*"');
-    expect(workflow).toContain(
-      'package_version="ui-v$(node -p "require(\'./packages/ui/package.json\').version")"',
-    );
-    expect(workflow).not.toContain('- "v*.*.*"');
-  });
-
   it('contains no Astro dependency, script, or source surface', () => {
     expect(packageJson.peerDependencies).not.toHaveProperty('astro');
     expect(packageJson.devDependencies).not.toHaveProperty('astro');
     expect(packageJson.devDependencies).not.toHaveProperty('@astrojs/mdx');
     expect(packageJson.scripts).not.toHaveProperty('check:astro');
-    expect(packageJson.scripts.verify).not.toContain('astro');
+    expect(packageJson.scripts).not.toHaveProperty('verify');
     expect(existsSync(join(repoRoot, 'astro.config.mjs'))).toBe(false);
     expect(existsSync(join(repoRoot, 'tsconfig.astro.json'))).toBe(false);
     expect(existsSync(join(repoRoot, 'src/mdx/astro.ts'))).toBe(false);

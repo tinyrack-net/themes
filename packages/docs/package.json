@@ -31,12 +31,13 @@
     "README.md"
   ],
   "scripts": {
-    "build": "pnpm --filter @tinyrack/ui build && node scripts/clean-dist.ts && tsc -p tsconfig.build.json && node scripts/copy-css.ts",
+    "build": "node scripts/clean-dist.ts && tsc -p tsconfig.build.json && node scripts/copy-css.ts",
     "check:css": "node scripts/copy-css.ts --check",
     "check:types": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run",
-    "test:dist": "node e2e/dist-package-smoke.ts",
-    "verify": "pnpm check:types && pnpm check:css && pnpm test && pnpm test:dist",
+    "check": "pnpm check:types && pnpm check:css",
+    "test": "pnpm test:unit && pnpm test:e2e",
+    "test:unit": "vitest run",
+    "test:e2e": "node scripts/test-e2e.ts",
     "prepack": "pnpm build"
   },
   "peerDependencies": {

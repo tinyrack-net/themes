@@ -6,7 +6,6 @@
     "moduleResolution": "NodeNext",
     "allowImportingTsExtensions": true,
     "rewriteRelativeImportExtensions": true,
-    "customConditions": ["@tinyrack/source"],
     "jsx": "react-jsx",
     "strict": true,
     "noUncheckedIndexedAccess": true,

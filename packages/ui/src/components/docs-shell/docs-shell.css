@@ -135,6 +135,9 @@
   .tr-docs-shell .tr-docs-shell-menu-close {
     display: none;
   }
+}
+
+@variant xl {
   .tr-docs-shell-outline {
     order: 0;
   }

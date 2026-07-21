@@ -65,7 +65,7 @@ describe('@tinyrack/docs package exports', () => {
     expect(packageJson.scripts.build).not.toContain('--filter');
     expect(packageJson.scripts).not.toHaveProperty('verify');
     expect(packageJson.scripts['test:e2e']).toBe(
-      'pnpm build && node e2e/dist-package-smoke.ts',
+      'pnpm build && vitest run --project e2e',
     );
   });
 

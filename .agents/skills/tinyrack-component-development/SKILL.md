@@ -123,10 +123,12 @@ base colors -> functional/semantic tokens -> component/pattern tokens
   component directory's compiled `index.js` and `index.d.ts`.
 - Do not expose `/react`, `/dom`, root component barrels, or compatibility aliases.
 - Keep React and React DOM as required peers and Base UI as a runtime dependency.
-- Wire new CSS through `scripts/copy-css.ts` (it walks
-  `src/components/*/*.css` itself) and validate the packed package by
-  `pnpm pack` + `pnpm install` against a real consumer fixture when a
-  public subpath changes.
+- Wire new CSS through the `copy` array in `tsdown.config.ts` (see
+  `packages/ui/tsdown.config.ts` for the per-component pattern and
+  `packages/docs/tsdown.config.ts` for the aggregate-stylesheet
+  pattern) and validate the packed package by `pnpm pack` +
+  `pnpm install` against a real consumer fixture when a public
+  subpath changes.
 - Keep React MDX at `@tinyrack/ui/mdx`. Do not add an Astro renderer.
 - Update README and homepage documentation whenever a public subpath
   changes. Review `packages/ui/package.json` `exports` and

@@ -22,14 +22,14 @@ describe('documentation CSS packaging', () => {
     expect(source).not.toContain('@media (--tinyrack-breakpoint-');
   });
 
-  it('copies the authored stylesheet without transformations or vendored fonts', () => {
-    const script = read('scripts/copy-css.ts');
+  it('copies the authored stylesheet through tsdown without transformations', () => {
+    const config = read('tsdown.config.ts');
 
-    expect(script).toContain("source: 'src/styles/styles.css'");
-    expect(script).toContain("target: 'dist/styles.css'");
-    expect(script).not.toContain('.replace(');
-    expect(script).not.toContain('runtime-core');
-    expect(script).not.toContain('../ui/src');
-    expect(script).not.toContain('fontAssets');
+    expect(config).toMatch(/from:\s*'src\/styles\/styles\.css'/);
+    expect(config).toMatch(/to:\s*'dist'/);
+    expect(config).not.toContain('.replace(');
+    expect(config).not.toContain('runtime-core');
+    expect(config).not.toContain('../ui/src');
+    expect(config).not.toContain('fontAssets');
   });
 });

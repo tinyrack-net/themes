@@ -29,9 +29,7 @@ const themeScript = `(() => {
 function documentTheme() {
   if (typeof document === 'undefined') return defaultTheme;
   const theme = document.documentElement.dataset['theme'];
-  return theme === 'tinyrack-light' || theme === 'tinyrack-dark'
-    ? theme
-    : defaultTheme;
+  return theme === 'tinyrack-light' || theme === 'tinyrack-dark' ? theme : defaultTheme;
 }
 
 const docsMdxComponents = createTinyrackMdxComponents({

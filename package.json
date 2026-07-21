@@ -18,7 +18,7 @@
     "test:source": "node packages/docs/e2e/source-workspace-smoke.ts",
     "test:dist": "pnpm --filter @tinyrack/ui test:dist && pnpm --filter @tinyrack/docs test:dist",
     "docs:build": "pnpm --filter @tinyrack/homepage build",
-    "docs:preview": "pnpm --filter @tinyrack/homepage preview:search",
+    "docs:preview": "pnpm docs:build && pnpm --filter @tinyrack/homepage preview",
     "docs:audit": "pnpm --filter @tinyrack/homepage test:audit",
     "docs:capture": "pnpm --filter @tinyrack/homepage capture",
     "docs:deploy": "pnpm --filter @tinyrack/homepage run deploy",

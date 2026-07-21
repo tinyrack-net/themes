@@ -416,7 +416,7 @@ describe('React Router documentation contract', () => {
     const viteConfig = readText('vite.config.ts');
 
     expect(packageJson.dependencies['@tinyrack/docs']).toBe('workspace:*');
-    expect(packageJson.scripts['dev']).toContain(
+    expect(packageJson.scripts['dev:app']).toContain(
       'NODE_OPTIONS=--conditions=@tinyrack/source',
     );
     const verifySteps = packageJson.scripts['verify:static']?.split(' && ') ?? [];
@@ -424,8 +424,11 @@ describe('React Router documentation contract', () => {
       verifySteps.indexOf('pnpm check:structure'),
     );
     expect(packageJson.scripts['dev']).not.toContain('build');
-    expect(packageJson.scripts['build:app']).toContain('tinyrack-docs build');
-    expect(packageJson.scripts['preview:search']).toContain('tinyrack-docs preview');
+    expect(packageJson.scripts['dev:app']).not.toContain('build');
+    expect(packageJson.scripts['dev:app']).toContain('react-router dev');
+    expect(packageJson.scripts['build:app']).toBe('react-router build');
+    expect(packageJson.scripts['preview']).toBe('vite preview');
+    expect(JSON.stringify(packageJson.scripts)).not.toContain('tinyrack-docs');
     expect(viteConfig).toContain("import.meta.resolve('@tinyrack/docs/vite')");
     expect(viteConfig).not.toContain('alias:');
     expect(viteConfig).not.toContain('uiSource');
@@ -603,10 +606,9 @@ describe('React Router documentation contract', () => {
       '@fontsource/ibm-plex-sans-jp/japanese-700.css',
     ]);
 
-    const cjkFonts = readText('../docs/src/styles/fonts.css');
-    expect(cjkFonts.match(/ibm-plex-sans-kr-korean-/g)).toHaveLength(4);
-    expect(cjkFonts.match(/ibm-plex-sans-jp-japanese-/g)).toHaveLength(4);
-    expect(cjkFonts.match(/font-family: "IBM Plex Sans"/g)).toHaveLength(8);
+    expect(styles.match(/"IBM Plex Sans KR"/g)).toHaveLength(6);
+    expect(styles.match(/"IBM Plex Sans JP"/g)).toHaveLength(6);
+    expect(styles).toContain(':root:lang(ja)');
   });
 
   it('preloads only the current locale IBM Plex Sans subsets in prerendered HTML', () => {

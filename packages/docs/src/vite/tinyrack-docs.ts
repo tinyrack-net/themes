@@ -9,6 +9,7 @@ import type { PluginOption } from 'vite';
 import type { DocsConfig } from '../config/docs-config.ts';
 import { normalizeBasePath } from '../config/docs-config.ts';
 import { docsAssetsPlugin } from './docs-assets-plugin.ts';
+import { docsPreviewPlugin } from './docs-preview-plugin.ts';
 import { remarkDocsDirectives, remarkDocsHeadings } from './docs-remark-plugins.ts';
 
 const sourceCondition = '@tinyrack/source';
@@ -66,11 +67,6 @@ export function tinyrackDocs(
       enforce: 'pre',
       config: () => ({
         base: basePath === '/' ? '/' : `${basePath}/`,
-        build: {
-          rolldownOptions: {
-            checks: { pluginTimings: false },
-          },
-        },
         resolve: {
           ...(sourceMode ? { conditions: [sourceCondition] } : {}),
           alias: [
@@ -100,6 +96,7 @@ export function tinyrackDocs(
       }),
     },
     docsAssetsPlugin(config, root),
+    docsPreviewPlugin(basePath),
     {
       enforce: 'pre',
       ...mdx({

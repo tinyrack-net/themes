@@ -17,6 +17,14 @@ pnpm install
 pnpm dev
 ```
 
+`pnpm dev` assigns a stable initial port from the canonical Git worktree path,
+so registered worktrees use distinct ports and keep them across restarts. If
+that port is occupied, Vite continues with the next available port. Override
+the assignment when needed with `pnpm dev -- --port 4173`.
+
+The assignment can change if the checkout is moved. The same assignment applies
+when running the homepage package's `dev` script directly.
+
 ## Validation
 
 ```bash

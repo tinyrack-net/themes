@@ -27,6 +27,24 @@
 @import "@tinyrack/ui/components/table.css";
 @import "@tinyrack/ui/mdx.css";
 
+:root {
+  --tinyrack-font-body:
+    "IBM Plex Sans", "IBM Plex Sans KR", "IBM Plex Sans JP", sans-serif;
+  --tinyrack-font-heading:
+    "IBM Plex Sans", "IBM Plex Sans KR", "IBM Plex Sans JP", sans-serif;
+  --tinyrack-font-mono:
+    "IBM Plex Sans", "IBM Plex Sans KR", "IBM Plex Sans JP", sans-serif;
+}
+
+:root:lang(ja) {
+  --tinyrack-font-body:
+    "IBM Plex Sans", "IBM Plex Sans JP", "IBM Plex Sans KR", sans-serif;
+  --tinyrack-font-heading:
+    "IBM Plex Sans", "IBM Plex Sans JP", "IBM Plex Sans KR", sans-serif;
+  --tinyrack-font-mono:
+    "IBM Plex Sans", "IBM Plex Sans JP", "IBM Plex Sans KR", sans-serif;
+}
+
 html,
 body {
   background: var(--tinyrack-surface);

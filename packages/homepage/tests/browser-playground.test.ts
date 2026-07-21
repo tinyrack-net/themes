@@ -102,6 +102,16 @@ describe('built React Router documentation', () => {
       await radioSizeControl.click();
       await page.getByRole('option', { name: 'lg', exact: true }).click();
       await expect(radio.getAttribute('data-ui-size')).resolves.toBe('lg');
+
+      await gotoHydrated(page, `${origin}/en/components/avatar`);
+      const avatar = page.locator('[data-playground-preview] .tr-avatar');
+      const avatarSizeControl = page
+        .locator('[data-playground-control="uiSize"]')
+        .getByRole('combobox');
+      await avatarSizeControl.click();
+      await page.getByRole('option', { name: 'lg', exact: true }).click();
+      await expect(avatar.getAttribute('data-ui-size')).resolves.toBe('lg');
+      await expect(avatar.getAttribute('size')).resolves.toBeNull();
     } finally {
       await page.close();
     }
@@ -130,6 +140,35 @@ describe('built React Router documentation', () => {
             )
             .count(),
         ).resolves.toBe(0);
+      }
+    } finally {
+      await page.close();
+    }
+  });
+
+  it('wires component size controls to the public uiSize prop', async () => {
+    const page = await browser.newPage({ viewport: { height: 900, width: 1280 } });
+    try {
+      for (const [route, selector] of [
+        ['avatar', '.tr-avatar'],
+        ['badge', '.tr-badge'],
+        ['button', '.tr-btn'],
+        ['copy-button', '.tr-btn'],
+        ['icon-button', '.tr-icon-btn'],
+        ['progress', '.tr-progress'],
+        ['spinner', '.tr-spinner'],
+      ] as const) {
+        await gotoHydrated(page, `${origin}/en/components/${route}`);
+        const sizeControl = page
+          .locator('[data-playground-control="uiSize"]')
+          .getByRole('combobox');
+        await sizeControl.click();
+        await page.getByRole('option', { name: 'lg', exact: true }).click();
+        const component = page
+          .locator('[data-playground-preview]')
+          .locator(selector)
+          .first();
+        await expect(component.getAttribute('data-ui-size'), route).resolves.toBe('lg');
       }
     } finally {
       await page.close();

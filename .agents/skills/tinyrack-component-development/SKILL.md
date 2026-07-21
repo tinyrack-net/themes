@@ -71,8 +71,13 @@ Run the narrowest checks that cover the changed contract:
 - Keyboard, focus, forms, portals, or controlled state: exercise those paths in
   the browser; do not duplicate Base UI's internal test matrix.
 - Client lifecycle changes: add or run relevant SSR and hydration coverage.
-- Styling contract changes: verify computed CSS and the affected light/dark and
-  responsive surfaces.
+- Styling contract changes: render the component in a Playwright-backed real
+  browser and verify computed CSS plus the affected viewport, light/dark, and
+  interaction states. For a visual defect, capture comparable before/after
+  screenshots and measure the relevant geometry; do not judge correctness from
+  source or test results alone.
+- Page-integration layout defects: verify the exact reported route and composed
+  state rather than relying only on an isolated component harness.
 - Public subpath, build, or packaging changes: run `pnpm pack:ui` and the packed
   consumer coverage included by the UI workflow.
 - Component documentation changes: run the homepage package's relevant unit and

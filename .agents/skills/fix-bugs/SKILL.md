@@ -12,6 +12,18 @@ description: Diagnose and fix user-visible defects and regressions in this repos
 - Distinguish product defects from stale environments, flaky tests, and external
   infrastructure failures. Do not change product code for an unrelated failure.
 
+For visual, layout, spacing, overflow, alignment, positioning, or responsive
+defects:
+
+- Open the exact reported route and state in a Playwright-backed real browser
+  before editing. Do not diagnose the defect from source, unit tests, or DOM
+  markup alone.
+- Capture a before screenshot and record the viewport, theme, route, and UI
+  state needed to reproduce it.
+- Inspect the rendered geometry with the evidence appropriate to the symptom,
+  such as bounding boxes, computed styles, scroll dimensions, overlap, or hit
+  testing. Treat screenshots as evidence, not as a substitute for measurement.
+
 ## Choose Proportionate Coverage
 
 - Add or strengthen a permanent regression test when the defect has a stable,
@@ -41,6 +53,10 @@ the requested standard.
 - Run the targeted verification first, then the surrounding checks justified by
   the affected surface and risk. Use repository-specific instructions where
   applicable.
+- For a visual or layout defect, revisit the same route and UI state in the real
+  browser at the recorded viewport and theme. Capture an after screenshot and
+  recheck the relevant rendered geometry. Automated assertions protect against
+  regression but do not replace inspecting the actual rendered result.
 - Keep unrelated or flaky failures separate from the fix and report their
   evidence without broadening the patch.
 

@@ -31,7 +31,7 @@ const meta = {
   },
   render: ({ description, title, variant }) => (
     <TRAlert.Root className="max-w-md" role="status" variant={variant}>
-      <TRAlert.Title render={<h3 />}>{title}</TRAlert.Title>
+      <TRAlert.Title render={<h3>{title}</h3>} />
       <TRAlert.Description>{description}</TRAlert.Description>
       <TRAlert.Actions>
         <TRButton appearance="outline" uiSize="sm">

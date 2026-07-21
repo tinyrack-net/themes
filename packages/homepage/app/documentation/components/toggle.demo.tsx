@@ -29,11 +29,7 @@ export function TogglePreview({
 
   return (
     <div className="grid justify-items-start gap-3">
-      <TRToggle
-        disabled={disabled}
-        onPressedChange={onPressedChange}
-        pressed={pressed}
-      >
+      <TRToggle disabled={disabled} onPressedChange={onPressedChange} pressed={pressed}>
         {visibleLabel}
       </TRToggle>
       <output aria-live="polite" className="text-tinyrack-sm text-tinyrack-text-muted">

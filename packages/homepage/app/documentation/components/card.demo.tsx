@@ -37,11 +37,7 @@ const meta = {
     },
   },
   render: ({ content, description, footer, title, ...rootProps }) => (
-    <TRCard.Root
-      className="w-full max-w-80"
-      render={<article />}
-      {...rootProps}
-    >
+    <TRCard.Root className="w-full max-w-80" render={<article />} {...rootProps}>
       <TRCard.Header>
         <TRCard.Title render={<h3>{title}</h3>} />
         <TRCard.Description>{description}</TRCard.Description>

@@ -9,7 +9,7 @@ import {
 } from '../app/content/shared/tailwind-token-catalog.js';
 
 const homepageRoot = process.cwd();
-const coreCss = readFileSync(join(homepageRoot, '../ui/src/core/core.css'), 'utf8');
+const coreCss = readFileSync(join(homepageRoot, '../ui/dist/core.css'), 'utf8');
 
 function groupForThemeVariable(themeVariable: string): TailwindTokenGroupId {
   if (themeVariable.startsWith('--breakpoint-')) return 'breakpoint';

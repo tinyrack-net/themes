@@ -1,4 +1,4 @@
-import { resolve } from 'node:path';
+import { join, resolve } from 'node:path';
 import type { Config } from '@react-router/dev/config';
 import { type RouteConfig, relative } from '@react-router/dev/routes';
 import { buildWorkerBudget } from '../config/build-worker-budget.ts';
@@ -7,6 +7,7 @@ import {
   type LoadDocsManifestOptions,
   loadDocsManifest,
 } from '../config/docs-manifest.ts';
+import { finalizeDocsBuild } from './docs-build.ts';
 
 export function createDocsRoutes(
   config: DocsConfig,
@@ -40,5 +41,12 @@ export function createDocsRouterConfig(config: DocsConfig): Config {
     },
     routeDiscovery: { mode: 'initial' },
     ssr: false,
+    async buildEnd({ reactRouterConfig, viteConfig }) {
+      const manifest = loadDocsManifest(config, { root: viteConfig.root });
+      await finalizeDocsBuild(
+        join(reactRouterConfig.buildDirectory, 'client'),
+        manifest,
+      );
+    },
   };
 }

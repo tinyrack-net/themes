@@ -496,7 +496,7 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
               surfaces={[
                 {
                   label: 'React',
-                  install: 'pnpm add @tinyrack/ui react react-dom',
+                  install: 'pnpm add @tinyrack/ui tailwindcss react react-dom',
                   imports: [
                     "import '@tinyrack/ui/core.css';",
                     "import '@tinyrack/ui/components/button.css';",

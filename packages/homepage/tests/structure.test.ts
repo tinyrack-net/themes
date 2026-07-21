@@ -3,7 +3,6 @@ import { join } from 'node:path';
 import { loadDocsManifest } from '@tinyrack/docs/config';
 import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
-import { componentNames } from '../../ui/scripts/component-catalog.js';
 import { componentDocsManifest } from '../app/content/shared/component-docs-manifest.js';
 import {
   tailwindTokenBridge,
@@ -12,9 +11,9 @@ import {
 import config from '../docs.config.js';
 
 const homepageRoot = process.cwd();
-const workspaceRoot = join(homepageRoot, '../..');
 const docsManifest = loadDocsManifest(config, { root: homepageRoot });
 const staticDocumentRoutes = docsManifest.pages;
+const componentNames = componentDocsManifest.map((entry) => entry.id);
 
 function readText(path: string) {
   const resolved = join(homepageRoot, path);
@@ -227,7 +226,6 @@ describe('React Router documentation contract', () => {
     for (const group of tailwindTokenGroups) {
       expect(tailwindTokenBridge.some((entry) => entry.group === group.id)).toBe(true);
     }
-    expect(readText('../ui/src/core/index.ts')).not.toContain('tailwindToken');
   });
 
   it('uses SVG chevrons instead of fallback text glyphs', () => {
@@ -294,26 +292,6 @@ describe('React Router documentation contract', () => {
       );
       expect(index).toContain(`<WelcomePage locale="${locale}" />`);
     }
-  });
-
-  it('contains no removed documentation runtime residue', () => {
-    const removedRuntimeName = ['story', 'book'].join('');
-    const removedRuntimePattern = new RegExp(removedRuntimeName, 'i');
-    expect(existsSync(join(workspaceRoot, `.${removedRuntimeName}`))).toBe(false);
-
-    const authoredFiles = filesUnder(workspaceRoot).filter(
-      (path) => !path.endsWith('pnpm-lock.yaml'),
-    );
-    const legacyDemoSuffix = ['.stori', 'es.tsx'].join('');
-    const legacyFiles = authoredFiles.filter(
-      (path) => path.endsWith(legacyDemoSuffix) || removedRuntimePattern.test(path),
-    );
-    expect(legacyFiles).toEqual([]);
-
-    const legacySources = authoredFiles
-      .filter((path) => /\.(?:json|md|mdx|ts|tsx|ya?ml)$/.test(path))
-      .filter((path) => removedRuntimePattern.test(readFileSync(path, 'utf8')));
-    expect(legacySources).toEqual([]);
   });
 
   it('defines all 228 localized content routes as static route modules', () => {
@@ -416,16 +394,20 @@ describe('React Router documentation contract', () => {
     const viteConfig = readText('vite.config.ts');
 
     expect(packageJson.dependencies['@tinyrack/docs']).toBe('workspace:*');
-    expect(packageJson.scripts['dev']).toContain(
+    expect(packageJson.scripts['dev:app']).toContain(
       'NODE_OPTIONS=--conditions=@tinyrack/source',
     );
-    const verifySteps = packageJson.scripts['verify:static']?.split(' && ') ?? [];
-    expect(verifySteps.indexOf('pnpm build')).toBeLessThan(
-      verifySteps.indexOf('pnpm check:structure'),
-    );
     expect(packageJson.scripts['dev']).not.toContain('build');
-    expect(packageJson.scripts['build:app']).toContain('tinyrack-docs build');
-    expect(packageJson.scripts['preview:search']).toContain('tinyrack-docs preview');
+    expect(packageJson.scripts['dev:app']).not.toContain('build');
+    expect(packageJson.scripts['dev:app']).toContain('react-router dev');
+    expect(packageJson.scripts['build']).toBe('react-router build');
+    expect(
+      Object.keys(packageJson.scripts)
+        .filter((name) => name === 'test' || name.startsWith('test:'))
+        .sort(),
+    ).toEqual(['test', 'test:e2e', 'test:unit']);
+    expect(packageJson.scripts['preview']).toBe('vite preview');
+    expect(JSON.stringify(packageJson.scripts)).not.toContain('tinyrack-docs');
     expect(viteConfig).toContain("import.meta.resolve('@tinyrack/docs/vite')");
     expect(viteConfig).not.toContain('alias:');
     expect(viteConfig).not.toContain('uiSource');
@@ -435,13 +417,11 @@ describe('React Router documentation contract', () => {
     expect(playground).toContain('data-pagefind-ignore="all"');
   });
 
-  it('keeps browser audits state-driven and preserves first CI failures', () => {
+  it('keeps browser audits state-driven and isolated', () => {
     const packageJson = JSON.parse(readText('package.json')) as {
       scripts: Record<string, string>;
     };
     const browserAuditFiles = [
-      'tests/browser-documents-light.test.ts',
-      'tests/browser-documents-dark.test.ts',
       'tests/browser-rendering.test.ts',
       'tests/browser-navigation.test.ts',
       'tests/browser-playground.test.ts',
@@ -455,10 +435,6 @@ describe('React Router documentation contract', () => {
       browserAudit.indexOf(
         "it('opens TRContextMenu rack commands from pointer, keyboard, and touch fallback'",
       ),
-    );
-    const workflow = readFileSync(
-      join(workspaceRoot, '.github/workflows/ci.yml'),
-      'utf8',
     );
     const vitestConfig = readText('vitest.config.ts');
     const browserAuditFile = ts.createSourceFile(
@@ -481,13 +457,8 @@ describe('React Router documentation contract', () => {
     };
     visit(browserAuditFile);
 
-    expect(packageJson.scripts['verify:static']).toBe(
-      'pnpm check:types && pnpm check:app-icons && pnpm build && pnpm check:structure',
-    );
-    expect(packageJson.scripts['verify']).toBe('pnpm verify:static && pnpm test:audit');
-    expect(packageJson.scripts['test:audit']).toBe(
-      'vitest run --exclude tests/browser-overlays.test.ts && vitest run tests/browser-overlays.test.ts',
-    );
+    expect(packageJson.scripts).not.toHaveProperty('verify');
+    expect(packageJson.scripts['test:e2e']).toBe('node scripts/test-e2e.ts');
     expect(browserAudit).not.toContain('it.concurrent(');
     expect(vitestConfig).toContain('workerBudget');
     expect(vitestConfig).toContain('maxWorkers: browserWorkers');
@@ -495,12 +466,6 @@ describe('React Router documentation contract', () => {
     expect(oneShotVisibilityAssertions).toEqual([]);
     expect(interactiveAudit).not.toContain('await page.goto(');
     expect(interactiveAudit).toContain("reactTab.getAttribute('aria-selected')");
-    expect(workflow).toContain('id: ui-firefox-test');
-    expect(workflow).toContain("if: steps.ui-firefox-test.outcome == 'failure'");
-    expect(workflow).toContain('name: Preserve UI Firefox first failure');
-    expect(workflow).toContain('id: homepage-audit');
-    expect(workflow).toContain("if: steps.homepage-audit.outcome == 'failure'");
-    expect(workflow).toContain('name: Preserve homepage audit first failure');
   });
 
   it('uses design-system primitives for executable and copy-ready UI', () => {
@@ -584,7 +549,7 @@ describe('React Router documentation contract', () => {
   });
 
   it('loads only IBM Plex Sans Latin, Korean, and Japanese web-font subsets', () => {
-    const styles = readText('../docs/src/styles/styles.css');
+    const styles = readText('../docs/dist/styles.css');
     const fontImports = [...styles.matchAll(/@fontsource\/[^'"]+/g)].map(
       ([specifier]) => specifier,
     );
@@ -603,10 +568,9 @@ describe('React Router documentation contract', () => {
       '@fontsource/ibm-plex-sans-jp/japanese-700.css',
     ]);
 
-    const cjkFonts = readText('../docs/src/styles/fonts.css');
-    expect(cjkFonts.match(/ibm-plex-sans-kr-korean-/g)).toHaveLength(4);
-    expect(cjkFonts.match(/ibm-plex-sans-jp-japanese-/g)).toHaveLength(4);
-    expect(cjkFonts.match(/font-family: "IBM Plex Sans"/g)).toHaveLength(8);
+    expect(styles.match(/"IBM Plex Sans KR"/g)).toHaveLength(6);
+    expect(styles.match(/"IBM Plex Sans JP"/g)).toHaveLength(6);
+    expect(styles).toContain(':root:lang(ja)');
   });
 
   it('preloads only the current locale IBM Plex Sans subsets in prerendered HTML', () => {

@@ -39,23 +39,18 @@
     "check:types": "tsc -p tsconfig.json --noEmit && pnpm check:tests",
     "check:tests": "tsc -p tsconfig.test.json --noEmit",
     "check:scripts": "tsc -p tsconfig.scripts.json",
-    "verify": "pnpm verify:static && pnpm test:component && pnpm test:coverage",
-    "verify:static": "pnpm biome && pnpm check:types && pnpm check:scripts && pnpm check:css && pnpm test:unit && pnpm check:e2e && pnpm test:dist",
-    "verify:release": "pnpm verify",
-    "test": "pnpm test:unit && pnpm test:component",
-    "test:unit": "vitest run --project unit",
-    "test:component": "vitest run --project browser",
-    "test:coverage": "vitest run --mode component-coverage --project unit --project browser --coverage",
-    "test:dist": "node e2e/dist-package-smoke.ts",
+    "check": "pnpm biome && pnpm check:types && pnpm check:scripts && pnpm check:css",
+    "test": "pnpm test:unit && pnpm test:e2e",
+    "test:unit": "vitest run --project unit --project contract",
+    "test:e2e": "node scripts/test-e2e.ts",
     "biome": "biome check .",
     "biome:fix": "biome check --write .",
-    "check:e2e": "vitest run --project e2e",
     "prepack": "pnpm build"
   },
   "peerDependencies": {
     "react": ">=19.0.0",
     "react-dom": ">=19.0.0",
-    "tailwindcss": ">=4.0.0"
+    "tailwindcss": ">=4.3.0 <5.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.2",

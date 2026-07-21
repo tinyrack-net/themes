@@ -3,7 +3,6 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
-import { breakpointCustomMediaPlugin } from '../../scripts/breakpoint-css.js';
 import { workerBudget } from '../test-worker-budget.js';
 
 const strictCoverageThresholds = {
@@ -29,6 +28,7 @@ const componentCoverageThresholds = Object.fromEntries(
 
 export default defineConfig(({ mode }) => {
   const componentCoverage = mode === 'component-coverage';
+  const componentFirefox = mode === 'component-firefox';
 
   return {
     test: {
@@ -66,7 +66,7 @@ export default defineConfig(({ mode }) => {
         },
         {
           test: {
-            name: 'e2e',
+            name: 'contract',
             environment: 'node',
             maxWorkers: browserWorkers,
             setupFiles: ['./vitest.setup.ts'],
@@ -74,7 +74,7 @@ export default defineConfig(({ mode }) => {
           },
         },
         {
-          plugins: [breakpointCustomMediaPlugin(), react(), tailwindcss()],
+          plugins: [react(), tailwindcss()],
           test: {
             name: 'browser',
             maxWorkers: browserWorkers,
@@ -88,10 +88,11 @@ export default defineConfig(({ mode }) => {
                 host: '127.0.0.1',
                 port: 30_000,
               },
-              instances: componentCoverage
-                ? [{ browser: 'chromium' }]
-                : [{ browser: 'chromium' }, { browser: 'firefox' }],
+              instances: componentFirefox
+                ? [{ browser: 'firefox' }]
+                : [{ browser: 'chromium' }],
             },
+            retry: componentFirefox ? 1 : 0,
           },
         },
       ],

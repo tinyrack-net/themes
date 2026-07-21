@@ -23,10 +23,10 @@ const desktopQuery = `(width >= ${tinyrackBreakpoints.lg})`;
 
 ## CSS와 Tailwind
 
-Tinyrack 소스 CSS는 <TRCode>--tinyrack-breakpoint-md-min</TRCode>, <TRCode>--tinyrack-breakpoint-md-max</TRCode> 같은 named media를 사용합니다. 패키지 빌드는 이를 표준 미디어 쿼리로 변환하므로 소비자는 custom-media 플러그인이 필요하지 않습니다.
+Tinyrack CSS는 Tailwind의 <TRCode>@variant</TRCode> 지시어를 사용합니다. <TRCode>@tinyrack/ui/core.css</TRCode>를 컴포넌트 스타일보다 먼저 import하면 Tailwind가 공통 breakpoint scale을 해석합니다.
 
 ```css
-@media (--tinyrack-breakpoint-md-min) {
+@variant md {
   /* Tinyrack source authoring */
 }
 ```

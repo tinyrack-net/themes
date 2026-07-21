@@ -42,8 +42,11 @@ jobs:
             exit 1
           fi
 
-      - name: Verify package
-        run: pnpm run verify
+      - name: Check package
+        run: pnpm --filter @tinyrack/ui check
+
+      - name: Test package
+        run: pnpm --filter @tinyrack/ui test
 
       - name: Publish package to npm
-        run: pnpm --dir packages/ui publish --provenance --access public --no-git-checks
+        run: pnpm --config.ignore-scripts=true --dir packages/ui publish --provenance --access public --no-git-checks

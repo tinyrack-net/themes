@@ -28,7 +28,12 @@ describe('Vitest performance configuration', () => {
       port: 30_000,
     });
     expect(browserProject.test.maxWorkers).toBe(
-      workerBudget({ maxWorkers: 8, parallelism: availableParallelism() }),
+      workerBudget({
+        maxWorkers: 8,
+        override:
+          process.env['TINYRACK_TEST_WORKERS'] ?? process.env['TINYRACK_WORKERS'],
+        parallelism: availableParallelism(),
+      }),
     );
     expect(unitProject).toBeDefined();
     if (typeof unitProject !== 'object' || unitProject.test?.name !== 'unit') {

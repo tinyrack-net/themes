@@ -10,7 +10,8 @@ landing visuals, brand assets, and deployment.
 ## Install
 
 ```bash
-pnpm add @tinyrack/docs @tinyrack/ui react react-dom react-router vite
+pnpm add @tinyrack/docs @tinyrack/ui react react-dom react-router
+pnpm add --save-dev @react-router/dev @tailwindcss/vite tailwindcss vite
 ```
 
 Node.js 24 or newer is required.
@@ -123,11 +124,14 @@ export default createDocsRouterConfig(config);
 
 ```ts
 // vite.config.ts
+import tailwindcss from '@tailwindcss/vite';
 import { tinyrackDocs } from '@tinyrack/docs/vite';
 import { defineConfig } from 'vite';
 import config from './docs.config.js';
 
-export default defineConfig({ plugins: tinyrackDocs(config) });
+export default defineConfig({
+  plugins: [...tinyrackDocs(config), tailwindcss()],
+});
 ```
 
 ```tsx
@@ -137,8 +141,9 @@ import '@tinyrack/docs/styles.css';
 export { default, Layout, links, meta } from '@tinyrack/docs/runtime';
 ```
 
-The CSS is explicit and prebuilt; consumers do not scan package source with
-Tailwind. Place logo and favicon files under `public/`.
+Tailwind CSS 4 and `@tailwindcss/vite` are required. The published stylesheet
+registers Tinyrack's Tailwind theme and imports prebuilt component CSS; consumers
+do not scan package source. Place logo and favicon files under `public/`.
 
 The default navbar renders the site brand, optional `header.version` and
 `header.links`, search, theme, and language controls. Internal paths use React
@@ -150,16 +155,19 @@ Router navigation; absolute URLs render as normal links. The navbar is shown on
 ```json
 {
   "scripts": {
-    "dev": "tinyrack-docs dev",
-    "build": "tinyrack-docs build",
-    "preview": "tinyrack-docs preview"
+    "dev": "react-router dev",
+    "build": "react-router build",
+    "preview": "vite preview"
   }
 }
 ```
 
-`build` runs React Router SSG and then creates the Pagefind index. Both `/` and
-a configured subpath such as `/docs` are supported. The package intentionally
-does not include a project generator, scaffold command, or Playground API.
+`createDocsRouterConfig` finalizes the static output through React Router's
+`buildEnd` hook: it restores redirects, removes the SPA fallback, creates the
+Pagefind index, and colocates output under a configured base path. The
+`tinyrackDocs` Vite plugins configure standard preview behavior for both `/` and
+a subpath such as `/docs`. The package intentionally does not include a custom
+CLI, project generator, scaffold command, or Playground API.
 
 Releases use package-specific `docs-vX.Y.Z` Git tags so they remain independent
 from `@tinyrack/ui` releases.

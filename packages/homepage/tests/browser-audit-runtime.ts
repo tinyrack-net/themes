@@ -2,25 +2,14 @@ import { readFile, stat } from 'node:fs/promises';
 import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { extname, join, resolve, sep } from 'node:path';
-import { loadDocsManifest } from '@tinyrack/docs/config';
 import { type Browser, chromium, type Locator, type Page } from 'playwright';
 import sharp from 'sharp';
 import { expect } from 'vitest';
 import { componentDocsManifest } from '../app/content/shared/component-docs-manifest.js';
-import config from '../docs.config.js';
 
 export { componentDocsManifest, sharp };
 
 const buildRoot = join(process.cwd(), 'build/client');
-export const staticDocumentRoutes = loadDocsManifest(config, {
-  root: process.cwd(),
-}).pages;
-
-export const localeUi = {
-  en: { navigation: 'Documentation', openNavigation: 'Open navigation' },
-  ko: { navigation: '문서', openNavigation: '탐색 열기' },
-  ja: { navigation: 'ドキュメント', openNavigation: 'ナビゲーションを開く' },
-} as const;
 
 const contentTypes: Record<string, string> = {
   '.css': 'text/css; charset=utf-8',
@@ -225,105 +214,6 @@ export async function highlightedCodeColors(locator: Locator) {
       token: getComputedStyle(token).color,
     };
   });
-}
-
-export async function auditEveryDocument(
-  browser: Browser,
-  origin: string,
-  scenario: {
-    name: 'dark mobile' | 'light desktop';
-    theme: 'tinyrack-dark' | 'tinyrack-light';
-    viewport: { height: number; width: number };
-  },
-) {
-  const context = await browser.newContext({ viewport: scenario.viewport });
-  const page = await context.newPage();
-  await setTheme(page, scenario.theme);
-  const pageErrors: string[] = [];
-  const consoleErrors: string[] = [];
-  page.on('pageerror', (error) => pageErrors.push(`${page.url()}: ${error.message}`));
-  page.on('console', (message) => {
-    if (message.type() !== 'error') return;
-    const source = message.location().url;
-    consoleErrors.push(source ? `${message.text()} [${source}]` : message.text());
-  });
-  try {
-    for (const documentRoute of staticDocumentRoutes) {
-      await gotoHydrated(page, `${origin}${documentRoute.path}`);
-      const ui = localeUi[documentRoute.locale as keyof typeof localeUi];
-      if (documentRoute.layout === 'splash') {
-        await page
-          .getByRole('heading', {
-            level: 1,
-            name: 'TINYRACK DESIGN SYSTEM',
-          })
-          .waitFor();
-      } else {
-        await page.locator('h1').filter({ hasText: documentRoute.title }).waitFor();
-      }
-      const componentEntry = componentDocsManifest.find(
-        (entry) => documentRoute.path === `/en/components/${entry.id}`,
-      );
-      if (componentEntry !== undefined) {
-        if (
-          !('hasPlayground' in componentEntry) ||
-          componentEntry.hasPlayground !== false
-        ) {
-          await expect(
-            page.locator('[data-component-playground]').count(),
-          ).resolves.toBe(1);
-        }
-        await expect(
-          page.locator('[data-component-example]').count(),
-        ).resolves.toBeGreaterThanOrEqual(componentEntry.requiredExamples.length);
-      }
-      const overflow = await page.locator('html').evaluate((element) => ({
-        clientWidth: element.clientWidth,
-        scrollWidth: element.scrollWidth,
-      }));
-      expect(overflow.scrollWidth, documentRoute.path).toBeLessThanOrEqual(
-        overflow.clientWidth + 1,
-      );
-      expect(await page.locator('html').getAttribute('data-theme')).toBe(
-        scenario.theme,
-      );
-      await expect(page.locator('main').count()).resolves.toBe(1);
-      if (scenario.name === 'dark mobile') {
-        await page.keyboard.press('Escape');
-        await expect
-          .poll(
-            () =>
-              page.locator('.tr-docs-shell-header').first().getAttribute('aria-hidden'),
-            { message: documentRoute.path },
-          )
-          .toBeNull();
-        const siteNavigationTrigger = page
-          .locator('.tr-docs-shell-header')
-          .first()
-          .getByRole('button', { name: ui.openNavigation });
-        await expect
-          .poll(() => siteNavigationTrigger.count(), {
-            message: documentRoute.path,
-            timeout: 10_000,
-          })
-          .toBe(1);
-        await siteNavigationTrigger.click();
-      }
-      const currentNavigationLink = page.locator(
-        `.tr-docs-sidebar-inner > nav[aria-label="${ui.navigation}"] [aria-current="page"]`,
-      );
-      await expect
-        .poll(() => currentNavigationLink.count(), {
-          message: documentRoute.path,
-          timeout: 10_000,
-        })
-        .toBe(documentRoute.navigation ? 1 : 0);
-    }
-    expect(pageErrors).toEqual([]);
-    expect(consoleErrors).toEqual([]);
-  } finally {
-    await context.close();
-  }
 }
 
 export function createBrowserAuditRuntime() {

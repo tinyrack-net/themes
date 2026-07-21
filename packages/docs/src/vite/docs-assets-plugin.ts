@@ -5,6 +5,7 @@ import type { Plugin } from 'vite';
 import { buildWorkerBudget } from '../config/build-worker-budget.ts';
 import type { DocsConfig, DocsManifest, DocsPage } from '../config/docs-config.ts';
 import { loadDocsManifest } from '../config/docs-manifest.ts';
+import { createRedirectFiles } from '../react-router/docs-build.ts';
 
 export const docsManifestModuleId = 'virtual:tinyrack-docs/manifest';
 const resolvedDocsManifestModuleId = `\0${docsManifestModuleId}`;
@@ -156,26 +157,6 @@ function createNotFoundPage(manifest: DocsManifest) {
 `;
 }
 
-function createRedirectPage(target: string, manifest: DocsManifest) {
-  const canonicalTarget = `${manifest.site.url}${target}`;
-  return `<!doctype html>
-<html lang="${escapeXml(manifest.locales[manifest.defaultLocale]?.language ?? manifest.site.locale.language)}">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="0;url=${escapeXml(target)}" http-equiv="refresh" />
-    <link href="${escapeXml(canonicalTarget)}" rel="canonical" />
-    <meta content="noindex" name="robots" />
-    <title>Redirecting · ${escapeXml(manifest.site.title)}</title>
-  </head>
-  <body><a href="${escapeXml(target)}">Continue</a></body>
-</html>\n`;
-}
-
-function redirectFile(path: string) {
-  const normalized = path.replace(/^\/+|\/+$/g, '');
-  return normalized.length === 0 ? 'index.html' : `${normalized}/index.html`;
-}
-
 async function createDocsAssets(
   manifest: DocsManifest,
   iconDataUrl: string,
@@ -200,12 +181,7 @@ async function createDocsAssets(
   return {
     images,
     notFound: createNotFoundPage(manifest),
-    redirects: new Map(
-      Object.entries(manifest.redirects).map(([path, target]) => [
-        redirectFile(path),
-        createRedirectPage(target, manifest),
-      ]),
-    ),
+    redirects: createRedirectFiles(manifest),
     robots: `User-agent: *\nAllow: /\n\nSitemap: ${sitemapUrl(manifest)}\n`,
     sitemap: createSitemap(manifest),
   };
@@ -274,14 +250,6 @@ export function docsAssetsPlugin(config: DocsConfig, root: string): Plugin {
     generateBundle() {
       if (this.environment.name !== 'client') return;
       return assets.get().then((assets) => {
-        this.emitFile({
-          fileName: '.tinyrack-docs.json',
-          source: `${JSON.stringify({
-            basePath: manifest.site.basePath,
-            redirects: Object.fromEntries(assets.redirects),
-          })}\n`,
-          type: 'asset',
-        });
         this.emitFile({
           fileName: 'sitemap.xml',
           source: assets.sitemap,

@@ -1,4 +1,5 @@
 @import "../link/link.css";
+@reference "@tinyrack/ui/core.css";
 
 .tr-document-pagination {
   border-block-start: var(--tinyrack-border-width-default) solid var(--tinyrack-border);
@@ -62,7 +63,7 @@
   line-clamp: 2;
 }
 
-@media (--tinyrack-breakpoint-sm-min) {
+@variant sm {
   .tr-document-pagination {
     gap: var(--tinyrack-space-lg);
     grid-template-columns: repeat(2, minmax(0, 1fr));

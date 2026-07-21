@@ -3,7 +3,6 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const homepageRoot = process.cwd();
-const workspaceRoot = join(homepageRoot, '../..');
 
 function readHomepage(path: string) {
   const resolved = join(homepageRoot, path);
@@ -12,10 +11,6 @@ function readHomepage(path: string) {
     join(homepageRoot, path.replace('app/content/', 'app/content/en/')),
     'utf8',
   );
-}
-
-function readWorkspace(path: string) {
-  return readFileSync(join(workspaceRoot, path), 'utf8');
 }
 
 describe('reports 00-29 closure contracts', () => {
@@ -64,7 +59,10 @@ describe('reports 00-29 closure contracts', () => {
   it('keeps OTP preview/source/API parity and shrink-safe slots', () => {
     const docs = readHomepage('app/content/components/otp-field.docs.mdx');
     const demo = readHomepage('app/content/components/otp-field.demo.tsx');
-    const css = readWorkspace('packages/ui/src/components/otp-field/otp-field.css');
+    const css = readFileSync(
+      join(homepageRoot, '../ui/dist/components/otp-field/otp-field.css'),
+      'utf8',
+    );
 
     for (const value of ['1234', '123456']) {
       expect(docs).toContain(`defaultValue="${value}"`);

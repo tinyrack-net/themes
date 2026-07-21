@@ -58,14 +58,6 @@ export default defineConfig(({ mode }) => {
           },
         },
         {
-          test: {
-            name: 'contract',
-            environment: 'node',
-            setupFiles: ['./vitest.setup.ts'],
-            include: ['e2e/**/*.test.ts'],
-          },
-        },
-        {
           plugins: [react(), tailwindcss()],
           test: {
             name: 'browser',

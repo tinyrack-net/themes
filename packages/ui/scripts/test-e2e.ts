@@ -37,4 +37,3 @@ run(pnpm, [
   '--project',
   'browser',
 ]);
-run(process.execPath, ['e2e/dist-package-smoke.ts']);

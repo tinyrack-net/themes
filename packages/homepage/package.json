@@ -5,12 +5,12 @@
   "scripts": {
     "dev": "node scripts/dev-worktree.ts",
     "dev:app": "cross-env NODE_OPTIONS=--conditions=@tinyrack/source react-router dev",
-    "build": "pnpm typegen && tsc -p tsconfig.build.json --noEmit && node scripts/generate-app-icons.mjs --check && react-router build",
+    "build": "pnpm typegen && tsc -p tsconfig.build.json --noEmit && tsc -p tsconfig.test.json --noEmit && node scripts/generate-app-icons.ts --check && react-router build",
     "preview": "vite preview",
     "typegen": "react-router typegen",
-    "generate:app-icons": "node scripts/generate-app-icons.mjs",
+    "generate:app-icons": "node scripts/generate-app-icons.ts",
     "test": "pnpm test:unit && pnpm test:e2e",
-    "test:unit": "pnpm typegen && tsc -p tsconfig.test.json --noEmit && vitest run --project unit",
+    "test:unit": "vitest run --project unit",
     "test:e2e": "node scripts/test-e2e.ts",
     "deploy": "wrangler deploy",
     "deploy:dry-run": "wrangler deploy --dry-run"

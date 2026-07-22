@@ -151,7 +151,7 @@ function ComponentExampleSourcePanel({
         aria-label={copy.copySource(label, title)}
         className="absolute top-2 right-2 z-10"
         data-copy-source={label}
-        idleLabel={copy.copySource(label, title)}
+        idleLabel={copy.copy}
         uiSize="sm"
         value={normalizedCode}
       />

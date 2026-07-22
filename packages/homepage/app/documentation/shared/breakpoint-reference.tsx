@@ -30,7 +30,7 @@ export function BreakpointReference({ locale }: { locale: keyof typeof labels })
               <TRCode>{value}</TRCode>
             </TRTable.Cell>
             <TRTable.Cell>
-              <TRCode>{`--tinyrack-breakpoint-${name}-min`}</TRCode>
+              <TRCode>{`--breakpoint-${name}`}</TRCode>
             </TRTable.Cell>
             <TRTable.Cell>
               <TRCode>{`${name}:*`}</TRCode>

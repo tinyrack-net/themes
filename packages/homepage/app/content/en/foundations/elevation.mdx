@@ -6,7 +6,7 @@ order: 7
 ---
 import { TRCode } from '@tinyrack/ui/components/code';
 import { TRTable } from '@tinyrack/ui/components/table';
-import { tinyrackShadows } from '@tinyrack/ui/core';
+import { tinyrackLayers, tinyrackShadows } from '@tinyrack/ui/core';
 
 ## Principle
 
@@ -96,7 +96,16 @@ In dark themes, borders and surface contrast carry most of the separation. Shado
 
 ## Implementation
 
-Components choose elevation by the visual separation their surface needs. TRPopover, TRToast, elevated TRCard, TRSwitch, and TRSlider use `raised`; TRDialog, TRAlert TRDialog, TRDrawer, TRAutocomplete, Context TRMenu, Navigation TRMenu, and Preview TRCard use `overlay`. Use a public shadow token only when building a custom elevated surface; do not infer modality from the shadow or add it to normal layout sections.
+Choose shadow from the separation a custom surface needs. Choose layer order from interaction ownership. A modal surface also needs focus management, dismissal behavior, and a backdrop that uses `--tinyrack-scrim`; a shadow alone never makes content modal.
+
+### Layer order
+
+The exported `tinyrackLayers` contract orders `base`, `backdrop`, `dropdown`, `popover`, `dialog`, `toast`, and `tooltip`. Keep a backdrop below its dialog, and avoid inventing local values that compete with portalled UI.
+
+<TRTable.Root containerProps={{ 'aria-label': 'Layer order reference', tabIndex: 0 }} data-foundation-reference="layers">
+  <thead><tr><th scope="col">Layer</th><th scope="col">Value</th><th scope="col">CSS variable</th></tr></thead>
+  <tbody>{Object.entries(tinyrackLayers).map(([name, value]) => <tr key={name}><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td><td><TRCode>{`--tinyrack-layer-${name}`}</TRCode></td></tr>)}</tbody>
+</TRTable.Root>
 
 ```css
 .rack-popover {
@@ -115,16 +124,15 @@ Use `tinyrackShadows.raised` and `tinyrackShadows.overlay` when tooling or gener
 ## Reference
 
 <TRTable.Root className="mt-tinyrack-lg" containerProps={{ 'aria-label': 'Elevation token reference', tabIndex: 0 }} data-foundation-reference="elevation">
-    <thead><tr><th scope="col">Token</th><th scope="col">Purpose</th><th scope="col">Used by</th><th scope="col">Value</th><th scope="col">CSS variable</th><th scope="col">Utility</th></tr></thead>
+    <thead><tr><th scope="col">Token</th><th scope="col">Purpose</th><th scope="col">Value</th><th scope="col">CSS variable</th><th scope="col">Utility</th></tr></thead>
     <tbody>
       {[
-        { name: 'raised', purpose: 'Subtle lifted surface or control', consumers: 'TRPopover, TRToast, elevated TRCard, TRSwitch, TRSlider' },
-        { name: 'overlay', purpose: 'Prominent portalled surface', consumers: 'TRDialog, TRAlert TRDialog, TRDrawer, TRAutocomplete, Context TRMenu, Navigation TRMenu, Preview TRCard' },
-      ].map(({ name, purpose, consumers }) => (
+        { name: 'raised', purpose: 'Subtle lifted surface or control' },
+        { name: 'overlay', purpose: 'Prominent portalled surface' },
+      ].map(({ name, purpose }) => (
         <tr key={name}>
           <th scope="row"><TRCode className="whitespace-nowrap">{name}</TRCode></th>
           <td>{purpose}</td>
-          <td className="whitespace-nowrap">{consumers}</td>
           <td><TRCode className="whitespace-nowrap">{tinyrackShadows[name]}</TRCode></td>
           <td><TRCode className="whitespace-nowrap">{`--tinyrack-shadow-${name}`}</TRCode></td>
           <td><TRCode className="whitespace-nowrap">{`shadow-tinyrack-${name}`}</TRCode></td>

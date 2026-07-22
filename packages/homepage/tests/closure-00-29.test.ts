@@ -27,7 +27,9 @@ describe('reports 00-29 closure contracts', () => {
     expect(elevation).not.toContain('overlay</TRCode> · blocking');
     expect(elevation).not.toContain("purpose: 'Blocking focused task'");
     expect(elevation).toContain('Modality is communicated by behavior and a backdrop');
-    expect(elevation).toContain('Navigation TRMenu, and Preview TRCard');
+    expect(elevation).not.toContain('TRAlert TRDialog');
+    expect(elevation).toContain('tinyrackLayers');
+    expect(elevation).toContain('--tinyrack-scrim');
   });
 
   it('keeps TRCard headings in document order and TRCode Block source paste-ready', () => {

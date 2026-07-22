@@ -26,7 +26,7 @@ Use `sm` for dense secondary actions, `md` for the default operational interface
   {['sm', 'md', 'lg'].map((size) => (
     <section className="grid items-center gap-tinyrack-md border border-tinyrack-border p-tinyrack-lg md:grid-cols-[7rem_minmax(0,1fr)]" key={size} role="listitem">
       <div><strong>{size}</strong><div className="text-tinyrack-sm text-tinyrack-text-muted"><TRCode>{tinyrackControlMetrics[size].height}</TRCode></div></div>
-      <div className="flex flex-wrap items-center gap-tinyrack-sm"><TRButton uiSize={size}>Deploy</TRButton><TRField.Root><TRField.Control aria-label={`${size} rack name`} data-uiSize={size} placeholder="rack-a" /></TRField.Root></div>
+      <div className="flex flex-wrap items-center gap-tinyrack-sm"><TRButton uiSize={size}>Deploy</TRButton><TRField.Root uiSize={size}><TRField.Control aria-label={`${size} rack name`} placeholder="rack-a" /></TRField.Root></div>
     </section>
   ))}
 </div>
@@ -34,9 +34,13 @@ Use `sm` for dense secondary actions, `md` for the default operational interface
 ## Applied pattern
 
 <section className="grid gap-tinyrack-lg border border-tinyrack-border p-tinyrack-lg">
-  <div className="grid gap-tinyrack-sm md:grid-cols-[minmax(0,1fr)_auto]"><TRField.Root><TRField.Control aria-label="Rack name" placeholder="rack-a" /></TRField.Root><TRButton variant="primary">Save rack</TRButton></div>
+  <div className="grid gap-tinyrack-sm md:grid-cols-[minmax(0,1fr)_auto]"><TRField.Root uiSize="md"><TRField.Control aria-label="Rack name" placeholder="rack-a" /></TRField.Root><TRButton intent="primary" uiSize="md">Save rack</TRButton></div>
   <div className="text-tinyrack-sm text-tinyrack-text-muted">Both controls use the same 40px medium height and typography recipe.</div>
 </section>
+
+## States and touch targets
+
+Use semantic component states instead of styling snapshots. Hover previews availability, pressed shows the active press, selected persists a choice, disabled removes an unavailable action, and focus remains visible for keyboard navigation. Do not use hover as the only cue. For touch-first layouts, choose `lg` or add spacing around controls without shrinking the interactive box.
 
 ## Implementation
 

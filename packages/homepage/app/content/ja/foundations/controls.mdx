@@ -26,7 +26,7 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
   {['sm', 'md', 'lg'].map((size) => (
     <section className="grid items-center gap-tinyrack-md border border-tinyrack-border p-tinyrack-lg md:grid-cols-[7rem_minmax(0,1fr)]" key={size} role="listitem">
       <div><strong>{size}</strong><div className="text-tinyrack-sm text-tinyrack-text-muted"><TRCode>{tinyrackControlMetrics[size].height}</TRCode></div></div>
-      <div className="flex flex-wrap items-center gap-tinyrack-sm"><TRButton uiSize={size}>デプロイ</TRButton><TRField.Root><TRField.Control aria-label={`${size} ラック名`} data-uiSize={size} placeholder="rack-a" /></TRField.Root></div>
+      <div className="flex flex-wrap items-center gap-tinyrack-sm"><TRButton uiSize={size}>デプロイ</TRButton><TRField.Root uiSize={size}><TRField.Control aria-label={`${size} ラック名`} placeholder="rack-a" /></TRField.Root></div>
     </section>
   ))}
 </div>
@@ -34,9 +34,13 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
 ## 適用パターン
 
 <section className="grid gap-tinyrack-lg border border-tinyrack-border p-tinyrack-lg">
-  <div className="grid gap-tinyrack-sm md:grid-cols-[minmax(0,1fr)_auto]"><TRField.Root><TRField.Control aria-label="ラック名" placeholder="rack-a" /></TRField.Root><TRButton variant="primary">ラックを保存</TRButton></div>
+  <div className="grid gap-tinyrack-sm md:grid-cols-[minmax(0,1fr)_auto]"><TRField.Root uiSize="md"><TRField.Control aria-label="ラック名" placeholder="rack-a" /></TRField.Root><TRButton intent="primary" uiSize="md">ラックを保存</TRButton></div>
   <div className="text-tinyrack-sm text-tinyrack-text-muted">両方のコントロールは同じ 40px の medium 高さとタイポグラフィレシピを使用します。</div>
 </section>
+
+## 状態とタッチターゲット
+
+見た目を独自に再現せず、コンポーネントの意味的な状態を使います。ホバーは操作可能であることを予告し、押下は入力中であることを示し、選択は決定を保持します。無効化は利用できない操作を止め、フォーカスはキーボード操作中も見える必要があります。ホバーだけを手がかりにしないでください。タッチ中心のレイアウトでは `lg` を選ぶか、操作領域を縮めずにコントロール周辺の間隔を広げます。
 
 ## 実装
 

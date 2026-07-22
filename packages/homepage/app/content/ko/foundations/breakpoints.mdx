@@ -43,7 +43,7 @@ Tailwind는 <TRCode>--breakpoint-xs</TRCode>부터 <TRCode>--breakpoint-xl</TRCo
 <section className="grid gap-4 md:grid-cols-2 max-md:grid-cols-1" />
 ```
 
-호환 별칭인 <TRCode>xs-at-most</TRCode>와 <TRCode>sm-at-most</TRCode>는 정확한 경계를 포함합니다. 새 규칙에는 <TRCode>{'*-min'}</TRCode>의 반대 범위가 되는 엄격한 <TRCode>{'*-max'}</TRCode>를 사용합니다.
+모바일 우선 규칙을 추가할 때는 생성된 <TRCode>xs:</TRCode>부터 <TRCode>xl:</TRCode>까지의 variant를 사용하고, 임계값 아래에 적용할 때는 <TRCode>max-md:</TRCode> 같은 variant를 사용해요. CSS의 기준은 <TRCode>--breakpoint-*</TRCode>이고 TypeScript의 기준은 <TRCode>tinyrackBreakpoints</TRCode>예요.
 
 ## 반응형 품질 확인
 

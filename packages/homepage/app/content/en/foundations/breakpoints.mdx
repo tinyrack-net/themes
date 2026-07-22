@@ -43,7 +43,7 @@ Tailwind uses the same values through <TRCode>--breakpoint-xs</TRCode> to <TRCod
 <section className="grid gap-4 md:grid-cols-2 max-md:grid-cols-1" />
 ```
 
-The compatibility aliases <TRCode>xs-at-most</TRCode> and <TRCode>sm-at-most</TRCode> include the exact boundary. Use strict <TRCode>{'*-max'}</TRCode> for new rules so it remains the complement of <TRCode>{'*-min'}</TRCode>.
+Use the generated <TRCode>xs:</TRCode> through <TRCode>xl:</TRCode> variants for mobile-first additions and <TRCode>max-md:</TRCode>-style variants when a rule applies below a threshold. The source of truth is <TRCode>--breakpoint-*</TRCode> in CSS and <TRCode>tinyrackBreakpoints</TRCode> in TypeScript.
 
 ## Responsive QA
 

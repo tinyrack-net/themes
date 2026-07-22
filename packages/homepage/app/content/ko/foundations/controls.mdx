@@ -26,7 +26,7 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
   {['sm', 'md', 'lg'].map((size) => (
     <section className="grid items-center gap-tinyrack-md border border-tinyrack-border p-tinyrack-lg md:grid-cols-[7rem_minmax(0,1fr)]" key={size} role="listitem">
       <div><strong>{size}</strong><div className="text-tinyrack-sm text-tinyrack-text-muted"><TRCode>{tinyrackControlMetrics[size].height}</TRCode></div></div>
-      <div className="flex flex-wrap items-center gap-tinyrack-sm"><TRButton uiSize={size}>배포</TRButton><TRField.Root><TRField.Control aria-label={`${size} 랙 이름`} data-uiSize={size} placeholder="rack-a" /></TRField.Root></div>
+      <div className="flex flex-wrap items-center gap-tinyrack-sm"><TRButton uiSize={size}>배포</TRButton><TRField.Root uiSize={size}><TRField.Control aria-label={`${size} 랙 이름`} placeholder="rack-a" /></TRField.Root></div>
     </section>
   ))}
 </div>
@@ -34,9 +34,13 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
 ## 적용 패턴
 
 <section className="grid gap-tinyrack-lg border border-tinyrack-border p-tinyrack-lg">
-  <div className="grid gap-tinyrack-sm md:grid-cols-[minmax(0,1fr)_auto]"><TRField.Root><TRField.Control aria-label="랙 이름" placeholder="rack-a" /></TRField.Root><TRButton variant="primary">랙 저장</TRButton></div>
+  <div className="grid gap-tinyrack-sm md:grid-cols-[minmax(0,1fr)_auto]"><TRField.Root uiSize="md"><TRField.Control aria-label="랙 이름" placeholder="rack-a" /></TRField.Root><TRButton intent="primary" uiSize="md">랙 저장</TRButton></div>
   <div className="text-tinyrack-sm text-tinyrack-text-muted">두 컨트롤은 동일한 40px 중간 높이와 타이포그래피 레시피를 사용합니다.</div>
 </section>
+
+## 상태와 터치 영역
+
+스타일을 임의로 복제하지 말고 컴포넌트의 의미 기반 상태를 사용해요. 호버는 사용 가능성을 미리 보여 주고, 누름은 현재 입력을 나타내며, 선택은 결정을 유지해요. 비활성화는 사용할 수 없는 동작을 막고, 포커스는 키보드 탐색 중에도 보여야 해요. 호버만 단서로 사용하지 마세요. 터치 중심 레이아웃에서는 `lg`를 선택하거나 상호작용 영역을 줄이지 않은 채 컨트롤 주변 간격을 늘리세요.
 
 ## 구현
 

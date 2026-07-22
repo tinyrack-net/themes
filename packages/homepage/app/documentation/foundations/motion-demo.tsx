@@ -129,7 +129,7 @@ export function MotionDurationComparison() {
             durations, not a slowed-down illustration.
           </p>
         </div>
-        <TRButton onClick={replay} variant="primary">
+        <TRButton intent="primary" onClick={replay}>
           Replay durations
         </TRButton>
       </header>
@@ -281,7 +281,7 @@ export function ReducedMotionPreview() {
           >
             Reduced preview
           </TRButton>
-          <TRButton onClick={replay} variant="primary">
+          <TRButton intent="primary" onClick={replay}>
             Replay state change
           </TRButton>
         </TRFieldset.Root>

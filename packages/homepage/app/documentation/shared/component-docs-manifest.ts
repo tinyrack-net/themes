@@ -886,10 +886,19 @@ export const componentDocsManifest = [
     file: 'app/content/en/components/scroll-area.mdx',
     id: 'scroll-area',
     controls: ['autoHide', 'content', 'orientation', 'variant'],
+    exampleGroups: [
+      exampleGroup('scroll-area-basic', 'usage', 'basic', 1),
+      exampleGroup('scroll-area-states', 'examples', 'recipe', 1),
+      exampleGroup('scroll-area-horizontal', 'examples', 'recipe', 1),
+      exampleGroup('scroll-area-auto-hide', 'examples', 'recipe', 1),
+      exampleGroup('scroll-area-rtl', 'examples', 'recipe', 1),
+    ],
     requiredExamples: [
       'scroll-area-basic',
       'scroll-area-states',
+      'scroll-area-horizontal',
       'scroll-area-auto-hide',
+      'scroll-area-rtl',
     ],
     title: 'ScrollArea',
   },
@@ -1084,7 +1093,16 @@ export const componentDocsManifest = [
     file: 'app/content/en/components/document-pagination.mdx',
     id: 'document-pagination',
     controls: ['direction'],
-    requiredExamples: ['document-pagination-basic'],
+    exampleGroups: [
+      exampleGroup('document-pagination-basic', 'usage', 'basic', 1),
+      exampleGroup('document-pagination-states', 'examples', 'series', 3),
+      exampleGroup('document-pagination-disabled', 'examples', 'recipe', 1),
+    ],
+    requiredExamples: [
+      'document-pagination-basic',
+      'document-pagination-states',
+      'document-pagination-disabled',
+    ],
     title: 'DocumentPagination',
   },
   {
@@ -1093,7 +1111,11 @@ export const componentDocsManifest = [
     hasPlayground: false,
     id: 'file-tree',
     controls: [],
-    requiredExamples: ['file-tree-basic'],
+    exampleGroups: [
+      exampleGroup('file-tree-basic', 'usage', 'basic', 1),
+      exampleGroup('file-tree-authored-content', 'examples', 'recipe', 1),
+    ],
+    requiredExamples: ['file-tree-basic', 'file-tree-authored-content'],
     title: 'FileTree',
   },
   {
@@ -1101,7 +1123,11 @@ export const componentDocsManifest = [
     file: 'app/content/en/components/language-select.mdx',
     id: 'language-select',
     controls: ['uiSize'],
-    requiredExamples: ['language-select-basic'],
+    exampleGroups: [
+      exampleGroup('language-select-basic', 'usage', 'basic', 1),
+      exampleGroup('language-select-sizes', 'examples', 'series', 3),
+    ],
+    requiredExamples: ['language-select-basic', 'language-select-sizes'],
     title: 'LanguageSelect',
   },
   {
@@ -1122,7 +1148,14 @@ export const componentDocsManifest = [
     file: 'app/content/en/components/table-of-contents.mdx',
     id: 'table-of-contents',
     controls: ['currentHeading'],
-    requiredExamples: ['table-of-contents-basic'],
+    exampleGroups: [
+      exampleGroup('table-of-contents-basic', 'usage', 'basic', 1),
+      exampleGroup('table-of-contents-current-heading', 'examples', 'series', 3),
+    ],
+    requiredExamples: [
+      'table-of-contents-basic',
+      'table-of-contents-current-heading',
+    ],
     title: 'TableOfContents',
   },
 ] as const satisfies readonly ComponentDocsManifestEntry[];

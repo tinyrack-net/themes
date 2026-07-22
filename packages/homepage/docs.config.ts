@@ -39,7 +39,7 @@ export default defineDocsConfig({
     { id: 'start', label: { en: 'Start', ko: '시작하기', ja: 'はじめに' }, order: 0 },
     {
       id: 'foundations',
-      label: { en: 'Foundations', ko: '기초', ja: '基礎' },
+      label: { en: 'Foundations', ko: '파운데이션', ja: '基礎' },
       order: 1,
     },
     {

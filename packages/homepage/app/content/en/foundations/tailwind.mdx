@@ -15,9 +15,12 @@ headings:
   - { depth: 3, id: spacing-controls, label: "Spacing and controls" }
   - { depth: 3, id: containers, label: "Containers" }
   - { depth: 3, id: borders-focus, label: "Borders and focus" }
-  - { depth: 3, id: radius-shadows, label: "Radius and shadows" }
+  - { depth: 3, id: radius, label: "Radius" }
+  - { depth: 3, id: shadows, label: "Shadows" }
   - { depth: 3, id: motion, label: "Motion" }
-  - { depth: 3, id: visual-state, label: "Opacity, layers, and scale" }
+  - { depth: 3, id: opacity, label: "Opacity" }
+  - { depth: 3, id: layers, label: "Layers" }
+  - { depth: 3, id: scale, label: "Scale" }
   - { depth: 3, id: decoration, label: "Text decoration" }
 ---
 import { TRCode } from '@tinyrack/ui/components/code';
@@ -25,20 +28,21 @@ import { TailwindTokenReference } from '../../../documentation/shared/tailwind-t
 
 <h2 className="tr-mdx-h2" id="setup">Setup</h2>
 
-Install Tailwind CSS and its Vite plugin in the application that consumes Tinyrack.
+Install Tailwind CSS 4.3 or later, before Tailwind 5, and its Vite plugin in the application that consumes Tinyrack.
 
 ```sh
-pnpm add -D tailwindcss @tailwindcss/vite
+pnpm add -D tailwindcss@^4.3.0 @tailwindcss/vite@^4.3.0
 ```
 
 Add the plugin to the application's Vite configuration.
 
 ```ts
 import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [tailwindcss()],
+  plugins: [react(), tailwindcss()],
 });
 ```
 
@@ -75,10 +79,14 @@ export function ClusterHealth() {
 
 <h2 className="tr-mdx-h2" id="arbitrary-values">Arbitrary values</h2>
 
-Use a type hint when a public component variable has no natural Tailwind namespace. Keep the variable as the source of truth instead of copying its resolved value. For example, Card exposes <TRCode>--tr-card-background</TRCode>.
+Use an arbitrary custom-property override when a public component variable has no named Tailwind utility. Keep the semantic token as the source of truth instead of copying its resolved value. For example, Card consumes <TRCode>--tr-card-background</TRCode> as an override hook.
 
 ```tsx
-<div className="bg-[color:var(--tr-card-background)]">...</div>
+import { TRCard } from '@tinyrack/ui/components/card';
+
+<TRCard.Root className="[--tr-card-background:var(--tinyrack-surface-muted)]">
+  ...
+</TRCard.Root>
 ```
 
 <h2 className="tr-mdx-h2" id="reference">Reference</h2>

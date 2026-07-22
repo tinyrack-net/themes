@@ -1,6 +1,6 @@
 ---
 title: "タイポグラフィ"
-description: "名前付きの文字ロールで、階層、読みやすい行長、ローカライズに強いレイアウトを作ります。"
+description: "名前付きのテキストロールで、階層、読みやすい行長、ローカライズに強いレイアウトを作ります。"
 section: foundations
 order: 2
 ---
@@ -10,23 +10,23 @@ import { tinyrackTypography } from '@tinyrack/ui/core';
 
 ## 階層を選ぶ
 
-読む順序を先に決め、その順序を表現できる最小のロールを選んでください。`display` はまれなページレベルの文、見出しロールは入れ子のセクション、`body` と `bodySm` は本文、`caption` は補足、`label` は短い識別子に使います。
+読む順序を先に決め、その階層を表せる最小限のロールを選んでください。`display` は大きな導入見出し、見出しロールは入れ子になったセクション、`body` と `bodySm` は本文、`caption` は補足、`label` は短い識別子に使います。
 
-## 文字ロール
+## テキストロール
 
-<div className="grid gap-3" role="list">{Object.entries(tinyrackTypography.textStyle).map(([name, recipe]) => (<div className="grid gap-1 border-b border-tinyrack-border pb-3" key={name} role="listitem"><span className={`text-tinyrack-${recipe.fontSize} leading-tinyrack-${recipe.lineHeight}`}>{name === 'label' ? 'ラック状態' : name === 'code' ? 'rack.deploy()' : 'クラスターの状態と容量'}</span><TRCode>{name}</TRCode></div>))}</div>
+<div className="grid gap-3" role="list">{Object.entries(tinyrackTypography.textStyle).map(([name, recipe]) => (<div className="grid gap-1 border-b border-tinyrack-border pb-3" key={name} role="listitem"><span style={{ fontSize: tinyrackTypography.fontSize[recipe.fontSize], fontWeight: tinyrackTypography.fontWeight[recipe.fontWeight], letterSpacing: tinyrackTypography.letterSpacing[recipe.letterSpacing], lineHeight: tinyrackTypography.lineHeight[recipe.lineHeight] }}>{name === 'label' ? 'ラック状態' : name === 'code' ? 'rack.deploy()' : 'クラスターの状態と容量'}</span><TRCode>{name}</TRCode></div>))}</div>
 
 ## 行長とローカライズ
 
-段落は読み取りやすい幅に抑え、ラベルは伸びられるようにしてください。日本語や韓国語は英語と異なる位置で改行されます。英語の文字列を基準に幅を固定したり、説明文を 1 行に強制したりしないでください。大文字の字間は短いラテン文字のラベルだけに使い、日本語の本文には適用しません。
+段落は読み取りやすい幅に抑え、ラベルは内容に応じて伸縮できるようにしてください。日本語や韓国語は英語と異なる位置で改行されます。英語の文字列を基準に幅を固定したり、説明文を 1 行に強制したりしないでください。大文字の字間は短いラテン文字のラベルだけに使い、日本語の本文には適用しません。
 
 ## 適用例
 
-<section className="grid max-w-tinyrack-measure-lg gap-tinyrack-sm border border-tinyrack-border p-tinyrack-lg"><div className="text-tinyrack-xs font-bold text-tinyrack-text-muted">ラック A</div><h3 className="m-0 text-tinyrack-2xl font-semibold leading-tinyrack-sm">クラスターの状態</h3><p className="m-0 text-tinyrack-md leading-tinyrack-md">すべてのノードが応答しています。次のバックアップは 03:18 に始まります。</p><span className="text-tinyrack-xs text-tinyrack-text-muted">2 分前に更新</span></section>
+<section className="grid max-w-tinyrack-measure-lg gap-tinyrack-sm border border-tinyrack-border p-tinyrack-lg"><div className="text-tinyrack-xs font-tinyrack-bold text-tinyrack-text-muted">ラック A</div><h3 className="m-0 text-tinyrack-2xl font-tinyrack-heading leading-tinyrack-sm">クラスターの状態</h3><p className="m-0 text-tinyrack-md leading-tinyrack-md">すべてのノードが応答しています。次のバックアップは {'03:18'} に始まります。</p><span className="text-tinyrack-xs text-tinyrack-text-muted">2 分前に更新</span></section>
 
 ## フォント読み込みの責任
 
-Core は `body`、`heading`、`mono` トークンに `"IBM Plex Sans"` というファミリー名だけを宣言します。フォントファイルの提供や読み込みは行いません。利用するアプリが必要なウェイトと言語サブセットを読み込んでください。このドキュメントアプリは IBM Plex Sans と韓国語・日本語のファミリーを読み込みます。
+Tinyrack のコア CSS は、`body`、`heading`、`mono` トークンに `"IBM Plex Sans"` というファミリー名だけを宣言します。フォントファイルは提供も読み込みもしません。利用するアプリで、必要なウェイトと言語サブセットを読み込んでください。このドキュメントアプリでは、IBM Plex Sans と韓国語・日本語用のファミリーを読み込んでいます。
 
 ## 実装とリファレンス
 
@@ -35,6 +35,6 @@ Core は `body`、`heading`、`mono` トークンに `"IBM Plex Sans"` という
 .rack-title { font: var(--tinyrack-weight-heading) var(--tinyrack-text-2xl) / var(--tinyrack-leading-sm) var(--tinyrack-font-heading); }
 ```
 
-<TRTable.Root containerProps={{ 'aria-label': 'タイポグラフィトークン一覧', tabIndex: 0 }} data-foundation-reference="typography"><thead><tr><th scope="col">ロール</th><th scope="col">サイズ</th><th scope="col">行高</th><th scope="col">ウェイト</th></tr></thead><tbody>{Object.entries(tinyrackTypography.textStyle).map(([name, recipe]) => (<tr key={name}><th scope="row">{name}</th><td><TRCode>{recipe.fontSize}</TRCode></td><td><TRCode>{recipe.lineHeight}</TRCode></td><td><TRCode>{recipe.fontWeight}</TRCode></td></tr>))}</tbody></TRTable.Root>
+<TRTable.Root containerProps={{ 'aria-label': 'タイポグラフィトークン一覧', tabIndex: 0 }} data-foundation-reference="typography"><thead><tr><th scope="col">ロール</th><th scope="col">サイズ</th><th scope="col">行高</th><th scope="col">ウェイト</th><th scope="col">字間</th></tr></thead><tbody>{Object.entries(tinyrackTypography.textStyle).map(([name, recipe]) => (<tr key={name}><th scope="row">{name}</th><td><TRCode>{tinyrackTypography.fontSize[recipe.fontSize]}</TRCode></td><td><TRCode>{tinyrackTypography.lineHeight[recipe.lineHeight]}</TRCode></td><td><TRCode>{tinyrackTypography.fontWeight[recipe.fontWeight]}</TRCode></td><td><TRCode>{tinyrackTypography.letterSpacing[recipe.letterSpacing]}</TRCode></td></tr>))}</tbody></TRTable.Root>
 
 [Tailwind のタイポグラフィマッピング](/ja/foundations/tailwind/#typography)も確認してください。

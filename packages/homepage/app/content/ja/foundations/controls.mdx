@@ -1,6 +1,6 @@
 ---
 title: "コントロールと状態"
-description: "完全な sm、md、lg のコントロールレシピを選び、タスク内のコンポーネントを揃え、すべての操作状態を保ちます。"
+description: "高さや余白をまとめた sm、md、lg のサイズレシピを選び、タスク内のコンポーネントと操作時の状態を揃えます。"
 section: foundations
 order: 6
 ---
@@ -12,7 +12,7 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
 
 ## sm、md、lg を選択
 
-ポインター中心の高密度な補助コントロールには `sm`、標準の運用画面には `md`、タッチ操作やタスクの強調に大きなターゲットが必要なら `lg` を使います。視覚的な階層を表すためだけに一つの操作行でサイズを混在させず、`intent` と `appearance` を使ってください。
+ポインター操作を前提とする、密度の高い画面の補助コントロールには `sm`、標準の運用画面には `md`、タッチ操作やタスクの強調に大きなターゲットが必要なら `lg` を使います。視覚的な階層を表すためだけに一つの操作行でサイズを混在させず、`intent` と `appearance` を使ってください。
 
 ## 完全なサイズレシピ
 
@@ -33,7 +33,7 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
 - 無効化は利用できない操作を止めます。理由が明らかでない場合は見える説明を加えてください。
 - フォーカスはキーボード操作中も見え、切り取られないようにします。
 
-無関係な色を組み合わせず、コンポーネントの props と状態属性を使います。
+状態を独自の色だけで表さず、コンポーネントのプロパティと状態属性を使ってください。
 
 ## タッチターゲットを保つ
 
@@ -42,8 +42,14 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
 ## 実装
 
 ```tsx
+import { TRButton } from '@tinyrack/ui/components/button';
+import { TRField } from '@tinyrack/ui/components/field';
+import '@tinyrack/ui/core.css';
+import '@tinyrack/ui/components/button.css';
+import '@tinyrack/ui/components/field.css';
+
 <TRField.Root uiSize="md"><TRField.Label>ラック名</TRField.Label><TRField.Control /></TRField.Root>
 <TRButton appearance="solid" intent="primary" uiSize="md">ラックを保存</TRButton>
 ```
 
-製品全体の密度を変える場合だけ、グローバルな `--tinyrack-control-*` 寸法を上書きします。意図的な局所例外には、文書化されたコンポーネントの `--tr-*` 変数を使い、高さだけを変更しないでください。
+プロダクト全体の密度を変える場合だけ、グローバルな `--tinyrack-control-*` 寸法を上書きします。意図的な局所例外には、文書化されたコンポーネントの `--tr-*` 変数を使い、高さだけを変更しないでください。

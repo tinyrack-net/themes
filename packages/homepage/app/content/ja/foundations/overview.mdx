@@ -1,5 +1,5 @@
 ---
-title: "基盤"
+title: "基礎"
 description: "Tinyrack のプリミティブ、セマンティックロール、コンポーネント契約を一貫した運用画面に適用します。"
 section: foundations
 order: 0
@@ -15,8 +15,8 @@ import { TRCard } from '@tinyrack/ui/components/card';
 システムは **プリミティブ → セマンティックロール → コンポーネント契約** の順で使います。プリミティブは材料を提供し、セマンティックロールはテーマが変わっても維持する意図を示し、コンポーネントはその意図を再利用可能な動作にします。プロダクト UI では通常、セマンティック層またはコンポーネント層から使ってください。
 
 1. 画面に必要な関係や意味を決めます。
-2. 対応するセマンティックトークン、文字、余白のレシピを選びます。
-3. コンポーネント契約を使い、意図した局所的な例外にだけ `--tr-*` フックを上書きします。
+2. 対応するセマンティックトークン、タイポグラフィ、余白のレシピを選びます。
+3. コンポーネント契約を使い、意図的な局所カスタマイズに限り `--tr-*` フックを上書きします。
 
 ## 基本原則
 
@@ -27,11 +27,11 @@ import { TRCard } from '@tinyrack/ui/components/card';
 
 ## 運用画面への適用
 
-<div className="grid gap-4 md:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)]"><TRCard.Root className="grid gap-4 text-tinyrack-text" variant="outlined"><header className="flex flex-wrap items-start justify-between gap-3"><div className="grid gap-1"><div className="text-tinyrack-xs font-bold tracking-tinyrack-lg text-tinyrack-text-muted uppercase">Rack A</div><div className="text-tinyrack-2xl font-semibold" role="heading" aria-level={3}>クラスターの状態</div></div><TRBadge variant="success">正常</TRBadge></header><div className="grid gap-2 border-y border-tinyrack-border py-3 sm:grid-cols-3"><div className="grid gap-1"><span className="text-tinyrack-xs text-tinyrack-text-muted">負荷</span><strong className="text-tinyrack-xl">41%</strong></div><div className="grid gap-1"><span className="text-tinyrack-xs text-tinyrack-text-muted">ノード</span><strong className="text-tinyrack-xl">12 / 12</strong></div><div className="grid gap-1"><span className="text-tinyrack-xs text-tinyrack-text-muted">バックアップ</span><strong className="text-tinyrack-xl">03:18</strong></div></div><div className="flex flex-wrap gap-2"><TRButton intent="primary">デプロイ</TRButton><TRButton appearance="outline">ログを確認</TRButton></div></TRCard.Root><ol className="m-0 grid content-start gap-3 pl-5 text-tinyrack-sm text-tinyrack-text-muted"><li><strong className="text-tinyrack-text">色</strong>は表面、内容、操作、状態の意味を決めます。</li><li><strong className="text-tinyrack-text">タイポグラフィ</strong>はラベル、見出し、本文、指標の順序を決めます。</li><li><strong className="text-tinyrack-text">余白</strong>は詳細をまとめ、タスクの境界を分けます。</li><li><strong className="text-tinyrack-text">コンポーネント契約</strong>はボタンとバッジの動作を提供します。</li></ol></div>
+<div className="grid gap-4 md:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)]"><TRCard.Root className="grid gap-4 text-tinyrack-text" variant="outlined"><header className="flex flex-wrap items-start justify-between gap-3"><div className="grid gap-1"><div className="text-tinyrack-xs font-bold tracking-tinyrack-lg text-tinyrack-text-muted uppercase">ラック A</div><div className="text-tinyrack-2xl font-semibold" role="heading" aria-level={3}>クラスターの状態</div></div><TRBadge variant="success">正常</TRBadge></header><div className="grid gap-2 border-y border-tinyrack-border py-3 sm:grid-cols-3"><div className="grid gap-1"><span className="text-tinyrack-xs text-tinyrack-text-muted">負荷</span><strong className="text-tinyrack-xl">41%</strong></div><div className="grid gap-1"><span className="text-tinyrack-xs text-tinyrack-text-muted">ノード</span><strong className="text-tinyrack-xl">12 / 12</strong></div><div className="grid gap-1"><span className="text-tinyrack-xs text-tinyrack-text-muted">バックアップ</span><strong className="text-tinyrack-xl">03:18</strong></div></div><div className="flex flex-wrap gap-2"><TRButton intent="primary">デプロイ</TRButton><TRButton appearance="outline">ログを確認</TRButton></div></TRCard.Root><ol className="m-0 grid content-start gap-3 pl-5 text-tinyrack-sm text-tinyrack-text-muted"><li><strong className="text-tinyrack-text">色</strong>は表面、内容、操作、状態の意味を決めます。</li><li><strong className="text-tinyrack-text">タイポグラフィ</strong>はラベル、見出し、本文、指標の順序を決めます。</li><li><strong className="text-tinyrack-text">余白</strong>は詳細をまとめ、タスクの境界を分けます。</li><li><strong className="text-tinyrack-text">コンポーネント契約</strong>はボタンとバッジの動作を提供します。</li></ol></div>
 
 ## 4 つの学習ルート
 
 1. **基本の視覚要素:** [カラーとテーマ](/ja/foundations/colors/)、[タイポグラフィ](/ja/foundations/typography/)、[スペーシング](/ja/foundations/spacing/)
 2. **レイアウトと操作:** [レスポンシブレイアウト](/ja/foundations/breakpoints/)、[形状と境界](/ja/foundations/radius/)、[コントロールと状態](/ja/foundations/controls/)
 3. **奥行きと動作:** [レイヤーとエレベーション](/ja/foundations/elevation/)、[モーション](/ja/foundations/motion/)、[アクセシビリティ](/ja/foundations/accessibility/)
-4. **実装とアイデンティティ:** [Tailwind リファレンス](/ja/foundations/tailwind/)を利用してから、承認済みの[ロゴ](/ja/foundations/logo/)と[アプリアイコン](/ja/foundations/app-icons/)を選びます。
+4. **実装とアイデンティティ:** [Tailwind リファレンス](/ja/foundations/tailwind/)で実装方法を確認してから、承認済みの[ロゴ](/ja/foundations/logo/)と[アプリアイコン](/ja/foundations/app-icons/)を選びます。

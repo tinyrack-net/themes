@@ -11,7 +11,7 @@ import { FastFeedbackExample, MotionDurationComparison, MotionEasingComparison, 
 
 ## 状態変化に応じて選択
 
-原因と結果を結び付ける場合だけモーションを使います。直接入力のフィードバックは即時に感じられるようにし、近くに現れるフローティングコンテンツは文脈を示すため少し長くできます。タスク文脈が変わる進入には最も遅い段階を使えます。変化していないコンテンツは動かさないでください。
+原因と結果を結び付ける場合だけモーションを使います。直接入力のフィードバックは即時に感じられるようにし、近くに現れるフローティングコンテンツは文脈を示すため少し長くできます。タスクの文脈が切り替わる表示には、最も長い持続時間を使えます。変化していないコンテンツは動かさないでください。
 
 ## 持続時間とイージング
 
@@ -23,7 +23,7 @@ import { FastFeedbackExample, MotionDurationComparison, MotionEasingComparison, 
 
 ## ローディングは反復周期
 
-`loading` は進入時間ではなく {tinyrackMotion.duration.loading} の反復周期です。スピナーやスケルトンのように進捗が不明な場合だけ線形周期を使ってください。必要ならタスク名を示し、完了時に反復を止め、進捗が分かる場合は確定的な進捗を表示します。
+`loading` は進入時間ではなく {tinyrackMotion.duration.loading} の反復周期です。スピナーやスケルトンのように進捗が不明な場合だけ線形周期を使ってください。必要ならタスク名を示し、完了時に反復を止め、進捗率が分かる場合は確定した値を表示します。
 
 ## 実際の操作パターン
 
@@ -31,10 +31,10 @@ import { FastFeedbackExample, MotionDurationComparison, MotionEasingComparison, 
 
 - ボタン、トグル、タブ、スイッチは局所的な状態変化に速いフィードバックを使います。
 - メニュー、ツールチップ、ポップオーバー、選択リストは近くの文脈を示します。
-- ダイアログとドロワーはアクティブなタスク文脈を変えるため、より遅い進入を使えます。
+- ダイアログとドロワーはアクティブなタスクの文脈を変えるため、少し長い表示時間を使えます。
 - 進捗とスケルトンは進捗量が不明な間、ローディング周期を使います。
 
-## 意味を保ちながらモーションを低減
+## 意味を保ちながらモーションを軽減
 
 `prefers-reduced-motion: reduce` では装飾的な移動と大きな変形を除き、最終状態、ステータステキスト、フォーカス移動、意味のあるフィードバックは保ってください。
 
@@ -44,7 +44,7 @@ import { FastFeedbackExample, MotionDurationComparison, MotionEasingComparison, 
 
 ```css
 .rack-status { transition: background-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard); }
-@media (prefers-reduced-motion: reduce) { .rack-panel { transition-duration: 1ms; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .rack-panel { transition: none; transform: none; } }
 ```
 
-<TRTable.Root containerProps={{ 'aria-label': 'モーショントークンリファレンス', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">グループ</th><th scope="col">トークン</th><th scope="col">値</th></tr></thead><tbody>{Object.entries(tinyrackMotion.duration).map(([name, value]) => <tr key={name}><td>duration</td><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td></tr>)}{Object.entries(tinyrackMotion.easing).map(([name, value]) => <tr key={name}><td>easing</td><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td></tr>)}</tbody></TRTable.Root>
+<TRTable.Root containerProps={{ 'aria-label': 'モーショントークンリファレンス', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">グループ</th><th scope="col">トークン</th><th scope="col">値</th></tr></thead><tbody>{Object.entries(tinyrackMotion.duration).map(([name, value]) => <tr key={name}><td>持続時間</td><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td></tr>)}{Object.entries(tinyrackMotion.easing).map(([name, value]) => <tr key={name}><td>イージング</td><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td></tr>)}</tbody></TRTable.Root>

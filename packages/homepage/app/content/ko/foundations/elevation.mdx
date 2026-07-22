@@ -16,15 +16,15 @@ import { tinyrackLayers, tinyrackShadows } from '@tinyrack/ui/core';
 
 ## 밝고 어두운 테마 비교
 
-<div className="grid gap-4 sm:grid-cols-2">{['light', 'dark'].map((mode) => <section className="grid gap-3 border p-4" data-theme={`tinyrack-${mode}`} key={mode} style={{ background: 'var(--tinyrack-canvas)', borderColor: 'var(--tinyrack-border)', color: 'var(--tinyrack-text)' }}><strong>{mode}</strong><div className="rounded-tinyrack-lg border p-4" style={{ background: 'var(--tinyrack-surface)', borderColor: 'var(--tinyrack-border)', boxShadow: tinyrackShadows.raised }}>띄운 표면</div></section>)}</div>
+<div className="grid gap-4 sm:grid-cols-2">{['light', 'dark'].map((mode) => <section className="grid gap-3 border p-4" data-theme={`tinyrack-${mode}`} key={mode} style={{ background: 'var(--tinyrack-canvas)', borderColor: 'var(--tinyrack-border)', color: 'var(--tinyrack-text)' }}><strong>{mode === 'light' ? '밝은 테마' : '어두운 테마'}</strong><div className="rounded-tinyrack-lg border p-4" style={{ background: 'var(--tinyrack-surface)', borderColor: 'var(--tinyrack-border)', boxShadow: tinyrackShadows.raised }}>띄운 표면</div></section>)}</div>
 
 어두운 테마에서는 표면 대비와 테두리가 경계를 더 많이 담당해요. 그림자는 유일한 경계가 아니라 보조 단서예요.
 
 ## 공통 레이어 순서
 
-<TRTable.Root containerProps={{ 'aria-label': '레이어 순서 참조', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">레이어</th><th scope="col">값</th><th scope="col">CSS 변수</th></tr></thead><tbody>{Object.entries(tinyrackLayers).map(([name, value]) => <tr key={name}><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td><td><TRCode>{`--tinyrack-layer-${name}`}</TRCode></td></tr>)}</tbody></TRTable.Root>
+<TRTable.Root containerProps={{ 'aria-label': '레이어 순서 참고표', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">레이어</th><th scope="col">값</th><th scope="col">CSS 변수</th></tr></thead><tbody>{Object.entries(tinyrackLayers).sort(([, a], [, b]) => a - b).map(([name, value]) => <tr key={name}><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td><td><TRCode>{`--tinyrack-layer-${name}`}</TRCode></td></tr>)}</tbody></TRTable.Root>
 
-`backdrop`은 `dialog`보다 아래에 두세요. 드롭다운, 팝오버, 대화상자, 토스트, 툴팁과 충돌하는 임의의 z-index를 만들지 마세요.
+`backdrop`은 `dialog`보다 아래에 두세요. 드롭다운, 팝오버, 대화 상자, 토스트, 툴팁과 충돌하는 임의의 z-index를 만들지 마세요.
 
 ## 스크림, 배경막, 모달성
 
@@ -32,10 +32,10 @@ import { tinyrackLayers, tinyrackShadows } from '@tinyrack/ui/core';
 
 ## 그림자 선택
 
-<TRTable.Root containerProps={{ 'aria-label': '그림자 참조', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">그림자</th><th scope="col">목적</th><th scope="col">값</th></tr></thead><tbody><tr><th scope="row"><TRCode>raised</TRCode></th><td>은은하게 띄운 분리</td><td><TRCode>{tinyrackShadows.raised}</TRCode></td></tr><tr><th scope="row"><TRCode>overlay</TRCode></th><td>두드러진 포털 분리</td><td><TRCode>{tinyrackShadows.overlay}</TRCode></td></tr></tbody></TRTable.Root>
+<TRTable.Root containerProps={{ 'aria-label': '그림자 참고표', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">그림자</th><th scope="col">목적</th><th scope="col">값</th></tr></thead><tbody><tr><th scope="row"><TRCode>raised</TRCode></th><td>은은하게 띄운 분리</td><td><TRCode>{tinyrackShadows.raised}</TRCode></td></tr><tr><th scope="row"><TRCode>overlay</TRCode></th><td>두드러진 포털 분리</td><td><TRCode>{tinyrackShadows.overlay}</TRCode></td></tr></tbody></TRTable.Root>
 
 ## 적용 예시와 구현
 
-<div className="grid gap-4 md:grid-cols-3"><section className="border border-tinyrack-border bg-tinyrack-surface p-4"><strong>평면 패널</strong></section><section className="rounded-tinyrack-lg border border-tinyrack-border bg-tinyrack-surface p-4 shadow-tinyrack-raised"><strong>띄운 액션</strong></section><section className="relative overflow-hidden bg-tinyrack-surface-muted p-6"><div className="absolute inset-0 bg-tinyrack-scrim" /><div className="relative rounded-tinyrack-xl bg-tinyrack-surface p-4 shadow-tinyrack-overlay"><strong>오버레이 작업</strong></div></section></div>
+<div className="grid gap-4 md:grid-cols-3"><section className="border border-tinyrack-border bg-tinyrack-surface p-4"><strong>평면 패널</strong></section><section className="rounded-tinyrack-lg border border-tinyrack-border bg-tinyrack-surface p-4 shadow-tinyrack-raised"><strong>띄운 컨트롤</strong></section><section className="relative overflow-hidden bg-tinyrack-surface-muted p-6"><div className="absolute inset-0 bg-tinyrack-scrim" /><div className="relative rounded-tinyrack-xl bg-tinyrack-surface p-4 shadow-tinyrack-overlay"><strong>오버레이 작업</strong></div></section></div>
 
 TypeScript에서는 `tinyrackLayers`와 `tinyrackShadows`, CSS에서는 `--tinyrack-layer-*`, `--tinyrack-scrim`, `--tinyrack-shadow-*`, Tailwind에서는 대응하는 접두사 유틸리티를 사용해요.

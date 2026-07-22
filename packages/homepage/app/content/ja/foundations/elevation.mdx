@@ -1,6 +1,6 @@
 ---
 title: "レイヤーとエレベーション"
-description: "フラット、浮上、オーバーレイを選び、ライトとダークの両テーマでレイヤー順、スクリム、モーダル性、シャドウを整えます。"
+description: "フラット、浮き上がったサーフェス、オーバーレイを使い分け、ライト・ダーク両テーマでレイヤー順、スクリム、モーダル動作、シャドウを揃えます。"
 section: foundations
 order: 7
 ---
@@ -8,34 +8,34 @@ import { TRCode } from '@tinyrack/ui/components/code';
 import { TRTable } from '@tinyrack/ui/components/table';
 import { tinyrackLayers, tinyrackShadows } from '@tinyrack/ui/core';
 
-## フラット、浮上、オーバーレイを選択
+## フラット、浮き上がったサーフェス、オーバーレイを使い分ける
 
 - **フラット:** 通常のカード、パネル、ページセクションです。サーフェス色とボーダーで区切ります。
-- **浮上:** ページを操作できるまま分離が必要な、非ブロッキングのフローティングコンテンツです。
-- **オーバーレイ:** 強く分離するポータルコンテンツです。シャドウは分離を強めますが、モーダルかどうかは動作で決まります。
+- **浮き上がったサーフェス:** 背後のページを操作できるまま、周囲から分離する浮動コンテンツです。
+- **オーバーレイ:** ポータルに表示し、周囲から明確に分離するコンテンツです。シャドウは分離を強めますが、モーダルかどうかは動作で決まります。
 
 ## ライトとダークを比較
 
-<div className="grid gap-4 sm:grid-cols-2">{['light', 'dark'].map((mode) => <section className="grid gap-3 border p-4" data-theme={`tinyrack-${mode}`} key={mode} style={{ background: 'var(--tinyrack-canvas)', borderColor: 'var(--tinyrack-border)', color: 'var(--tinyrack-text)' }}><strong>{mode}</strong><div className="rounded-tinyrack-lg border p-4" style={{ background: 'var(--tinyrack-surface)', borderColor: 'var(--tinyrack-border)', boxShadow: tinyrackShadows.raised }}>浮上サーフェス</div></section>)}</div>
+<div className="grid gap-4 sm:grid-cols-2">{[{ label: 'ライト', mode: 'light' }, { label: 'ダーク', mode: 'dark' }].map(({ label, mode }) => <section className="grid gap-3 border p-4" data-theme={`tinyrack-${mode}`} key={mode} style={{ background: 'var(--tinyrack-canvas)', borderColor: 'var(--tinyrack-border)', color: 'var(--tinyrack-text)' }}><strong>{label}</strong><div className="rounded-tinyrack-lg border p-4" style={{ background: 'var(--tinyrack-surface)', borderColor: 'var(--tinyrack-border)', boxShadow: tinyrackShadows.raised }}>浮き上がったサーフェス</div></section>)}</div>
 
 ダークテーマでは、サーフェスのコントラストとボーダーが境界の多くを担います。シャドウは唯一の境界ではなく補助的な手がかりです。
 
 ## 共通のレイヤー順
 
-<TRTable.Root containerProps={{ 'aria-label': 'レイヤー順リファレンス', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">レイヤー</th><th scope="col">値</th><th scope="col">CSS 変数</th></tr></thead><tbody>{Object.entries(tinyrackLayers).map(([name, value]) => <tr key={name}><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td><td><TRCode>{`--tinyrack-layer-${name}`}</TRCode></td></tr>)}</tbody></TRTable.Root>
+<TRTable.Root containerProps={{ 'aria-label': 'レイヤー順リファレンス', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">レイヤー</th><th scope="col">値</th><th scope="col">CSS 変数</th></tr></thead><tbody>{Object.entries(tinyrackLayers).sort(([, a], [, b]) => a - b).map(([name, value]) => <tr key={name}><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td><td><TRCode>{`--tinyrack-layer-${name}`}</TRCode></td></tr>)}</tbody></TRTable.Root>
 
 `backdrop` は `dialog` より下に置きます。ドロップダウン、ポップオーバー、ダイアログ、トースト、ツールチップと競合する独自の z-index を作らないでください。
 
-## スクリム、バックドロップ、モーダル性
+## スクリム、バックドロップ、モーダル動作
 
 両テーマでブロックされたページを分離するバックドロップには `--tinyrack-scrim` を使います。モーダルには、フォーカスの制限、閉じる動作、背景操作のブロックも必要です。スクリムやシャドウだけではモーダルになりません。
 
 ## シャドウを選択
 
-<TRTable.Root containerProps={{ 'aria-label': 'シャドウリファレンス', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">シャドウ</th><th scope="col">目的</th><th scope="col">値</th></tr></thead><tbody><tr><th scope="row"><TRCode>raised</TRCode></th><td>控えめな浮上の分離</td><td><TRCode>{tinyrackShadows.raised}</TRCode></td></tr><tr><th scope="row"><TRCode>overlay</TRCode></th><td>強いポータルの分離</td><td><TRCode>{tinyrackShadows.overlay}</TRCode></td></tr></tbody></TRTable.Root>
+<TRTable.Root containerProps={{ 'aria-label': 'シャドウリファレンス', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">シャドウ</th><th scope="col">目的</th><th scope="col">値</th></tr></thead><tbody><tr><th scope="row"><TRCode>raised</TRCode></th><td>控えめな浮き上がり</td><td><TRCode>{tinyrackShadows.raised}</TRCode></td></tr><tr><th scope="row"><TRCode>overlay</TRCode></th><td>ポータル表示を明確に分離</td><td><TRCode>{tinyrackShadows.overlay}</TRCode></td></tr></tbody></TRTable.Root>
 
 ## 適用例と実装
 
-<div className="grid gap-4 md:grid-cols-3"><section className="border border-tinyrack-border bg-tinyrack-surface p-4"><strong>フラットパネル</strong></section><section className="rounded-tinyrack-lg border border-tinyrack-border bg-tinyrack-surface p-4 shadow-tinyrack-raised"><strong>浮上する操作</strong></section><section className="relative overflow-hidden bg-tinyrack-surface-muted p-6"><div className="absolute inset-0 bg-tinyrack-scrim" /><div className="relative rounded-tinyrack-xl bg-tinyrack-surface p-4 shadow-tinyrack-overlay"><strong>オーバーレイタスク</strong></div></section></div>
+<div className="grid gap-4 md:grid-cols-3"><section className="border border-tinyrack-border bg-tinyrack-surface p-4"><strong>フラットパネル</strong></section><section className="rounded-tinyrack-lg border border-tinyrack-border bg-tinyrack-surface p-4 shadow-tinyrack-raised"><strong>浮き上がった操作面</strong></section><section className="relative overflow-hidden bg-tinyrack-surface-muted p-6"><div className="absolute inset-0 bg-tinyrack-scrim" /><div className="relative rounded-tinyrack-xl bg-tinyrack-surface p-4 shadow-tinyrack-overlay"><strong>オーバーレイタスク</strong></div></section></div>
 
 TypeScript では `tinyrackLayers` と `tinyrackShadows`、CSS では `--tinyrack-layer-*`、`--tinyrack-scrim`、`--tinyrack-shadow-*`、Tailwind では対応する接頭辞付きユーティリティを使います。

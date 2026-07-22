@@ -22,7 +22,7 @@ import { tinyrackSpacing } from '@tinyrack/ui/core';
 
 ## レイアウトのリズム
 
-内側から外側へ組み立てます。ラベルと値は `xs` でまとめ、同階層の行は `sm` または `md` で分け、コンポーネント内は `lg` で埋め、次のタスクとは `xl` または `2xl` で分離します。すべての要素間に異なる余白を作らないでください。同じ関係は同じ見た目にします。
+内側から外側へ組み立てます。ラベルと値は `xs` でまとめ、同階層の行は `sm` または `md` で分け、コンポーネント内には `lg` の内側余白を使い、次のタスクとは `xl` または `2xl` で分離します。すべての要素間に異なる余白を作らないでください。同じ関係には同じ間隔を使います。
 
 <div className="grid gap-tinyrack-xl md:grid-cols-2"><section className="grid gap-tinyrack-md border border-tinyrack-border p-tinyrack-lg"><div className="grid gap-tinyrack-xs"><span className="text-tinyrack-xs text-tinyrack-text-muted">ラック</span><strong>rack-a</strong></div><div className="grid gap-tinyrack-xs"><span className="text-tinyrack-xs text-tinyrack-text-muted">状態</span><strong>正常</strong></div></section><section className="grid content-start gap-tinyrack-sm"><h3 className="m-0">リズム</h3><p className="m-0 text-tinyrack-text-muted">詳細の間隔はラベルと値をまとめ、コンポーネントの間隔は行を分け、セクションの間隔はタスクを分けます。</p></section></div>
 

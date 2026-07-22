@@ -12,7 +12,7 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
 
 ## sm, md, lg 선택
 
-포인터 중심의 조밀한 보조 컨트롤에는 `sm`, 기본 운영 인터페이스에는 `md`, 터치 편의나 작업 강조에 더 큰 목표 영역이 필요하면 `lg`를 사용해요. 시각적 위계를 표현하려고 한 액션 행에서 크기를 섞지 마세요. 그 역할에는 `intent`와 `appearance`를 사용해요.
+포인터 중심의 조밀한 보조 컨트롤에는 `sm`, 기본 운영 인터페이스에는 `md`, 터치 편의나 작업 강조에 더 큰 목표 영역이 필요하면 `lg`를 사용해요. 시각적 위계를 표현하려고 한 동작 행에서 크기를 섞지 마세요. 그 역할에는 `intent`와 `appearance`를 사용해요.
 
 ## 완전한 크기 레시피
 
@@ -28,22 +28,28 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
 
 ## 상호작용 상태 유지
 
-- 호버는 사용할 수 있는 액션을 미리 보여 주지만 유일한 단서가 되어서는 안 돼요.
+- 호버는 사용할 수 있는 동작을 미리 보여 주지만 유일한 단서가 되어서는 안 돼요.
 - 누름은 즉각적인 입력 피드백이고, 선택은 입력이 끝난 뒤에도 결정을 유지해요.
-- 비활성화는 사용할 수 없는 액션을 막아요. 이유가 분명하지 않다면 보이는 설명을 제공하세요.
+- 비활성화는 사용할 수 없는 동작을 막아요. 이유가 분명하지 않다면 보이는 설명을 제공하세요.
 - 포커스는 키보드 탐색 중에도 보여야 하며 잘리면 안 돼요.
 
-관련 없는 색상을 조합하지 말고 컴포넌트 prop과 상태 속성을 사용하세요.
+관련 없는 색상을 조합하지 말고 컴포넌트 속성과 상태 속성을 사용하세요.
 
 ## 터치 영역 유지
 
-큰 레시피를 배치할 수 있는 터치 중심 작업에는 `lg`를 선택해요. 작은 시각적 크기가 필요하면 상호작용 영역을 줄이거나 목표 영역을 붙이지 말고 주변 레이아웃 간격을 늘리세요.
+큰 레시피를 배치할 수 있는 터치 중심 작업에는 `lg`를 선택해요. 작은 시각적 크기가 필요하면 상호작용 영역을 줄이거나 터치 대상을 서로 붙이지 말고 주변 레이아웃 간격을 늘리세요.
 
 ## 구현
 
 ```tsx
+import '@tinyrack/ui/core.css';
+import '@tinyrack/ui/components/button.css';
+import '@tinyrack/ui/components/field.css';
+import { TRButton } from '@tinyrack/ui/components/button';
+import { TRField } from '@tinyrack/ui/components/field';
+
 <TRField.Root uiSize="md"><TRField.Label>랙 이름</TRField.Label><TRField.Control /></TRField.Root>
 <TRButton appearance="solid" intent="primary" uiSize="md">랙 저장</TRButton>
 ```
 
-제품 전체의 밀도를 바꿀 때만 전역 `--tinyrack-control-*` 치수를 재정의해요. 의도적인 지역 예외에는 문서화된 컴포넌트 `--tr-*` 변수를 사용하고 높이만 따로 바꾸지 마세요.
+제품 전체의 밀도를 바꿀 때만 전역 `--tinyrack-control-*` 치수를 재정의해요. 의도적으로 범위를 제한한 예외에는 문서화된 컴포넌트 `--tr-*` 변수를 사용하고 높이만 따로 바꾸지 마세요.

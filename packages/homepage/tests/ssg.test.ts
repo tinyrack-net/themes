@@ -10,6 +10,11 @@ const buildRoot = join(process.cwd(), 'build/client');
 const staticDocumentRoutes = loadDocsManifest(config, {
   root: process.cwd(),
 }).pages;
+const welcomeHeroTitles: Record<string, string> = {
+  en: 'DESIGN SYSTEM',
+  ja: 'デザインシステム',
+  ko: '디자인 시스템',
+};
 
 function htmlPathFor(route: string) {
   if (route === '/') return join(buildRoot, 'index.html');
@@ -47,9 +52,10 @@ describe('static documentation output', () => {
       );
       expect(html, route.path).toContain('name="twitter:card"');
       expect(html, route.path).toContain('type="application/ld+json"');
+      expect(html, route.path).not.toMatch(/<p\b[^>]*>(?:(?!<\/p>)[\s\S])*<div\b/);
       if (route.layout === 'splash') {
-        expect(html, route.path).toMatch(
-          /<h1[^>]*><span>TINYRACK<\/span><span>DESIGN SYSTEM<\/span><\/h1>/,
+        expect(html, route.path).toContain(
+          `<span>TINYRACK</span><span>${welcomeHeroTitles[route.locale]}</span>`,
         );
       } else {
         expect(html, route.path).toMatch(new RegExp(`<h1[^>]*>${route.title}</h1>`));

@@ -54,6 +54,7 @@ type ProductCopy = {
   metrics: readonly { label: string; meta: string; value: string }[];
   navigation: readonly string[];
   production: string;
+  rackLabel: string;
   regionDescription: string;
   regionRows: readonly { detail: string; label: string; value: number }[];
   regionTitle: string;
@@ -64,6 +65,7 @@ type ProductCopy = {
   simulation: Record<SimulationPhase, SimulationStepCopy>;
   throughputDescription: string;
   throughputStats: readonly { label: string; value: string }[];
+  throughputTimes: readonly string[];
   throughputTitle: string;
   title: string;
 };
@@ -71,6 +73,7 @@ type ProductCopy = {
 type WelcomeCopy = {
   componentCount: (count: number) => string;
   heroLabel: string;
+  heroTitle: readonly [string, string];
   foundations: string;
   installation: string;
   snippetLabels: {
@@ -94,6 +97,7 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
   en: {
     componentCount: (count) => `${count} components`,
     heroLabel: 'Tinyrack Design System introduction',
+    heroTitle: ['TINYRACK', 'DESIGN SYSTEM'],
     foundations: 'Foundations',
     installation: 'Installation',
     snippetLabels: {
@@ -104,7 +108,7 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
       viteInstall: 'Vite package installation',
     },
     proposition:
-      'Standardize accessible React interfaces with shared tokens, themes, and production-ready components.',
+      'Standardize accessible React interfaces with shared tokens, themes, and public components.',
     quickStartEyebrow: '01 / Quick start',
     standards: [
       {
@@ -143,6 +147,7 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
       ],
       navigation: ['Overview', 'Deployments', 'Infrastructure', 'Data services'],
       production: 'Production',
+      rackLabel: 'Rack A',
       regionDescription: 'Available compute by location',
       regionRows: [
         { detail: 'Primary', label: 'Seoul', value: 86 },
@@ -216,17 +221,19 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
         { label: 'Median duration', value: '4m 18s' },
         { label: 'Success rate', value: '99.8%' },
       ],
+      throughputTimes: ['12h', '9h', '6h', '3h', 'Now'],
       throughputTitle: 'Deployment throughput',
       title: 'Production overview',
     },
     quickStartDescription:
-      'Install the React package and compose your first production-ready control.',
+      'Install the React package and compose your first themed control.',
     quickStartTitle: 'Start with the essentials.',
   },
   ko: {
     componentCount: (count) => `컴포넌트 ${count}개`,
     heroLabel: 'Tinyrack 디자인 시스템 소개',
-    foundations: '기초',
+    heroTitle: ['TINYRACK', '디자인 시스템'],
+    foundations: '파운데이션',
     installation: '설치',
     snippetLabels: {
       button: '기본 버튼 예시',
@@ -236,7 +243,7 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
       viteInstall: 'Vite 패키지 설치',
     },
     proposition:
-      '공통 토큰과 테마, 프로덕션용 컴포넌트로 접근성 높은 React 인터페이스를 일관되게 만들어요.',
+      '공통 토큰과 테마, 공개 컴포넌트로 접근성 높은 React 인터페이스를 일관되게 만들어요.',
     quickStartEyebrow: '01 / 빠른 시작',
     standards: [
       {
@@ -259,8 +266,8 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
       activityTitle: '활동',
       activityRows: [
         { label: '배포 완료', meta: 'api-gateway · v2.8.4', time: '지금' },
-        { label: '백업 검증 완료', meta: 'database-primary', time: '8분' },
-        { label: '워커 확장', meta: 'compute-pool · 6 → 8', time: '21분' },
+        { label: '백업 검증 완료', meta: 'database-primary', time: '8분 전' },
+        { label: '워커 확장', meta: 'compute-pool · 6 → 8', time: '21분 전' },
       ],
       breadcrumb: '운영 / 개요',
       consoleTitle: '운영 콘솔',
@@ -269,12 +276,13 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
       live: '실시간',
       metrics: [
         { label: '활성 노드', meta: '3개 리전', value: '12 / 12' },
-        { label: '평균 부하', meta: '지난 1시간 -4.2%', value: '41%' },
+        { label: '평균 부하', meta: '지난 1시간 대비 -4.2%', value: '41%' },
         { label: '배포', meta: '최근 24시간', value: '28' },
         { label: '열린 인시던트', meta: '조치 불필요', value: '0' },
       ],
       navigation: ['개요', '배포', '인프라', '데이터 서비스'],
       production: '프로덕션',
+      rackLabel: '랙 A',
       regionDescription: '위치별 사용 가능한 컴퓨팅 용량',
       regionRows: [
         { detail: '기본', label: '서울', value: 86 },
@@ -345,55 +353,58 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
       throughputDescription: '최근 12시간 동안 성공한 릴리스',
       throughputStats: [
         { label: '성공', value: '28' },
-        { label: '중앙 배포 시간', value: '4분 18초' },
+        { label: '배포 시간 중앙값', value: '4분 18초' },
         { label: '성공률', value: '99.8%' },
       ],
+      throughputTimes: ['12시간 전', '9시간 전', '6시간 전', '3시간 전', '현재'],
       throughputTitle: '배포 처리량',
       title: '프로덕션 개요',
     },
     quickStartDescription:
-      'React 패키지를 설치하고 첫 번째 프로덕션 수준 컨트롤을 조합하세요.',
-    quickStartTitle: '핵심부터 시작하세요.',
+      'React 패키지를 설치하고 테마가 적용된 첫 컨트롤을 조합하세요.',
+    quickStartTitle: '핵심부터 시작하기',
   },
   ja: {
     componentCount: (count) => `${count} 個のコンポーネント`,
     heroLabel: 'Tinyrack デザインシステムの紹介',
+    heroTitle: ['TINYRACK', 'デザインシステム'],
     foundations: '基礎',
     installation: 'インストール',
     snippetLabels: {
-      button: '主要ボタンの例',
-      styles: 'Tinyrackスタイルの読み込み',
+      button: '主要なボタンの例',
+      styles: 'Tinyrack スタイルの読み込み',
       theme: 'テーマの選択',
-      vite: 'Vite設定',
-      viteInstall: 'Viteパッケージのインストール',
+      vite: 'Vite 設定',
+      viteInstall: 'Vite パッケージのインストール',
     },
     proposition:
-      '共通のトークン、テーマ、実用的なコンポーネントで、アクセシブルな React インターフェースを統一できます。',
+      '共通のトークン、テーマ、公開コンポーネントを使って、アクセシブルな React インターフェースを一貫して構築できます。',
     quickStartEyebrow: '01 / クイックスタート',
     standards: [
       {
         title: 'トークン',
-        description: '色、文字、余白、エレベーションに共通の尺度を使います。',
+        description:
+          'カラー、タイポグラフィ、スペーシング、エレベーションに共通の尺度を使います。',
       },
       {
         title: 'テーマ',
-        description: 'コンポーネントのコードを変えずに製品テーマを選べます。',
+        description: 'コンポーネントのコードを変えずにプロダクトテーマを選べます。',
       },
       {
         title: 'コンポーネント',
         description:
-          '一貫した操作状態を備えたアクセシブルなコントロールを組み合わせます。',
+          '一貫した操作時の状態を備えた、アクセシブルなコントロールを組み合わせます。',
       },
     ],
     nextFoundations: 'システムのルールを理解する',
-    nextComponents: 'コンポーネントで構築する',
+    nextComponents: 'コンポーネントを使って構築する',
     product: {
       activityDescription: '最新の本番イベント',
       activityTitle: 'アクティビティ',
       activityRows: [
-        { label: 'デプロイ完了', meta: 'api-gateway · v2.8.4', time: '現在' },
-        { label: 'バックアップ検証済み', meta: 'database-primary', time: '8分' },
-        { label: 'ワーカー拡張', meta: 'compute-pool · 6 → 8', time: '21分' },
+        { label: 'デプロイ完了', meta: 'api-gateway · v2.8.4', time: 'たった今' },
+        { label: 'バックアップ検証済み', meta: 'database-primary', time: '8 分' },
+        { label: 'ワーカー拡張', meta: 'compute-pool · 6 → 8', time: '21 分' },
       ],
       breadcrumb: '運用 / 概要',
       consoleTitle: '運用コンソール',
@@ -402,13 +413,14 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
       live: 'ライブ',
       metrics: [
         { label: '稼働ノード', meta: '3 リージョン', value: '12 / 12' },
-        { label: '平均負荷', meta: '過去1時間 -4.2%', value: '41%' },
-        { label: 'デプロイ', meta: '過去24時間', value: '28' },
+        { label: '平均負荷', meta: '過去 1 時間で -4.2%', value: '41%' },
+        { label: 'デプロイ', meta: '過去 24 時間', value: '28' },
         { label: '未解決インシデント', meta: '対応不要', value: '0' },
       ],
       navigation: ['概要', 'デプロイ', 'インフラ', 'データサービス'],
       production: '本番',
-      regionDescription: 'ロケーション別の利用可能なコンピュート容量',
+      rackLabel: 'ラック A',
+      regionDescription: 'リージョン別の空きコンピューティング容量',
       regionRows: [
         { detail: 'プライマリ', label: 'ソウル', value: 86 },
         { detail: 'エッジ', label: '東京', value: 72 },
@@ -420,7 +432,7 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
       serviceRows: [
         { detail: '12 インスタンス', label: 'エッジゲートウェイ' },
         { detail: '8 ワーカー稼働中', label: 'コンピュートプール' },
-        { detail: '3 リージョン', label: 'プライマリDB' },
+        { detail: '3 リージョンで稼働', label: 'プライマリデータベース' },
       ],
       serviceTitle: 'サービス状態',
       simulation: {
@@ -475,18 +487,19 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
           status: 'デプロイ完了',
         },
       },
-      throughputDescription: '過去12時間に成功したリリース',
+      throughputDescription: '過去 12 時間に成功したデプロイ',
       throughputStats: [
         { label: '成功', value: '28' },
-        { label: '中央値', value: '4分18秒' },
+        { label: '所要時間の中央値', value: '4 分 18 秒' },
         { label: '成功率', value: '99.8%' },
       ],
-      throughputTitle: 'デプロイ処理量',
+      throughputTimes: ['12 時間前', '9 時間前', '6 時間前', '3 時間前', '現在'],
+      throughputTitle: 'デプロイ件数',
       title: '本番環境の概要',
     },
     quickStartDescription:
-      'React パッケージをインストールし、最初の実用的なコントロールを構成します。',
-    quickStartTitle: '必要なものから始める。',
+      'React パッケージをインストールし、テーマを適用した最初のコントロールを表示します。',
+    quickStartTitle: '基本から始める',
   },
 };
 
@@ -573,8 +586,6 @@ const throughputSlots = [
   'slot-11',
   'slot-12',
 ] as const;
-
-const throughputTimes = ['12h', '9h', '6h', '3h', 'Now'] as const;
 
 function useWelcomeSimulation(root: { current: HTMLDivElement | null }) {
   const [phaseIndex, setPhaseIndex] = useState(0);
@@ -692,7 +703,7 @@ function ProductWindow({ content }: { content: ProductCopy }) {
           >
             <span className="size-tinyrack-sm flex-none rounded-tinyrack-full bg-tinyrack-success shadow-[0_0_0_var(--tinyrack-space-xs)_color-mix(in_srgb,var(--tinyrack-success)_18%,transparent)] motion-safe:animate-welcome-pulse motion-reduce:animate-none" />
             <TRAppShell.SidebarLabel className="flex gap-tinyrack-xs whitespace-nowrap text-tinyrack-2xs leading-tinyrack-sm text-tinyrack-text-muted [&>strong]:flex-none [&>strong]:text-tinyrack-xs [&>strong]:text-tinyrack-text">
-              <strong>Rack&nbsp;A</strong> {content.environment}
+              <strong>{content.rackLabel}</strong> {content.environment}
             </TRAppShell.SidebarLabel>
           </div>
           <nav className="grid gap-tinyrack-xs [&>span]:flex [&>span]:items-center [&>span]:justify-start max-lg:[&>span]:justify-center [&>span]:gap-tinyrack-sm [&>span]:rounded-tinyrack-sm [&>span]:px-tinyrack-md [&>span]:py-tinyrack-sm [&>span]:text-tinyrack-xs max-lg:[&>span]:px-tinyrack-sm max-lg:[&>span]:text-[0]">
@@ -700,7 +711,7 @@ function ProductWindow({ content }: { content: ProductCopy }) {
               <span
                 className={
                   selected
-                    ? 'bg-tinyrack-surface-selected font-tinyrack-semibold text-tinyrack-text'
+                    ? 'bg-tinyrack-surface-selected font-tinyrack-medium text-tinyrack-text'
                     : 'text-tinyrack-text-muted'
                 }
                 key={content.navigation[index]}
@@ -779,7 +790,7 @@ function ProductWindow({ content }: { content: ProductCopy }) {
                   <span data-welcome-phase-label-compact="">{step.compactLabel}</span>
                 </TRBadge>
               </header>
-              <dl className="m-0 grid grid-cols-3 border-b-tinyrack-default border-tinyrack-border px-tinyrack-lg py-tinyrack-md max-md:hidden [&>div]:grid [&>div]:gap-tinyrack-xs [&>div+div]:border-s-tinyrack-default [&>div+div]:border-tinyrack-border [&>div+div]:ps-tinyrack-lg [&_dd]:m-0 [&_dd]:text-tinyrack-lg [&_dd]:font-tinyrack-semibold [&_dt]:text-tinyrack-2xs [&_dt]:text-tinyrack-text-muted">
+              <dl className="m-0 grid grid-cols-3 border-b-tinyrack-default border-tinyrack-border px-tinyrack-lg py-tinyrack-md max-md:hidden [&>div]:grid [&>div]:gap-tinyrack-xs [&>div+div]:border-s-tinyrack-default [&>div+div]:border-tinyrack-border [&>div+div]:ps-tinyrack-lg [&_dd]:m-0 [&_dd]:text-tinyrack-lg [&_dd]:font-tinyrack-medium [&_dt]:text-tinyrack-2xs [&_dt]:text-tinyrack-text-muted">
                 {content.throughputStats.map((stat) => (
                   <div data-welcome-throughput-stat="" key={stat.label}>
                     <dt>{stat.label}</dt>
@@ -802,8 +813,8 @@ function ProductWindow({ content }: { content: ProductCopy }) {
                         <span
                           className={
                             index === throughputSlots.length - 1
-                              ? 'min-h-tinyrack-space-xs rounded-t-tinyrack-xs bg-tinyrack-primary transition-[height] duration-tinyrack-slow ease-tinyrack-ease-out motion-reduce:transition-none'
-                              : 'min-h-tinyrack-space-xs rounded-t-tinyrack-xs bg-tinyrack-info transition-[height] duration-tinyrack-slow ease-tinyrack-ease-out motion-reduce:transition-none'
+                              ? 'min-h-tinyrack-xs rounded-t-tinyrack-xs bg-tinyrack-primary transition-[height] duration-tinyrack-slow ease-tinyrack-ease-out motion-reduce:transition-none'
+                              : 'min-h-tinyrack-xs rounded-t-tinyrack-xs bg-tinyrack-info transition-[height] duration-tinyrack-slow ease-tinyrack-ease-out motion-reduce:transition-none'
                           }
                           data-welcome-throughput-bar=""
                           key={slot}
@@ -814,13 +825,13 @@ function ProductWindow({ content }: { content: ProductCopy }) {
                   </div>
                 </div>
                 <div className="mt-tinyrack-sm flex justify-between text-tinyrack-2xs text-tinyrack-text-muted">
-                  {throughputTimes.map((time) => (
+                  {content.throughputTimes.map((time) => (
                     <span key={time}>{time}</span>
                   ))}
                 </div>
               </div>
               <div className="grid gap-tinyrack-sm border-t-tinyrack-default border-tinyrack-border px-tinyrack-lg py-tinyrack-md">
-                <div className="flex items-center justify-between text-tinyrack-xs [&>strong]:font-tinyrack-semibold [&>span]:text-tinyrack-text-muted">
+                <div className="flex items-center justify-between text-tinyrack-xs [&>strong]:font-tinyrack-medium [&>span]:text-tinyrack-text-muted">
                   <strong>{step.status}</strong>
                   <span data-welcome-deployment-progress="">
                     {frame.deploymentProgress}%
@@ -992,14 +1003,15 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
           data-welcome-hero-content=""
         >
           <div className="grid">
-            <p className="m-0 mb-tinyrack-lg flex items-center gap-0 text-tinyrack-xs font-tinyrack-semibold tracking-tinyrack-lg text-tinyrack-text-muted uppercase max-md:flex-wrap max-md:text-tinyrack-2xs [&>span+span]:before:px-tinyrack-md [&>span+span]:before:text-tinyrack-border-strong [&>span+span]:before:content-['/']">
+            <p className="m-0 mb-tinyrack-lg flex items-center gap-0 text-tinyrack-xs font-tinyrack-medium tracking-tinyrack-lg text-tinyrack-text-muted uppercase max-md:flex-wrap max-md:text-tinyrack-2xs [&>span+span]:before:px-tinyrack-md [&>span+span]:before:text-tinyrack-border-strong [&>span+span]:before:content-['/']">
               <span>React 19</span>
               <span>Base UI</span>
               <span>{content.componentCount(componentDocsManifest.length)}</span>
             </p>
             <h1 className="m-0 max-w-none text-[clamp(calc(var(--tinyrack-text-5xl)*1.35),9vw,calc(var(--tinyrack-text-5xl)*3.15))] leading-[0.98] font-tinyrack-bold tracking-[-0.065em] text-balance max-md:text-[clamp(calc(var(--tinyrack-text-5xl)*1.15),15vw,calc(var(--tinyrack-text-5xl)*1.7))] max-md:tracking-[-0.055em] [&>span]:block">
-              <span>TINYRACK</span>
-              <span>DESIGN SYSTEM</span>
+              {content.heroTitle.map((line) => (
+                <span key={line}>{line}</span>
+              ))}
             </h1>
             <p className="mt-tinyrack-xl mb-0 max-w-[52rem] text-tinyrack-lg leading-tinyrack-md text-tinyrack-text-muted">
               {content.proposition}
@@ -1046,15 +1058,18 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
           ))}
         </section>
         <section
-          aria-labelledby="quick-start"
+          aria-labelledby="quick-start-title"
           className="grid grid-cols-[minmax(16rem,0.75fr)_minmax(0,1.25fr)] gap-[clamp(3rem,8vw,8rem)] border-b-0 border-tinyrack-border py-[clamp(4rem,8vw,8rem)] max-md:grid-cols-[minmax(0,1fr)] max-md:gap-tinyrack-2xl max-md:py-16"
           id="quick-start"
         >
           <div className="grid content-start gap-tinyrack-lg">
-            <span className="text-tinyrack-xs font-tinyrack-semibold tracking-tinyrack-lg text-tinyrack-text-muted uppercase">
+            <span className="text-tinyrack-xs font-tinyrack-medium tracking-tinyrack-lg text-tinyrack-text-muted uppercase">
               {content.quickStartEyebrow}
             </span>
-            <h2 className="m-0 max-w-[48rem] text-[clamp(var(--tinyrack-text-3xl),5vw,calc(var(--tinyrack-text-5xl)*1.45))] leading-tinyrack-sm tracking-[-0.04em]">
+            <h2
+              className="m-0 max-w-[48rem] text-[clamp(var(--tinyrack-text-3xl),5vw,calc(var(--tinyrack-text-5xl)*1.45))] leading-tinyrack-sm tracking-[-0.04em]"
+              id="quick-start-title"
+            >
               {content.quickStartTitle}
             </h2>
             <p className="m-0 max-w-[42rem] text-tinyrack-lg leading-tinyrack-md text-tinyrack-text-muted max-md:text-tinyrack-md">
@@ -1062,20 +1077,43 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
             </p>
           </div>
           <div className="grid min-w-0 gap-tinyrack-md">
-            <GettingStartedCode label={content.installation} snippet="install" />
+            <GettingStartedCode
+              label={content.installation}
+              locale={locale}
+              snippet="install"
+            />
             <GettingStartedCode
               label={content.snippetLabels.viteInstall}
+              locale={locale}
               snippet="viteInstall"
             />
-            <GettingStartedCode label={content.snippetLabels.vite} snippet="vite" />
-            <GettingStartedCode label={content.snippetLabels.styles} snippet="styles" />
-            <GettingStartedCode label={content.snippetLabels.theme} snippet="theme" />
-            <GettingStartedCode label={content.snippetLabels.button} snippet="button" />
+            <GettingStartedCode
+              label={content.snippetLabels.vite}
+              locale={locale}
+              snippet="vite"
+            />
+            <GettingStartedCode
+              label={content.snippetLabels.styles}
+              locale={locale}
+              snippet="styles"
+            />
+            <GettingStartedCode
+              label={content.snippetLabels.theme}
+              locale={locale}
+              snippet="theme"
+            />
+            <GettingStartedCode
+              label={content.snippetLabels.button}
+              locale={locale}
+              snippet="button"
+            />
           </div>
         </section>
         <section className="grid grid-cols-2 gap-tinyrack-xl py-[clamp(3rem,6vw,6rem)] max-md:grid-cols-1">
           <TRLink href={`${localeRoot}/foundations/`}>{content.nextFoundations}</TRLink>
-          <TRLink href={`${localeRoot}/components/`}>{content.nextComponents}</TRLink>
+          <TRLink href={`${localeRoot}/components/button/`}>
+            {content.nextComponents}
+          </TRLink>
         </section>
       </div>
     </div>

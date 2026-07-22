@@ -30,9 +30,12 @@ function groupForThemeVariable(themeVariable: string): TailwindTokenGroupId {
   if (themeVariable.startsWith('--spacing-')) return 'spacing';
   if (themeVariable.startsWith('--container-')) return 'container';
   if (/^--(?:border-width-|outline-)/.test(themeVariable)) return 'border-focus';
-  if (/^--(?:radius-|shadow-)/.test(themeVariable)) return 'radius-shadow';
+  if (themeVariable.startsWith('--radius-')) return 'radius';
+  if (themeVariable.startsWith('--shadow-')) return 'shadow';
   if (/^--(?:transition-duration-|ease-)/.test(themeVariable)) return 'motion';
-  if (/^--(?:opacity-|z-index-|scale-)/.test(themeVariable)) return 'visual-state';
+  if (themeVariable.startsWith('--opacity-')) return 'opacity';
+  if (themeVariable.startsWith('--z-index-')) return 'layer';
+  if (themeVariable.startsWith('--scale-')) return 'scale';
   throw new Error(`Unclassified Tailwind theme variable: ${themeVariable}`);
 }
 

@@ -44,7 +44,7 @@ Use `standard` for two-way state changes, `easeOut` for content entering the int
 
 ```css
 .rack-status { transition: background-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard); }
-@media (prefers-reduced-motion: reduce) { .rack-panel { transition-duration: 1ms; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .rack-panel { transition: none; transform: none; } }
 ```
 
 <TRTable.Root containerProps={{ 'aria-label': 'Motion token reference', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">Group</th><th scope="col">Token</th><th scope="col">Value</th></tr></thead><tbody>{Object.entries(tinyrackMotion.duration).map(([name, value]) => <tr key={name}><td>duration</td><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td></tr>)}{Object.entries(tinyrackMotion.easing).map(([name, value]) => <tr key={name}><td>easing</td><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td></tr>)}</tbody></TRTable.Root>

@@ -10,7 +10,10 @@ import {
 } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { gettingStartedContract } from '../app/documentation/shared/getting-started-contract.js';
+import {
+  getGettingStartedSnippet,
+  gettingStartedContract,
+} from '../app/documentation/shared/getting-started-contract.js';
 
 let fixtureRoot = '';
 const fixtureParent = join(import.meta.dirname, '..', '.tmp');
@@ -66,8 +69,22 @@ afterAll(() => {
 });
 
 describe('canonical getting-started contract', () => {
+  it('localizes the rendered button label without changing shared setup snippets', () => {
+    expect(getGettingStartedSnippet('button', 'en')).toContain('Deploy changes');
+    expect(getGettingStartedSnippet('button', 'ko')).toContain('변경 사항 배포');
+    expect(getGettingStartedSnippet('button', 'ja')).toContain('変更をデプロイ');
+    expect(getGettingStartedSnippet('styles', 'ja')).toBe(
+      gettingStartedContract.styles,
+    );
+  });
+
   it('builds a minimal Vite and Tailwind consumer with themed button styles', () => {
-    expect(gettingStartedContract.viteInstall).toBe('pnpm add -D @tailwindcss/vite');
+    expect(gettingStartedContract.install).toBe(
+      'pnpm add @tinyrack/ui react react-dom',
+    );
+    expect(gettingStartedContract.viteInstall).toBe(
+      'pnpm add -D tailwindcss@^4.3.0 @tailwindcss/vite@^4.3.0',
+    );
     execFileSync(process.execPath, [viteCli, 'build'], {
       cwd: fixtureRoot,
       encoding: 'utf8',

@@ -29,9 +29,9 @@ import { FastFeedbackExample, MotionDurationComparison, MotionEasingComparison, 
 
 <FastFeedbackExample locale="ko" />
 
-- 버튼, 토글, 탭, 스위치는 지역 상태 변화에 빠른 피드백을 사용해요.
+- 버튼, 토글, 탭, 스위치는 한 컴포넌트 안의 상태 변화에 빠른 피드백을 사용해요.
 - 메뉴, 툴팁, 팝오버, 선택 목록은 가까운 맥락을 보여 줘요.
-- 대화상자와 드로어는 활성 작업 맥락을 바꾸므로 더 느린 진입을 사용할 수 있어요.
+- 대화 상자와 드로어는 활성 작업 맥락을 바꾸므로 더 느린 진입을 사용할 수 있어요.
 - 진행 상태와 스켈레톤은 작업 진행률을 모르는 동안 로딩 주기를 사용해요.
 
 ## 의미를 유지하며 모션 줄이기
@@ -40,11 +40,11 @@ import { FastFeedbackExample, MotionDurationComparison, MotionEasingComparison, 
 
 <ReducedMotionPreview locale="ko" />
 
-## 구현과 참조
+## 구현과 참고
 
 ```css
 .rack-status { transition: background-color var(--tinyrack-duration-fast) var(--tinyrack-ease-standard); }
-@media (prefers-reduced-motion: reduce) { .rack-panel { transition-duration: 1ms; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .rack-panel { transition: none; transform: none; } }
 ```
 
-<TRTable.Root containerProps={{ 'aria-label': '모션 토큰 참조', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">그룹</th><th scope="col">토큰</th><th scope="col">값</th></tr></thead><tbody>{Object.entries(tinyrackMotion.duration).map(([name, value]) => <tr key={name}><td>duration</td><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td></tr>)}{Object.entries(tinyrackMotion.easing).map(([name, value]) => <tr key={name}><td>easing</td><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td></tr>)}</tbody></TRTable.Root>
+<TRTable.Root containerProps={{ 'aria-label': '모션 토큰 참고표', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">그룹</th><th scope="col">토큰</th><th scope="col">값</th></tr></thead><tbody>{Object.entries(tinyrackMotion.duration).map(([name, value]) => <tr key={name}><td>지속 시간</td><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td></tr>)}{Object.entries(tinyrackMotion.easing).map(([name, value]) => <tr key={name}><td>이징</td><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td></tr>)}</tbody></TRTable.Root>

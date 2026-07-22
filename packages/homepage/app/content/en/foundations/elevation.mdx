@@ -22,7 +22,7 @@ In dark themes, surface contrast and borders carry more of the boundary. Shadow 
 
 ## Keep layer order shared
 
-<TRTable.Root containerProps={{ 'aria-label': 'Layer order reference', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">Layer</th><th scope="col">Value</th><th scope="col">CSS variable</th></tr></thead><tbody>{Object.entries(tinyrackLayers).map(([name, value]) => <tr key={name}><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td><td><TRCode>{`--tinyrack-layer-${name}`}</TRCode></td></tr>)}</tbody></TRTable.Root>
+<TRTable.Root containerProps={{ 'aria-label': 'Layer order reference', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">Layer</th><th scope="col">Value</th><th scope="col">CSS variable</th></tr></thead><tbody>{Object.entries(tinyrackLayers).sort(([, a], [, b]) => a - b).map(([name, value]) => <tr key={name}><th scope="row"><TRCode>{name}</TRCode></th><td>{value}</td><td><TRCode>{`--tinyrack-layer-${name}`}</TRCode></td></tr>)}</tbody></TRTable.Root>
 
 Keep `backdrop` below `dialog`. Do not invent local z-index values that compete with dropdowns, popovers, dialogs, toasts, or tooltips.
 

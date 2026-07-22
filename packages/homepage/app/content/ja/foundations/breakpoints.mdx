@@ -15,7 +15,7 @@ import { BreakpointReference } from '../../../documentation/shared/breakpoint-re
 
 ## ブレークポイントより先に寸法を選択
 
-一つの領域に読みやすい幅が必要なら measure を使います。再利用する領域が自身の幅に応じて変わる場合はコンテナクエリを使ってください。ページシェルや複数の領域を同時にリフローする場合はビューポートのブレークポイントを使います。
+1 つの領域に読みやすい幅が必要なら、`measure-*` トークンを使います。再利用する領域が自身の幅に応じて変わる場合はコンテナクエリを使ってください。ページシェルや複数の領域を同時にリフローする場合はビューポートのブレークポイントを使います。
 
 <TRTable.Root containerProps={{ 'aria-label': '寸法とコンテナのリファレンス', tabIndex: 0 }} density="compact">
   <thead><tr><th scope="col">トークン</th><th scope="col">値</th><th scope="col">Tailwind</th></tr></thead>
@@ -29,7 +29,7 @@ import { BreakpointReference } from '../../../documentation/shared/breakpoint-re
 
 ## 共通ブレークポイントスケール
 
-CSS 変数は `--breakpoint-xs` から `--breakpoint-xl` までです。TypeScript の `tinyrackBreakpoints` も同じ値を提供します。
+Tailwind のテーマ変数は `--breakpoint-xs` から `--breakpoint-xl` までです。TypeScript の `tinyrackBreakpoints` も同じ値を提供します。
 
 <BreakpointReference locale="ja" />
 

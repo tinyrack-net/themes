@@ -25,6 +25,45 @@ function readText(path: string) {
   );
 }
 
+function canonicalDocumentPath(path: string) {
+  const pathname = path.split(/[?#]/, 1)[0] ?? path;
+  if (pathname === '/') return pathname;
+  return pathname.replace(/\/+$/, '');
+}
+
+function tailwindThemeCandidates(utility: string) {
+  const match = /^(.*)-tinyrack-(.+)$/.exec(utility);
+  if (!match) return [];
+  const [, prefix = '', name = ''] = match;
+  const suffix = `tinyrack-${name}`;
+
+  if (['bg', 'text', 'border'].includes(prefix) || /^border-[trblsexy]$/.test(prefix)) {
+    return [`--color-${suffix}`, `--text-${suffix}`, `--border-width-${suffix}`];
+  }
+  if (prefix === 'font') return [`--font-${suffix}`, `--font-weight-${suffix}`];
+  if (prefix === 'leading') return [`--leading-${suffix}`];
+  if (prefix === 'tracking') return [`--tracking-${suffix}`];
+  if (prefix === 'outline') return [`--outline-width-${suffix}`];
+  if (prefix === 'outline-offset') return [`--outline-offset-${suffix}`];
+  if (prefix.startsWith('rounded')) return [`--radius-${suffix}`];
+  if (prefix === 'shadow') return [`--shadow-${suffix}`];
+  if (prefix === 'duration') return [`--transition-duration-${suffix}`];
+  if (prefix === 'ease') return [`--ease-${suffix}`];
+  if (prefix === 'opacity') return [`--opacity-${suffix}`];
+  if (prefix === 'z') return [`--z-index-${suffix}`];
+  if (prefix === 'scale') return [`--scale-${suffix}`];
+  if (prefix === 'decoration') return [`--text-decoration-thickness-${suffix}`];
+  if (prefix === 'underline-offset') return [`--text-underline-offset-${suffix}`];
+  if (
+    /^(?:gap|space-[xy]|[mp][trblsexy]?|size|[wh]|min-[wh]|max-[wh]|inset(?:-[xy])?|top|right|bottom|left|start|end)$/.test(
+      prefix,
+    )
+  ) {
+    return [`--spacing-${suffix}`];
+  }
+  return [];
+}
+
 function objectLiteralFromExpression(expression: ts.Expression) {
   let current = expression;
   while (
@@ -606,8 +645,10 @@ describe('React Router documentation contract', () => {
     const welcomePage = readText('app/documentation/shared/welcome-page.tsx');
     const appStyles = readText('app/styles/app.css');
 
-    expect(welcomePage).toContain('<span>TINYRACK</span>');
-    expect(welcomePage).toContain('<span>DESIGN SYSTEM</span>');
+    expect(welcomePage).toContain("heroTitle: ['TINYRACK', 'DESIGN SYSTEM']");
+    expect(welcomePage).toContain("heroTitle: ['TINYRACK', '디자인 시스템']");
+    expect(welcomePage).toContain("heroTitle: ['TINYRACK', 'デザインシステム']");
+    expect(welcomePage).toContain('content.heroTitle.map');
     expect(welcomePage).toContain('nativeButton={false}');
     expect(welcomePage).toContain('data-welcome-gradient=""');
     expect(welcomePage).toContain('<TRAppShell.Root');
@@ -823,9 +864,30 @@ describe('React Router documentation contract', () => {
           ),
         ),
     );
+    const coreCss = readFileSync(
+      join(homepageRoot, '..', 'ui', 'src', 'core', 'core.css'),
+      'utf8',
+    );
+    const coreTheme = coreCss.match(/@theme static\s*\{([\s\S]*?)\r?\n\}/)?.[1];
+    if (coreTheme === undefined)
+      throw new Error('Could not find @theme static in core.css.');
+    const publicTailwindThemeVariables = new Set(
+      Array.from(
+        coreTheme.matchAll(/^\s*(--[a-z0-9-]+):/gm),
+        ([, variable]) => variable,
+      ),
+    );
+    const manifestPaths = new Set(staticDocumentRoutes.map((route) => route.path));
     const invalidTrVariables: Array<{ file: string; line: number; text: string }> = [];
     const fakeBreakpoints: Array<{ file: string; line: number; text: string }> = [];
     const deprecatedButtonVariants: Array<{
+      file: string;
+      line: number;
+      text: string;
+    }> = [];
+    const invalidInternalLinks: Array<{ file: string; line: number; text: string }> =
+      [];
+    const invalidTailwindUtilities: Array<{
       file: string;
       line: number;
       text: string;
@@ -860,11 +922,69 @@ describe('React Router documentation contract', () => {
         fakeBreakpoints,
       );
       collect(/<TRButton\b[^>]*\bvariant\s*=/g, deprecatedButtonVariants);
+
+      const internalLinkMatches = [
+        ...source.matchAll(/\]\((\/(?:en|ko|ja)\/[^)\s]*)\)/g),
+        ...source.matchAll(/\bhref\s*=\s*["'](\/(?:en|ko|ja)\/[^"']*)["']/g),
+      ];
+      for (const match of internalLinkMatches) {
+        const href = match[1];
+        if (href === undefined || manifestPaths.has(canonicalDocumentPath(href)))
+          continue;
+        invalidInternalLinks.push({
+          file,
+          line: source.slice(0, match.index).split(/\r?\n/).length,
+          text: href,
+        });
+      }
+      for (const match of source.matchAll(/\$\{localeRoot\}(\/[^`"'{}\s]*)/g)) {
+        const suffix = match[1];
+        if (suffix === undefined) continue;
+        for (const locale of ['en', 'ko', 'ja'] as const) {
+          const href = `/${locale}${suffix}`;
+          if (manifestPaths.has(canonicalDocumentPath(href))) continue;
+          invalidInternalLinks.push({
+            file,
+            line: source.slice(0, match.index).split(/\r?\n/).length,
+            text: href,
+          });
+        }
+      }
+
+      const utilityPattern = /(?<!--)\b[a-z][a-z0-9-]*-tinyrack-[a-z0-9-]+\b/g;
+      for (const match of source.matchAll(utilityPattern)) {
+        if (
+          tailwindThemeCandidates(match[0]).some((candidate) =>
+            publicTailwindThemeVariables.has(candidate),
+          )
+        ) {
+          continue;
+        }
+        invalidTailwindUtilities.push({
+          file,
+          line: source.slice(0, match.index).split(/\r?\n/).length,
+          text: match[0],
+        });
+      }
+    }
+
+    for (const locale of ['en', 'ko', 'ja'] as const) {
+      for (const group of tailwindTokenGroups) {
+        const href = `/${locale}/foundations/${group.guide}/`;
+        if (manifestPaths.has(canonicalDocumentPath(href))) continue;
+        invalidInternalLinks.push({
+          file: 'app/documentation/shared/tailwind-token-catalog.ts',
+          line: 1,
+          text: href,
+        });
+      }
     }
 
     expect(invalidTrVariables).toEqual([]);
     expect(fakeBreakpoints).toEqual([]);
     expect(deprecatedButtonVariants).toEqual([]);
+    expect(invalidInternalLinks).toEqual([]);
+    expect(invalidTailwindUtilities).toEqual([]);
   });
 
   it('uses Korean haeyoche in revised entry, foundation, and brand copy', () => {

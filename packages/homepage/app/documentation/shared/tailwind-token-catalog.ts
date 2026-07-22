@@ -5,9 +5,12 @@ export type TailwindTokenGroupId =
   | 'spacing'
   | 'container'
   | 'border-focus'
-  | 'radius-shadow'
+  | 'radius'
+  | 'shadow'
   | 'motion'
-  | 'visual-state'
+  | 'opacity'
+  | 'layer'
+  | 'scale'
   | 'decoration';
 
 export type TailwindTokenBridgeEntry =
@@ -28,7 +31,7 @@ export const tailwindTokenGroups = [
     anchor: 'breakpoints',
     guide: 'breakpoints',
     label: 'Breakpoints',
-    utilityPattern: 'sm/md/lg/xl:*',
+    utilityPattern: 'xs/sm/md/lg/xl:*',
   },
   {
     id: 'color',
@@ -54,23 +57,30 @@ export const tailwindTokenGroups = [
   {
     id: 'container',
     anchor: 'containers',
-    guide: 'spacing',
+    guide: 'breakpoints',
     label: 'Containers',
     utilityPattern: 'max-w-tinyrack-*',
   },
   {
     id: 'border-focus',
     anchor: 'borders-focus',
-    guide: 'controls',
+    guide: 'radius',
     label: 'Borders and focus',
     utilityPattern: 'border/outline/outline-offset-tinyrack-*',
   },
   {
-    id: 'radius-shadow',
-    anchor: 'radius-shadows',
+    id: 'radius',
+    anchor: 'radius',
     guide: 'radius',
-    label: 'Radius and shadows',
-    utilityPattern: 'rounded/shadow-tinyrack-*',
+    label: 'Radius',
+    utilityPattern: 'rounded-tinyrack-*',
+  },
+  {
+    id: 'shadow',
+    anchor: 'shadows',
+    guide: 'elevation',
+    label: 'Shadows',
+    utilityPattern: 'shadow-tinyrack-*',
   },
   {
     id: 'motion',
@@ -80,11 +90,25 @@ export const tailwindTokenGroups = [
     utilityPattern: 'duration/ease-tinyrack-*',
   },
   {
-    id: 'visual-state',
-    anchor: 'visual-state',
+    id: 'opacity',
+    anchor: 'opacity',
+    guide: 'colors',
+    label: 'Opacity',
+    utilityPattern: 'opacity-tinyrack-*',
+  },
+  {
+    id: 'layer',
+    anchor: 'layers',
     guide: 'elevation',
-    label: 'Opacity, layers, and scale',
-    utilityPattern: 'opacity/z/scale-tinyrack-*',
+    label: 'Layers',
+    utilityPattern: 'z-tinyrack-*',
+  },
+  {
+    id: 'scale',
+    anchor: 'scale',
+    guide: 'motion',
+    label: 'Scale',
+    utilityPattern: 'scale-tinyrack-*',
   },
   {
     id: 'decoration',
@@ -597,42 +621,42 @@ export const tailwindTokenBridge = [
     themeVariable: '--outline-offset-tinyrack-focus',
   },
   {
-    group: 'radius-shadow',
+    group: 'radius',
     runtimeVariable: '--tinyrack-radius-xs',
     themeVariable: '--radius-tinyrack-xs',
   },
   {
-    group: 'radius-shadow',
+    group: 'radius',
     runtimeVariable: '--tinyrack-radius-sm',
     themeVariable: '--radius-tinyrack-sm',
   },
   {
-    group: 'radius-shadow',
+    group: 'radius',
     runtimeVariable: '--tinyrack-radius-md',
     themeVariable: '--radius-tinyrack-md',
   },
   {
-    group: 'radius-shadow',
+    group: 'radius',
     runtimeVariable: '--tinyrack-radius-lg',
     themeVariable: '--radius-tinyrack-lg',
   },
   {
-    group: 'radius-shadow',
+    group: 'radius',
     runtimeVariable: '--tinyrack-radius-xl',
     themeVariable: '--radius-tinyrack-xl',
   },
   {
-    group: 'radius-shadow',
+    group: 'radius',
     runtimeVariable: '--tinyrack-radius-full',
     themeVariable: '--radius-tinyrack-full',
   },
   {
-    group: 'radius-shadow',
+    group: 'shadow',
     runtimeVariable: '--tinyrack-shadow-raised',
     themeVariable: '--shadow-tinyrack-raised',
   },
   {
-    group: 'radius-shadow',
+    group: 'shadow',
     runtimeVariable: '--tinyrack-shadow-overlay',
     themeVariable: '--shadow-tinyrack-overlay',
   },
@@ -672,62 +696,62 @@ export const tailwindTokenBridge = [
     themeVariable: '--ease-tinyrack-linear',
   },
   {
-    group: 'visual-state',
+    group: 'opacity',
     runtimeVariable: '--tinyrack-opacity-disabled',
     themeVariable: '--opacity-tinyrack-disabled',
   },
   {
-    group: 'visual-state',
+    group: 'opacity',
     runtimeVariable: '--tinyrack-opacity-hover',
     themeVariable: '--opacity-tinyrack-hover',
   },
   {
-    group: 'visual-state',
+    group: 'opacity',
     runtimeVariable: '--tinyrack-opacity-backdrop',
     themeVariable: '--opacity-tinyrack-backdrop',
   },
   {
-    group: 'visual-state',
+    group: 'opacity',
     runtimeVariable: '--tinyrack-spinner-track-opacity',
     themeVariable: '--opacity-tinyrack-spinner-track',
   },
   {
-    group: 'visual-state',
+    group: 'layer',
     runtimeVariable: '--tinyrack-layer-base',
     themeVariable: '--z-index-tinyrack-base',
   },
   {
-    group: 'visual-state',
+    group: 'layer',
     runtimeVariable: '--tinyrack-layer-backdrop',
     themeVariable: '--z-index-tinyrack-backdrop',
   },
   {
-    group: 'visual-state',
+    group: 'layer',
     runtimeVariable: '--tinyrack-layer-dropdown',
     themeVariable: '--z-index-tinyrack-dropdown',
   },
   {
-    group: 'visual-state',
+    group: 'layer',
     runtimeVariable: '--tinyrack-layer-popover',
     themeVariable: '--z-index-tinyrack-popover',
   },
   {
-    group: 'visual-state',
+    group: 'layer',
     runtimeVariable: '--tinyrack-layer-dialog',
     themeVariable: '--z-index-tinyrack-dialog',
   },
   {
-    group: 'visual-state',
+    group: 'layer',
     runtimeVariable: '--tinyrack-layer-toast',
     themeVariable: '--z-index-tinyrack-toast',
   },
   {
-    group: 'visual-state',
+    group: 'layer',
     runtimeVariable: '--tinyrack-layer-tooltip',
     themeVariable: '--z-index-tinyrack-tooltip',
   },
   {
-    group: 'visual-state',
+    group: 'scale',
     runtimeVariable: '--tinyrack-overlay-closed-scale',
     themeVariable: '--scale-tinyrack-overlay-closed',
   },

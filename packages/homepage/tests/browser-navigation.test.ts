@@ -301,6 +301,9 @@ describe('built React Router documentation', () => {
         desktopReference.locator('[data-tailwind-token-group]').count(),
       ).resolves.toBe(10);
       await expect(desktopReference.locator('tbody tr').count()).resolves.toBe(166);
+      await expect(
+        desktopPage.locator('.tr-table-of-contents-desktop a').count(),
+      ).resolves.toBe(14);
       await expectNoLocalOverflow(
         desktopPage.locator('html'),
         'Tailwind desktop document',
@@ -333,6 +336,14 @@ describe('built React Router documentation', () => {
       );
       const mobileTable = mobilePage.locator(
         '[data-tailwind-token-table="typography"]',
+      );
+      await expectVisible(
+        mobilePage.getByText(
+          '좁은 화면에서는 각 표를 가로로 스크롤해 모든 열을 비교할 수 있습니다.',
+        ),
+      );
+      await expectVisible(
+        mobilePage.locator('.tr-table-of-contents-mobile .tr-select-trigger'),
       );
       const mobileScroller = mobileTable.locator('xpath=..');
       await expect(mobileScroller.getAttribute('tabindex')).resolves.toBe('0');

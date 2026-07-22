@@ -137,6 +137,7 @@ function validateFrontmatter(value: unknown, sourceFile: string): DocsFrontmatte
   const section = fields['section'];
   const order = fields['order'];
   const contentKey = fields['contentKey'];
+  const headings = fields['headings'];
   const layout = fields['layout'];
   const navigation = fields['navigation'];
   const sidebarLabel = fields['sidebarLabel'];
@@ -168,6 +169,9 @@ function validateFrontmatter(value: unknown, sourceFile: string): DocsFrontmatte
 
   return {
     description: description.trim(),
+    ...(headings === undefined
+      ? {}
+      : { headings: validateHeadings(headings, sourceFile) }),
     order: order as number,
     section: section.trim(),
     title: title.trim(),
@@ -541,7 +545,7 @@ export function loadDocsManifest(
           contentKey === '/' ? site.title : `${frontmatter.title} · ${site.title}`,
         headings:
           tsxPage === undefined
-            ? parseHeadings(source)
+            ? (frontmatter.headings ?? parseHeadings(source))
             : validateHeadings(tsxPage.headings, sourceFile),
         id,
         imagePath,

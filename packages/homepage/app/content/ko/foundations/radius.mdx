@@ -1,8 +1,8 @@
 ---
-title: "Radius"
+title: "모서리 반경"
 description: "Shape 토큰은 컨트롤을 선명하게 만들고 계층형 표면을 구분하며, 형태가 의미를 전달하는 역할에만 완전한 원형을 사용하게 합니다."
 section: foundations
-order: 7
+order: 5
 ---
 import { TRBadge } from '@tinyrack/ui/components/badge';
 import { TRButton } from '@tinyrack/ui/components/button';
@@ -14,16 +14,16 @@ import { tinyrackRadii } from '@tinyrack/ui/core';
 
 <div className="grid gap-3 md:grid-cols-3" role="list">
   <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Control · sm–md</h3>
-    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Buttons, inputs, and segmented controls stay compact and predictable.</div>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">컨트롤 · sm–md</h3>
+    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">버튼, 입력 필드, 분할 컨트롤을 작고 일관되게 유지합니다.</div>
   </section>
   <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Surface · lg–xl</h3>
-    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Containers soften only when they hold a distinct panel, popover, or overlay layer.</div>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">표면 · lg–xl</h3>
+    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">구별되는 패널, 팝오버, 오버레이 레이어를 담을 때만 컨테이너를 부드럽게 표현합니다.</div>
   </section>
   <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Pill · full</h3>
-    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Use full radius only when capsule, status, avatar, or circle shape communicates the role.</div>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">캡슐 · full</h3>
+    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">캡슐, 상태, 아바타, 원형 모양 자체가 역할을 전달할 때만 full 반경을 사용합니다.</div>
   </section>
 </div>
 
@@ -50,21 +50,21 @@ import { tinyrackRadii } from '@tinyrack/ui/core';
 
 <div className="grid gap-4 md:grid-cols-3">
   <section className="grid content-start gap-3 border border-tinyrack-border p-4">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Control and status</h3>
-    <div className="flex flex-wrap items-center gap-2"><TRButton variant="primary">Deploy</TRButton><TRBadge variant="success">ready</TRBadge></div>
-    <div className="text-tinyrack-sm text-tinyrack-text-muted">The TRButton uses control radius; the status badge uses full radius because its capsule shape carries meaning.</div>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">컨트롤과 상태</h3>
+    <div className="flex flex-wrap items-center gap-2"><TRButton variant="primary">배포</TRButton><TRBadge variant="success">준비됨</TRBadge></div>
+    <div className="text-tinyrack-sm text-tinyrack-text-muted">TRButton은 컨트롤 반경을 사용하고, 상태 배지는 캡슐 모양이 의미를 전달하므로 full 반경을 사용합니다.</div>
   </section>
   <section className="grid content-start gap-3 border border-tinyrack-border p-4">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Nested surface</h3>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">중첩 표면</h3>
     <div className="grid min-h-24 place-items-center border border-tinyrack-border bg-tinyrack-surface-muted p-3" style={{ borderRadius: tinyrackRadii.lg }}>
-      <div className="grid min-h-14 w-full place-items-center border border-tinyrack-border bg-tinyrack-surface" style={{ borderRadius: tinyrackRadii.md }}>inner radius is tighter</div>
+      <div className="grid min-h-14 w-full place-items-center border border-tinyrack-border bg-tinyrack-surface" style={{ borderRadius: tinyrackRadii.md }}>안쪽 반경은 더 작습니다</div>
     </div>
-    <div className="text-tinyrack-sm text-tinyrack-text-muted">Nested elements stay equal to or tighter than their containing surface.</div>
+    <div className="text-tinyrack-sm text-tinyrack-text-muted">중첩 요소의 반경은 바깥 표면과 같거나 더 작아야 합니다.</div>
   </section>
   <section className="grid content-start gap-3 border border-tinyrack-border p-4">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Focus follows shape</h3>
-    <TRButton appearance="outline" style={{ outline: '2px solid var(--tinyrack-focus)', outlineOffset: '2px' }}>Focused control</TRButton>
-    <div className="text-tinyrack-sm text-tinyrack-text-muted">Match the focus ring to the control shape, then use offset to preserve clearance.</div>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">초점은 형태를 따릅니다</h3>
+    <TRButton appearance="outline" style={{ outline: '2px solid var(--tinyrack-focus)', outlineOffset: '2px' }}>초점이 있는 컨트롤</TRButton>
+    <div className="text-tinyrack-sm text-tinyrack-text-muted">초점 링을 컨트롤 형태에 맞추고 오프셋으로 여백을 확보하세요.</div>
   </section>
 </div>
 
@@ -74,8 +74,8 @@ Radius 값은 public TypeScript metadata와 runtime CSS token입니다. 컴포�
 
 ```tsx
 <TRCard.Root>
-  <TRButton>Deploy</TRButton>
-  <TRBadge>ready</TRBadge>
+  <TRButton>배포</TRButton>
+  <TRBadge>준비됨</TRBadge>
 </TRCard.Root>
 ```
 
@@ -91,7 +91,7 @@ CSS에서는 `--tinyrack-radius-*`를, Tailwind markup에서는 `rounded-tinyrac
 ## 참조
 
 <TRTable.Root className="mt-tinyrack-lg" containerProps={{ 'aria-label': 'Radius token reference', tabIndex: 0 }} data-foundation-reference="radius">
-    <thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Role</th><th scope="col">Tinyrack utility</th><th scope="col">TypeScript</th></tr></thead>
+    <thead><tr><th scope="col">토큰</th><th scope="col">값</th><th scope="col">역할</th><th scope="col">Tinyrack 유틸리티</th><th scope="col">TypeScript</th></tr></thead>
     <tbody>
       {[
         { token: 'xs', value: tinyrackRadii.xs, role: 'Micro detail', utility: 'rounded-tinyrack-xs' },

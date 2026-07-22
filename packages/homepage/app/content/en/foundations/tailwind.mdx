@@ -3,11 +3,26 @@ title: "Tailwind tokens"
 description: "Use Tinyrack's Tailwind v4 bridge for explicit responsive thresholds and prefixed foundation-token utilities."
 section: foundations
 order: 11
+headings:
+  - { depth: 2, id: setup, label: "Setup" }
+  - { depth: 2, id: choose-utilities, label: "Choose the right utility" }
+  - { depth: 2, id: arbitrary-values, label: "Arbitrary values" }
+  - { depth: 2, id: reference, label: "Reference" }
+  - { depth: 3, id: breakpoints, label: "Breakpoints" }
+  - { depth: 3, id: colors, label: "Colors" }
+  - { depth: 3, id: typography, label: "Typography" }
+  - { depth: 3, id: spacing-controls, label: "Spacing and controls" }
+  - { depth: 3, id: containers, label: "Containers" }
+  - { depth: 3, id: borders-focus, label: "Borders and focus" }
+  - { depth: 3, id: radius-shadows, label: "Radius and shadows" }
+  - { depth: 3, id: motion, label: "Motion" }
+  - { depth: 3, id: visual-state, label: "Opacity, layers, and scale" }
+  - { depth: 3, id: decoration, label: "Text decoration" }
 ---
 import { TRCode } from '@tinyrack/ui/components/code';
 import { TailwindTokenReference } from '../../../documentation/shared/tailwind-token-reference.js';
 
-## Setup
+<h2 className="tr-mdx-h2" id="setup">Setup</h2>
 
 Import Tailwind first, then Tinyrack core CSS. The core stylesheet keeps the runtime <TRCode>--tinyrack-*</TRCode> variables and exposes them through Tailwind v4's static theme namespaces.
 
@@ -22,7 +37,7 @@ Component styles remain separate and should be imported only when used.
 @import "@tinyrack/ui/components/button.css";
 ```
 
-## Choose the right utility
+<h2 className="tr-mdx-h2" id="choose-utilities">Choose the right utility</h2>
 
 - Use a <TRCode>tinyrack-*</TRCode> utility when color, type, spacing, shape, elevation, or motion expresses a design-system decision.
 - Use the shared <TRCode>xs:</TRCode> through <TRCode>xl:</TRCode> responsive variants for viewport thresholds.
@@ -38,7 +53,7 @@ Component styles remain separate and should be imported only when used.
 </section>
 ```
 
-## Arbitrary values
+<h2 className="tr-mdx-h2" id="arbitrary-values">Arbitrary values</h2>
 
 Use a type hint when a component-scoped <TRCode>--tr-*</TRCode> variable or another CSS value has no natural Tailwind theme namespace. Keep the variable as the source of truth instead of copying its resolved value.
 
@@ -50,7 +65,7 @@ Use a type hint when a component-scoped <TRCode>--tr-*</TRCode> variable or anot
 
 Prefer the named utility in the reference below whenever one exists. Arbitrary values are for deliberate component customization, not an alternate token vocabulary.
 
-## Reference
+<h2 className="tr-mdx-h2" id="reference">Reference</h2>
 
 Search by utility, Tailwind theme variable, or runtime variable. Each table scrolls locally on narrow screens and can be focused for keyboard scrolling.
 

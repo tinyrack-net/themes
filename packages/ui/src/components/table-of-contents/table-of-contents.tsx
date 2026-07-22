@@ -134,7 +134,11 @@ export function TRTableOfContents({
               <TRSelect.Popup>
                 <TRSelect.List>
                   {items.map((item) => (
-                    <TRSelect.Item key={item.id} value={item.id}>
+                    <TRSelect.Item
+                      data-depth={item.depth}
+                      key={item.id}
+                      value={item.id}
+                    >
                       <TRSelect.ItemText>{item.label}</TRSelect.ItemText>
                       <TRSelect.ItemIndicator aria-hidden="true">
                         ✓

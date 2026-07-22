@@ -16,6 +16,7 @@ import {
   createElement,
   type ReactNode,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { demoCopy, useDemoLocale } from '../documentation/shared/demo-locale.js';
@@ -390,10 +391,19 @@ export function ComponentPlayground<TArgs extends DemoArgs>({
 }) {
   const locale = useDemoLocale();
   const copy = demoCopy[locale];
-  const [args, setArgs] = useState<TArgs>(() => ({ ...definition.args }));
+  const initialArgs = useMemo(
+    () => ({ ...definition.args, ...definition.localizedArgs?.[locale] }) as TArgs,
+    [definition, locale],
+  );
+  const [args, setArgs] = useState<TArgs>(() => initialArgs);
   const [resetKey, setResetKey] = useState(0);
   const Render = definition.render;
   const fillPreview = definition.parameters?.['playgroundLayout'] === 'fill';
+
+  useEffect(() => {
+    setArgs(initialArgs);
+    setResetKey((current) => current + 1);
+  }, [initialArgs]);
 
   function updateArgs(patch: DemoArgs) {
     setArgs((current) => ({ ...current, ...patch }) as TArgs);
@@ -451,7 +461,7 @@ export function ComponentPlayground<TArgs extends DemoArgs>({
           <TRButton
             appearance="outline"
             onClick={() => {
-              setArgs({ ...definition.args });
+              setArgs(initialArgs);
               setResetKey((current) => current + 1);
             }}
             uiSize="sm"

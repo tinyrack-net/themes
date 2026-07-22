@@ -56,7 +56,7 @@ export function CopyImport() {
 <ComponentExampleTabs
   id="copy-button-combinations"
   title="상속된 Button 조합"
-  description="appearance, variant, uiSize와 레이블을 Button 스타일 전반에서 조합할 수 있어요. 대기 및 성공 레이블은 같은 너비를 유지하고 더 긴 실패 레이블은 실패할 때만 보여요."
+  description="`appearance`, `variant`, `uiSize`와 레이블을 Button 스타일 전반에서 조합할 수 있어요. 대기 및 성공 레이블은 같은 너비를 유지하고 더 긴 실패 레이블은 실패할 때만 보여요."
   preview={<div data-docs-example-item-count="3"><Stories.CopyButtonCombinationPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/copy-button.css';
@@ -82,11 +82,11 @@ export function CopyButtonCombinations() {
 
 | Prop | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
-| `value` | `string` | 필수 | Clipboard API 또는 화면 밖 선택 fallback으로 복사할 텍스트입니다. |
-| `idleLabel` | `string` | `"Copy"` | 복사 전 표시 및 접근성 레이블입니다. |
-| `copiedLabel` | `string` | `"Copied"` | 성공 레이블과 polite 알림입니다. |
-| `unavailableLabel` | `string` | `"Copy unavailable"` | 두 복사 방식이 모두 실패했을 때의 레이블과 polite 알림입니다. |
-| `onStatusChange` | `(status) => void` | — | `copied` 또는 `unavailable`을 전달한 뒤 초기화 시 `idle`을 전달합니다. 오래된 시도나 unmount된 시도는 전달하지 않습니다. |
-| `resetDelay` | `number` | `2000` | 완료 결과가 `idle`로 초기화되기까지의 밀리초입니다. |
+| `value` | `string` | 필수 | Clipboard API 또는 화면 밖 선택 대체 동작으로 복사할 텍스트예요. |
+| `idleLabel` | `string` | `"Copy"` | 복사 전 표시 및 접근성 레이블이에요. |
+| `copiedLabel` | `string` | `"Copied"` | 성공 레이블과 polite 알림이에요. |
+| `unavailableLabel` | `string` | `"Copy unavailable"` | 두 복사 방식이 모두 실패했을 때의 레이블과 polite 알림이에요. |
+| `onStatusChange` | `(status) => void` | — | `copied` 또는 `unavailable`을 전달한 뒤 초기화할 때 `idle`을 전달해요. 오래됐거나 마운트 해제된 시도는 전달하지 않아요. |
+| `resetDelay` | `number` | `2000` | 완료 결과가 `idle`로 초기화되기까지의 밀리초예요. |
 
 `children`을 제외한 모든 `TRButton` prop을 상속하므로 ref, 네이티브 이벤트, `disabled`, `loading`, `loadingLabel`, `appearance`, `variant`, `uiSize`를 사용할 수 있어요. `onClick`에서 `preventDefault()`를 호출하면 복사 시도를 취소해요.

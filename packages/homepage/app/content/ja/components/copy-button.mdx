@@ -23,7 +23,7 @@ import * as Stories from '../../../documentation/components/copy-button.demo.js'
 
 ## 使用方法
 
-<ComponentExampleTabs id="copy-button-basic" title="コマンドをコピー" preview={<Stories.CopyButtonPreview copiedLabel="コピーしました" idleLabel="コマンドをコピー" statusLabel="状態" value="pnpm add @tinyrack/ui" />} sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
+<ComponentExampleTabs id="copy-button-basic" title="コマンドをコピー" preview={<div data-docs-example-item-count="1"><Stories.CopyButtonPreview copiedLabel="コピーしました" idleLabel="コマンドをコピー" statusLabel="状態" value="pnpm add @tinyrack/ui" /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/copy-button.css';
 import { TRCopyButton, type TRCopyButtonStatus } from '@tinyrack/ui/components/copy-button';
@@ -38,7 +38,7 @@ export function CopyCommand() {
 
 ## 例
 
-<ComponentExampleTabs id="copy-button-labels" title="状況に応じたラベル" preview={<Stories.CopyButtonPreview copiedLabel="import 文をコピーしました" idleLabel="import 文をコピー" statusLabel="状態" unavailableLabel="コピーできません" value="import { TRButton } from '@tinyrack/ui/components/button';" />} sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
+<ComponentExampleTabs id="copy-button-labels" title="状況に応じたラベル" preview={<div data-docs-example-item-count="1"><Stories.CopyButtonPreview copiedLabel="import 文をコピーしました" idleLabel="import 文をコピー" statusLabel="状態" unavailableLabel="コピーできません" value="import { TRButton } from '@tinyrack/ui/components/button';" /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/copy-button.css';
 import { TRCopyButton, type TRCopyButtonStatus } from '@tinyrack/ui/components/copy-button';
@@ -57,7 +57,7 @@ export function CopyImport() {
   id="copy-button-combinations"
   title="継承した Button の組み合わせ"
   description="appearance、variant、uiSize、ラベルを各 Button スタイルと組み合わせられます。待機中と成功時のラベルは同じ幅を保ち、長い失敗ラベルは失敗時だけ表示されます。"
-  preview={<Stories.CopyButtonCombinationPreview />}
+  preview={<div data-docs-example-item-count="3"><Stories.CopyButtonCombinationPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/copy-button.css';
 import { TRCopyButton } from '@tinyrack/ui/components/copy-button';

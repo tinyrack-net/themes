@@ -98,6 +98,10 @@ function componentExampleItemCount(source: string, id: string) {
       ? nextExampleOffset
       : apiOffset;
   const block = source.slice(idOffset, endOffset);
+  const declaredItemCount = block.match(
+    /data-docs-example-item-count="(\d+)"/,
+  )?.[1];
+  if (declaredItemCount !== undefined) return Number(declaredItemCount);
   return block.match(/data-docs-example-item=""/g)?.length ?? 0;
 }
 

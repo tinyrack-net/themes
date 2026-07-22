@@ -27,7 +27,7 @@ The control reports `idle`, `copied`, or `unavailable` through `data-copy-status
 <ComponentExampleTabs
   id="copy-button-basic"
   title="Copy a command"
-  preview={<div data-docs-example-item=""><Stories.CopyButtonPreview copiedLabel="Copied" idleLabel="Copy command" value="pnpm add @tinyrack/ui" /></div>}
+  preview={<div data-docs-example-item-count="1"><Stories.CopyButtonPreview copiedLabel="Copied" idleLabel="Copy command" value="pnpm add @tinyrack/ui" /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/copy-button.css';
@@ -55,7 +55,7 @@ export function CopyCommand() {
 <ComponentExampleTabs
   id="copy-button-labels"
   title="Contextual labels"
-  preview={<div data-docs-example-item=""><Stories.CopyButtonPreview copiedLabel="Import copied" idleLabel="Copy import" unavailableLabel="Copy unavailable" value="import { TRButton } from '@tinyrack/ui/components/button';" /></div>}
+  preview={<div data-docs-example-item-count="1"><Stories.CopyButtonPreview copiedLabel="Import copied" idleLabel="Copy import" unavailableLabel="Copy unavailable" value="import { TRButton } from '@tinyrack/ui/components/button';" /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/copy-button.css';

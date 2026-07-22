@@ -23,7 +23,7 @@ import * as Stories from '../../../documentation/components/copy-button.demo.js'
 
 ## 사용법
 
-<ComponentExampleTabs id="copy-button-basic" title="명령 복사" preview={<Stories.CopyButtonPreview copiedLabel="복사됨" idleLabel="명령 복사" statusLabel="상태" value="pnpm add @tinyrack/ui" />} sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
+<ComponentExampleTabs id="copy-button-basic" title="명령 복사" preview={<div data-docs-example-item-count="1"><Stories.CopyButtonPreview copiedLabel="복사됨" idleLabel="명령 복사" statusLabel="상태" value="pnpm add @tinyrack/ui" /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/copy-button.css';
 import { TRCopyButton, type TRCopyButtonStatus } from '@tinyrack/ui/components/copy-button';
@@ -38,7 +38,7 @@ export function CopyCommand() {
 
 ## 예시
 
-<ComponentExampleTabs id="copy-button-labels" title="상황에 맞는 레이블" preview={<Stories.CopyButtonPreview copiedLabel="가져오기 구문 복사됨" idleLabel="가져오기 구문 복사" statusLabel="상태" unavailableLabel="복사할 수 없음" value="import { TRButton } from '@tinyrack/ui/components/button';" />} sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
+<ComponentExampleTabs id="copy-button-labels" title="상황에 맞는 레이블" preview={<div data-docs-example-item-count="1"><Stories.CopyButtonPreview copiedLabel="가져오기 구문 복사됨" idleLabel="가져오기 구문 복사" statusLabel="상태" unavailableLabel="복사할 수 없음" value="import { TRButton } from '@tinyrack/ui/components/button';" /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/copy-button.css';
 import { TRCopyButton, type TRCopyButtonStatus } from '@tinyrack/ui/components/copy-button';
@@ -57,7 +57,7 @@ export function CopyImport() {
   id="copy-button-combinations"
   title="상속된 Button 조합"
   description="appearance, variant, uiSize와 레이블을 Button 스타일 전반에서 조합할 수 있어요. 대기 및 성공 레이블은 같은 너비를 유지하고 더 긴 실패 레이블은 실패할 때만 보여요."
-  preview={<Stories.CopyButtonCombinationPreview />}
+  preview={<div data-docs-example-item-count="3"><Stories.CopyButtonCombinationPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/copy-button.css';
 import { TRCopyButton } from '@tinyrack/ui/components/copy-button';

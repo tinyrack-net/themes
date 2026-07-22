@@ -25,7 +25,7 @@ Use controlled `open` or uncontrolled `defaultOpen`; `Positioner` accepts Base U
 
 ## Usage
 
-<ComponentExampleTabs id="popover-basic" title="Rack details" preview={<TRPopover.Root><TRPopover.Trigger>Rack details</TRPopover.Trigger><TRPopover.Portal><TRPopover.Positioner sideOffset={8}><TRPopover.Popup><TRPopover.Arrow /><TRPopover.Title>Rack A</TRPopover.Title><TRPopover.Description>All nodes online.</TRPopover.Description><TRPopover.Close>Close</TRPopover.Close></TRPopover.Popup></TRPopover.Positioner></TRPopover.Portal></TRPopover.Root>} sources={[{ label: 'React', language: 'tsx', code: Stories.popoverBasicSource }]} />
+<ComponentExampleTabs id="popover-basic" title="Rack details" preview={<div data-docs-example-item=""><TRPopover.Root><TRPopover.Trigger>Rack details</TRPopover.Trigger><TRPopover.Portal><TRPopover.Positioner sideOffset={8}><TRPopover.Popup><TRPopover.Arrow /><TRPopover.Title>Rack A</TRPopover.Title><TRPopover.Description>All nodes online.</TRPopover.Description><TRPopover.Close>Close</TRPopover.Close></TRPopover.Popup></TRPopover.Positioner></TRPopover.Portal></TRPopover.Root></div>} sources={[{ label: 'React', language: 'tsx', code: Stories.popoverBasicSource }]} />
 
 ## Examples
 
@@ -33,9 +33,11 @@ Use controlled `open` or uncontrolled `defaultOpen`; `Positioner` accepts Base U
   id="popover-sides"
   title="Positioning sides"
   description="Each trigger opens an actual anchored popup on the requested side, with collision handling."
-  preview={<div className="flex flex-wrap gap-3">{['top', 'right', 'bottom', 'left'].map((side) => <TRPopover.Root key={side}><TRPopover.Trigger>{side}</TRPopover.Trigger><TRPopover.Portal><TRPopover.Positioner side={side} sideOffset={8}><TRPopover.Popup><TRPopover.Arrow /><TRPopover.Title>{side}</TRPopover.Title><TRPopover.Description>Anchored content.</TRPopover.Description><TRPopover.Close>Close</TRPopover.Close></TRPopover.Popup></TRPopover.Positioner></TRPopover.Portal></TRPopover.Root>)}</div>}
+  preview={<div className="flex flex-wrap gap-3" data-docs-example-item-count={4}>{['top', 'right', 'bottom', 'left'].map((side) => <div data-docs-example-item="" key={side}><TRPopover.Root><TRPopover.Trigger>{side}</TRPopover.Trigger><TRPopover.Portal><TRPopover.Positioner side={side} sideOffset={8}><TRPopover.Popup><TRPopover.Arrow /><TRPopover.Title>{side}</TRPopover.Title><TRPopover.Description>Anchored content.</TRPopover.Description><TRPopover.Close>Close</TRPopover.Close></TRPopover.Popup></TRPopover.Positioner></TRPopover.Portal></TRPopover.Root></div>)}</div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.popoverSidesSource }]}
 />
+
+<ComponentExampleTabs id="popover-alignments" title="Inline alignments" description="Choose start, center, or end independently from side." preview={<Stories.PopoverAlignments />} sources={[{ label: 'React', language: 'tsx', code: Stories.popoverAlignmentsSource }]} />
 
 <ComponentExampleTabs
   id="popover-collision-offset"

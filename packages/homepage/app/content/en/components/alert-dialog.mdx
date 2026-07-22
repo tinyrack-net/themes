@@ -38,7 +38,7 @@ This Tinyrack wrapper preserves Base UI behavior, React 19 refs, native props, e
   id="alert-dialog-states"
   title="State comparison"
   description="Trigger the destructive confirmation, press Escape or Cancel, and verify focus returns to Delete rack. The disabled story state prevents opening."
-  preview={<Stories.AlertDialogPreview label={'Delete a rack with a very long mobile confirmation label'} open={false} disabled={false} />}
+  preview={<div className="grid gap-4"><Stories.AlertDialogPreview label={'Delete a rack with a very long mobile confirmation label'} open={false} disabled={false} /><Stories.AlertDialogPreview label="Deletion unavailable" open={false} disabled /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.alertDialogStatesSource }]}
 />
 

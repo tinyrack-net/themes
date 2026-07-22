@@ -29,7 +29,7 @@ import * as Stories from '../../../documentation/components/dialog.demo.js';
 
 ## Usage
 
-<ComponentExampleTabs id="dialog-basic" title="Confirmation dialog" preview={<TRDialog.Root><TRDialog.Trigger>Open dialog</TRDialog.Trigger><TRDialog.Portal><TRDialog.Backdrop /><TRDialog.Popup placement="middle"><TRDialog.Title>Deploy changes</TRDialog.Title><TRDialog.Description>This restarts the service.</TRDialog.Description><TRDialog.Close>Cancel</TRDialog.Close></TRDialog.Popup></TRDialog.Portal></TRDialog.Root>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/dialog.css';
+<ComponentExampleTabs id="dialog-basic" title="Confirmation dialog" preview={<div data-docs-example-item=""><TRDialog.Root><TRDialog.Trigger>Open dialog</TRDialog.Trigger><TRDialog.Portal><TRDialog.Backdrop /><TRDialog.Popup placement="middle"><TRDialog.Title>Deploy changes</TRDialog.Title><TRDialog.Description>This restarts the service.</TRDialog.Description><TRDialog.Close>Cancel</TRDialog.Close></TRDialog.Popup></TRDialog.Portal></TRDialog.Root></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/dialog.css';
 import { TRDialog } from '@tinyrack/ui/components/dialog';
 
 <TRDialog.Root>
@@ -50,7 +50,7 @@ import { TRDialog } from '@tinyrack/ui/components/dialog';
   id="dialog-placements"
   title="Placements"
   description="Use the same compound structure and change only popup placement."
-  preview={<div className="flex flex-wrap gap-2">{['middle', 'top', 'bottom', 'start', 'end'].map((placement) => <TRDialog.Root key={placement}><TRDialog.Trigger>{placement}</TRDialog.Trigger><TRDialog.Portal><TRDialog.Backdrop /><TRDialog.Popup placement={placement}><TRDialog.Title>{placement} dialog</TRDialog.Title><TRDialog.Description>Placement preview.</TRDialog.Description><TRDialog.Close>Close</TRDialog.Close></TRDialog.Popup></TRDialog.Portal></TRDialog.Root>)}</div>}
+  preview={<div className="flex flex-wrap gap-2" data-docs-example-item-count={5}>{['middle', 'top', 'bottom', 'start', 'end'].map((placement) => <div data-docs-example-item="" key={placement}><TRDialog.Root><TRDialog.Trigger>{placement}</TRDialog.Trigger><TRDialog.Portal><TRDialog.Backdrop /><TRDialog.Popup placement={placement}><TRDialog.Title>{placement} dialog</TRDialog.Title><TRDialog.Description>Placement preview.</TRDialog.Description><TRDialog.Close>Close</TRDialog.Close></TRDialog.Popup></TRDialog.Portal></TRDialog.Root></div>)}</div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/dialog.css';
 import { TRDialog, type TRDialogPlacement } from '@tinyrack/ui/components/dialog';
 

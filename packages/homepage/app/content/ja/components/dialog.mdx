@@ -29,17 +29,17 @@ import * as Stories from '../../../documentation/components/dialog.demo.js';
 
 ## 使用方法
 
-<ComponentExampleTabs id="dialog-basic" title="確認 dialog" preview={<TRDialog.Root><TRDialog.Trigger>dialog を開く</TRDialog.Trigger><TRDialog.Portal><TRDialog.Backdrop /><TRDialog.Popup placement="middle"><TRDialog.Title>Deploy changes</TRDialog.Title><TRDialog.Description>This restarts the service.</TRDialog.Description><TRDialog.Close>Cancel</TRDialog.Close></TRDialog.Popup></TRDialog.Portal></TRDialog.Root>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/dialog.css';
+<ComponentExampleTabs id="dialog-basic" title="確認 dialog" preview={<div data-docs-example-item=""><TRDialog.Root><TRDialog.Trigger>dialog を開く</TRDialog.Trigger><TRDialog.Portal><TRDialog.Backdrop /><TRDialog.Popup placement="middle"><TRDialog.Title>変更をデプロイ</TRDialog.Title><TRDialog.Description>サービスが再起動します。</TRDialog.Description><TRDialog.Close>キャンセル</TRDialog.Close></TRDialog.Popup></TRDialog.Portal></TRDialog.Root></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/dialog.css';
 import { TRDialog } from '@tinyrack/ui/components/dialog';
 
 <TRDialog.Root>
-  <TRDialog.Trigger>Open dialog</TRDialog.Trigger>
+  <TRDialog.Trigger>dialog を開く</TRDialog.Trigger>
   <TRDialog.Portal>
     <TRDialog.Backdrop />
     <TRDialog.Popup placement="middle">
-      <TRDialog.Title>Deploy changes</TRDialog.Title>
-      <TRDialog.Description>This restarts the service.</TRDialog.Description>
-      <TRDialog.Close>Cancel</TRDialog.Close>
+      <TRDialog.Title>変更をデプロイ</TRDialog.Title>
+      <TRDialog.Description>サービスが再起動します。</TRDialog.Description>
+      <TRDialog.Close>キャンセル</TRDialog.Close>
     </TRDialog.Popup>
   </TRDialog.Portal>
 </TRDialog.Root>` }]} />
@@ -50,7 +50,7 @@ import { TRDialog } from '@tinyrack/ui/components/dialog';
   id="dialog-placements"
   title="配置"
   description="同じ compound 構造を使い、popup の配置だけを変更します。"
-  preview={<div className="flex flex-wrap gap-2">{['middle', 'top', 'bottom', 'start', 'end'].map((placement) => <TRDialog.Root key={placement}><TRDialog.Trigger>{placement}</TRDialog.Trigger><TRDialog.Portal><TRDialog.Backdrop /><TRDialog.Popup placement={placement}><TRDialog.Title>{placement} dialog</TRDialog.Title><TRDialog.Description>Placement preview.</TRDialog.Description><TRDialog.Close>閉じる</TRDialog.Close></TRDialog.Popup></TRDialog.Portal></TRDialog.Root>)}</div>}
+  preview={<div className="flex flex-wrap gap-2" data-docs-example-item-count={5}>{['middle', 'top', 'bottom', 'start', 'end'].map((placement) => <div data-docs-example-item="" key={placement}><TRDialog.Root><TRDialog.Trigger>{placement} 配置</TRDialog.Trigger><TRDialog.Portal><TRDialog.Backdrop /><TRDialog.Popup placement={placement}><TRDialog.Title>{placement} 配置の dialog</TRDialog.Title><TRDialog.Description>配置のプレビューです。</TRDialog.Description><TRDialog.Close>閉じる</TRDialog.Close></TRDialog.Popup></TRDialog.Portal></TRDialog.Root></div>)}</div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/dialog.css';
 import { TRDialog, type TRDialogPlacement } from '@tinyrack/ui/components/dialog';
 
@@ -63,8 +63,8 @@ const placements: TRDialogPlacement[] = ['middle', 'top', 'bottom', 'start', 'en
       <TRDialog.Backdrop />
       <TRDialog.Popup placement={placement}>
         <TRDialog.Title>{placement} dialog</TRDialog.Title>
-        <TRDialog.Description>Placement preview.</TRDialog.Description>
-        <TRDialog.Close>Close</TRDialog.Close>
+        <TRDialog.Description>配置のプレビューです。</TRDialog.Description>
+        <TRDialog.Close>閉じる</TRDialog.Close>
       </TRDialog.Popup>
     </TRDialog.Portal>
   </TRDialog.Root>
@@ -85,15 +85,15 @@ const handle = TRDialog.createHandle<void>();
 
 export function DetachedDialog() {
   return <>
-    <TRDialog.Trigger handle={handle}>Open detached dialog</TRDialog.Trigger>
+    <TRDialog.Trigger handle={handle}>分離した dialog を開く</TRDialog.Trigger>
     <TRDialog.Root handle={handle}>
       <TRDialog.Portal>
         <TRDialog.Backdrop />
         <TRDialog.Viewport>
           <TRDialog.Popup placement="middle">
-            <TRDialog.Title>Detached trigger</TRDialog.Title>
-            <TRDialog.Description>A shared handle connects this root to a trigger outside it.</TRDialog.Description>
-            <TRDialog.Close render={<TRButton variant="secondary" />}>Close</TRDialog.Close>
+            <TRDialog.Title>分離したトリガー</TRDialog.Title>
+            <TRDialog.Description>共有 handle が Root 外のトリガーを接続します。</TRDialog.Description>
+            <TRDialog.Close render={<TRButton variant="secondary" />}>閉じる</TRDialog.Close>
           </TRDialog.Popup>
         </TRDialog.Viewport>
       </TRDialog.Portal>
@@ -124,10 +124,10 @@ import { TRTextarea } from '@tinyrack/ui/components/textarea';
 function DeploymentDialog() {
   const inputId = useId();
   const notesId = useId();
-  const [result, setResult] = useState('No changes saved');
+  const [result, setResult] = useState('変更は保存されていません');
 
   return <TRDialog.Root modal>
-    <TRDialog.Trigger>Open dialog</TRDialog.Trigger>
+    <TRDialog.Trigger>dialog を開く</TRDialog.Trigger>
     <TRDialog.Portal>
       <TRDialog.Backdrop />
       <TRDialog.Viewport>
@@ -138,26 +138,26 @@ function DeploymentDialog() {
           </TRDialog.Description>
           <div className="tr-dialog-body grid gap-4" data-dialog-scroll-body="">
             <div className="grid gap-3">
-              <p>Confirm the target environment, maintenance window, and rollback owner before saving this deployment.</p>
-              <p>Changes are reviewed against the current rack inventory. Operators can continue reading this body while the title and actions remain in place.</p>
+              <p>保存する前に対象環境、メンテナンス時間、ロールバック担当者を確認してください。</p>
+              <p>現在のラック一覧に照らして変更を確認します。タイトルと操作を固定したまま本文を読み進められます。</p>
               <TRField.Root>
-                <TRField.Label htmlFor={notesId}>Rollback notes</TRField.Label>
-                <TRTextarea defaultValue="Restore the previous deployment and verify rack health." id={notesId} name="notes" rows={8} />
+                <TRField.Label htmlFor={notesId}>ロールバックメモ</TRField.Label>
+                <TRTextarea defaultValue="以前のデプロイを復元し、ラックの状態を確認してください。" id={notesId} name="notes" rows={8} />
               </TRField.Root>
             </div>
             <TRForm className="grid gap-2" onSubmit={(event) => {
               event.preventDefault();
-              setResult('Saved ' + new FormData(event.currentTarget).get('rack'));
+              setResult(new FormData(event.currentTarget).get('rack') + ' を保存しました');
             }}>
               <TRField.Root>
-                <TRField.Label htmlFor={inputId}>Rack name</TRField.Label>
+                <TRField.Label htmlFor={inputId}>ラック名</TRField.Label>
                 <TRInput defaultValue="rack-alpha" id={inputId} name="rack" required />
               </TRField.Root>
-              <TRButton type="submit">Save changes</TRButton>
+              <TRButton type="submit">変更を保存</TRButton>
             </TRForm>
             <output aria-live="polite">{result}</output>
           </div>
-          <TRDialog.Close>Cancel</TRDialog.Close>
+          <TRDialog.Close>キャンセル</TRDialog.Close>
         </TRDialog.Popup>
       </TRDialog.Viewport>
     </TRDialog.Portal>

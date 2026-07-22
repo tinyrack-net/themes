@@ -24,17 +24,17 @@ import * as Stories from '../../../documentation/components/drawer.demo.js';
 
 ## 使用方法
 
-<ComponentExampleTabs id="drawer-basic" title="既定" preview={<TRDrawer.Root><TRDrawer.Trigger>Open settings</TRDrawer.Trigger><TRDrawer.Portal><TRDrawer.Backdrop /><TRDrawer.Viewport><TRDrawer.Popup><TRDrawer.Content><TRDrawer.Title>Rack settings</TRDrawer.Title><TRDrawer.Description>Update deployment preferences.</TRDrawer.Description><TRDrawer.Close>閉じる</TRDrawer.Close></TRDrawer.Content></TRDrawer.Popup></TRDrawer.Viewport></TRDrawer.Portal></TRDrawer.Root>} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerBasicSource }]} />
+<ComponentExampleTabs id="drawer-basic" title="既定" preview={<div data-docs-example-item=""><TRDrawer.Root><TRDrawer.Trigger>設定を開く</TRDrawer.Trigger><TRDrawer.Portal><TRDrawer.Backdrop /><TRDrawer.Viewport><TRDrawer.Popup><TRDrawer.Content><TRDrawer.Title>ラック設定</TRDrawer.Title><TRDrawer.Description>デプロイ設定を更新します。</TRDrawer.Description><TRDrawer.Close>閉じる</TRDrawer.Close></TRDrawer.Content></TRDrawer.Popup></TRDrawer.Viewport></TRDrawer.Portal></TRDrawer.Root></div>} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerBasicSourceJa }]} />
 
 ## 例
 
-<ComponentExampleTabs id="drawer-states" title="Snap point と nested content" description="compact、medium、full-height の位置間を drag します。nested drawer は focus containment と coordinated indentation を示します。" preview={<Stories.DrawerPreview activeSnapPoint="compact" label="Open snap drawer" open={false} swipeDirection="down" />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerSnapPointsSource }]} />
+<ComponentExampleTabs id="drawer-states" title="Snap point と nested content" description="compact、medium、full-height の位置間を drag します。nested drawer は focus containment と coordinated indentation を示します。" preview={<Stories.DrawerPreview activeSnapPoint="compact" label="Snap drawer を開く" open={false} swipeDirection="down" />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerSnapPointsSourceJa }]} />
 
-<ComponentExampleTabs id="drawer-directions" title="方向" description="swipeDirection は down、up、left、right に設定できます。popup は対応する viewport edge に接続し、同じ方向へ閉じます。" preview={<Stories.DrawerDirectionPreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerDirectionsSource }]} />
+<ComponentExampleTabs id="drawer-directions" title="方向" description="swipeDirection は down、up、left、right に設定できます。popup は対応する viewport edge に接続し、同じ方向へ閉じます。" preview={<Stories.DrawerDirectionPreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerDirectionsSourceJa }]} />
 
-<ComponentExampleTabs id="drawer-provider-handle" title="Provider、detached handle、swipe area" description="Provider は page indentation を調整し、typed detached trigger は createHandle で payload を渡し、SwipeArea は viewport edge から同じ drawer を開きます。" preview={<Stories.DrawerProviderHandlePreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerProviderHandleSource }]} />
+<ComponentExampleTabs id="drawer-provider-handle" title="Provider、detached handle、swipe area" description="Provider は page indentation を調整し、typed detached trigger は createHandle で payload を渡し、SwipeArea は viewport edge から同じ drawer を開きます。" preview={<Stories.DrawerProviderHandlePreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerProviderHandleSourceJa }]} />
 
-<ComponentExampleTabs id="drawer-virtual-keyboard" title="Virtual keyboard" description="VirtualKeyboardProvider は mobile virtual keyboard が visual viewport を変更したときも focused field を表示範囲に保ちます。" preview={<Stories.DrawerVirtualKeyboardPreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerVirtualKeyboardSource }]} />
+<ComponentExampleTabs id="drawer-virtual-keyboard" title="Virtual keyboard" description="VirtualKeyboardProvider は mobile virtual keyboard が visual viewport を変更したときも focused field を表示範囲に保ちます。" preview={<Stories.DrawerVirtualKeyboardPreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerVirtualKeyboardSourceJa }]} />
 
 ## 構造
 

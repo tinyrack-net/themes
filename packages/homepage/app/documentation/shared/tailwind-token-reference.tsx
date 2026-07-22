@@ -43,7 +43,7 @@ const copy = {
   ko: {
     columns: ['Tailwind 테마 변수', '런타임 변수 / 브레이크포인트 값', '유틸리티 예시'],
     empty: '검색 결과가 없어요.',
-    guide: 'Foundation 가이드 보기',
+    guide: '관련 기초 가이드',
     groups: {
       breakpoint: '브레이크포인트',
       color: '색상',
@@ -58,7 +58,7 @@ const copy = {
     },
     searchLabel: 'Tailwind 토큰 검색',
     searchPlaceholder: '유틸리티 또는 CSS 변수 검색',
-    tableLabel: 'Tailwind 토큰 레퍼런스',
+    tableLabel: 'Tailwind 토큰 참고표',
     scrollHint: '좁은 화면에서는 각 표를 가로로 스크롤해 모든 열을 비교할 수 있어요.',
   },
   ja: {
@@ -68,7 +68,7 @@ const copy = {
       'ユーティリティ例',
     ],
     empty: '検索に一致する Tailwind トークンはありません。',
-    guide: 'Foundation ガイドを読む',
+    guide: '関連する基盤ガイド',
     groups: {
       breakpoint: 'ブレークポイント',
       color: 'カラー',

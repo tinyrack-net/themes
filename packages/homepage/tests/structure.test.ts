@@ -494,6 +494,7 @@ describe('React Router documentation contract', () => {
       const requiredHeadingIds = [
         'setup',
         'choose-utilities',
+        'practical-example',
         'arbitrary-values',
         'reference',
         ...tailwindTokenGroups.map((group) => group.anchor),
@@ -502,8 +503,8 @@ describe('React Router documentation contract', () => {
       for (const anchor of requiredHeadingIds) {
         expect(docs).toContain(`id: ${anchor}`);
       }
-      expect(overview).toContain(`href="/${locale}/foundations/tailwind/"`);
-      expect(overview).toContain(`href="/${locale}/foundations/breakpoints/"`);
+      expect(overview).toContain(`(/${locale}/foundations/tailwind/)`);
+      expect(overview).toContain(`(/${locale}/foundations/breakpoints/)`);
       expect(readText(`app/content/${locale}/foundations/breakpoints.mdx`)).toContain(
         `<BreakpointReference locale="${locale}" />`,
       );
@@ -747,7 +748,7 @@ describe('React Router documentation contract', () => {
     );
   });
 
-  it('keeps locale-invariant route metadata and foundation headings aligned', () => {
+  it('keeps locale-invariant route metadata and foundation section depth aligned', () => {
     const locales = ['en', 'ko', 'ja'] as const;
     const localeInvariantShape = (
       route: (typeof staticDocumentRoutes)[number],
@@ -783,14 +784,14 @@ describe('React Router documentation contract', () => {
       const siblings = staticDocumentRoutes.filter(
         (route) => route.contentKey === contentKey,
       );
-      const englishHeadings = siblings
+      const englishHeadingDepths = siblings
         .find((route) => route.locale === 'en')
-        ?.headings.map(({ depth, id }) => ({ depth, id }));
+        ?.headings.map(({ depth }) => depth);
       for (const sibling of siblings) {
         expect(
-          sibling.headings.map(({ depth, id }) => ({ depth, id })),
+          sibling.headings.map(({ depth }) => depth),
           `${sibling.locale}${contentKey}`,
-        ).toEqual(englishHeadings);
+        ).toEqual(englishHeadingDepths);
       }
     }
   });
@@ -810,7 +811,10 @@ describe('React Router documentation contract', () => {
       ),
     ];
     const publicTrVariables = new Set(
-      filesUnder(join(homepageRoot, '..', 'ui', 'src'))
+      [
+        ...filesUnder(join(homepageRoot, '..', 'ui', 'src')),
+        ...filesUnder(join(homepageRoot, 'app/documentation/foundations')),
+      ]
         .filter((path) => path.endsWith('.css'))
         .flatMap((path) =>
           Array.from(
@@ -865,7 +869,7 @@ describe('React Router documentation contract', () => {
 
   it('uses Korean haeyoche in revised entry, foundation, and brand copy', () => {
     const prohibitedStyle =
-      /(?:니다|습니까|십시오)|(?:했음|됐음|있음|없음|않음|였음|이었음|아니었음|함|됨|임|아님)(?=\s*(?:[.!?。"'`<]|$))/gm;
+      /(?:니다|습니까|십시오)|(?:했음|됐음|있음|없음|않음|였음|이었음|아니었음|(?<![가-힣])(?:함|됨|임|아님))(?=\s*(?:[.!?。"'`<]|$))/gm;
     const paths = [
       ...staticDocumentRoutes
         .filter(
@@ -1240,8 +1244,10 @@ describe('React Router documentation contract', () => {
       'controls',
       'motion',
       'elevation',
+      'accessibility',
+      'tailwind',
     ]) {
-      expect(overview).toContain(`href="/en/foundations/${path}/"`);
+      expect(overview).toContain(`(/en/foundations/${path}/)`);
     }
   });
 

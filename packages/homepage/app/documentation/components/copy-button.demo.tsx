@@ -11,9 +11,36 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const copy = {
-  en: { status: 'Status', idle: 'Copy command', copied: 'Copied', unavailable: 'Copy unavailable', importIdle: 'Copy import', importCopied: 'Import copied', importUnavailable: 'Import unavailable', cleanup: 'Copy cleanup command' },
-  ko: { status: '상태', idle: '명령어 복사', copied: '복사했어요', unavailable: '복사할 수 없어요', importIdle: '가져오기 구문 복사', importCopied: '가져오기 구문을 복사했어요', importUnavailable: '가져오기 구문을 복사할 수 없어요', cleanup: '정리 명령어 복사' },
-  ja: { status: '状態', idle: 'コマンドをコピー', copied: 'コピーしました', unavailable: 'コピーできません', importIdle: 'インポート文をコピー', importCopied: 'インポート文をコピーしました', importUnavailable: 'インポート文をコピーできません', cleanup: 'クリーンアップコマンドをコピー' },
+  en: {
+    status: 'Status',
+    idle: 'Copy command',
+    copied: 'Copied',
+    unavailable: 'Copy unavailable',
+    importIdle: 'Copy import',
+    importCopied: 'Import copied',
+    importUnavailable: 'Import unavailable',
+    cleanup: 'Copy cleanup command',
+  },
+  ko: {
+    status: '상태',
+    idle: '명령어 복사',
+    copied: '복사했어요',
+    unavailable: '복사할 수 없어요',
+    importIdle: '가져오기 구문 복사',
+    importCopied: '가져오기 구문을 복사했어요',
+    importUnavailable: '가져오기 구문을 복사할 수 없어요',
+    cleanup: '정리 명령어 복사',
+  },
+  ja: {
+    status: '状態',
+    idle: 'コマンドをコピー',
+    copied: 'コピーしました',
+    unavailable: 'コピーできません',
+    importIdle: 'インポート文をコピー',
+    importCopied: 'インポート文をコピーしました',
+    importUnavailable: 'インポート文をコピーできません',
+    cleanup: 'クリーンアップコマンドをコピー',
+  },
 } as const;
 
 type StoryArgs = {
@@ -45,7 +72,14 @@ export function CopyButtonPreview({
   const [status, setStatus] = useState<TRCopyButtonStatus>('idle');
   return (
     <div className="grid justify-items-start gap-2" data-docs-example-item="">
-      <TRCopyButton copiedLabel={labels.copied} idleLabel={labels.idle} unavailableLabel={labels.unavailable} {...args} onStatusChange={setStatus} value={value} />
+      <TRCopyButton
+        copiedLabel={labels.copied}
+        idleLabel={labels.idle}
+        unavailableLabel={labels.unavailable}
+        {...args}
+        onStatusChange={setStatus}
+        value={value}
+      />
       <p>
         {statusLabel ?? labels.status}: {status}
       </p>

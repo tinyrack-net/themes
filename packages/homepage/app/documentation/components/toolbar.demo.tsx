@@ -16,11 +16,11 @@ import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
 } from '../../playground/demo.js';
-import { useDemoLocale } from '../shared/demo-locale.js';
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
 } from '../../playground/demo.js';
+import { useDemoLocale } from '../shared/demo-locale.js';
 
 type StoryArgs = {
   boldPressed: boolean;
@@ -40,7 +40,24 @@ export function ToolbarPreview({
   orientation,
 }: ToolbarPreviewProps) {
   const locale = useDemoLocale();
-  const copy = locale === 'ko' ? { editor: '편집기 서식 컨트롤', none: '선택한 서식 명령이 없어요', title: '문서 제목' } : locale === 'ja' ? { editor: 'エディター書式コントロール', none: '書式コマンドは選択されていません。', title: '文書タイトル' } : { editor: 'Editor formatting controls', none: 'No formatting command selected', title: 'Document title' };
+  const copy =
+    locale === 'ko'
+      ? {
+          editor: '편집기 서식 컨트롤',
+          none: '선택한 서식 명령이 없어요',
+          title: '문서 제목',
+        }
+      : locale === 'ja'
+        ? {
+            editor: 'エディター書式コントロール',
+            none: '書式コマンドは選択されていません。',
+            title: '文書タイトル',
+          }
+        : {
+            editor: 'Editor formatting controls',
+            none: 'No formatting command selected',
+            title: 'Document title',
+          };
   const [result, setResult] = useState(copy.none);
 
   return (

@@ -10,10 +10,65 @@ import type {
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const copy = {
-  en: { options: ['Metrics', 'Alerts', 'Automated backups'], states: ['Editable features', 'Read-only features', 'Disabled features'], selectAll: 'Select all', selected: 'Selected', none: 'none', permissions: 'Rack permissions', external: 'External features', resetMessage: 'Reset to metrics.', submitted: 'Submitted', submitExternal: 'Submit external group', reset: 'Reset', included: 'Included features', min: 'Select at least one feature.', max: 'Select no more than two features.', save: 'Save features', saved: 'Saved', playground: 'Rack features' },
-  ko: { options: ['지표', '알림', '자동 백업'], states: ['편집할 수 있는 기능', '읽기 전용 기능', '사용할 수 없는 기능'], selectAll: '모두 선택해요', selected: '선택한 값', none: '없어요', permissions: '랙 권한', external: '외부 폼 기능', resetMessage: '지표로 초기화했어요.', submitted: '제출한 값', submitExternal: '외부 그룹 제출', reset: '초기화', included: '포함할 기능', min: '기능을 하나 이상 선택하세요.', max: '기능을 두 개까지만 선택하세요.', save: '기능 저장', saved: '저장한 값', playground: '랙 기능' },
-  ja: { options: ['メトリクス', 'アラート', '自動バックアップ'], states: ['編集可能な機能', '読み取り専用の機能', '無効な機能'], selectAll: 'すべて選択', selected: '選択中', none: 'なし', permissions: 'ラック権限', external: '外部フォームの機能', resetMessage: 'メトリクスにリセットしました。', submitted: '送信値', submitExternal: '外部グループを送信', reset: 'リセット', included: '含める機能', min: '機能を1つ以上選択してください。', max: '機能は2つまで選択してください。', save: '機能を保存', saved: '保存値', playground: 'ラック機能' },
+  en: {
+    options: ['Metrics', 'Alerts', 'Automated backups'],
+    states: ['Editable features', 'Read-only features', 'Disabled features'],
+    selectAll: 'Select all',
+    selected: 'Selected',
+    none: 'none',
+    permissions: 'Rack permissions',
+    external: 'External features',
+    resetMessage: 'Reset to metrics.',
+    submitted: 'Submitted',
+    submitExternal: 'Submit external group',
+    reset: 'Reset',
+    included: 'Included features',
+    min: 'Select at least one feature.',
+    max: 'Select no more than two features.',
+    save: 'Save features',
+    saved: 'Saved',
+    playground: 'Rack features',
+  },
+  ko: {
+    options: ['지표', '알림', '자동 백업'],
+    states: ['편집할 수 있는 기능', '읽기 전용 기능', '사용할 수 없는 기능'],
+    selectAll: '모두 선택해요',
+    selected: '선택한 값',
+    none: '없어요',
+    permissions: '랙 권한',
+    external: '외부 폼 기능',
+    resetMessage: '지표로 초기화했어요.',
+    submitted: '제출한 값',
+    submitExternal: '외부 그룹 제출',
+    reset: '초기화',
+    included: '포함할 기능',
+    min: '기능을 하나 이상 선택하세요.',
+    max: '기능을 두 개까지만 선택하세요.',
+    save: '기능 저장',
+    saved: '저장한 값',
+    playground: '랙 기능',
+  },
+  ja: {
+    options: ['メトリクス', 'アラート', '自動バックアップ'],
+    states: ['編集可能な機能', '読み取り専用の機能', '無効な機能'],
+    selectAll: 'すべて選択',
+    selected: '選択中',
+    none: 'なし',
+    permissions: 'ラック権限',
+    external: '外部フォームの機能',
+    resetMessage: 'メトリクスにリセットしました。',
+    submitted: '送信値',
+    submitExternal: '外部グループを送信',
+    reset: 'リセット',
+    included: '含める機能',
+    min: '機能を1つ以上選択してください。',
+    max: '機能は2つまで選択してください。',
+    save: '機能を保存',
+    saved: '保存値',
+    playground: 'ラック機能',
+  },
 } as const;
+
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
@@ -48,7 +103,10 @@ export function CheckboxGroupPreview({
   selectedValues,
 }: CheckboxGroupPreviewProps) {
   const text = copy[useDemoLocale()];
-  const checkboxGroupOptions = optionValues.map((value, index) => ({ label: text.options[index] ?? value, value }));
+  const checkboxGroupOptions = optionValues.map((value, index) => ({
+    label: text.options[index] ?? value,
+    value,
+  }));
   const baseId = useId();
   const labelId = useId();
   const stateProps =
@@ -125,12 +183,16 @@ export function CheckboxGroupStateComparison() {
 
 export function CheckboxGroupParentPreview() {
   const text = copy[useDemoLocale()];
-  const checkboxGroupOptions = optionValues.map((value, index) => ({ label: text.options[index] ?? value, value }));
+  const checkboxGroupOptions = optionValues.map((value, index) => ({
+    label: text.options[index] ?? value,
+    value,
+  }));
   const allValues = [...optionValues];
   const [value, setValue] = useState<string[]>(['metrics']);
 
   return (
-    <TRCheckboxGroup data-docs-example-item=""
+    <TRCheckboxGroup
+      data-docs-example-item=""
       allValues={allValues}
       aria-label={text.permissions}
       onValueChange={setValue}
@@ -157,14 +219,19 @@ export function CheckboxGroupParentPreview() {
           {option.label}
         </label>
       ))}
-      <output aria-live="polite">{text.selected}: {value.join(', ') || text.none}</output>
+      <output aria-live="polite">
+        {text.selected}: {value.join(', ') || text.none}
+      </output>
     </TRCheckboxGroup>
   );
 }
 
 export function CheckboxGroupExternalFormPreview() {
   const text = copy[useDemoLocale()];
-  const checkboxGroupOptions = optionValues.map((value, index) => ({ label: text.options[index] ?? value, value }));
+  const checkboxGroupOptions = optionValues.map((value, index) => ({
+    label: text.options[index] ?? value,
+    value,
+  }));
   const formId = useId();
   const groupId = useId();
   const [result, setResult] = useState('');
@@ -188,7 +255,11 @@ export function CheckboxGroupExternalFormPreview() {
           </TRButton>
         </div>
       </TRForm>
-      <TRCheckboxGroup aria-label={text.external} data-docs-example-item="" defaultValue={['metrics']}>
+      <TRCheckboxGroup
+        aria-label={text.external}
+        data-docs-example-item=""
+        defaultValue={['metrics']}
+      >
         {checkboxGroupOptions.slice(0, 2).map((option) => (
           <label
             className="flex min-h-6 items-center gap-2"
@@ -219,10 +290,7 @@ export function CheckboxGroupFormPreview() {
   const [selectedValues, setSelectedValues] = useState<string[]>(['metrics']);
   const [submittedValues, setSubmittedValues] = useState<string[]>([]);
   const invalid = attempted && (selectedValues.length < 1 || selectedValues.length > 2);
-  const errorMessage =
-    selectedValues.length < 1
-      ? text.min
-      : text.max;
+  const errorMessage = selectedValues.length < 1 ? text.min : text.max;
 
   return (
     <TRForm
@@ -254,7 +322,9 @@ export function CheckboxGroupFormPreview() {
       ) : null}
       <TRButton type="submit">{text.save}</TRButton>
       <output aria-live="polite">
-        {submittedValues.length > 0 ? `${text.saved}: ${submittedValues.join(', ')}.` : ''}
+        {submittedValues.length > 0
+          ? `${text.saved}: ${submittedValues.join(', ')}.`
+          : ''}
       </output>
     </TRForm>
   );

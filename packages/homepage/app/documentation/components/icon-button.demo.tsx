@@ -9,9 +9,33 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const copy = {
-  en: { settings: 'Open rack settings', refreshing: 'Refreshing rack status', refresh: 'Refresh rack status', remove: 'Delete rack', idle: 'No action yet.', opened: 'Rack settings opened.', activations: 'Activations' },
-  ko: { settings: '랙 설정 열기', refreshing: '랙 상태 새로 고치는 중', refresh: '랙 상태 새로 고침', remove: '랙 삭제', idle: '아직 실행한 동작이 없어요.', opened: '랙 설정을 열었어요.', activations: '실행 횟수' },
-  ja: { settings: 'ラック設定を開く', refreshing: 'ラックの状態を更新中', refresh: 'ラックの状態を更新', remove: 'ラックを削除', idle: 'まだ操作していません。', opened: 'ラック設定を開きました。', activations: '実行回数' },
+  en: {
+    settings: 'Open rack settings',
+    refreshing: 'Refreshing rack status',
+    refresh: 'Refresh rack status',
+    remove: 'Delete rack',
+    idle: 'No action yet.',
+    opened: 'Rack settings opened.',
+    activations: 'Activations',
+  },
+  ko: {
+    settings: '랙 설정 열기',
+    refreshing: '랙 상태 새로 고치는 중',
+    refresh: '랙 상태 새로 고침',
+    remove: '랙 삭제',
+    idle: '아직 실행한 동작이 없어요.',
+    opened: '랙 설정을 열었어요.',
+    activations: '실행 횟수',
+  },
+  ja: {
+    settings: 'ラック設定を開く',
+    refreshing: 'ラックの状態を更新中',
+    refresh: 'ラックの状態を更新',
+    remove: 'ラックを削除',
+    idle: 'まだ操作していません。',
+    opened: 'ラック設定を開きました。',
+    activations: '実行回数',
+  },
 } as const;
 
 type StoryArgs = {
@@ -36,7 +60,9 @@ export function IconButtonPreview({ label, ...args }: StoryArgs) {
       >
         <SettingsIcon aria-hidden="true" />
       </TRIconButton>
-      <output aria-live="polite">{copy[locale].activations}: {activations}</output>
+      <output aria-live="polite">
+        {copy[locale].activations}: {activations}
+      </output>
     </div>
   );
 }
@@ -65,7 +91,11 @@ export function IconButtonStates() {
   const labels = copy[locale];
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <TRIconButton data-docs-example-item="" aria-label={labels.settings} variant="primary">
+      <TRIconButton
+        data-docs-example-item=""
+        aria-label={labels.settings}
+        variant="primary"
+      >
         <SettingsIcon aria-hidden="true" />
       </TRIconButton>
       <TRIconButton
@@ -94,17 +124,41 @@ export function IconButtonAppearances() {
   const appearances = ['solid', 'outline', 'ghost'] as const;
   return (
     <div className="flex flex-wrap items-center gap-3">
-      {appearances.map((appearance) => <TRIconButton appearance={appearance} aria-label={`${appearance} settings`} key={appearance}><SettingsIcon aria-hidden="true" /></TRIconButton>)}
+      {appearances.map((appearance) => (
+        <TRIconButton
+          appearance={appearance}
+          aria-label={`${appearance} settings`}
+          key={appearance}
+        >
+          <SettingsIcon aria-hidden="true" />
+        </TRIconButton>
+      ))}
     </div>
   );
 }
 
 export function IconButtonVariants() {
-  return <div className="flex flex-wrap items-center gap-3">{(['secondary', 'primary', 'danger'] as const).map((variant) => <TRIconButton aria-label={`${variant} action`} key={variant} variant={variant}><SettingsIcon aria-hidden="true" /></TRIconButton>)}</div>;
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      {(['secondary', 'primary', 'danger'] as const).map((variant) => (
+        <TRIconButton aria-label={`${variant} action`} key={variant} variant={variant}>
+          <SettingsIcon aria-hidden="true" />
+        </TRIconButton>
+      ))}
+    </div>
+  );
 }
 
 export function IconButtonSizes() {
-  return <div className="flex flex-wrap items-center gap-3">{(['sm', 'md', 'lg'] as const).map((uiSize) => <TRIconButton aria-label={`${uiSize} settings`} key={uiSize} uiSize={uiSize}><SettingsIcon aria-hidden="true" /></TRIconButton>)}</div>;
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      {(['sm', 'md', 'lg'] as const).map((uiSize) => (
+        <TRIconButton aria-label={`${uiSize} settings`} key={uiSize} uiSize={uiSize}>
+          <SettingsIcon aria-hidden="true" />
+        </TRIconButton>
+      ))}
+    </div>
+  );
 }
 
 export const iconButtonBasicSource = `import '@tinyrack/ui/core.css';

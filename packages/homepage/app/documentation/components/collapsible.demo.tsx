@@ -4,11 +4,11 @@ import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
 } from '../../playground/demo.js';
-import { useDemoLocale } from '../shared/demo-locale.js';
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
 } from '../../playground/demo.js';
+import { useDemoLocale } from '../shared/demo-locale.js';
 
 type CollapsibleStoryArgs = {
   disabled: boolean;
@@ -29,7 +29,12 @@ export function CollapsiblePreview({
   trigger,
 }: CollapsiblePreviewProps) {
   const locale = useDemoLocale();
-  const panel = locale === 'ko' ? '재시도와 제한 시간 컨트롤이에요.' : locale === 'ja' ? '再試行とタイムアウトのコントロールです。' : 'Retry and timeout controls.';
+  const panel =
+    locale === 'ko'
+      ? '재시도와 제한 시간 컨트롤이에요.'
+      : locale === 'ja'
+        ? '再試行とタイムアウトのコントロールです。'
+        : 'Retry and timeout controls.';
   return (
     <div className="grid w-full min-w-0 max-w-96 gap-3" data-docs-example-item="">
       <TRCollapsible.Root
@@ -65,7 +70,13 @@ export function CollapsibleInteractiveExample() {
       lifecycle="hiddenUntilFound"
       onOpenChange={setOpen}
       open={open}
-      trigger={locale === 'ko' ? '고급 설정' : locale === 'ja' ? '詳細設定' : 'Advanced settings'}
+      trigger={
+        locale === 'ko'
+          ? '고급 설정'
+          : locale === 'ja'
+            ? '詳細設定'
+            : 'Advanced settings'
+      }
     />
   );
 }

@@ -9,10 +9,52 @@ import type {
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const copy = {
-  en: { primary: 'Primary rack', alternate: 'Secondary rack', group: 'Deployment rack', selected: 'Selected', selection: ['Unselected', 'Selected'], availability: ['Editable', 'Read only', 'Disabled'], sizes: 'Radio sizes', plan: 'Support plan', plans: ['Standard · Community support', 'Priority · 4-hour response', 'Critical · 24/7 response'], selectedPlan: 'Selected plan' },
-  ko: { primary: '기본 랙', alternate: '보조 랙', group: '배포 랙', selected: '선택한 값', selection: ['선택 안 함', '선택함'], availability: ['편집할 수 있어요', '읽기 전용이에요', '사용할 수 없어요'], sizes: '라디오 크기', plan: '지원 요금제', plans: ['표준 · 커뮤니티 지원', '우선 · 4시간 내 응답', '긴급 · 연중무휴 응답'], selectedPlan: '선택한 요금제' },
-  ja: { primary: 'プライマリラック', alternate: 'セカンダリラック', group: 'デプロイ先ラック', selected: '選択中', selection: ['未選択', '選択済み'], availability: ['編集可能', '読み取り専用', '無効'], sizes: 'ラジオのサイズ', plan: 'サポートプラン', plans: ['スタンダード · コミュニティサポート', '優先 · 4時間以内の応答', '緊急 · 24時間365日対応'], selectedPlan: '選択中のプラン' },
+  en: {
+    primary: 'Primary rack',
+    alternate: 'Secondary rack',
+    group: 'Deployment rack',
+    selected: 'Selected',
+    selection: ['Unselected', 'Selected'],
+    availability: ['Editable', 'Read only', 'Disabled'],
+    sizes: 'Radio sizes',
+    plan: 'Support plan',
+    plans: [
+      'Standard · Community support',
+      'Priority · 4-hour response',
+      'Critical · 24/7 response',
+    ],
+    selectedPlan: 'Selected plan',
+  },
+  ko: {
+    primary: '기본 랙',
+    alternate: '보조 랙',
+    group: '배포 랙',
+    selected: '선택한 값',
+    selection: ['선택 안 함', '선택함'],
+    availability: ['편집할 수 있어요', '읽기 전용이에요', '사용할 수 없어요'],
+    sizes: '라디오 크기',
+    plan: '지원 요금제',
+    plans: ['표준 · 커뮤니티 지원', '우선 · 4시간 내 응답', '긴급 · 연중무휴 응답'],
+    selectedPlan: '선택한 요금제',
+  },
+  ja: {
+    primary: 'プライマリラック',
+    alternate: 'セカンダリラック',
+    group: 'デプロイ先ラック',
+    selected: '選択中',
+    selection: ['未選択', '選択済み'],
+    availability: ['編集可能', '読み取り専用', '無効'],
+    sizes: 'ラジオのサイズ',
+    plan: 'サポートプラン',
+    plans: [
+      'スタンダード · コミュニティサポート',
+      '優先 · 4時間以内の応答',
+      '緊急 · 24時間365日対応',
+    ],
+    selectedPlan: '選択中のプラン',
+  },
 } as const;
+
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
@@ -54,7 +96,8 @@ export function RadioPreview({
 
   return (
     <div className="grid gap-3">
-      <TRRadioGroup data-docs-example-item=""
+      <TRRadioGroup
+        data-docs-example-item=""
         {...stateProps}
         aria-label={text.group}
         className="grid gap-2"
@@ -87,7 +130,8 @@ export function RadioPreview({
         </label>
       </TRRadioGroup>
       <output aria-live="polite" className="text-tinyrack-sm text-tinyrack-text-muted">
-        {text.selected}: {selectedValue === 'alternate' ? resolvedAlternateLabel : label}
+        {text.selected}:{' '}
+        {selectedValue === 'alternate' ? resolvedAlternateLabel : label}
       </output>
     </div>
   );
@@ -109,7 +153,13 @@ function RadioStateSample({
   return (
     <TRRadioGroup aria-label={label} value={selected ? 'sample' : 'other'}>
       <label className="flex min-h-6 items-center gap-2" htmlFor={id}>
-        <TRRadio.Root data-docs-example-item="" disabled={disabled} id={id} readOnly={readOnly} value="sample">
+        <TRRadio.Root
+          data-docs-example-item=""
+          disabled={disabled}
+          id={id}
+          readOnly={readOnly}
+          value="sample"
+        >
           <TRRadio.Indicator aria-hidden="true" />
         </TRRadio.Root>
         <span className={disabled ? 'text-tinyrack-text-muted' : undefined}>
@@ -132,7 +182,13 @@ export function RadioStateComparison() {
 
 export function RadioAvailabilityComparison() {
   const text = copy[useDemoLocale()];
-  return <div className="grid gap-3 sm:grid-cols-3"><RadioStateSample label={text.availability[0]} selected /><RadioStateSample label={text.availability[1]} readOnly selected /><RadioStateSample disabled label={text.availability[2]} selected /></div>;
+  return (
+    <div className="grid gap-3 sm:grid-cols-3">
+      <RadioStateSample label={text.availability[0]} selected />
+      <RadioStateSample label={text.availability[1]} readOnly selected />
+      <RadioStateSample disabled label={text.availability[2]} selected />
+    </div>
+  );
 }
 
 export function RadioSizeComparison() {
@@ -147,7 +203,12 @@ export function RadioSizeComparison() {
           htmlFor={`${groupId}-${uiSize}`}
           key={uiSize}
         >
-          <TRRadio.Root data-docs-example-item="" id={`${groupId}-${uiSize}`} uiSize={uiSize} value={uiSize}>
+          <TRRadio.Root
+            data-docs-example-item=""
+            id={`${groupId}-${uiSize}`}
+            uiSize={uiSize}
+            value={uiSize}
+          >
             <TRRadio.Indicator aria-hidden="true" />
           </TRRadio.Root>
           <span className="text-tinyrack-sm">{uiSize}</span>
@@ -164,7 +225,8 @@ export function RadioPlanExample() {
 
   return (
     <div className="grid gap-3">
-      <TRRadioGroup data-docs-example-item=""
+      <TRRadioGroup
+        data-docs-example-item=""
         aria-label={text.plan}
         className="grid gap-2"
         name="support-plan"
@@ -184,7 +246,9 @@ export function RadioPlanExample() {
           </label>
         ))}
       </TRRadioGroup>
-      <output aria-live="polite">{text.selectedPlan}: {value}</output>
+      <output aria-live="polite">
+        {text.selectedPlan}: {value}
+      </output>
     </div>
   );
 }

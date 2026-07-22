@@ -4,11 +4,11 @@ import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
 } from '../../playground/demo.js';
-import { useDemoLocale } from '../shared/demo-locale.js';
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
 } from '../../playground/demo.js';
+import { useDemoLocale } from '../shared/demo-locale.js';
 
 const items = [
   { depth: 2 as const, id: 'install', label: 'Install' },
@@ -19,14 +19,33 @@ type PreviewProps = Args & { onNavigate?: (item: (typeof items)[number]) => void
 
 export function TableOfContentsPreview({ currentHeading, onNavigate }: PreviewProps) {
   const locale = useDemoLocale();
-  const localizedItems = locale === 'ko' ? [{ depth: 2 as const, id: 'install', label: '설치' }, { depth: 3 as const, id: 'configure', label: '설정' }] : locale === 'ja' ? [{ depth: 2 as const, id: 'install', label: 'インストール' }, { depth: 3 as const, id: 'configure', label: '設定' }] : items;
+  const localizedItems =
+    locale === 'ko'
+      ? [
+          { depth: 2 as const, id: 'install', label: '설치' },
+          { depth: 3 as const, id: 'configure', label: '설정' },
+        ]
+      : locale === 'ja'
+        ? [
+            { depth: 2 as const, id: 'install', label: 'インストール' },
+            { depth: 3 as const, id: 'configure', label: '設定' },
+          ]
+        : items;
   return (
     <div className="w-full max-w-64 min-w-0" data-docs-example-item="">
       <TRTableOfContents
         currentHeading={currentHeading}
         items={localizedItems}
-        label={locale === 'ko' ? '이 페이지' : locale === 'ja' ? 'このページ' : 'On this page'}
-        mobileLabel={locale === 'ko' ? '목차' : locale === 'ja' ? '目次' : 'On this page'}
+        label={
+          locale === 'ko'
+            ? '이 페이지'
+            : locale === 'ja'
+              ? 'このページ'
+              : 'On this page'
+        }
+        mobileLabel={
+          locale === 'ko' ? '목차' : locale === 'ja' ? '目次' : 'On this page'
+        }
         {...(onNavigate === undefined ? {} : { onNavigate })}
       />
     </div>
@@ -48,7 +67,13 @@ export function TableOfContentsExample() {
 }
 
 export function TableOfContentsStatesPreview() {
-  return <div className="grid gap-4 sm:grid-cols-3">{['install', 'configure', 'missing'].map((currentHeading) => <TableOfContentsPreview currentHeading={currentHeading} key={currentHeading} />)}</div>;
+  return (
+    <div className="grid gap-4 sm:grid-cols-3">
+      {['install', 'configure', 'missing'].map((currentHeading) => (
+        <TableOfContentsPreview currentHeading={currentHeading} key={currentHeading} />
+      ))}
+    </div>
+  );
 }
 
 export const tableOfContentsBasicSource = `import '@tinyrack/ui/components/table-of-contents.css';

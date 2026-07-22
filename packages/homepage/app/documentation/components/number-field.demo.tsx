@@ -7,11 +7,11 @@ import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
 } from '../../playground/demo.js';
-import { useDemoLocale } from '../shared/demo-locale.js';
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
 } from '../../playground/demo.js';
+import { useDemoLocale } from '../shared/demo-locale.js';
 
 type StoryArgs = {
   disabled: boolean;
@@ -86,9 +86,13 @@ export function NumberFieldPreview({
         <TRNumberField.ScrubAreaCursor>↕</TRNumberField.ScrubAreaCursor>
       </TRNumberField.ScrubArea>
       <TRNumberField.Group>
-        <TRNumberField.Decrement aria-label={action.decrease}>−</TRNumberField.Decrement>
+        <TRNumberField.Decrement aria-label={action.decrease}>
+          −
+        </TRNumberField.Decrement>
         <TRNumberField.Input aria-labelledby={labelId} id={inputId} />
-        <TRNumberField.Increment aria-label={action.increase}>+</TRNumberField.Increment>
+        <TRNumberField.Increment aria-label={action.increase}>
+          +
+        </TRNumberField.Increment>
       </TRNumberField.Group>
     </TRNumberField.Root>
   );
@@ -97,9 +101,21 @@ export function NumberFieldPreview({
 export function NumberFieldFormatPreview() {
   const locale = useDemoLocale();
   const copy = {
-    en: { decrease: 'Decrease by 16 gigabytes', increase: 'Increase by 16 gigabytes', label: 'Storage capacity' },
-    ja: { decrease: '16 ギガバイト減らす', increase: '16 ギガバイト増やす', label: 'ストレージ容量' },
-    ko: { decrease: '16기가바이트 감소', increase: '16기가바이트 증가', label: '저장 용량' },
+    en: {
+      decrease: 'Decrease by 16 gigabytes',
+      increase: 'Increase by 16 gigabytes',
+      label: 'Storage capacity',
+    },
+    ja: {
+      decrease: '16 ギガバイト減らす',
+      increase: '16 ギガバイト増やす',
+      label: 'ストレージ容量',
+    },
+    ko: {
+      decrease: '16기가바이트 감소',
+      increase: '16기가바이트 증가',
+      label: '저장 용량',
+    },
   }[locale];
   return (
     <TRNumberField.Root
@@ -116,13 +132,9 @@ export function NumberFieldFormatPreview() {
         <TRNumberField.ScrubAreaCursor>↕</TRNumberField.ScrubAreaCursor>
       </TRNumberField.ScrubArea>
       <TRNumberField.Group>
-        <TRNumberField.Decrement aria-label={copy.decrease}>
-          −
-        </TRNumberField.Decrement>
+        <TRNumberField.Decrement aria-label={copy.decrease}>−</TRNumberField.Decrement>
         <TRNumberField.Input id="storage-capacity" />
-        <TRNumberField.Increment aria-label={copy.increase}>
-          +
-        </TRNumberField.Increment>
+        <TRNumberField.Increment aria-label={copy.increase}>+</TRNumberField.Increment>
       </TRNumberField.Group>
     </TRNumberField.Root>
   );
@@ -130,9 +142,21 @@ export function NumberFieldFormatPreview() {
 
 export function NumberFieldStateComparison() {
   const copy = {
-    en: { disabled: 'Disabled replicas', editable: 'Editable replicas', readOnly: 'Read-only replicas' },
-    ja: { disabled: '無効なレプリカ', editable: '編集可能なレプリカ', readOnly: '読み取り専用のレプリカ' },
-    ko: { disabled: '비활성 복제본', editable: '편집 가능한 복제본', readOnly: '읽기 전용 복제본' },
+    en: {
+      disabled: 'Disabled replicas',
+      editable: 'Editable replicas',
+      readOnly: 'Read-only replicas',
+    },
+    ja: {
+      disabled: '無効なレプリカ',
+      editable: '編集可能なレプリカ',
+      readOnly: '読み取り専用のレプリカ',
+    },
+    ko: {
+      disabled: '비활성 복제본',
+      editable: '편집 가능한 복제본',
+      readOnly: '읽기 전용 복제본',
+    },
   }[useDemoLocale()];
   return (
     <div className="grid gap-5 sm:grid-cols-2">
@@ -170,9 +194,24 @@ export function NumberFieldStateComparison() {
 export function NumberFieldValidationPreview() {
   const locale = useDemoLocale();
   const copy = {
-    en: { button: 'Create service', error: 'Choose a replica count.', label: 'Replica count', result: (value: number) => `Creating ${value} replicas.` },
-    ja: { button: 'サービスを作成', error: 'レプリカ数を選択してください。', label: 'レプリカ数', result: (value: number) => `${value} 個のレプリカを作成しています。` },
-    ko: { button: '서비스 만들기', error: '복제본 수를 선택하세요.', label: '복제본 수', result: (value: number) => `복제본 ${value}개를 만들고 있어요.` },
+    en: {
+      button: 'Create service',
+      error: 'Choose a replica count.',
+      label: 'Replica count',
+      result: (value: number) => `Creating ${value} replicas.`,
+    },
+    ja: {
+      button: 'サービスを作成',
+      error: 'レプリカ数を選択してください。',
+      label: 'レプリカ数',
+      result: (value: number) => `${value} 個のレプリカを作成しています。`,
+    },
+    ko: {
+      button: '서비스 만들기',
+      error: '복제본 수를 선택하세요.',
+      label: '복제본 수',
+      result: (value: number) => `복제본 ${value}개를 만들고 있어요.`,
+    },
   }[locale];
   const [attempted, setAttempted] = useState(false);
   const [value, setValue] = useState<number | null>(null);
@@ -212,7 +251,11 @@ export function NumberFieldValidationPreview() {
 
 export function NumberFieldLocalePreview() {
   const copy = {
-    en: { decrease: 'Decrease budget', increase: 'Increase budget', label: 'Budget (de-DE)' },
+    en: {
+      decrease: 'Decrease budget',
+      increase: 'Increase budget',
+      label: 'Budget (de-DE)',
+    },
     ja: { decrease: '予算を減らす', increase: '予算を増やす', label: '予算 (de-DE)' },
     ko: { decrease: '예산 감소', increase: '예산 증가', label: '예산 (de-DE)' },
   }[useDemoLocale()];
@@ -230,13 +273,9 @@ export function NumberFieldLocalePreview() {
         <TRNumberField.ScrubAreaCursor>↕</TRNumberField.ScrubAreaCursor>
       </TRNumberField.ScrubArea>
       <TRNumberField.Group>
-        <TRNumberField.Decrement aria-label={copy.decrease}>
-          −
-        </TRNumberField.Decrement>
+        <TRNumberField.Decrement aria-label={copy.decrease}>−</TRNumberField.Decrement>
         <TRNumberField.Input id="localized-budget" />
-        <TRNumberField.Increment aria-label={copy.increase}>
-          +
-        </TRNumberField.Increment>
+        <TRNumberField.Increment aria-label={copy.increase}>+</TRNumberField.Increment>
       </TRNumberField.Group>
     </TRNumberField.Root>
   );
@@ -244,9 +283,24 @@ export function NumberFieldLocalePreview() {
 
 export function NumberFieldResetPreview() {
   const copy = {
-    en: { label: 'Replicas', reset: 'Reset', resetResult: 'Reset to 4 replicas.', submit: 'Submit' },
-    ja: { label: 'レプリカ', reset: 'リセット', resetResult: '4 個のレプリカに戻しました。', submit: '送信' },
-    ko: { label: '복제본', reset: '초기화', resetResult: '복제본 4개로 되돌렸어요.', submit: '제출' },
+    en: {
+      label: 'Replicas',
+      reset: 'Reset',
+      resetResult: 'Reset to 4 replicas.',
+      submit: 'Submit',
+    },
+    ja: {
+      label: 'レプリカ',
+      reset: 'リセット',
+      resetResult: '4 個のレプリカに戻しました。',
+      submit: '送信',
+    },
+    ko: {
+      label: '복제본',
+      reset: '초기화',
+      resetResult: '복제본 4개로 되돌렸어요.',
+      submit: '제출',
+    },
   }[useDemoLocale()];
   const [result, setResult] = useState('');
 

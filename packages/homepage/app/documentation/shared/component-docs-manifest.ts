@@ -736,11 +736,7 @@ export const componentDocsManifest = [
       exampleGroup('fieldset-states', 'examples', 'recipe', 2),
       exampleGroup('fieldset-composition', 'examples', 'recipe', 1),
     ],
-    requiredExamples: [
-      'fieldset-basic',
-      'fieldset-states',
-      'fieldset-composition',
-    ],
+    requiredExamples: ['fieldset-basic', 'fieldset-states', 'fieldset-composition'],
     title: 'Fieldset',
   },
   {
@@ -1099,11 +1095,7 @@ export const componentDocsManifest = [
       exampleGroup('callout-variants', 'examples', 'series', 4),
       exampleGroup('callout-rich-content', 'examples', 'recipe', 1),
     ],
-    requiredExamples: [
-      'callout-basic',
-      'callout-variants',
-      'callout-rich-content',
-    ],
+    requiredExamples: ['callout-basic', 'callout-variants', 'callout-rich-content'],
     title: 'Callout',
   },
   {
@@ -1212,10 +1204,7 @@ export const componentDocsManifest = [
       exampleGroup('table-of-contents-basic', 'usage', 'basic', 1),
       exampleGroup('table-of-contents-current-heading', 'examples', 'series', 3),
     ],
-    requiredExamples: [
-      'table-of-contents-basic',
-      'table-of-contents-current-heading',
-    ],
+    requiredExamples: ['table-of-contents-basic', 'table-of-contents-current-heading'],
     title: 'TableOfContents',
   },
 ] as const satisfies readonly ComponentDocsManifestEntry[];

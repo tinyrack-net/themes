@@ -7,9 +7,33 @@ import type {
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const stepsCopy = {
-  en: { basic: ['Install the package', 'Create the config', 'Build the site'], headings: ['Create a project', 'Install and configure', 'Write the guide'], prose: ['Start with a React app and add the Tinyrack packages.', 'Install the UI package, then import the Steps styles.', 'Use normal React children inside each item.'] },
-  ko: { basic: ['패키지 설치', '설정 만들기', '사이트 빌드'], headings: ['프로젝트 만들기', '설치 및 설정', '가이드 작성'], prose: ['React 앱을 만들고 Tinyrack 패키지를 추가하세요.', 'UI 패키지를 설치한 다음 Steps 스타일을 불러오세요.', '각 항목 안에 일반 React 자식을 사용하세요.'] },
-  ja: { basic: ['パッケージをインストール', '設定を作成', 'サイトをビルド'], headings: ['プロジェクトを作成', 'インストールと設定', 'ガイドを作成'], prose: ['React アプリを作成し、Tinyrack パッケージを追加してください。', 'UI パッケージをインストールし、Steps のスタイルを読み込んでください。', '各項目には通常の React 子要素を使用してください。'] },
+  en: {
+    basic: ['Install the package', 'Create the config', 'Build the site'],
+    headings: ['Create a project', 'Install and configure', 'Write the guide'],
+    prose: [
+      'Start with a React app and add the Tinyrack packages.',
+      'Install the UI package, then import the Steps styles.',
+      'Use normal React children inside each item.',
+    ],
+  },
+  ko: {
+    basic: ['패키지 설치', '설정 만들기', '사이트 빌드'],
+    headings: ['프로젝트 만들기', '설치 및 설정', '가이드 작성'],
+    prose: [
+      'React 앱을 만들고 Tinyrack 패키지를 추가하세요.',
+      'UI 패키지를 설치한 다음 Steps 스타일을 불러오세요.',
+      '각 항목 안에 일반 React 자식을 사용하세요.',
+    ],
+  },
+  ja: {
+    basic: ['パッケージをインストール', '設定を作成', 'サイトをビルド'],
+    headings: ['プロジェクトを作成', 'インストールと設定', 'ガイドを作成'],
+    prose: [
+      'React アプリを作成し、Tinyrack パッケージを追加してください。',
+      'UI パッケージをインストールし、Steps のスタイルを読み込んでください。',
+      '各項目には通常の React 子要素を使用してください。',
+    ],
+  },
 } as const;
 
 type Args = Record<string, never>;
@@ -19,7 +43,9 @@ export function StepsPreview() {
   const copy = stepsCopy[locale];
   return (
     <TRSteps.Root className="!my-0" data-docs-example-item="">
-      {copy.basic.map((item) => <TRSteps.Item key={item}>{item}</TRSteps.Item>)}
+      {copy.basic.map((item) => (
+        <TRSteps.Item key={item}>{item}</TRSteps.Item>
+      ))}
     </TRSteps.Root>
   );
 }

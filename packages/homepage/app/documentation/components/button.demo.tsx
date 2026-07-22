@@ -14,7 +14,8 @@ import { useDemoLocale } from '../shared/demo-locale.js';
 
 const buttonCopy = {
   en: {
-    activated: (count: number) => `Activated ${count} ${count === 1 ? 'time' : 'times'}.`,
+    activated: (count: number) =>
+      `Activated ${count} ${count === 1 ? 'time' : 'times'}.`,
     idle: 'Not activated yet.',
   },
   ja: {

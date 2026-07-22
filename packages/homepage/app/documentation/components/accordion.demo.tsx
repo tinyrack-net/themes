@@ -4,11 +4,11 @@ import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
 } from '../../playground/demo.js';
-import { useDemoLocale } from '../shared/demo-locale.js';
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
 } from '../../playground/demo.js';
+import { useDemoLocale } from '../shared/demo-locale.js';
 
 type AccordionStoryArgs = {
   disabledItem: boolean;
@@ -77,7 +77,30 @@ export function AccordionPreview({
 export function AccordionInteractiveExample() {
   const [value, setValue] = useState<string[]>(['overview']);
   const locale = useDemoLocale();
-  const copy = locale === 'ko' ? ['Tinyrack은 무엇인가요?', 'React 전용 UI 시스템이에요.', '어떻게 설치하나요?', '패키지와 컴포넌트 CSS를 설치하세요.', '펼침'] : locale === 'ja' ? ['Tinyrack とは何ですか？', 'React 専用の UI システムです。', 'どのようにインストールしますか？', 'パッケージとコンポーネント CSS をインストールしてください。', '展開中'] : ['What is Tinyrack?', 'A React-only UI system.', 'How do I install it?', 'Install the package and component CSS.', 'Expanded'];
+  const copy =
+    locale === 'ko'
+      ? [
+          'Tinyrack은 무엇인가요?',
+          'React 전용 UI 시스템이에요.',
+          '어떻게 설치하나요?',
+          '패키지와 컴포넌트 CSS를 설치하세요.',
+          '펼침',
+        ]
+      : locale === 'ja'
+        ? [
+            'Tinyrack とは何ですか？',
+            'React 専用の UI システムです。',
+            'どのようにインストールしますか？',
+            'パッケージとコンポーネント CSS をインストールしてください。',
+            '展開中',
+          ]
+        : [
+            'What is Tinyrack?',
+            'A React-only UI system.',
+            'How do I install it?',
+            'Install the package and component CSS.',
+            'Expanded',
+          ];
 
   return (
     <div className="grid gap-3" data-docs-example-item="">

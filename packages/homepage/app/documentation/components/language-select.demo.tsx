@@ -81,17 +81,31 @@ export function LanguageSelectPreview({ uiSize }: Args) {
   const [value, setValue] = useState('en');
   const locale = useDemoLocale();
   return (
-    <div data-docs-example-item=""><TRLanguageSelect
-      label={locale === 'ko' ? '문서 언어' : locale === 'ja' ? 'ドキュメント言語' : 'Documentation language'}
-      onValueChange={setValue}
-      options={options}
-      uiSize={uiSize}
-      value={value}
-    /></div>
+    <div data-docs-example-item="">
+      <TRLanguageSelect
+        label={
+          locale === 'ko'
+            ? '문서 언어'
+            : locale === 'ja'
+              ? 'ドキュメント言語'
+              : 'Documentation language'
+        }
+        onValueChange={setValue}
+        options={options}
+        uiSize={uiSize}
+        value={value}
+      />
+    </div>
   );
 }
 export function LanguageSelectSizesPreview() {
-  return <div className="grid gap-4 sm:grid-cols-3">{(['sm', 'md', 'lg'] as const).map((uiSize) => <LanguageSelectPreview key={uiSize} uiSize={uiSize} />)}</div>;
+  return (
+    <div className="grid gap-4 sm:grid-cols-3">
+      {(['sm', 'md', 'lg'] as const).map((uiSize) => (
+        <LanguageSelectPreview key={uiSize} uiSize={uiSize} />
+      ))}
+    </div>
+  );
 }
 const meta = {
   args: { uiSize: 'md' },

@@ -42,15 +42,15 @@ const meta = {
   render: ({ fallback, imageState, shape, uiSize }) => {
     const locale = useDemoLocale();
     return (
-    <TRAvatar.Root shape={shape} uiSize={uiSize}>
-      {imageState === 'missing' ? null : (
-        <TRAvatar.Image
-          alt={imageAlt[locale]}
-          src={imageState === 'loaded' ? avatarFixture : unavailableAvatar}
-        />
-      )}
-      <TRAvatar.Fallback>{fallback}</TRAvatar.Fallback>
-    </TRAvatar.Root>
+      <TRAvatar.Root shape={shape} uiSize={uiSize}>
+        {imageState === 'missing' ? null : (
+          <TRAvatar.Image
+            alt={imageAlt[locale]}
+            src={imageState === 'loaded' ? avatarFixture : unavailableAvatar}
+          />
+        )}
+        <TRAvatar.Fallback>{fallback}</TRAvatar.Fallback>
+      </TRAvatar.Root>
     );
   },
 } satisfies Meta<AvatarStoryArgs>;

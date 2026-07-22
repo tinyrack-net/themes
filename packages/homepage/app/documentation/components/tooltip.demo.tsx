@@ -6,11 +6,11 @@ import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
 } from '../../playground/demo.js';
-import { useDemoLocale } from '../shared/demo-locale.js';
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
 } from '../../playground/demo.js';
+import { useDemoLocale } from '../shared/demo-locale.js';
 
 type TooltipStoryArgs = {
   align: 'start' | 'center' | 'end';
@@ -39,35 +39,51 @@ export function TooltipExample({
   onOpenChange,
 }: TooltipExampleProps) {
   const locale = useDemoLocale();
-  const visibleContent = content === 'Rack temperature: 24°C' ? (locale === 'ko' ? '랙 온도: 24°C' : locale === 'ja' ? 'ラック温度: 24°C' : content) : content;
-  const visibleTrigger = trigger === 'Hover for details' ? (locale === 'ko' ? '세부 정보 보기' : locale === 'ja' ? '詳細を表示' : trigger) : trigger;
+  const visibleContent =
+    content === 'Rack temperature: 24°C'
+      ? locale === 'ko'
+        ? '랙 온도: 24°C'
+        : locale === 'ja'
+          ? 'ラック温度: 24°C'
+          : content
+      : content;
+  const visibleTrigger =
+    trigger === 'Hover for details'
+      ? locale === 'ko'
+        ? '세부 정보 보기'
+        : locale === 'ja'
+          ? '詳細を表示'
+          : trigger
+      : trigger;
   const stateProps =
     onOpenChange === undefined ? { defaultOpen: open } : { onOpenChange, open };
 
   return (
-    <div data-docs-example-item=""><TRTooltip.Provider closeDelay={closeDelay} delay={delay}>
-      <TRTooltip.Root {...stateProps}>
-        {triggerMode === 'icon' ? (
-          <TRTooltip.Trigger
-            render={
-              <TRIconButton aria-label={visibleTrigger}>
-                <Info aria-hidden="true" />
-              </TRIconButton>
-            }
-          />
-        ) : (
-          <TRTooltip.Trigger>{visibleTrigger}</TRTooltip.Trigger>
-        )}
-        <TRTooltip.Portal>
-          <TRTooltip.Positioner align={align} side={side}>
-            <TRTooltip.Popup>
-              {visibleContent}
-              <TRTooltip.Arrow />
-            </TRTooltip.Popup>
-          </TRTooltip.Positioner>
-        </TRTooltip.Portal>
-      </TRTooltip.Root>
-    </TRTooltip.Provider></div>
+    <div data-docs-example-item="">
+      <TRTooltip.Provider closeDelay={closeDelay} delay={delay}>
+        <TRTooltip.Root {...stateProps}>
+          {triggerMode === 'icon' ? (
+            <TRTooltip.Trigger
+              render={
+                <TRIconButton aria-label={visibleTrigger}>
+                  <Info aria-hidden="true" />
+                </TRIconButton>
+              }
+            />
+          ) : (
+            <TRTooltip.Trigger>{visibleTrigger}</TRTooltip.Trigger>
+          )}
+          <TRTooltip.Portal>
+            <TRTooltip.Positioner align={align} side={side}>
+              <TRTooltip.Popup>
+                {visibleContent}
+                <TRTooltip.Arrow />
+              </TRTooltip.Popup>
+            </TRTooltip.Positioner>
+          </TRTooltip.Portal>
+        </TRTooltip.Root>
+      </TRTooltip.Provider>
+    </div>
   );
 }
 
@@ -82,23 +98,25 @@ export function TooltipDelayGroupExample() {
     <TRTooltip.Provider closeDelay={100} delay={500}>
       <div className="flex flex-wrap gap-3">
         {delayGroupItems.map(([label, content]) => (
-          <div data-docs-example-item="" key={label}><TRTooltip.Root>
-            <TRTooltip.Trigger
-              render={
-                <TRIconButton aria-label={label}>
-                  <Info aria-hidden="true" />
-                </TRIconButton>
-              }
-            />
-            <TRTooltip.Portal>
-              <TRTooltip.Positioner side="top">
-                <TRTooltip.Popup>
-                  {content}
-                  <TRTooltip.Arrow />
-                </TRTooltip.Popup>
-              </TRTooltip.Positioner>
-            </TRTooltip.Portal>
-          </TRTooltip.Root></div>
+          <div data-docs-example-item="" key={label}>
+            <TRTooltip.Root>
+              <TRTooltip.Trigger
+                render={
+                  <TRIconButton aria-label={label}>
+                    <Info aria-hidden="true" />
+                  </TRIconButton>
+                }
+              />
+              <TRTooltip.Portal>
+                <TRTooltip.Positioner side="top">
+                  <TRTooltip.Popup>
+                    {content}
+                    <TRTooltip.Arrow />
+                  </TRTooltip.Popup>
+                </TRTooltip.Positioner>
+              </TRTooltip.Portal>
+            </TRTooltip.Root>
+          </div>
         ))}
       </div>
     </TRTooltip.Provider>
@@ -145,11 +163,38 @@ export function TooltipHandleViewportExample() {
 }
 
 export function TooltipAlignComparison() {
-  return <div className="grid gap-4 sm:grid-cols-3">{(['start', 'center', 'end'] as const).map((align) => <TooltipExample align={align} content={align} delay={0} key={align} open side="top" trigger={align} />)}</div>;
+  return (
+    <div className="grid gap-4 sm:grid-cols-3">
+      {(['start', 'center', 'end'] as const).map((align) => (
+        <TooltipExample
+          align={align}
+          content={align}
+          delay={0}
+          key={align}
+          open
+          side="top"
+          trigger={align}
+        />
+      ))}
+    </div>
+  );
 }
 
 export function TooltipSideComparison() {
-  return <div className="grid gap-4 sm:grid-cols-2">{(['top', 'right', 'bottom', 'left'] as const).map((side) => <TooltipExample content={side} delay={0} key={side} open side={side} trigger={side} />)}</div>;
+  return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      {(['top', 'right', 'bottom', 'left'] as const).map((side) => (
+        <TooltipExample
+          content={side}
+          delay={0}
+          key={side}
+          open
+          side={side}
+          trigger={side}
+        />
+      ))}
+    </div>
+  );
 }
 
 export const tooltipBasicSource = `import '@tinyrack/ui/core.css';

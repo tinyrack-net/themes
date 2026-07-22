@@ -7,11 +7,11 @@ import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
 } from '../../playground/demo.js';
-import { useDemoLocale } from '../shared/demo-locale.js';
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
 } from '../../playground/demo.js';
+import { useDemoLocale } from '../shared/demo-locale.js';
 
 type StoryArgs = {
   disabled: boolean;
@@ -30,9 +30,60 @@ type SliderPreviewProps = Omit<StoryArgs, 'uiSize' | 'value'> & {
 };
 
 const copy = {
-  en: { capacity: 'Reserved capacity', capacityDescription: 'Reserve at least 60% capacity.', capacityError: 'Increase reserved capacity to 60% or more.', disabled: 'Disabled volume', end: 'End', ends: (value: string) => `Ends at ${value}`, horizontal: 'Horizontal volume', maintenance: 'Maintenance window', reserve: 'Reserve capacity', reserved: (value: number) => `Reserved ${value}% capacity.`, save: 'Save volume', saved: (value: number) => `Saved volume ${value}.`, start: 'Start', starts: (value: string) => `Starts at ${value}`, vertical: 'Vertical volume', volume: 'Volume' },
-  ko: { capacity: '예약 용량이에요', capacityDescription: '용량을 60% 이상 예약하세요.', capacityError: '예약 용량을 60% 이상으로 높이세요.', disabled: '사용할 수 없는 볼륨이에요', end: '끝이에요', ends: (value: string) => `${value}에 끝나요`, horizontal: '가로 볼륨이에요', maintenance: '유지보수 구간이에요', reserve: '용량을 예약하세요', reserved: (value: number) => `용량 ${value}%를 예약했어요.`, save: '볼륨을 저장하세요', saved: (value: number) => `볼륨 ${value}를 저장했어요.`, start: '시작이에요', starts: (value: string) => `${value}에 시작해요`, vertical: '세로 볼륨이에요', volume: '볼륨이에요' },
-  ja: { capacity: '予約容量', capacityDescription: '容量を 60% 以上予約してください。', capacityError: '予約容量を 60% 以上に増やしてください。', disabled: '無効な音量', end: '終了', ends: (value: string) => `${value} で終了します`, horizontal: '横向きの音量', maintenance: 'メンテナンス範囲', reserve: '容量を予約', reserved: (value: number) => `容量を ${value}% 予約しました。`, save: '音量を保存', saved: (value: number) => `音量 ${value} を保存しました。`, start: '開始', starts: (value: string) => `${value} で開始します`, vertical: '縦向きの音量', volume: '音量' },
+  en: {
+    capacity: 'Reserved capacity',
+    capacityDescription: 'Reserve at least 60% capacity.',
+    capacityError: 'Increase reserved capacity to 60% or more.',
+    disabled: 'Disabled volume',
+    end: 'End',
+    ends: (value: string) => `Ends at ${value}`,
+    horizontal: 'Horizontal volume',
+    maintenance: 'Maintenance window',
+    reserve: 'Reserve capacity',
+    reserved: (value: number) => `Reserved ${value}% capacity.`,
+    save: 'Save volume',
+    saved: (value: number) => `Saved volume ${value}.`,
+    start: 'Start',
+    starts: (value: string) => `Starts at ${value}`,
+    vertical: 'Vertical volume',
+    volume: 'Volume',
+  },
+  ko: {
+    capacity: '예약 용량이에요',
+    capacityDescription: '용량을 60% 이상 예약하세요.',
+    capacityError: '예약 용량을 60% 이상으로 높이세요.',
+    disabled: '사용할 수 없는 볼륨이에요',
+    end: '끝이에요',
+    ends: (value: string) => `${value}에 끝나요`,
+    horizontal: '가로 볼륨이에요',
+    maintenance: '유지보수 구간이에요',
+    reserve: '용량을 예약하세요',
+    reserved: (value: number) => `용량 ${value}%를 예약했어요.`,
+    save: '볼륨을 저장하세요',
+    saved: (value: number) => `볼륨 ${value}를 저장했어요.`,
+    start: '시작이에요',
+    starts: (value: string) => `${value}에 시작해요`,
+    vertical: '세로 볼륨이에요',
+    volume: '볼륨이에요',
+  },
+  ja: {
+    capacity: '予約容量',
+    capacityDescription: '容量を 60% 以上予約してください。',
+    capacityError: '予約容量を 60% 以上に増やしてください。',
+    disabled: '無効な音量',
+    end: '終了',
+    ends: (value: string) => `${value} で終了します`,
+    horizontal: '横向きの音量',
+    maintenance: 'メンテナンス範囲',
+    reserve: '容量を予約',
+    reserved: (value: number) => `容量を ${value}% 予約しました。`,
+    save: '音量を保存',
+    saved: (value: number) => `音量 ${value} を保存しました。`,
+    start: '開始',
+    starts: (value: string) => `${value} で開始します`,
+    vertical: '縦向きの音量',
+    volume: '音量',
+  },
 } as const;
 
 export function SliderPreview({
@@ -114,7 +165,15 @@ export function SliderSizeComparison() {
 
 export function SliderAvailabilityPreview() {
   const text = copy[useDemoLocale()];
-  return <SliderPreview data-docs-example-item="" defaultValue={82} disabled label={text.disabled} orientation="horizontal" />;
+  return (
+    <SliderPreview
+      data-docs-example-item=""
+      defaultValue={82}
+      disabled
+      label={text.disabled}
+      orientation="horizontal"
+    />
+  );
 }
 
 export function SliderRangePreview() {
@@ -140,11 +199,7 @@ export function SliderRangePreview() {
           getAriaValueText={text.starts}
           index={0}
         />
-        <TRSlider.Thumb
-          aria-label={text.end}
-          getAriaValueText={text.ends}
-          index={1}
-        />
+        <TRSlider.Thumb aria-label={text.end} getAriaValueText={text.ends} index={1} />
       </TRSlider.Control>
     </TRSlider.Root>
   );

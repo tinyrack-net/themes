@@ -15,9 +15,51 @@ import {
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const copy = {
-  en: { backup: 'Enable backups', sizes: 'Control size', states: ['Unchecked', 'Checked', 'Mixed'], availability: ['Editable', 'Read only', 'Disabled'], monitoring: 'Monitoring outside the form', submitted: 'Submitted', resetMessage: 'Reset to disabled.', read: 'Read form value', reset: 'Reset', agreement: 'I accept the maintenance window.', error: 'Accept the maintenance window to continue.', continue: 'Continue', accepted: 'Maintenance window accepted.' },
-  ko: { backup: '백업을 사용해요', sizes: '컨트롤 크기', states: ['선택 안 함', '선택함', '일부 선택'], availability: ['편집할 수 있어요', '읽기 전용이에요', '사용할 수 없어요'], monitoring: '폼 밖에서 모니터링해요', submitted: '제출한 값', resetMessage: '사용 안 함으로 초기화했어요.', read: '폼 값 읽기', reset: '초기화', agreement: '유지 관리 시간에 동의해요.', error: '계속하려면 유지 관리 시간에 동의하세요.', continue: '계속', accepted: '유지 관리 시간에 동의했어요.' },
-  ja: { backup: 'バックアップを有効にする', sizes: 'コントロールのサイズ', states: ['未選択', '選択済み', '一部選択'], availability: ['編集可能', '読み取り専用', '無効'], monitoring: 'フォーム外のモニタリング', submitted: '送信値', resetMessage: '無効にリセットしました。', read: 'フォーム値を確認', reset: 'リセット', agreement: 'メンテナンス時間帯に同意します。', error: '続行するにはメンテナンス時間帯に同意してください。', continue: '続行', accepted: 'メンテナンス時間帯に同意しました。' },
+  en: {
+    backup: 'Enable backups',
+    sizes: 'Control size',
+    states: ['Unchecked', 'Checked', 'Mixed'],
+    availability: ['Editable', 'Read only', 'Disabled'],
+    monitoring: 'Monitoring outside the form',
+    submitted: 'Submitted',
+    resetMessage: 'Reset to disabled.',
+    read: 'Read form value',
+    reset: 'Reset',
+    agreement: 'I accept the maintenance window.',
+    error: 'Accept the maintenance window to continue.',
+    continue: 'Continue',
+    accepted: 'Maintenance window accepted.',
+  },
+  ko: {
+    backup: '백업을 사용해요',
+    sizes: '컨트롤 크기',
+    states: ['선택 안 함', '선택함', '일부 선택'],
+    availability: ['편집할 수 있어요', '읽기 전용이에요', '사용할 수 없어요'],
+    monitoring: '폼 밖에서 모니터링해요',
+    submitted: '제출한 값',
+    resetMessage: '사용 안 함으로 초기화했어요.',
+    read: '폼 값 읽기',
+    reset: '초기화',
+    agreement: '유지 관리 시간에 동의해요.',
+    error: '계속하려면 유지 관리 시간에 동의하세요.',
+    continue: '계속',
+    accepted: '유지 관리 시간에 동의했어요.',
+  },
+  ja: {
+    backup: 'バックアップを有効にする',
+    sizes: 'コントロールのサイズ',
+    states: ['未選択', '選択済み', '一部選択'],
+    availability: ['編集可能', '読み取り専用', '無効'],
+    monitoring: 'フォーム外のモニタリング',
+    submitted: '送信値',
+    resetMessage: '無効にリセットしました。',
+    read: 'フォーム値を確認',
+    reset: 'リセット',
+    agreement: 'メンテナンス時間帯に同意します。',
+    error: '続行するにはメンテナンス時間帯に同意してください。',
+    continue: '続行',
+    accepted: 'メンテナンス時間帯に同意しました。',
+  },
 } as const;
 
 type StoryArgs = {
@@ -139,12 +181,32 @@ export function CheckboxStateComparison() {
 
 export function CheckboxSizeComparison() {
   const text = copy[useDemoLocale()];
-  return <div className="flex flex-wrap items-end gap-4">{(['sm', 'md', 'lg'] as const).map((uiSize) => <CheckboxPreview defaultChecked disabled={false} indeterminate={false} key={uiSize} label={`${text.sizes} ${uiSize}`} readOnly={false} uiSize={uiSize} />)}</div>;
+  return (
+    <div className="flex flex-wrap items-end gap-4">
+      {(['sm', 'md', 'lg'] as const).map((uiSize) => (
+        <CheckboxPreview
+          defaultChecked
+          disabled={false}
+          indeterminate={false}
+          key={uiSize}
+          label={`${text.sizes} ${uiSize}`}
+          readOnly={false}
+          uiSize={uiSize}
+        />
+      ))}
+    </div>
+  );
 }
 
 export function CheckboxAvailabilityComparison() {
   const text = copy[useDemoLocale()];
-  return <div className="grid gap-4 sm:grid-cols-3"><CheckboxStateSample checked title={text.availability[0]} /><CheckboxStateSample checked readOnly title={text.availability[1]} /><CheckboxStateSample checked disabled title={text.availability[2]} /></div>;
+  return (
+    <div className="grid gap-4 sm:grid-cols-3">
+      <CheckboxStateSample checked title={text.availability[0]} />
+      <CheckboxStateSample checked readOnly title={text.availability[1]} />
+      <CheckboxStateSample checked disabled title={text.availability[2]} />
+    </div>
+  );
 }
 
 export function CheckboxFormValuesPreview() {
@@ -195,7 +257,8 @@ export function CheckboxValidationPreview() {
   const invalid = attempted && !checked;
 
   return (
-    <TRForm data-docs-example-item=""
+    <TRForm
+      data-docs-example-item=""
       className="grid w-full max-w-80 min-w-0 gap-3"
       noValidate
       onSubmit={(event) => {
@@ -216,16 +279,10 @@ export function CheckboxValidationPreview() {
           </TRCheckbox.Root>
           {text.agreement}
         </TRField.Label>
-        {invalid ? (
-          <TRField.Error match>
-            {text.error}
-          </TRField.Error>
-        ) : null}
+        {invalid ? <TRField.Error match>{text.error}</TRField.Error> : null}
       </TRField.Root>
       <TRButton type="submit">{text.continue}</TRButton>
-      <output aria-live="polite">
-        {attempted && checked ? text.accepted : ''}
-      </output>
+      <output aria-live="polite">{attempted && checked ? text.accepted : ''}</output>
     </TRForm>
   );
 }

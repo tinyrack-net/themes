@@ -7,9 +7,36 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const tableCopy = {
-  en: { artifact: 'Artifact', empty: 'No deployments are queued.', emptyCaption: 'Queued deployments', longCaption: 'Long deployment records', owner: 'Owner', ownerValue: 'Platform reliability', scroll: 'Scroll horizontally inside the named region to inspect every column.', service: 'Service' },
-  ja: { artifact: '成果物', empty: '待機中のデプロイはありません。', emptyCaption: '待機中のデプロイ', longCaption: '長いデプロイ記録', owner: '担当', ownerValue: 'プラットフォーム信頼性', scroll: '名前付き領域内を横にスクロールすると、すべての列を確認できます。', service: 'サービス' },
-  ko: { artifact: '아티팩트', empty: '대기 중인 배포가 없어요.', emptyCaption: '대기 중인 배포', longCaption: '긴 배포 기록', owner: '담당', ownerValue: '플랫폼 안정성', scroll: '이름이 있는 영역 안에서 가로로 스크롤해 모든 열을 확인하세요.', service: '서비스' },
+  en: {
+    artifact: 'Artifact',
+    empty: 'No deployments are queued.',
+    emptyCaption: 'Queued deployments',
+    longCaption: 'Long deployment records',
+    owner: 'Owner',
+    ownerValue: 'Platform reliability',
+    scroll: 'Scroll horizontally inside the named region to inspect every column.',
+    service: 'Service',
+  },
+  ja: {
+    artifact: '成果物',
+    empty: '待機中のデプロイはありません。',
+    emptyCaption: '待機中のデプロイ',
+    longCaption: '長いデプロイ記録',
+    owner: '担当',
+    ownerValue: 'プラットフォーム信頼性',
+    scroll: '名前付き領域内を横にスクロールすると、すべての列を確認できます。',
+    service: 'サービス',
+  },
+  ko: {
+    artifact: '아티팩트',
+    empty: '대기 중인 배포가 없어요.',
+    emptyCaption: '대기 중인 배포',
+    longCaption: '긴 배포 기록',
+    owner: '담당',
+    ownerValue: '플랫폼 안정성',
+    scroll: '이름이 있는 영역 안에서 가로로 스크롤해 모든 열을 확인하세요.',
+    service: '서비스',
+  },
 } as const;
 
 type TableStoryArgs = { caption: string; density: TRTableDensity; striped: boolean };
@@ -25,53 +52,51 @@ const rackRows = [
 export function TableOverflowState() {
   const copy = tableCopy[useDemoLocale()];
   return (
-      <div className="grid min-w-0 gap-2" data-docs-example-item="">
-        <p className="m-0 text-tinyrack-sm text-tinyrack-text-muted">
-          {copy.scroll}
-        </p>
-        <TRTable.Root
-          className="min-w-3xl"
-          containerProps={{ 'aria-label': copy.longCaption, tabIndex: 0 }}
-        >
-          <TRTable.Caption>{copy.longCaption}</TRTable.Caption>
-          <TRTable.Header>
-            <TRTable.Row>
-              <TRTable.Head scope="col">{copy.service}</TRTable.Head>
-              <TRTable.Head scope="col">{copy.artifact}</TRTable.Head>
-              <TRTable.Head scope="col">{copy.owner}</TRTable.Head>
-            </TRTable.Row>
-          </TRTable.Header>
-          <TRTable.Body>
-            <TRTable.Row>
-              <TRTable.Head scope="row">Gateway</TRTable.Head>
-              <TRTable.Cell>
-                registry.example.internal/platform/gateway:2026.07.14-release-candidate
-              </TRTable.Cell>
-              <TRTable.Cell>{copy.ownerValue}</TRTable.Cell>
-            </TRTable.Row>
-          </TRTable.Body>
-        </TRTable.Root>
-      </div>
+    <div className="grid min-w-0 gap-2" data-docs-example-item="">
+      <p className="m-0 text-tinyrack-sm text-tinyrack-text-muted">{copy.scroll}</p>
+      <TRTable.Root
+        className="min-w-3xl"
+        containerProps={{ 'aria-label': copy.longCaption, tabIndex: 0 }}
+      >
+        <TRTable.Caption>{copy.longCaption}</TRTable.Caption>
+        <TRTable.Header>
+          <TRTable.Row>
+            <TRTable.Head scope="col">{copy.service}</TRTable.Head>
+            <TRTable.Head scope="col">{copy.artifact}</TRTable.Head>
+            <TRTable.Head scope="col">{copy.owner}</TRTable.Head>
+          </TRTable.Row>
+        </TRTable.Header>
+        <TRTable.Body>
+          <TRTable.Row>
+            <TRTable.Head scope="row">Gateway</TRTable.Head>
+            <TRTable.Cell>
+              registry.example.internal/platform/gateway:2026.07.14-release-candidate
+            </TRTable.Cell>
+            <TRTable.Cell>{copy.ownerValue}</TRTable.Cell>
+          </TRTable.Row>
+        </TRTable.Body>
+      </TRTable.Root>
+    </div>
   );
 }
 
 export function TableEmptyState() {
   const copy = tableCopy[useDemoLocale()];
   return (
-      <TRTable.Root data-docs-example-item="">
-        <TRTable.Caption>{copy.emptyCaption}</TRTable.Caption>
-        <TRTable.Header>
-          <TRTable.Row>
-            <TRTable.Head scope="col">Service</TRTable.Head>
-            <TRTable.Head scope="col">Status</TRTable.Head>
-          </TRTable.Row>
-        </TRTable.Header>
-        <TRTable.Body>
-          <TRTable.Row>
-            <TRTable.Cell colSpan={2}>{copy.empty}</TRTable.Cell>
-          </TRTable.Row>
-        </TRTable.Body>
-      </TRTable.Root>
+    <TRTable.Root data-docs-example-item="">
+      <TRTable.Caption>{copy.emptyCaption}</TRTable.Caption>
+      <TRTable.Header>
+        <TRTable.Row>
+          <TRTable.Head scope="col">Service</TRTable.Head>
+          <TRTable.Head scope="col">Status</TRTable.Head>
+        </TRTable.Row>
+      </TRTable.Header>
+      <TRTable.Body>
+        <TRTable.Row>
+          <TRTable.Cell colSpan={2}>{copy.empty}</TRTable.Cell>
+        </TRTable.Row>
+      </TRTable.Body>
+    </TRTable.Root>
   );
 }
 

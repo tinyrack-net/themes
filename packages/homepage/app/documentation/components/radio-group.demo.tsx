@@ -12,10 +12,53 @@ import type {
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const copy = {
-  en: { rack: 'Rack', options: ['Alpha', 'Beta', 'Gamma'], states: ['Editable', 'Read only', 'Disabled'], primary: 'Primary rack', error: 'Choose a primary rack to continue.', continue: 'Continue', result: 'Primary rack', resetMessage: 'Reset to alpha.', submitted: 'Submitted', submit: 'Submit external group', reset: 'Reset', outside: 'Rack outside the form', selected: 'Selected rack' },
-  ko: { rack: '랙', options: ['알파', '베타', '감마'], states: ['편집할 수 있어요', '읽기 전용이에요', '사용할 수 없어요'], primary: '기본 랙', error: '계속하려면 기본 랙을 선택하세요.', continue: '계속', result: '기본 랙', resetMessage: '알파로 초기화했어요.', submitted: '제출한 값', submit: '외부 그룹 제출', reset: '초기화', outside: '폼 밖의 랙', selected: '선택한 랙' },
-  ja: { rack: 'ラック', options: ['アルファ', 'ベータ', 'ガンマ'], states: ['編集可能', '読み取り専用', '無効'], primary: 'プライマリラック', error: '続行するにはプライマリラックを選択してください。', continue: '続行', result: 'プライマリラック', resetMessage: 'アルファにリセットしました。', submitted: '送信値', submit: '外部グループを送信', reset: 'リセット', outside: 'フォーム外のラック', selected: '選択中のラック' },
+  en: {
+    rack: 'Rack',
+    options: ['Alpha', 'Beta', 'Gamma'],
+    states: ['Editable', 'Read only', 'Disabled'],
+    primary: 'Primary rack',
+    error: 'Choose a primary rack to continue.',
+    continue: 'Continue',
+    result: 'Primary rack',
+    resetMessage: 'Reset to alpha.',
+    submitted: 'Submitted',
+    submit: 'Submit external group',
+    reset: 'Reset',
+    outside: 'Rack outside the form',
+    selected: 'Selected rack',
+  },
+  ko: {
+    rack: '랙',
+    options: ['알파', '베타', '감마'],
+    states: ['편집할 수 있어요', '읽기 전용이에요', '사용할 수 없어요'],
+    primary: '기본 랙',
+    error: '계속하려면 기본 랙을 선택하세요.',
+    continue: '계속',
+    result: '기본 랙',
+    resetMessage: '알파로 초기화했어요.',
+    submitted: '제출한 값',
+    submit: '외부 그룹 제출',
+    reset: '초기화',
+    outside: '폼 밖의 랙',
+    selected: '선택한 랙',
+  },
+  ja: {
+    rack: 'ラック',
+    options: ['アルファ', 'ベータ', 'ガンマ'],
+    states: ['編集可能', '読み取り専用', '無効'],
+    primary: 'プライマリラック',
+    error: '続行するにはプライマリラックを選択してください。',
+    continue: '続行',
+    result: 'プライマリラック',
+    resetMessage: 'アルファにリセットしました。',
+    submitted: '送信値',
+    submit: '外部グループを送信',
+    reset: 'リセット',
+    outside: 'フォーム外のラック',
+    selected: '選択中のラック',
+  },
 } as const;
+
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
@@ -52,13 +95,20 @@ export function RadioGroupPreview({
 }: RadioGroupPreviewProps) {
   const text = copy[useDemoLocale()];
   const resolvedLabel = label ?? text.rack;
-  const radioOptions = optionValues.map((optionValue, index) => ({ label: text.options[index] ?? optionValue, value: optionValue }));
+  const radioOptions = optionValues.map((optionValue, index) => ({
+    label: text.options[index] ?? optionValue,
+    value: optionValue,
+  }));
   const baseId = useId();
   const legendId = `${baseId}-legend`;
   const stateProps = value === undefined ? { defaultValue } : { value };
 
   return (
-    <TRFieldset.Root className="w-full max-w-80" data-docs-example-item="" disabled={disabled}>
+    <TRFieldset.Root
+      className="w-full max-w-80"
+      data-docs-example-item=""
+      disabled={disabled}
+    >
       <TRFieldset.Legend id={legendId}>{resolvedLabel}</TRFieldset.Legend>
       <TRRadioGroup
         {...stateProps}
@@ -241,9 +291,7 @@ export function RadioGroupValidationPreview() {
           required
           value={value}
         />
-        {invalid ? (
-          <TRField.Error match>{text.error}</TRField.Error>
-        ) : null}
+        {invalid ? <TRField.Error match>{text.error}</TRField.Error> : null}
       </TRField.Root>
       <TRButton type="submit">{text.continue}</TRButton>
       <output aria-live="polite">
@@ -266,7 +314,9 @@ export function RadioGroupExternalFormPreview() {
         onReset={() => setResult(text.resetMessage)}
         onSubmit={(event) => {
           event.preventDefault();
-          setResult(`${text.submitted}: ${new FormData(event.currentTarget).get('rack')}`);
+          setResult(
+            `${text.submitted}: ${new FormData(event.currentTarget).get('rack')}`,
+          );
         }}
       >
         <TRButton type="submit">{text.submit}</TRButton>
@@ -416,7 +466,9 @@ const meta = {
     return (
       <div className="grid gap-3">
         <RadioGroupPreview {...args} onValueChange={(value) => updateArgs({ value })} />
-        <output aria-live="polite">{text.selected}: {args.value}</output>
+        <output aria-live="polite">
+          {text.selected}: {args.value}
+        </output>
       </div>
     );
   },

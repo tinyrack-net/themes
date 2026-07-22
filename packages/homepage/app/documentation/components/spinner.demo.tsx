@@ -9,18 +9,39 @@ import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
 } from '../../playground/demo.js';
-import { useDemoLocale } from '../shared/demo-locale.js';
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
 } from '../../playground/demo.js';
+import { useDemoLocale } from '../shared/demo-locale.js';
 
 type SpinnerTaskState = 'idle' | 'running' | 'complete';
 
 const spinnerCopy = {
-  en: { start: 'Start task', finish: 'Finish task', reset: 'Reset', idle: 'Task has not started.', complete: 'Task complete.', deploying: 'Deploying rack' },
-  ko: { start: '작업 시작', finish: '작업 완료', reset: '초기화', idle: '작업을 시작하지 않았어요.', complete: '작업이 완료됐어요.', deploying: '랙 배포 중' },
-  ja: { start: 'タスクを開始', finish: 'タスクを完了', reset: 'リセット', idle: 'タスクは開始されていません。', complete: 'タスクが完了しました。', deploying: 'ラックをデプロイ中' },
+  en: {
+    start: 'Start task',
+    finish: 'Finish task',
+    reset: 'Reset',
+    idle: 'Task has not started.',
+    complete: 'Task complete.',
+    deploying: 'Deploying rack',
+  },
+  ko: {
+    start: '작업 시작',
+    finish: '작업 완료',
+    reset: '초기화',
+    idle: '작업을 시작하지 않았어요.',
+    complete: '작업이 완료됐어요.',
+    deploying: '랙 배포 중',
+  },
+  ja: {
+    start: 'タスクを開始',
+    finish: 'タスクを完了',
+    reset: 'リセット',
+    idle: 'タスクは開始されていません。',
+    complete: 'タスクが完了しました。',
+    deploying: 'ラックをデプロイ中',
+  },
 } as const;
 
 type SpinnerStoryArgs = {
@@ -76,9 +97,7 @@ function SpinnerTaskPreview({
           {label}
         </output>
       ) : null}
-      {taskState === 'idle' ? (
-        <output aria-live="polite">{copy.idle}</output>
-      ) : null}
+      {taskState === 'idle' ? <output aria-live="polite">{copy.idle}</output> : null}
       {taskState === 'complete' ? (
         <output aria-live="polite">{copy.complete}</output>
       ) : null}
@@ -90,14 +109,16 @@ export function SpinnerLifecyclePreview() {
   const locale = useDemoLocale();
   const [taskState, setTaskState] = useState<SpinnerTaskState>('idle');
   return (
-    <div data-docs-example-item=""><SpinnerTaskPreview
-      decorative={false}
-      label={spinnerCopy[locale].deploying}
-      onTaskStateChange={setTaskState}
-      taskState={taskState}
-      uiSize="md"
-      variant="primary"
-    /></div>
+    <div data-docs-example-item="">
+      <SpinnerTaskPreview
+        decorative={false}
+        label={spinnerCopy[locale].deploying}
+        onTaskStateChange={setTaskState}
+        taskState={taskState}
+        uiSize="md"
+        variant="primary"
+      />
+    </div>
   );
 }
 

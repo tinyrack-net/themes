@@ -6,11 +6,11 @@ import type {
   DemoMeta as Meta,
   DemoVariant as StoryObj,
 } from '../../playground/demo.js';
-import { useDemoLocale } from '../shared/demo-locale.js';
 import {
   definePlayground,
   usePlaygroundArgs as useArgs,
 } from '../../playground/demo.js';
+import { useDemoLocale } from '../shared/demo-locale.js';
 
 type PopoverStoryArgs = {
   align: 'start' | 'center' | 'end';
@@ -147,8 +147,32 @@ export function DetachedPopover() {
   );
 }`;
 
-const popoverSourceKo = (source: string) => source.replaceAll('Rack details', '랙 세부 정보예요').replaceAll('Rack A', '랙 A예요').replaceAll('All nodes online.', '모든 노드가 온라인이에요.').replaceAll('Anchored content.', '고정된 콘텐츠예요.').replaceAll('Alignment preview.', '정렬 미리 보기예요.').replaceAll('Controlled edge popover', '제어형 가장자리 popover예요').replaceAll('Collision-aware content.', '충돌을 고려한 콘텐츠예요.').replaceAll('Rack Delta', '랙 델타예요').replaceAll('Detached rack details', '분리된 랙 세부 정보예요').replaceAll('Opened by an external trigger.', '외부 트리거에서 열었어요.').replaceAll('Close', '닫으세요');
-const popoverSourceJa = (source: string) => source.replaceAll('Rack details', 'ラックの詳細').replaceAll('Rack A', 'ラック A').replaceAll('All nodes online.', 'すべてのノードがオンラインです。').replaceAll('Anchored content.', '固定されたコンテンツです。').replaceAll('Alignment preview.', '配置のプレビューです。').replaceAll('Controlled edge popover', '制御された端の popover').replaceAll('Collision-aware content.', '衝突を考慮したコンテンツです。').replaceAll('Rack Delta', 'ラックデルタ').replaceAll('Detached rack details', '分離したラックの詳細').replaceAll('Opened by an external trigger.', '外部トリガーから開きました。').replaceAll('Close', '閉じる');
+const popoverSourceKo = (source: string) =>
+  source
+    .replaceAll('Rack details', '랙 세부 정보예요')
+    .replaceAll('Rack A', '랙 A예요')
+    .replaceAll('All nodes online.', '모든 노드가 온라인이에요.')
+    .replaceAll('Anchored content.', '고정된 콘텐츠예요.')
+    .replaceAll('Alignment preview.', '정렬 미리 보기예요.')
+    .replaceAll('Controlled edge popover', '제어형 가장자리 popover예요')
+    .replaceAll('Collision-aware content.', '충돌을 고려한 콘텐츠예요.')
+    .replaceAll('Rack Delta', '랙 델타예요')
+    .replaceAll('Detached rack details', '분리된 랙 세부 정보예요')
+    .replaceAll('Opened by an external trigger.', '외부 트리거에서 열었어요.')
+    .replaceAll('Close', '닫으세요');
+const popoverSourceJa = (source: string) =>
+  source
+    .replaceAll('Rack details', 'ラックの詳細')
+    .replaceAll('Rack A', 'ラック A')
+    .replaceAll('All nodes online.', 'すべてのノードがオンラインです。')
+    .replaceAll('Anchored content.', '固定されたコンテンツです。')
+    .replaceAll('Alignment preview.', '配置のプレビューです。')
+    .replaceAll('Controlled edge popover', '制御された端の popover')
+    .replaceAll('Collision-aware content.', '衝突を考慮したコンテンツです。')
+    .replaceAll('Rack Delta', 'ラックデルタ')
+    .replaceAll('Detached rack details', '分離したラックの詳細')
+    .replaceAll('Opened by an external trigger.', '外部トリガーから開きました。')
+    .replaceAll('Close', '閉じる');
 export const popoverBasicSourceKo = popoverSourceKo(popoverBasicSource);
 export const popoverSidesSourceKo = popoverSourceKo(popoverSidesSource);
 export const popoverAlignmentsSourceKo = popoverSourceKo(popoverAlignmentsSource);
@@ -171,8 +195,43 @@ export function PopoverExample({
   onOpenChange,
 }: PopoverExampleProps) {
   const locale = useDemoLocale();
-  const copy = { en: { close: 'Close', dashboard: 'Dashboard theme', dark: 'Dark', description: 'All nodes online.', details: 'Rack details', light: 'Light', system: 'System', theme: 'Theme', title: 'Rack A' }, ko: { close: '닫으세요', dashboard: '대시보드 테마예요', dark: '어두운 테마예요', description: '모든 노드가 온라인이에요.', details: '랙 세부 정보예요', light: '밝은 테마예요', system: '시스템 테마예요', theme: '테마예요', title: '랙 A예요' }, ja: { close: '閉じる', dashboard: 'ダッシュボードテーマ', dark: 'ダーク', description: 'すべてのノードがオンラインです。', details: 'ラックの詳細', light: 'ライト', system: 'システム', theme: 'テーマ', title: 'ラック A' } }[locale];
-  const displayDescription = description === 'All nodes online.' ? copy.description : description;
+  const copy = {
+    en: {
+      close: 'Close',
+      dashboard: 'Dashboard theme',
+      dark: 'Dark',
+      description: 'All nodes online.',
+      details: 'Rack details',
+      light: 'Light',
+      system: 'System',
+      theme: 'Theme',
+      title: 'Rack A',
+    },
+    ko: {
+      close: '닫으세요',
+      dashboard: '대시보드 테마예요',
+      dark: '어두운 테마예요',
+      description: '모든 노드가 온라인이에요.',
+      details: '랙 세부 정보예요',
+      light: '밝은 테마예요',
+      system: '시스템 테마예요',
+      theme: '테마예요',
+      title: '랙 A예요',
+    },
+    ja: {
+      close: '閉じる',
+      dashboard: 'ダッシュボードテーマ',
+      dark: 'ダーク',
+      description: 'すべてのノードがオンラインです。',
+      details: 'ラックの詳細',
+      light: 'ライト',
+      system: 'システム',
+      theme: 'テーマ',
+      title: 'ラック A',
+    },
+  }[locale];
+  const displayDescription =
+    description === 'All nodes online.' ? copy.description : description;
   const displayTitle = title === 'Rack A' ? copy.title : title;
   const [theme, setTheme] = useState('system');
   const stateProps =
@@ -180,63 +239,89 @@ export function PopoverExample({
 
   return (
     <div data-docs-example-item="">
-    <TRPopover.Root {...stateProps}>
-      <TRPopover.Trigger>{copy.details}</TRPopover.Trigger>
-      <TRPopover.Portal>
-        <TRPopover.Positioner
-          align={align}
-          alignOffset={alignOffset}
-          collisionAvoidance={{ align: 'flip', side: 'flip' }}
-          side={side}
-          sideOffset={sideOffset}
-        >
-          <TRPopover.Popup>
-            <TRPopover.Arrow />
-            <TRPopover.Title>{displayTitle}</TRPopover.Title>
-            <TRPopover.Description>{displayDescription}</TRPopover.Description>
-            <TRSelect.Root
-              items={{ system: copy.system, light: copy.light, dark: copy.dark }}
-              onValueChange={(value) => setTheme((value as string | null) ?? 'system')}
-              value={theme}
-            >
-              <TRSelect.Label>{copy.dashboard}</TRSelect.Label>
-              <TRSelect.Trigger aria-label={copy.dashboard}>
-                <TRSelect.Value />
-                <TRSelect.Icon aria-hidden="true">
-                  <ChevronDown />
-                </TRSelect.Icon>
-              </TRSelect.Trigger>
-              <TRSelect.Portal>
-                <TRSelect.Positioner>
-                  <TRSelect.Popup>
-                    <TRSelect.List>
-                      <TRSelect.Item value="system">
-                        <TRSelect.ItemText>{copy.system}</TRSelect.ItemText>
-                      </TRSelect.Item>
-                      <TRSelect.Item value="light">
-                        <TRSelect.ItemText>{copy.light}</TRSelect.ItemText>
-                      </TRSelect.Item>
-                      <TRSelect.Item value="dark">
-                        <TRSelect.ItemText>{copy.dark}</TRSelect.ItemText>
-                      </TRSelect.Item>
-                    </TRSelect.List>
-                  </TRSelect.Popup>
-                </TRSelect.Positioner>
-              </TRSelect.Portal>
-            </TRSelect.Root>
-            <output aria-live="polite">{copy.theme}: {theme}</output>
-            <TRPopover.Close>{copy.close}</TRPopover.Close>
-          </TRPopover.Popup>
-        </TRPopover.Positioner>
-      </TRPopover.Portal>
-    </TRPopover.Root>
+      <TRPopover.Root {...stateProps}>
+        <TRPopover.Trigger>{copy.details}</TRPopover.Trigger>
+        <TRPopover.Portal>
+          <TRPopover.Positioner
+            align={align}
+            alignOffset={alignOffset}
+            collisionAvoidance={{ align: 'flip', side: 'flip' }}
+            side={side}
+            sideOffset={sideOffset}
+          >
+            <TRPopover.Popup>
+              <TRPopover.Arrow />
+              <TRPopover.Title>{displayTitle}</TRPopover.Title>
+              <TRPopover.Description>{displayDescription}</TRPopover.Description>
+              <TRSelect.Root
+                items={{ system: copy.system, light: copy.light, dark: copy.dark }}
+                onValueChange={(value) =>
+                  setTheme((value as string | null) ?? 'system')
+                }
+                value={theme}
+              >
+                <TRSelect.Label>{copy.dashboard}</TRSelect.Label>
+                <TRSelect.Trigger aria-label={copy.dashboard}>
+                  <TRSelect.Value />
+                  <TRSelect.Icon aria-hidden="true">
+                    <ChevronDown />
+                  </TRSelect.Icon>
+                </TRSelect.Trigger>
+                <TRSelect.Portal>
+                  <TRSelect.Positioner>
+                    <TRSelect.Popup>
+                      <TRSelect.List>
+                        <TRSelect.Item value="system">
+                          <TRSelect.ItemText>{copy.system}</TRSelect.ItemText>
+                        </TRSelect.Item>
+                        <TRSelect.Item value="light">
+                          <TRSelect.ItemText>{copy.light}</TRSelect.ItemText>
+                        </TRSelect.Item>
+                        <TRSelect.Item value="dark">
+                          <TRSelect.ItemText>{copy.dark}</TRSelect.ItemText>
+                        </TRSelect.Item>
+                      </TRSelect.List>
+                    </TRSelect.Popup>
+                  </TRSelect.Positioner>
+                </TRSelect.Portal>
+              </TRSelect.Root>
+              <output aria-live="polite">
+                {copy.theme}: {theme}
+              </output>
+              <TRPopover.Close>{copy.close}</TRPopover.Close>
+            </TRPopover.Popup>
+          </TRPopover.Positioner>
+        </TRPopover.Portal>
+      </TRPopover.Root>
     </div>
   );
 }
 
 export function PopoverControlledLifecycle() {
   const locale = useDemoLocale();
-  const copy = { en: ['Collision handling keeps this long surface inside the viewport.', 'Controlled edge popover', 'TRPopover is ', 'open', 'closed'], ko: ['충돌 처리가 긴 표면을 viewport 안에 유지해요.', '제어형 가장자리 popover예요', 'TRPopover가 ', '열려 있어요', '닫혀 있어요'], ja: ['衝突処理により長い表面を viewport 内に保ちます。', '制御された端の popover', 'TRPopover は ', '開いています', '閉じています'] }[locale];
+  const copy = {
+    en: [
+      'Collision handling keeps this long surface inside the viewport.',
+      'Controlled edge popover',
+      'TRPopover is ',
+      'open',
+      'closed',
+    ],
+    ko: [
+      '충돌 처리가 긴 표면을 viewport 안에 유지해요.',
+      '제어형 가장자리 popover예요',
+      'TRPopover가 ',
+      '열려 있어요',
+      '닫혀 있어요',
+    ],
+    ja: [
+      '衝突処理により長い表面を viewport 内に保ちます。',
+      '制御された端の popover',
+      'TRPopover は ',
+      '開いています',
+      '閉じています',
+    ],
+  }[locale];
   const [open, setOpen] = useState(false);
   return (
     <div className="grid w-full justify-items-end gap-3">
@@ -250,7 +335,10 @@ export function PopoverControlledLifecycle() {
         sideOffset={16}
         title={copy[1] ?? ''}
       />
-      <output aria-live="polite">{copy[2]}{open ? copy[3] : copy[4]}</output>
+      <output aria-live="polite">
+        {copy[2]}
+        {open ? copy[3] : copy[4]}
+      </output>
     </div>
   );
 }
@@ -259,7 +347,26 @@ const popoverHandle = TRPopover.createHandle<{ rack: string }>();
 
 export function PopoverHandleExample() {
   const locale = useDemoLocale();
-  const copy = { en: ['Rack Delta', 'Detached rack details', 'Opened by an external trigger.', 'Close'], ko: ['랙 델타예요', '분리된 랙 세부 정보예요', '외부 트리거에서 열었어요.', '닫으세요'], ja: ['ラックデルタ', '分離したラックの詳細', '外部トリガーから開きました。', '閉じる'] }[locale];
+  const copy = {
+    en: [
+      'Rack Delta',
+      'Detached rack details',
+      'Opened by an external trigger.',
+      'Close',
+    ],
+    ko: [
+      '랙 델타예요',
+      '분리된 랙 세부 정보예요',
+      '외부 트리거에서 열었어요.',
+      '닫으세요',
+    ],
+    ja: [
+      'ラックデルタ',
+      '分離したラックの詳細',
+      '外部トリガーから開きました。',
+      '閉じる',
+    ],
+  }[locale];
   return (
     <div className="grid justify-items-start gap-3" data-docs-example-item="">
       <TRPopover.Trigger handle={popoverHandle} payload={{ rack: copy[0] }}>
@@ -271,9 +378,7 @@ export function PopoverHandleExample() {
             <TRPopover.Positioner sideOffset={8}>
               <TRPopover.Popup>
                 <TRPopover.Title>{payload?.rack}</TRPopover.Title>
-                <TRPopover.Description>
-                  {copy[2]}
-                </TRPopover.Description>
+                <TRPopover.Description>{copy[2]}</TRPopover.Description>
                 <TRPopover.Close>{copy[3]}</TRPopover.Close>
               </TRPopover.Popup>
             </TRPopover.Positioner>
@@ -285,7 +390,13 @@ export function PopoverHandleExample() {
 }
 
 export function PopoverAlignments() {
-  return <div className="flex flex-wrap gap-3" data-docs-example-item-count={3}>{(['start', 'center', 'end'] as const).map((align) => <PopoverExample align={align} key={align} title={align} />)}</div>;
+  return (
+    <div className="flex flex-wrap gap-3" data-docs-example-item-count={3}>
+      {(['start', 'center', 'end'] as const).map((align) => (
+        <PopoverExample align={align} key={align} title={align} />
+      ))}
+    </div>
+  );
 }
 
 const meta = {

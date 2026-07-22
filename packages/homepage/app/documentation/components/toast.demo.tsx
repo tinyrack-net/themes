@@ -193,7 +193,16 @@ export default function ToastAnchored() {
 function ToastCloseControl({ onClose }: { onClose?: () => void }) {
   const locale = useDemoLocale();
   return (
-    <TRToast.Close aria-label={locale === 'ko' ? '알림 닫기' : locale === 'ja' ? '通知を閉じる' : 'Dismiss notification'} onClick={onClose}>
+    <TRToast.Close
+      aria-label={
+        locale === 'ko'
+          ? '알림 닫기'
+          : locale === 'ja'
+            ? '通知を閉じる'
+            : 'Dismiss notification'
+      }
+      onClick={onClose}
+    >
       ×
     </TRToast.Close>
   );
@@ -209,7 +218,12 @@ export function ToastDemo({
   variant = 'success',
 }: ToastDemoProps) {
   const locale = useDemoLocale();
-  const copy = locale === 'ko' ? { action: '보기', show: '토스트 보기', viewport: '플레이그라운드 알림' } : locale === 'ja' ? { action: '表示', show: 'トーストを表示', viewport: 'プレイグラウンド通知' } : { action: 'View', show: 'Show toast', viewport: 'Playground notifications' };
+  const copy =
+    locale === 'ko'
+      ? { action: '보기', show: '토스트 보기', viewport: '플레이그라운드 알림' }
+      : locale === 'ja'
+        ? { action: '表示', show: 'トーストを表示', viewport: 'プレイグラウンド通知' }
+        : { action: 'View', show: 'Show toast', viewport: 'Playground notifications' };
   const manager = useToastManager();
   const managerRef = useRef(manager);
   const initialOpenHandled = useRef(false);
@@ -287,7 +301,8 @@ export function ToastVariantGallery() {
     <>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {variants.map(([type, title]) => (
-          <TRButton data-docs-example-item=""
+          <TRButton
+            data-docs-example-item=""
             key={type}
             onClick={() =>
               manager.add({

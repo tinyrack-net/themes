@@ -7,9 +7,21 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const meterCopy = {
-  en: { storage: 'Storage usage', range: 'Rack inlet temperature range', suffix: 'within the safe temperature range' },
-  ko: { storage: '저장 공간 사용량', range: '랙 흡입구 온도 범위', suffix: '안전 온도 범위 내' },
-  ja: { storage: 'ストレージ使用量', range: 'ラック吸気温度の範囲', suffix: '安全な温度範囲内' },
+  en: {
+    storage: 'Storage usage',
+    range: 'Rack inlet temperature range',
+    suffix: 'within the safe temperature range',
+  },
+  ko: {
+    storage: '저장 공간 사용량',
+    range: '랙 흡입구 온도 범위',
+    suffix: '안전 온도 범위 내',
+  },
+  ja: {
+    storage: 'ストレージ使用量',
+    range: 'ラック吸気温度の範囲',
+    suffix: '安全な温度範囲内',
+  },
 } as const;
 
 type StoryArgs = {
@@ -69,7 +81,12 @@ export function MeterVariantMatrix() {
   return (
     <div className="grid w-full gap-4">
       {variants.map((variant, index) => (
-        <TRMeter.Root data-docs-example-item="" key={variant} value={20 + index * 16} variant={variant}>
+        <TRMeter.Root
+          data-docs-example-item=""
+          key={variant}
+          value={20 + index * 16}
+          variant={variant}
+        >
           <TRMeter.Label>{variant}</TRMeter.Label>
           <TRMeter.Value />
           <TRMeter.Track>
@@ -92,7 +109,8 @@ export function MeterCustomRangePreview({
 } = {}) {
   const demoLocale = useDemoLocale();
   const copy = meterCopy[demoLocale];
-  const resolvedLocale = locale ?? { en: 'en-US', ko: 'ko-KR', ja: 'ja-JP' }[demoLocale];
+  const resolvedLocale =
+    locale ?? { en: 'en-US', ko: 'ko-KR', ja: 'ja-JP' }[demoLocale];
   return (
     <TRMeter.Root
       data-docs-example-item=""

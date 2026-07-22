@@ -21,12 +21,19 @@ export function ScrollAreaPreview({
   variant,
 }: StoryArgs) {
   const locale = useDemoLocale();
-  const visibleContent = content === 'Rack event log' ? (locale === 'ko' ? '랙 이벤트 로그' : locale === 'ja' ? 'ラックイベントログ' : content) : content;
+  const visibleContent =
+    content === 'Rack event log'
+      ? locale === 'ko'
+        ? '랙 이벤트 로그'
+        : locale === 'ja'
+          ? 'ラックイベントログ'
+          : content
+      : content;
   const hasHorizontal = orientation === 'horizontal' || orientation === 'both';
   const hasVertical = orientation === 'vertical' || orientation === 'both';
   const entries = Array.from(
     { length: hasVertical ? 12 : 3 },
-      (_, index) => `${visibleContent} ${index + 1}`,
+    (_, index) => `${visibleContent} ${index + 1}`,
   );
 
   return (
@@ -191,7 +198,10 @@ const meta = {
     orientation: 'both',
     variant: 'surface',
   },
-  localizedArgs: { ja: { content: 'ラックイベントログ' }, ko: { content: '랙 이벤트 로그' } },
+  localizedArgs: {
+    ja: { content: 'ラックイベントログ' },
+    ko: { content: '랙 이벤트 로그' },
+  },
   argTypes: {
     autoHide: { control: 'boolean' },
     content: { control: 'text' },

@@ -8,9 +8,21 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const previewCardCopy = {
-  en: { description: 'Healthy · 12 services', edge: 'Collision-aware preview content remains inside the viewport.', label: 'Rack Alpha' },
-  ja: { description: '正常 · 12 サービス', edge: '衝突を回避し、プレビュー内容をビューポート内に収めます。', label: 'ラック Alpha' },
-  ko: { description: '정상 · 서비스 12개', edge: '충돌을 피하고 미리보기 내용을 뷰포트 안에 유지해요.', label: '랙 Alpha' },
+  en: {
+    description: 'Healthy · 12 services',
+    edge: 'Collision-aware preview content remains inside the viewport.',
+    label: 'Rack Alpha',
+  },
+  ja: {
+    description: '正常 · 12 サービス',
+    edge: '衝突を回避し、プレビュー内容をビューポート内に収めます。',
+    label: 'ラック Alpha',
+  },
+  ko: {
+    description: '정상 · 서비스 12개',
+    edge: '충돌을 피하고 미리보기 내용을 뷰포트 안에 유지해요.',
+    label: '랙 Alpha',
+  },
 } as const;
 
 type StoryArgs = {
@@ -37,22 +49,23 @@ export function PreviewCardPreview({
   const copy = previewCardCopy[useDemoLocale()];
   const visibleLabel = label === 'Rack Alpha' ? copy.label : label;
   const visibleTitle = title === 'Rack Alpha' ? copy.label : title;
-  const visibleDescription = description === 'Healthy · 12 services' ? copy.description : description;
+  const visibleDescription =
+    description === 'Healthy · 12 services' ? copy.description : description;
 
   return (
     <div data-docs-example-item="">
-    <TRPreviewCard.Root onOpenChange={setOpen} open={open}>
-      <TRPreviewCard.Trigger href="#rack-alpha">{visibleLabel}</TRPreviewCard.Trigger>
-      <TRPreviewCard.Portal>
-        <TRPreviewCard.Positioner align={align} side={side}>
-          <TRPreviewCard.Popup>
-            <TRPreviewCard.Arrow />
-            <strong>{visibleTitle}</strong>
-            <p>{visibleDescription}</p>
-          </TRPreviewCard.Popup>
-        </TRPreviewCard.Positioner>
-      </TRPreviewCard.Portal>
-    </TRPreviewCard.Root>
+      <TRPreviewCard.Root onOpenChange={setOpen} open={open}>
+        <TRPreviewCard.Trigger href="#rack-alpha">{visibleLabel}</TRPreviewCard.Trigger>
+        <TRPreviewCard.Portal>
+          <TRPreviewCard.Positioner align={align} side={side}>
+            <TRPreviewCard.Popup>
+              <TRPreviewCard.Arrow />
+              <strong>{visibleTitle}</strong>
+              <p>{visibleDescription}</p>
+            </TRPreviewCard.Popup>
+          </TRPreviewCard.Positioner>
+        </TRPreviewCard.Portal>
+      </TRPreviewCard.Root>
     </div>
   );
 }
@@ -148,16 +161,49 @@ export function EdgeRackPreview() {
 }`;
 
 export function PreviewCardSideComparison() {
-  return <div className="grid gap-4 sm:grid-cols-2">{(['top', 'right', 'bottom', 'left'] as const).map((side) => <PreviewCardPreview defaultOpen key={side} label={side} side={side} title={side} />)}</div>;
+  return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      {(['top', 'right', 'bottom', 'left'] as const).map((side) => (
+        <PreviewCardPreview
+          defaultOpen
+          key={side}
+          label={side}
+          side={side}
+          title={side}
+        />
+      ))}
+    </div>
+  );
 }
 
 export function PreviewCardAlignComparison() {
-  return <div className="grid gap-4 sm:grid-cols-3">{(['start', 'center', 'end'] as const).map((align) => <PreviewCardPreview align={align} defaultOpen key={align} label={align} title={align} />)}</div>;
+  return (
+    <div className="grid gap-4 sm:grid-cols-3">
+      {(['start', 'center', 'end'] as const).map((align) => (
+        <PreviewCardPreview
+          align={align}
+          defaultOpen
+          key={align}
+          label={align}
+          title={align}
+        />
+      ))}
+    </div>
+  );
 }
 
 export function PreviewCardLongContent() {
   const copy = previewCardCopy[useDemoLocale()];
-  return <PreviewCardPreview align="end" defaultOpen description={copy.edge} label="Edge rack" side="right" title="Edge rack" />;
+  return (
+    <PreviewCardPreview
+      align="end"
+      defaultOpen
+      description={copy.edge}
+      label="Edge rack"
+      side="right"
+      title="Edge rack"
+    />
+  );
 }
 
 const meta = {
@@ -172,7 +218,11 @@ const meta = {
     title: 'Rack Alpha',
   },
   localizedArgs: {
-    ja: { description: '正常 · 12 サービス', label: 'ラック Alpha', title: 'ラック Alpha' },
+    ja: {
+      description: '正常 · 12 サービス',
+      label: 'ラック Alpha',
+      title: 'ラック Alpha',
+    },
     ko: { description: '정상 · 서비스 12개', label: '랙 Alpha', title: '랙 Alpha' },
   },
   argTypes: {

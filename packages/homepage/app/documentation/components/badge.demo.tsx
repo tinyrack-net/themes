@@ -38,12 +38,12 @@ const meta = {
     const locale = useDemoLocale();
     const label = children === meta.args.children ? healthyLabel[locale] : children;
     return (
-    <div className="max-w-64">
-      <TRBadge {...args}>
-        {icon ? <CircleCheck aria-hidden size="1em" /> : null}
-        {label}
-      </TRBadge>
-    </div>
+      <div className="max-w-64">
+        <TRBadge {...args}>
+          {icon ? <CircleCheck aria-hidden size="1em" /> : null}
+          {label}
+        </TRBadge>
+      </div>
     );
   },
 } satisfies Meta<BadgeStoryArgs>;

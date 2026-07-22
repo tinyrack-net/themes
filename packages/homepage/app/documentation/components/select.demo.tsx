@@ -34,25 +34,70 @@ type SelectPreviewProps = Omit<StoryArgs, 'disabledItem' | 'uiSize'> & {
 
 const copy = {
   en: {
-    alpha: 'Rack Alpha', beta: 'Rack Beta', gamma: 'Rack Gamma', rackPrefix: 'Rack', deploy: 'Deploy', deploymentRack: 'Deployment rack', disabled: 'Disabled', editable: 'Editable',
-    longCollection: 'Long rack collection', nonProduction: 'Non-production', offline: 'Offline',
-    placeholder: 'Choose a rack', production: 'Production', readOnly: 'Read only',
-    required: 'Choose a deployment rack.', scrollDown: 'Scroll down', scrollUp: 'Scroll up',
-    staging: 'Staging rack', ready: (rack: string) => `Ready to deploy to ${rack}.`, zone: 'Seoul availability zone',
+    alpha: 'Rack Alpha',
+    beta: 'Rack Beta',
+    gamma: 'Rack Gamma',
+    rackPrefix: 'Rack',
+    deploy: 'Deploy',
+    deploymentRack: 'Deployment rack',
+    disabled: 'Disabled',
+    editable: 'Editable',
+    longCollection: 'Long rack collection',
+    nonProduction: 'Non-production',
+    offline: 'Offline',
+    placeholder: 'Choose a rack',
+    production: 'Production',
+    readOnly: 'Read only',
+    required: 'Choose a deployment rack.',
+    scrollDown: 'Scroll down',
+    scrollUp: 'Scroll up',
+    staging: 'Staging rack',
+    ready: (rack: string) => `Ready to deploy to ${rack}.`,
+    zone: 'Seoul availability zone',
   },
   ko: {
-    alpha: '랙 알파예요', beta: '랙 베타예요', gamma: '랙 감마예요', rackPrefix: '랙', deploy: '배포하세요', deploymentRack: '배포 랙이에요', disabled: '사용할 수 없어요', editable: '변경할 수 있어요',
-    longCollection: '긴 랙 목록이에요', nonProduction: '비프로덕션이에요', offline: '오프라인이에요',
-    placeholder: '랙을 선택하세요', production: '프로덕션이에요', readOnly: '읽기 전용이에요',
-    required: '배포할 랙을 선택하세요.', scrollDown: '아래로 스크롤하세요', scrollUp: '위로 스크롤하세요',
-    staging: '스테이징 랙', ready: (rack: string) => `${rack}에 배포할 준비가 됐어요.`, zone: '서울 가용 영역',
+    alpha: '랙 알파예요',
+    beta: '랙 베타예요',
+    gamma: '랙 감마예요',
+    rackPrefix: '랙',
+    deploy: '배포하세요',
+    deploymentRack: '배포 랙이에요',
+    disabled: '사용할 수 없어요',
+    editable: '변경할 수 있어요',
+    longCollection: '긴 랙 목록이에요',
+    nonProduction: '비프로덕션이에요',
+    offline: '오프라인이에요',
+    placeholder: '랙을 선택하세요',
+    production: '프로덕션이에요',
+    readOnly: '읽기 전용이에요',
+    required: '배포할 랙을 선택하세요.',
+    scrollDown: '아래로 스크롤하세요',
+    scrollUp: '위로 스크롤하세요',
+    staging: '스테이징 랙',
+    ready: (rack: string) => `${rack}에 배포할 준비가 됐어요.`,
+    zone: '서울 가용 영역',
   },
   ja: {
-    alpha: 'ラックアルファ', beta: 'ラックベータ', gamma: 'ラックガンマ', rackPrefix: 'ラック', deploy: 'デプロイ', deploymentRack: 'デプロイ先ラック', disabled: '無効', editable: '変更可能',
-    longCollection: '長いラック一覧', nonProduction: '非本番', offline: 'オフライン',
-    placeholder: 'ラックを選択', production: '本番', readOnly: '読み取り専用',
-    required: 'デプロイ先ラックを選択してください。', scrollDown: '下にスクロール', scrollUp: '上にスクロール',
-    staging: 'ステージングラック', ready: (rack: string) => `${rack} にデプロイする準備ができました。`, zone: 'ソウル可用性ゾーン',
+    alpha: 'ラックアルファ',
+    beta: 'ラックベータ',
+    gamma: 'ラックガンマ',
+    rackPrefix: 'ラック',
+    deploy: 'デプロイ',
+    deploymentRack: 'デプロイ先ラック',
+    disabled: '無効',
+    editable: '変更可能',
+    longCollection: '長いラック一覧',
+    nonProduction: '非本番',
+    offline: 'オフライン',
+    placeholder: 'ラックを選択',
+    production: '本番',
+    readOnly: '読み取り専用',
+    required: 'デプロイ先ラックを選択してください。',
+    scrollDown: '下にスクロール',
+    scrollUp: '上にスクロール',
+    staging: 'ステージングラック',
+    ready: (rack: string) => `${rack} にデプロイする準備ができました。`,
+    zone: 'ソウル可用性ゾーン',
   },
 } as const;
 
@@ -67,38 +112,45 @@ export function SelectLongCollection() {
   const locale = useDemoLocale();
   const text = copy[locale];
   const localizedItems = Object.fromEntries(
-    Object.keys(longSelectItems).map((value, index) => [value, `${text.rackPrefix} ${String(index + 1).padStart(2, '0')} · ${text.zone}`]),
+    Object.keys(longSelectItems).map((value, index) => [
+      value,
+      `${text.rackPrefix} ${String(index + 1).padStart(2, '0')} · ${text.zone}`,
+    ]),
   );
   return (
     <div data-docs-example-item="" data-docs-example-item-count={1}>
-    <TRSelect.Root defaultValue="rack-1" items={localizedItems}>
-      <TRSelect.Label>{text.longCollection}</TRSelect.Label>
-      <TRSelect.Trigger aria-label={text.longCollection}>
-        <TRSelect.Value />
-        <TRSelect.Icon aria-hidden="true">
-          <ChevronDown />
-        </TRSelect.Icon>
-      </TRSelect.Trigger>
-      <TRSelect.Portal>
-        <TRSelect.Positioner sideOffset={8}>
-          <TRSelect.Popup>
-            <TRSelect.Arrow />
-            <TRSelect.ScrollUpArrow aria-label={text.scrollUp}>↑</TRSelect.ScrollUpArrow>
-            <TRSelect.List>
-              {Object.entries(localizedItems).map(([value, label]) => (
-                <TRSelect.Item key={value} value={value}>
-                  <TRSelect.ItemText>{label}</TRSelect.ItemText>
-                  <TRSelect.ItemIndicator aria-hidden="true">✓</TRSelect.ItemIndicator>
-                </TRSelect.Item>
-              ))}
-            </TRSelect.List>
-            <TRSelect.ScrollDownArrow aria-label={text.scrollDown}>
-              ↓
-            </TRSelect.ScrollDownArrow>
-          </TRSelect.Popup>
-        </TRSelect.Positioner>
-      </TRSelect.Portal>
-    </TRSelect.Root>
+      <TRSelect.Root defaultValue="rack-1" items={localizedItems}>
+        <TRSelect.Label>{text.longCollection}</TRSelect.Label>
+        <TRSelect.Trigger aria-label={text.longCollection}>
+          <TRSelect.Value />
+          <TRSelect.Icon aria-hidden="true">
+            <ChevronDown />
+          </TRSelect.Icon>
+        </TRSelect.Trigger>
+        <TRSelect.Portal>
+          <TRSelect.Positioner sideOffset={8}>
+            <TRSelect.Popup>
+              <TRSelect.Arrow />
+              <TRSelect.ScrollUpArrow aria-label={text.scrollUp}>
+                ↑
+              </TRSelect.ScrollUpArrow>
+              <TRSelect.List>
+                {Object.entries(localizedItems).map(([value, label]) => (
+                  <TRSelect.Item key={value} value={value}>
+                    <TRSelect.ItemText>{label}</TRSelect.ItemText>
+                    <TRSelect.ItemIndicator aria-hidden="true">
+                      ✓
+                    </TRSelect.ItemIndicator>
+                  </TRSelect.Item>
+                ))}
+              </TRSelect.List>
+              <TRSelect.ScrollDownArrow aria-label={text.scrollDown}>
+                ↓
+              </TRSelect.ScrollDownArrow>
+            </TRSelect.Popup>
+          </TRSelect.Positioner>
+        </TRSelect.Portal>
+      </TRSelect.Root>
     </div>
   );
 }
@@ -121,71 +173,87 @@ export function SelectPreview({
   const locale = useDemoLocale();
   const text = copy[locale];
   const localizedLabel = label ?? text.deploymentRack;
-  const localizedItems = { alpha: text.alpha, beta: text.beta, gamma: text.gamma, staging: text.staging };
+  const localizedItems = {
+    alpha: text.alpha,
+    beta: text.beta,
+    gamma: text.gamma,
+    staging: text.staging,
+  };
   const openProps = open === undefined ? { defaultOpen } : { open };
   const valueProps = value === undefined ? { defaultValue } : { value };
 
   return (
     <div data-docs-example-item={docsExampleItem}>
-    <TRSelect.Root
-      {...openProps}
-      {...valueProps}
-      disabled={disabled}
-      items={localizedItems}
-      name="rack"
-      onOpenChange={onOpenChange}
-      onValueChange={(nextValue) =>
-        onValueChange?.((nextValue as string | null) ?? null)
-      }
-      readOnly={readOnly}
-      required={required}
-    >
-      <TRSelect.Label>{localizedLabel}</TRSelect.Label>
-      <TRSelect.Trigger aria-label={localizedLabel} uiSize={uiSize}>
-        <TRSelect.Value placeholder={text.placeholder} />
-        <TRSelect.Icon aria-hidden="true">
-          <ChevronDown />
-        </TRSelect.Icon>
-      </TRSelect.Trigger>
-      <TRSelect.Portal>
-        <TRSelect.Positioner sideOffset={8}>
-          <TRSelect.Popup>
-            <TRSelect.Arrow />
-            <TRSelect.ScrollUpArrow aria-label={text.scrollUp}>↑</TRSelect.ScrollUpArrow>
-            <TRSelect.List>
-              <TRSelect.Group>
-                <TRSelect.GroupLabel>{text.production}</TRSelect.GroupLabel>
-                <TRSelect.Item value="alpha">
-                  <TRSelect.ItemText>{text.alpha}</TRSelect.ItemText>
-                  <TRSelect.ItemIndicator aria-hidden="true">✓</TRSelect.ItemIndicator>
-                </TRSelect.Item>
-                <TRSelect.Item value="beta">
-                  <TRSelect.ItemText>{text.beta}</TRSelect.ItemText>
-                  <TRSelect.ItemIndicator aria-hidden="true">✓</TRSelect.ItemIndicator>
-                </TRSelect.Item>
-                <TRSelect.Item disabled={disabledItem} value="gamma">
-                  <TRSelect.ItemText>
-                    {text.gamma}{disabledItem ? ` · ${text.offline}` : ''}
-                  </TRSelect.ItemText>
-                  <TRSelect.ItemIndicator aria-hidden="true">✓</TRSelect.ItemIndicator>
-                </TRSelect.Item>
-              </TRSelect.Group>
-              <TRSelect.Separator />
-              <TRSelect.Group>
-                <TRSelect.GroupLabel>{text.nonProduction}</TRSelect.GroupLabel>
-                <TRSelect.Item value="staging">
-                  <TRSelect.ItemText>{text.staging}</TRSelect.ItemText>
-                  <TRSelect.ItemIndicator aria-hidden="true">✓</TRSelect.ItemIndicator>
-                </TRSelect.Item>
-              </TRSelect.Group>
-            </TRSelect.List>
-            <TRSelect.ScrollDownArrow aria-label={text.scrollDown}>
-              ↓
-            </TRSelect.ScrollDownArrow>
-          </TRSelect.Popup>
-        </TRSelect.Positioner>
-      </TRSelect.Portal>
-    </TRSelect.Root>
+      <TRSelect.Root
+        {...openProps}
+        {...valueProps}
+        disabled={disabled}
+        items={localizedItems}
+        name="rack"
+        onOpenChange={onOpenChange}
+        onValueChange={(nextValue) =>
+          onValueChange?.((nextValue as string | null) ?? null)
+        }
+        readOnly={readOnly}
+        required={required}
+      >
+        <TRSelect.Label>{localizedLabel}</TRSelect.Label>
+        <TRSelect.Trigger aria-label={localizedLabel} uiSize={uiSize}>
+          <TRSelect.Value placeholder={text.placeholder} />
+          <TRSelect.Icon aria-hidden="true">
+            <ChevronDown />
+          </TRSelect.Icon>
+        </TRSelect.Trigger>
+        <TRSelect.Portal>
+          <TRSelect.Positioner sideOffset={8}>
+            <TRSelect.Popup>
+              <TRSelect.Arrow />
+              <TRSelect.ScrollUpArrow aria-label={text.scrollUp}>
+                ↑
+              </TRSelect.ScrollUpArrow>
+              <TRSelect.List>
+                <TRSelect.Group>
+                  <TRSelect.GroupLabel>{text.production}</TRSelect.GroupLabel>
+                  <TRSelect.Item value="alpha">
+                    <TRSelect.ItemText>{text.alpha}</TRSelect.ItemText>
+                    <TRSelect.ItemIndicator aria-hidden="true">
+                      ✓
+                    </TRSelect.ItemIndicator>
+                  </TRSelect.Item>
+                  <TRSelect.Item value="beta">
+                    <TRSelect.ItemText>{text.beta}</TRSelect.ItemText>
+                    <TRSelect.ItemIndicator aria-hidden="true">
+                      ✓
+                    </TRSelect.ItemIndicator>
+                  </TRSelect.Item>
+                  <TRSelect.Item disabled={disabledItem} value="gamma">
+                    <TRSelect.ItemText>
+                      {text.gamma}
+                      {disabledItem ? ` · ${text.offline}` : ''}
+                    </TRSelect.ItemText>
+                    <TRSelect.ItemIndicator aria-hidden="true">
+                      ✓
+                    </TRSelect.ItemIndicator>
+                  </TRSelect.Item>
+                </TRSelect.Group>
+                <TRSelect.Separator />
+                <TRSelect.Group>
+                  <TRSelect.GroupLabel>{text.nonProduction}</TRSelect.GroupLabel>
+                  <TRSelect.Item value="staging">
+                    <TRSelect.ItemText>{text.staging}</TRSelect.ItemText>
+                    <TRSelect.ItemIndicator aria-hidden="true">
+                      ✓
+                    </TRSelect.ItemIndicator>
+                  </TRSelect.Item>
+                </TRSelect.Group>
+              </TRSelect.List>
+              <TRSelect.ScrollDownArrow aria-label={text.scrollDown}>
+                ↓
+              </TRSelect.ScrollDownArrow>
+            </TRSelect.Popup>
+          </TRSelect.Positioner>
+        </TRSelect.Portal>
+      </TRSelect.Root>
     </div>
   );
 }
@@ -226,7 +294,14 @@ export function SelectSizeComparison() {
   return (
     <div className="grid gap-5" data-docs-example-item-count={3}>
       {(['sm', 'md', 'lg'] as const).map((uiSize) => (
-        <SelectPreview data-docs-example-item="" defaultValue="alpha" disabled={false} key={uiSize} readOnly={false} uiSize={uiSize} />
+        <SelectPreview
+          data-docs-example-item=""
+          defaultValue="alpha"
+          disabled={false}
+          key={uiSize}
+          readOnly={false}
+          uiSize={uiSize}
+        />
       ))}
     </div>
   );
@@ -368,17 +443,18 @@ export function SelectValidationPreview() {
           required
           value={value}
         />
-        {invalid ? (
-          <TRField.Error match>{text.required}</TRField.Error>
-        ) : null}
+        {invalid ? <TRField.Error match>{text.required}</TRField.Error> : null}
       </TRField.Root>
       <TRButton type="submit">{text.deploy}</TRButton>
       <output aria-live="polite">
         {attempted && value
           ? text.ready(
-              { alpha: text.alpha, beta: text.beta, gamma: text.gamma, staging: text.staging }[
-                value as 'alpha' | 'beta' | 'gamma' | 'staging'
-              ],
+              {
+                alpha: text.alpha,
+                beta: text.beta,
+                gamma: text.gamma,
+                staging: text.staging,
+              }[value as 'alpha' | 'beta' | 'gamma' | 'staging'],
             )
           : ''}
       </output>

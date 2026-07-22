@@ -70,8 +70,28 @@ export function DisabledDestination() {
 
 export function DocumentPaginationPreview({ direction }: Args) {
   const locale = useDemoLocale();
-  const localizedPrevious = { ...previous, description: locale === 'ko' ? '애플리케이션에 Tinyrack UI와 컴포넌트 스타일을 추가해요.' : locale === 'ja' ? 'アプリケーションに Tinyrack UI とコンポーネントスタイルを追加します。' : previous.description, label: locale === 'ko' ? '가이드' : locale === 'ja' ? 'ガイド' : previous.label, title: locale === 'ko' ? '설치' : locale === 'ja' ? 'インストール' : previous.title };
-  const localizedNext = { ...next, description: locale === 'ko' ? '문서 사이트의 기본값과 토큰을 선택해요.' : locale === 'ja' ? 'ドキュメントサイトのデフォルトとトークンを選びます。' : next.description, label: locale === 'ko' ? '가이드' : locale === 'ja' ? 'ガイド' : next.label, title: locale === 'ko' ? '설정' : locale === 'ja' ? '設定' : next.title };
+  const localizedPrevious = {
+    ...previous,
+    description:
+      locale === 'ko'
+        ? '애플리케이션에 Tinyrack UI와 컴포넌트 스타일을 추가해요.'
+        : locale === 'ja'
+          ? 'アプリケーションに Tinyrack UI とコンポーネントスタイルを追加します。'
+          : previous.description,
+    label: locale === 'ko' ? '가이드' : locale === 'ja' ? 'ガイド' : previous.label,
+    title: locale === 'ko' ? '설치' : locale === 'ja' ? 'インストール' : previous.title,
+  };
+  const localizedNext = {
+    ...next,
+    description:
+      locale === 'ko'
+        ? '문서 사이트의 기본값과 토큰을 선택해요.'
+        : locale === 'ja'
+          ? 'ドキュメントサイトのデフォルトとトークンを選びます。'
+          : next.description,
+    label: locale === 'ko' ? '가이드' : locale === 'ja' ? 'ガイド' : next.label,
+    title: locale === 'ko' ? '설정' : locale === 'ja' ? '設定' : next.title,
+  };
   return (
     <TRDocumentPagination
       data-docs-example-item=""
@@ -98,7 +118,12 @@ export function DocumentPaginationStatesPreview() {
 }
 
 export function DocumentPaginationDisabledPreview() {
-  return <TRDocumentPagination data-docs-example-item="" next={{ ...next, disabled: true }} />;
+  return (
+    <TRDocumentPagination
+      data-docs-example-item=""
+      next={{ ...next, disabled: true }}
+    />
+  );
 }
 const meta = {
   args: { direction: 'both' },

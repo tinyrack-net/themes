@@ -11,9 +11,42 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const inputCopy = {
-  en: { continue: 'Continue', default: 'Default', disabled: 'Disabled', invalid: 'Invalid', label: 'Rack name', placeholder: 'rack-alpha', readOnly: 'Read only', required: 'Rack name is required.', ready: (value: string) => `Ready to create ${value}.`, size: (size: string) => `${size} input` },
-  ja: { continue: '続行', default: 'デフォルト', disabled: '無効', invalid: '無効な値', label: 'ラック名', placeholder: 'rack-alpha', readOnly: '読み取り専用', required: 'ラック名を入力してください。', ready: (value: string) => `${value} を作成できます。`, size: (size: string) => `${size} 入力` },
-  ko: { continue: '계속', default: '기본', disabled: '비활성', invalid: '잘못된 값', label: '랙 이름', placeholder: 'rack-alpha', readOnly: '읽기 전용', required: '랙 이름을 입력하세요.', ready: (value: string) => `${value}을 만들 준비가 됐어요.`, size: (size: string) => `${size} 입력` },
+  en: {
+    continue: 'Continue',
+    default: 'Default',
+    disabled: 'Disabled',
+    invalid: 'Invalid',
+    label: 'Rack name',
+    placeholder: 'rack-alpha',
+    readOnly: 'Read only',
+    required: 'Rack name is required.',
+    ready: (value: string) => `Ready to create ${value}.`,
+    size: (size: string) => `${size} input`,
+  },
+  ja: {
+    continue: '続行',
+    default: 'デフォルト',
+    disabled: '無効',
+    invalid: '無効な値',
+    label: 'ラック名',
+    placeholder: 'rack-alpha',
+    readOnly: '読み取り専用',
+    required: 'ラック名を入力してください。',
+    ready: (value: string) => `${value} を作成できます。`,
+    size: (size: string) => `${size} 入力`,
+  },
+  ko: {
+    continue: '계속',
+    default: '기본',
+    disabled: '비활성',
+    invalid: '잘못된 값',
+    label: '랙 이름',
+    placeholder: 'rack-alpha',
+    readOnly: '읽기 전용',
+    required: '랙 이름을 입력하세요.',
+    ready: (value: string) => `${value}을 만들 준비가 됐어요.`,
+    size: (size: string) => `${size} 입력`,
+  },
 } as const;
 
 type StoryArgs = {
@@ -45,7 +78,11 @@ export function InputPreview({
   const locale = useDemoLocale();
   const copy = inputCopy[locale];
   return (
-    <label className="grid w-80 max-w-full gap-2" data-docs-example-item="" htmlFor={inputId}>
+    <label
+      className="grid w-80 max-w-full gap-2"
+      data-docs-example-item=""
+      htmlFor={inputId}
+    >
       {label === 'Rack name' ? copy.label : label}
       <TRInput
         aria-invalid={invalid || undefined}

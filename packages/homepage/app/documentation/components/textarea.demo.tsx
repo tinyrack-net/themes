@@ -11,9 +11,57 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const textareaCopy = {
-  en: { current: 'Current value', default: 'Default', disabled: 'Disabled', empty: 'Empty', invalid: 'Invalid', notes: 'Maintenance notes', placeholder: 'Operational notes', readOnly: 'Read only', reason: 'Change reason', reasonError: 'Add a reason before submitting.', reset: 'Reset', resetResult: 'Reset to the scheduled maintenance note.', submit: 'Submit', submitChange: 'Submit change', submitted: 'Change submitted.' },
-  ja: { current: '現在の値', default: 'デフォルト', disabled: '無効', empty: '空', invalid: '無効な値', notes: 'メンテナンスのメモ', placeholder: '運用メモ', readOnly: '読み取り専用', reason: '変更理由', reasonError: '送信前に理由を入力してください。', reset: 'リセット', resetResult: '予定メンテナンスのメモに戻しました。', submit: '送信', submitChange: '変更を送信', submitted: '変更を送信しました。' },
-  ko: { current: '현재 값', default: '기본', disabled: '비활성', empty: '비어 있음', invalid: '잘못된 값', notes: '유지보수 메모', placeholder: '운영 메모', readOnly: '읽기 전용', reason: '변경 이유', reasonError: '제출하기 전에 이유를 입력하세요.', reset: '초기화', resetResult: '예정된 유지보수 메모로 되돌렸어요.', submit: '제출', submitChange: '변경 사항 제출', submitted: '변경 사항을 제출했어요.' },
+  en: {
+    current: 'Current value',
+    default: 'Default',
+    disabled: 'Disabled',
+    empty: 'Empty',
+    invalid: 'Invalid',
+    notes: 'Maintenance notes',
+    placeholder: 'Operational notes',
+    readOnly: 'Read only',
+    reason: 'Change reason',
+    reasonError: 'Add a reason before submitting.',
+    reset: 'Reset',
+    resetResult: 'Reset to the scheduled maintenance note.',
+    submit: 'Submit',
+    submitChange: 'Submit change',
+    submitted: 'Change submitted.',
+  },
+  ja: {
+    current: '現在の値',
+    default: 'デフォルト',
+    disabled: '無効',
+    empty: '空',
+    invalid: '無効な値',
+    notes: 'メンテナンスのメモ',
+    placeholder: '運用メモ',
+    readOnly: '読み取り専用',
+    reason: '変更理由',
+    reasonError: '送信前に理由を入力してください。',
+    reset: 'リセット',
+    resetResult: '予定メンテナンスのメモに戻しました。',
+    submit: '送信',
+    submitChange: '変更を送信',
+    submitted: '変更を送信しました。',
+  },
+  ko: {
+    current: '현재 값',
+    default: '기본',
+    disabled: '비활성',
+    empty: '비어 있음',
+    invalid: '잘못된 값',
+    notes: '유지보수 메모',
+    placeholder: '운영 메모',
+    readOnly: '읽기 전용',
+    reason: '변경 이유',
+    reasonError: '제출하기 전에 이유를 입력하세요.',
+    reset: '초기화',
+    resetResult: '예정된 유지보수 메모로 되돌렸어요.',
+    submit: '제출',
+    submitChange: '변경 사항 제출',
+    submitted: '변경 사항을 제출했어요.',
+  },
 } as const;
 
 type StoryArgs = {
@@ -35,7 +83,11 @@ export function TextareaPreview({
   const copy = textareaCopy[useDemoLocale()];
   const [value, setValue] = useState(initialValue);
   return (
-    <label className="grid w-80 max-w-full gap-2" data-docs-example-item="" htmlFor={id}>
+    <label
+      className="grid w-80 max-w-full gap-2"
+      data-docs-example-item=""
+      htmlFor={id}
+    >
       {label}
       <TRTextarea
         {...args}
@@ -101,7 +153,11 @@ export function TextareaStateComparison() {
         required={false}
         uiSize="md"
       />
-      <label className="grid min-w-0 gap-2" data-docs-example-item="" htmlFor={invalidId}>
+      <label
+        className="grid min-w-0 gap-2"
+        data-docs-example-item=""
+        htmlFor={invalidId}
+      >
         {copy.invalid}
         <TRTextarea aria-invalid="true" defaultValue="Incomplete note" id={invalidId} />
       </label>
@@ -142,9 +198,7 @@ export function TextareaValidationPreview() {
           required
           value={value}
         />
-        <TRField.Error match>
-          {invalid ? copy.reasonError : null}
-        </TRField.Error>
+        <TRField.Error match>{invalid ? copy.reasonError : null}</TRField.Error>
       </TRField.Root>
       <TRButton type="submit">{copy.submitChange}</TRButton>
       <output aria-live="polite">{submitted ? copy.submitted : ''}</output>

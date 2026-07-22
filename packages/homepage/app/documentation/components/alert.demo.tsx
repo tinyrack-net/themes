@@ -8,9 +8,21 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const copy = {
-  en: { description: 'The rollout will start shortly.', details: 'View details', title: 'Deployment queued' },
-  ko: { description: '곧 배포를 시작해요.', details: '세부 정보 보기', title: '배포 대기 중' },
-  ja: { description: 'まもなくデプロイを開始します。', details: '詳細を見る', title: 'デプロイ待機中' },
+  en: {
+    description: 'The rollout will start shortly.',
+    details: 'View details',
+    title: 'Deployment queued',
+  },
+  ko: {
+    description: '곧 배포를 시작해요.',
+    details: '세부 정보 보기',
+    title: '배포 대기 중',
+  },
+  ja: {
+    description: 'まもなくデプロイを開始します。',
+    details: '詳細を見る',
+    title: 'デプロイ待機中',
+  },
 } as const;
 
 type AlertVariant = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
@@ -46,24 +58,25 @@ const meta = {
   render: ({ description, role, showActions, title, variant }) => {
     const locale = useDemoLocale();
     const text = copy[locale];
-    const localizedDescription = description === meta.args.description ? text.description : description;
+    const localizedDescription =
+      description === meta.args.description ? text.description : description;
     const localizedTitle = title === meta.args.title ? text.title : title;
     return (
-    <TRAlert.Root
-      className="max-w-md"
-      role={role === 'none' ? undefined : role}
-      variant={variant}
-    >
-      <TRAlert.Title render={<h3>{localizedTitle}</h3>} />
-      <TRAlert.Description>{localizedDescription}</TRAlert.Description>
-      {showActions ? (
-        <TRAlert.Actions>
-          <TRButton appearance="outline" intent={variant} type="button">
-            {text.details}
-          </TRButton>
-        </TRAlert.Actions>
-      ) : null}
-    </TRAlert.Root>
+      <TRAlert.Root
+        className="max-w-md"
+        role={role === 'none' ? undefined : role}
+        variant={variant}
+      >
+        <TRAlert.Title render={<h3>{localizedTitle}</h3>} />
+        <TRAlert.Description>{localizedDescription}</TRAlert.Description>
+        {showActions ? (
+          <TRAlert.Actions>
+            <TRButton appearance="outline" intent={variant} type="button">
+              {text.details}
+            </TRButton>
+          </TRAlert.Actions>
+        ) : null}
+      </TRAlert.Root>
     );
   },
 } satisfies Meta<AlertStoryArgs>;

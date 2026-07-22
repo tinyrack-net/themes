@@ -72,9 +72,7 @@ const meta = {
         {...rootProps}
       >
         <TRCard.Header>
-          <TRCard.Title
-            render={<h3 id="card-playground-title">{localizedTitle}</h3>}
-          />
+          <TRCard.Title render={<h3 id="card-playground-title">{localizedTitle}</h3>} />
           <TRCard.Description>{localizedDescription}</TRCard.Description>
         </TRCard.Header>
         <TRCard.Content>{localizedContent}</TRCard.Content>

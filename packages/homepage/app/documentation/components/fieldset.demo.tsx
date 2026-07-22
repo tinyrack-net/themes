@@ -12,9 +12,42 @@ import {
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const copy = {
-  en: { notifications: 'Notifications', email: 'Email alerts', incidents: 'Incident summaries', editable: 'Editable settings', managed: 'Managed settings', incidentNotifications: 'Incident notifications', enable: 'Enable incident notifications', delivery: 'Delivery channels', emailChannel: 'Email', sms: 'SMS' },
-  ko: { notifications: '알림', email: '이메일 알림을 받아요', incidents: '인시던트 요약을 받아요', editable: '직접 변경하는 설정', managed: '관리되는 설정', incidentNotifications: '인시던트 알림', enable: '인시던트 알림을 사용해요', delivery: '전송 채널', emailChannel: '이메일로 받아요', sms: '문자 메시지로 받아요' },
-  ja: { notifications: '通知', email: 'メールアラート', incidents: 'インシデントの概要', editable: '編集可能な設定', managed: '管理された設定', incidentNotifications: 'インシデント通知', enable: 'インシデント通知を有効にする', delivery: '配信チャネル', emailChannel: 'メール', sms: 'SMS' },
+  en: {
+    notifications: 'Notifications',
+    email: 'Email alerts',
+    incidents: 'Incident summaries',
+    editable: 'Editable settings',
+    managed: 'Managed settings',
+    incidentNotifications: 'Incident notifications',
+    enable: 'Enable incident notifications',
+    delivery: 'Delivery channels',
+    emailChannel: 'Email',
+    sms: 'SMS',
+  },
+  ko: {
+    notifications: '알림',
+    email: '이메일 알림을 받아요',
+    incidents: '인시던트 요약을 받아요',
+    editable: '직접 변경하는 설정',
+    managed: '관리되는 설정',
+    incidentNotifications: '인시던트 알림',
+    enable: '인시던트 알림을 사용해요',
+    delivery: '전송 채널',
+    emailChannel: '이메일로 받아요',
+    sms: '문자 메시지로 받아요',
+  },
+  ja: {
+    notifications: '通知',
+    email: 'メールアラート',
+    incidents: 'インシデントの概要',
+    editable: '編集可能な設定',
+    managed: '管理された設定',
+    incidentNotifications: 'インシデント通知',
+    enable: 'インシデント通知を有効にする',
+    delivery: '配信チャネル',
+    emailChannel: 'メール',
+    sms: 'SMS',
+  },
 } as const;
 
 type StoryArgs = {
@@ -44,7 +77,11 @@ export function FieldsetPreview({
   const incidentId = useId();
 
   return (
-    <TRFieldset.Root className="w-full max-w-80 min-w-0" data-docs-example-item={docsExampleItem} disabled={disabled}>
+    <TRFieldset.Root
+      className="w-full max-w-80 min-w-0"
+      data-docs-example-item={docsExampleItem}
+      disabled={disabled}
+    >
       <TRFieldset.Legend>{legend}</TRFieldset.Legend>
       <label className="flex items-center gap-2" htmlFor={emailId}>
         <TRCheckbox.Root
@@ -132,7 +169,9 @@ const meta = {
     return (
       <FieldsetPreview
         {...args}
-        legend={args.legend === 'Notifications' ? copy[locale].notifications : args.legend}
+        legend={
+          args.legend === 'Notifications' ? copy[locale].notifications : args.legend
+        }
         onEmailAlertsChange={(emailAlerts) => updateArgs({ emailAlerts })}
       />
     );

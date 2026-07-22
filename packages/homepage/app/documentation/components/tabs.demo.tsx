@@ -46,7 +46,26 @@ export function TabsPreview({ disabledTab, orientation, uiSize }: TabsStoryArgs)
 export function TabsInteractiveExample() {
   const [value, setValue] = useState<string | null>('overview');
   const locale = useDemoLocale();
-  const labels = locale === 'ko' ? ['개요', '네트워크', '스토리지', '로그', '모든 시스템이 정상이에요.', '선택'] : locale === 'ja' ? ['概要', 'ネットワーク', 'ストレージ', 'ログ', 'すべてのシステムは正常です。', '選択中'] : ['Overview', 'Network', 'Storage', 'Logs', 'All systems operational.', 'Selected'];
+  const labels =
+    locale === 'ko'
+      ? ['개요', '네트워크', '스토리지', '로그', '모든 시스템이 정상이에요.', '선택']
+      : locale === 'ja'
+        ? [
+            '概要',
+            'ネットワーク',
+            'ストレージ',
+            'ログ',
+            'すべてのシステムは正常です。',
+            '選択中',
+          ]
+        : [
+            'Overview',
+            'Network',
+            'Storage',
+            'Logs',
+            'All systems operational.',
+            'Selected',
+          ];
 
   return (
     <div className="grid gap-3" data-docs-example-item="">
@@ -69,7 +88,9 @@ export function TabsInteractiveExample() {
         <TRTabs.Panel value="storage">4.2 TB available.</TRTabs.Panel>
         <TRTabs.Panel value="logs">Log stream.</TRTabs.Panel>
       </TRTabs.Root>
-      <output aria-live="polite">{labels[5]}: {value ?? '—'}</output>
+      <output aria-live="polite">
+        {labels[5]}: {value ?? '—'}
+      </output>
     </div>
   );
 }

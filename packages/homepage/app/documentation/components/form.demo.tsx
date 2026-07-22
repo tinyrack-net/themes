@@ -11,9 +11,76 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const copy = {
-  en: { rack: 'Rack name', required: 'Enter a rack name.', save: 'Save', submitted: (v: string) => `Submitted ${v}.`, nativeForm: 'Native rack form', submitRack: 'Submit rack', reset: 'Reset form', saveRack: 'Save rack', beforeSaving: 'Enter a rack name before saving.', saved: (v: string) => `Saved ${v}.`, createForm: 'Create rack form', exists: 'Rack Alpha already exists.', created: (v: string) => `Created ${v}.`, unique: 'Use a name that is not already registered.', create: 'Create rack', region: 'Region', regionRequired: 'Enter a region.', validateRack: 'Validate rack', validateAll: 'Validate all', submit: 'Submit', validated: (rack: string, region: string) => `Validated ${rack} in ${region}.` },
-  ko: { rack: '랙 이름', required: '랙 이름을 입력해요.', save: '저장해요', submitted: (v: string) => `${v} 값을 제출했어요.`, nativeForm: '네이티브 랙 폼', submitRack: '랙을 제출해요', reset: '폼을 초기화해요', saveRack: '랙을 저장해요', beforeSaving: '저장하기 전에 랙 이름을 입력해요.', saved: (v: string) => `${v} 값을 저장했어요.`, createForm: '랙 생성 폼', exists: 'Rack Alpha가 이미 있어요.', created: (v: string) => `${v} 랙을 만들었어요.`, unique: '아직 등록되지 않은 이름을 사용해요.', create: '랙을 만들어요', region: '리전', regionRequired: '리전을 입력해요.', validateRack: '랙을 검증해요', validateAll: '모두 검증해요', submit: '제출해요', validated: (rack: string, region: string) => `${region}의 ${rack}을 검증했어요.` },
-  ja: { rack: 'ラック名', required: 'ラック名を入力してください。', save: '保存', submitted: (v: string) => `${v} を送信しました。`, nativeForm: 'ネイティブのラックフォーム', submitRack: 'ラックを送信', reset: 'フォームをリセット', saveRack: 'ラックを保存', beforeSaving: '保存する前にラック名を入力してください。', saved: (v: string) => `${v} を保存しました。`, createForm: 'ラック作成フォーム', exists: 'Rack Alpha はすでに存在します。', created: (v: string) => `${v} を作成しました。`, unique: '未登録の名前を使ってください。', create: 'ラックを作成', region: 'リージョン', regionRequired: 'リージョンを入力してください。', validateRack: 'ラックを検証', validateAll: 'すべて検証', submit: '送信', validated: (rack: string, region: string) => `${region} の ${rack} を検証しました。` },
+  en: {
+    rack: 'Rack name',
+    required: 'Enter a rack name.',
+    save: 'Save',
+    submitted: (v: string) => `Submitted ${v}.`,
+    nativeForm: 'Native rack form',
+    submitRack: 'Submit rack',
+    reset: 'Reset form',
+    saveRack: 'Save rack',
+    beforeSaving: 'Enter a rack name before saving.',
+    saved: (v: string) => `Saved ${v}.`,
+    createForm: 'Create rack form',
+    exists: 'Rack Alpha already exists.',
+    created: (v: string) => `Created ${v}.`,
+    unique: 'Use a name that is not already registered.',
+    create: 'Create rack',
+    region: 'Region',
+    regionRequired: 'Enter a region.',
+    validateRack: 'Validate rack',
+    validateAll: 'Validate all',
+    submit: 'Submit',
+    validated: (rack: string, region: string) => `Validated ${rack} in ${region}.`,
+  },
+  ko: {
+    rack: '랙 이름',
+    required: '랙 이름을 입력해요.',
+    save: '저장해요',
+    submitted: (v: string) => `${v} 값을 제출했어요.`,
+    nativeForm: '네이티브 랙 폼',
+    submitRack: '랙을 제출해요',
+    reset: '폼을 초기화해요',
+    saveRack: '랙을 저장해요',
+    beforeSaving: '저장하기 전에 랙 이름을 입력해요.',
+    saved: (v: string) => `${v} 값을 저장했어요.`,
+    createForm: '랙 생성 폼',
+    exists: 'Rack Alpha가 이미 있어요.',
+    created: (v: string) => `${v} 랙을 만들었어요.`,
+    unique: '아직 등록되지 않은 이름을 사용해요.',
+    create: '랙을 만들어요',
+    region: '리전',
+    regionRequired: '리전을 입력해요.',
+    validateRack: '랙을 검증해요',
+    validateAll: '모두 검증해요',
+    submit: '제출해요',
+    validated: (rack: string, region: string) => `${region}의 ${rack}을 검증했어요.`,
+  },
+  ja: {
+    rack: 'ラック名',
+    required: 'ラック名を入力してください。',
+    save: '保存',
+    submitted: (v: string) => `${v} を送信しました。`,
+    nativeForm: 'ネイティブのラックフォーム',
+    submitRack: 'ラックを送信',
+    reset: 'フォームをリセット',
+    saveRack: 'ラックを保存',
+    beforeSaving: '保存する前にラック名を入力してください。',
+    saved: (v: string) => `${v} を保存しました。`,
+    createForm: 'ラック作成フォーム',
+    exists: 'Rack Alpha はすでに存在します。',
+    created: (v: string) => `${v} を作成しました。`,
+    unique: '未登録の名前を使ってください。',
+    create: 'ラックを作成',
+    region: 'リージョン',
+    regionRequired: 'リージョンを入力してください。',
+    validateRack: 'ラックを検証',
+    validateAll: 'すべて検証',
+    submit: '送信',
+    validated: (rack: string, region: string) =>
+      `${region} の ${rack} を検証しました。`,
+  },
 } as const;
 
 type StoryArgs = {
@@ -169,9 +236,7 @@ export function FormServerErrorPreview() {
       <TRField.Root name="rack">
         <TRField.Label>{text.rack}</TRField.Label>
         <TRField.Control defaultValue="rack-alpha" required />
-        <TRField.Description>
-          {text.unique}
-        </TRField.Description>
+        <TRField.Description>{text.unique}</TRField.Description>
         <TRField.Error />
       </TRField.Root>
       <div className="flex flex-wrap gap-2">
@@ -193,9 +258,7 @@ export function FormActionsPreview() {
     <TRForm<{ rack: string; region: string }>
       actionsRef={actionsRef}
       className="grid w-full max-w-80 min-w-0 gap-3"
-      onFormSubmit={(values) =>
-        setResult(text.validated(values.rack, values.region))
-      }
+      onFormSubmit={(values) => setResult(text.validated(values.rack, values.region))}
       validationMode="onBlur"
     >
       <TRField.Root name="rack">
@@ -244,7 +307,13 @@ const meta = {
   },
   render: function Render(args) {
     const locale = useDemoLocale();
-    return <FormPreview {...args} label={args.label === 'Rack name' ? copy[locale].rack : args.label} submitLabel={args.submitLabel === 'Save' ? copy[locale].save : args.submitLabel} />;
+    return (
+      <FormPreview
+        {...args}
+        label={args.label === 'Rack name' ? copy[locale].rack : args.label}
+        submitLabel={args.submitLabel === 'Save' ? copy[locale].save : args.submitLabel}
+      />
+    );
   },
 } satisfies Meta<StoryArgs>;
 

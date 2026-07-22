@@ -190,9 +190,7 @@ function componentExampleItemCount(source: string, id: string) {
       ? nextExampleOffset
       : apiOffset;
   const block = source.slice(idOffset, endOffset);
-  const declaredItemCount = block.match(
-    /data-docs-example-item-count="(\d+)"/,
-  )?.[1];
+  const declaredItemCount = block.match(/data-docs-example-item-count="(\d+)"/)?.[1];
   if (declaredItemCount !== undefined) return Number(declaredItemCount);
   return block.match(/data-docs-example-item=""/g)?.length ?? 0;
 }
@@ -332,7 +330,8 @@ describe('React Router documentation contract', () => {
       const demoPath = `app/documentation/components/${entry.id}.demo.tsx`;
       const demo = readText(demoPath);
       const metaOffset = demo.indexOf('const meta =');
-      const renderedExamples = `${examples}\n${demo.slice(0, metaOffset)}`.toLowerCase();
+      const renderedExamples =
+        `${examples}\n${demo.slice(0, metaOffset)}`.toLowerCase();
 
       for (const [control, values] of demoLiteralControlOptions(demoPath)) {
         if (demoOnlyControls.has(`${entry.id}.${control}`)) continue;
@@ -392,7 +391,11 @@ describe('React Router documentation contract', () => {
         const itemCount = componentExampleItemCount(docs, group.id);
 
         expect(idOffset, group.id).toBeGreaterThanOrEqual(0);
-        expect(group.section === 'usage' ? idOffset < examplesOffset : idOffset > examplesOffset).toBe(true);
+        expect(
+          group.section === 'usage'
+            ? idOffset < examplesOffset
+            : idOffset > examplesOffset,
+        ).toBe(true);
         expect(itemCount, group.id).toBeGreaterThanOrEqual(group.minItems);
         expect(itemCount, group.id).toBeLessThanOrEqual(group.maxItems);
       }

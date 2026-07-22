@@ -11,9 +11,64 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const otpCopy = {
-  en: { accepted: 'Verification code accepted.', changed: (value: string, reason: string) => `Accepted ${value || 'empty'} via ${reason}.`, completed: (value: string, reason: string) => `Completed ${value} via ${reason}.`, current: 'Current value', description: 'Enter all four digits.', disabled: 'Disabled code', empty: 'Empty', error: 'A four-digit code is required.', label: 'Verification code', readOnly: 'Six-digit code', rejected: (value: string, reason: string) => `Rejected ${value} via ${reason}.`, reset: 'Reset', resetResult: 'Reset.', verify: 'Verify', waiting: 'Waiting for input.' },
-  ja: { accepted: '確認コードを受け付けました。', changed: (value: string, reason: string) => `${reason} により ${value || '空'} を受け付けました。`, completed: (value: string, reason: string) => `${reason} により ${value} が完成しました。`, current: '現在の値', description: '4 桁すべてを入力してください。', disabled: '無効なコード', empty: '空', error: '4 桁のコードが必要です。', label: '確認コード', readOnly: '6 桁のコード', rejected: (value: string, reason: string) => `${reason} により ${value} を拒否しました。`, reset: 'リセット', resetResult: 'リセットしました。', verify: '確認', waiting: '入力を待っています。' },
-  ko: { accepted: '인증 코드를 확인했어요.', changed: (value: string, reason: string) => `${reason} 방식으로 ${value || '빈 값'}을 입력했어요.`, completed: (value: string, reason: string) => `${reason} 방식으로 ${value} 입력을 마쳤어요.`, current: '현재 값', description: '네 자리 숫자를 모두 입력하세요.', disabled: '비활성 코드', empty: '비어 있음', error: '네 자리 코드가 필요해요.', label: '인증 코드', readOnly: '여섯 자리 코드', rejected: (value: string, reason: string) => `${reason} 방식의 ${value} 입력을 거부했어요.`, reset: '초기화', resetResult: '초기화했어요.', verify: '확인', waiting: '입력을 기다리고 있어요.' },
+  en: {
+    accepted: 'Verification code accepted.',
+    changed: (value: string, reason: string) =>
+      `Accepted ${value || 'empty'} via ${reason}.`,
+    completed: (value: string, reason: string) => `Completed ${value} via ${reason}.`,
+    current: 'Current value',
+    description: 'Enter all four digits.',
+    disabled: 'Disabled code',
+    empty: 'Empty',
+    error: 'A four-digit code is required.',
+    label: 'Verification code',
+    readOnly: 'Six-digit code',
+    rejected: (value: string, reason: string) => `Rejected ${value} via ${reason}.`,
+    reset: 'Reset',
+    resetResult: 'Reset.',
+    verify: 'Verify',
+    waiting: 'Waiting for input.',
+  },
+  ja: {
+    accepted: '確認コードを受け付けました。',
+    changed: (value: string, reason: string) =>
+      `${reason} により ${value || '空'} を受け付けました。`,
+    completed: (value: string, reason: string) =>
+      `${reason} により ${value} が完成しました。`,
+    current: '現在の値',
+    description: '4 桁すべてを入力してください。',
+    disabled: '無効なコード',
+    empty: '空',
+    error: '4 桁のコードが必要です。',
+    label: '確認コード',
+    readOnly: '6 桁のコード',
+    rejected: (value: string, reason: string) =>
+      `${reason} により ${value} を拒否しました。`,
+    reset: 'リセット',
+    resetResult: 'リセットしました。',
+    verify: '確認',
+    waiting: '入力を待っています。',
+  },
+  ko: {
+    accepted: '인증 코드를 확인했어요.',
+    changed: (value: string, reason: string) =>
+      `${reason} 방식으로 ${value || '빈 값'}을 입력했어요.`,
+    completed: (value: string, reason: string) =>
+      `${reason} 방식으로 ${value} 입력을 마쳤어요.`,
+    current: '현재 값',
+    description: '네 자리 숫자를 모두 입력하세요.',
+    disabled: '비활성 코드',
+    empty: '비어 있음',
+    error: '네 자리 코드가 필요해요.',
+    label: '인증 코드',
+    readOnly: '여섯 자리 코드',
+    rejected: (value: string, reason: string) =>
+      `${reason} 방식의 ${value} 입력을 거부했어요.`,
+    reset: '초기화',
+    resetResult: '초기화했어요.',
+    verify: '확인',
+    waiting: '입력을 기다리고 있어요.',
+  },
 } as const;
 
 type StoryArgs = {
@@ -59,7 +114,9 @@ export function OTPFieldPreview({
 
   return (
     <TRField.Root className="grid min-w-0 max-w-full gap-2" data-docs-example-item="">
-      <TRField.Label id={labelId}>{label === 'Verification code' ? copy.label : label}</TRField.Label>
+      <TRField.Label id={labelId}>
+        {label === 'Verification code' ? copy.label : label}
+      </TRField.Label>
       <TROTPField.Root
         {...stateProps}
         aria-labelledby={labelId}
@@ -183,14 +240,10 @@ export function OTPFieldValidationPreview() {
           <OTPFieldSlots length={4} />
         </TROTPField.Root>
         <TRField.Description>{copy.description}</TRField.Description>
-        {invalid ? (
-          <TRField.Error match>{copy.error}</TRField.Error>
-        ) : null}
+        {invalid ? <TRField.Error match>{copy.error}</TRField.Error> : null}
       </TRField.Root>
       <TRButton type="submit">{copy.verify}</TRButton>
-      <output aria-live="polite">
-        {attempted && !invalid ? copy.accepted : ''}
-      </output>
+      <output aria-live="polite">{attempted && !invalid ? copy.accepted : ''}</output>
     </TRForm>
   );
 }

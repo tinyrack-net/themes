@@ -9,19 +9,153 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const menubarCopy = {
-  en: { app: 'Application menu', none: 'No command selected', file: 'File', edit: 'Edit', view: 'View', newRack: 'New', open: 'Open', rename: 'Rename', duplicate: 'Duplicate unavailable', status: 'Show status', shortcuts: 'Keyboard shortcuts', horizontal: 'Horizontal tools', vertical: 'Vertical tools', enabled: 'Enabled menubar', itemDisabled: 'One menu disabled', disabled: 'Disabled menubar', looping: 'Looping focus', bounded: 'Bounded focus' },
-  ko: { app: '애플리케이션 메뉴예요', none: '명령을 선택하지 않았어요', file: '파일을 열어요', edit: '편집해요', view: '보기를 바꿔요', newRack: '새 랙을 만들어요', open: '열어요', rename: '이름을 바꿔요', duplicate: '복제할 수 없어요', status: '상태를 보여요', shortcuts: '키보드 단축키를 봐요', horizontal: '가로 도구예요', vertical: '세로 도구예요', enabled: '사용할 수 있는 메뉴 막대예요', itemDisabled: '한 메뉴를 사용할 수 없어요', disabled: '메뉴 막대를 사용할 수 없어요', looping: '초점이 순환해요', bounded: '초점이 경계에서 멈춰요' },
-  ja: { app: 'アプリケーションメニュー', none: 'コマンドは未選択です', file: 'ファイル', edit: '編集', view: '表示', newRack: '新規', open: '開く', rename: '名前を変更', duplicate: '複製は利用できません', status: 'ステータスを表示', shortcuts: 'キーボードショートカット', horizontal: '横方向のツール', vertical: '縦方向のツール', enabled: '有効なメニューバー', itemDisabled: '1つのメニューが無効', disabled: '無効なメニューバー', looping: 'フォーカスを循環', bounded: '境界で停止' },
+  en: {
+    app: 'Application menu',
+    none: 'No command selected',
+    file: 'File',
+    edit: 'Edit',
+    view: 'View',
+    newRack: 'New',
+    open: 'Open',
+    rename: 'Rename',
+    duplicate: 'Duplicate unavailable',
+    status: 'Show status',
+    shortcuts: 'Keyboard shortcuts',
+    horizontal: 'Horizontal tools',
+    vertical: 'Vertical tools',
+    enabled: 'Enabled menubar',
+    itemDisabled: 'One menu disabled',
+    disabled: 'Disabled menubar',
+    looping: 'Looping focus',
+    bounded: 'Bounded focus',
+  },
+  ko: {
+    app: '애플리케이션 메뉴예요',
+    none: '명령을 선택하지 않았어요',
+    file: '파일을 열어요',
+    edit: '편집해요',
+    view: '보기를 바꿔요',
+    newRack: '새 랙을 만들어요',
+    open: '열어요',
+    rename: '이름을 바꿔요',
+    duplicate: '복제할 수 없어요',
+    status: '상태를 보여요',
+    shortcuts: '키보드 단축키를 봐요',
+    horizontal: '가로 도구예요',
+    vertical: '세로 도구예요',
+    enabled: '사용할 수 있는 메뉴 막대예요',
+    itemDisabled: '한 메뉴를 사용할 수 없어요',
+    disabled: '메뉴 막대를 사용할 수 없어요',
+    looping: '초점이 순환해요',
+    bounded: '초점이 경계에서 멈춰요',
+  },
+  ja: {
+    app: 'アプリケーションメニュー',
+    none: 'コマンドは未選択です',
+    file: 'ファイル',
+    edit: '編集',
+    view: '表示',
+    newRack: '新規',
+    open: '開く',
+    rename: '名前を変更',
+    duplicate: '複製は利用できません',
+    status: 'ステータスを表示',
+    shortcuts: 'キーボードショートカット',
+    horizontal: '横方向のツール',
+    vertical: '縦方向のツール',
+    enabled: '有効なメニューバー',
+    itemDisabled: '1つのメニューが無効',
+    disabled: '無効なメニューバー',
+    looping: 'フォーカスを循環',
+    bounded: '境界で停止',
+  },
 } as const;
 
-function CompactMenubar({ disabled = false, disabledItem = false, firstLabel, label, loopFocus = true, orientation = 'horizontal', secondLabel }: { disabled?: boolean; disabledItem?: boolean; firstLabel?: string; label: string; loopFocus?: boolean; orientation?: 'horizontal' | 'vertical'; secondLabel?: string }) {
+function CompactMenubar({
+  disabled = false,
+  disabledItem = false,
+  firstLabel,
+  label,
+  loopFocus = true,
+  orientation = 'horizontal',
+  secondLabel,
+}: {
+  disabled?: boolean;
+  disabledItem?: boolean;
+  firstLabel?: string;
+  label: string;
+  loopFocus?: boolean;
+  orientation?: 'horizontal' | 'vertical';
+  secondLabel?: string;
+}) {
   const text = menubarCopy[useDemoLocale()];
-  return <section data-docs-example-item=""><strong>{label}</strong><TRMenubar aria-label={label} disabled={disabled} loopFocus={loopFocus} orientation={orientation}><TRMenu.Root disabled={disabledItem}><TRMenu.Trigger>{firstLabel ?? text.file}</TRMenu.Trigger><TRMenu.Portal><TRMenu.Positioner><TRMenu.Popup><TRMenu.Item>{text.newRack}</TRMenu.Item></TRMenu.Popup></TRMenu.Positioner></TRMenu.Portal></TRMenu.Root><TRMenu.Root><TRMenu.Trigger>{secondLabel ?? text.edit}</TRMenu.Trigger><TRMenu.Portal><TRMenu.Positioner><TRMenu.Popup><TRMenu.Item>{text.rename}</TRMenu.Item></TRMenu.Popup></TRMenu.Positioner></TRMenu.Portal></TRMenu.Root></TRMenubar></section>;
+  return (
+    <section data-docs-example-item="">
+      <strong>{label}</strong>
+      <TRMenubar
+        aria-label={label}
+        disabled={disabled}
+        loopFocus={loopFocus}
+        orientation={orientation}
+      >
+        <TRMenu.Root disabled={disabledItem}>
+          <TRMenu.Trigger>{firstLabel ?? text.file}</TRMenu.Trigger>
+          <TRMenu.Portal>
+            <TRMenu.Positioner>
+              <TRMenu.Popup>
+                <TRMenu.Item>{text.newRack}</TRMenu.Item>
+              </TRMenu.Popup>
+            </TRMenu.Positioner>
+          </TRMenu.Portal>
+        </TRMenu.Root>
+        <TRMenu.Root>
+          <TRMenu.Trigger>{secondLabel ?? text.edit}</TRMenu.Trigger>
+          <TRMenu.Portal>
+            <TRMenu.Positioner>
+              <TRMenu.Popup>
+                <TRMenu.Item>{text.rename}</TRMenu.Item>
+              </TRMenu.Popup>
+            </TRMenu.Positioner>
+          </TRMenu.Portal>
+        </TRMenu.Root>
+      </TRMenubar>
+    </section>
+  );
 }
 
-export function MenubarBasicPreview() { const text = menubarCopy[useDemoLocale()]; return <CompactMenubar label={text.app} />; }
-export function MenubarStateComparison() { const text = menubarCopy[useDemoLocale()]; return <div className="grid gap-4 sm:grid-cols-3"><CompactMenubar label={text.enabled} /><CompactMenubar disabledItem firstLabel={text.view} label={text.itemDisabled} secondLabel={text.shortcuts} /><CompactMenubar disabled firstLabel={text.disabled} label={text.disabled} secondLabel={text.duplicate} /></div>; }
-export function MenubarKeyboardComparison() { const text = menubarCopy[useDemoLocale()]; return <div className="grid gap-4 sm:grid-cols-2"><CompactMenubar label={text.looping} loopFocus /><CompactMenubar label={text.bounded} loopFocus={false} /></div>; }
+export function MenubarBasicPreview() {
+  const text = menubarCopy[useDemoLocale()];
+  return <CompactMenubar label={text.app} />;
+}
+export function MenubarStateComparison() {
+  const text = menubarCopy[useDemoLocale()];
+  return (
+    <div className="grid gap-4 sm:grid-cols-3">
+      <CompactMenubar label={text.enabled} />
+      <CompactMenubar
+        disabledItem
+        firstLabel={text.view}
+        label={text.itemDisabled}
+        secondLabel={text.shortcuts}
+      />
+      <CompactMenubar
+        disabled
+        firstLabel={text.disabled}
+        label={text.disabled}
+        secondLabel={text.duplicate}
+      />
+    </div>
+  );
+}
+export function MenubarKeyboardComparison() {
+  const text = menubarCopy[useDemoLocale()];
+  return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      <CompactMenubar label={text.looping} loopFocus />
+      <CompactMenubar label={text.bounded} loopFocus={false} />
+    </div>
+  );
+}
 
 type StoryArgs = {
   disabled: boolean;
@@ -35,7 +169,8 @@ export function MenubarPreview({ disabled, loopFocus, orientation }: StoryArgs) 
 
   return (
     <div>
-      <TRMenubar data-docs-example-item=""
+      <TRMenubar
+        data-docs-example-item=""
         aria-label={text.app}
         disabled={disabled}
         loopFocus={loopFocus}
@@ -233,9 +368,21 @@ const menubarConfigurationsSourceJa = `import '@tinyrack/ui/components/menubar.c
 import { TRMenubar } from '@tinyrack/ui/components/menubar';
 export function Orientations() { return <><TRMenubar aria-label="横方向" orientation="horizontal" /><TRMenubar aria-label="縦方向" orientation="vertical" /></>; }`;
 
-export const menubarBasicSource = { en: menubarBasicSourceEn, ja: menubarBasicSourceJa, ko: menubarBasicSourceKo } as const;
-export const menubarApplicationSource = { en: menubarApplicationSourceEn, ja: menubarApplicationSourceJa, ko: menubarApplicationSourceKo } as const;
-export const menubarConfigurationsSource = { en: menubarConfigurationsSourceEn, ja: menubarConfigurationsSourceJa, ko: menubarConfigurationsSourceKo } as const;
+export const menubarBasicSource = {
+  en: menubarBasicSourceEn,
+  ja: menubarBasicSourceJa,
+  ko: menubarBasicSourceKo,
+} as const;
+export const menubarApplicationSource = {
+  en: menubarApplicationSourceEn,
+  ja: menubarApplicationSourceJa,
+  ko: menubarApplicationSourceKo,
+} as const;
+export const menubarConfigurationsSource = {
+  en: menubarConfigurationsSourceEn,
+  ja: menubarConfigurationsSourceJa,
+  ko: menubarConfigurationsSourceKo,
+} as const;
 
 const meta = {
   title: 'Components/Menubar',

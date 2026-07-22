@@ -7,9 +7,30 @@ import { definePlayground } from '../../playground/demo.js';
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const copy = {
-  en: { cpu: 'CPU', decorative: 'Decorative divider', memory: 'Memory', network: 'Network', overview: 'Overview', semantic: 'Semantic separator' },
-  ko: { cpu: 'CPU', decorative: '장식용 구분선', memory: '메모리', network: '네트워크', overview: '개요', semantic: '의미 있는 구분선' },
-  ja: { cpu: 'CPU', decorative: '装飾用の区切り線', memory: 'メモリ', network: 'ネットワーク', overview: '概要', semantic: '意味のある区切り線' },
+  en: {
+    cpu: 'CPU',
+    decorative: 'Decorative divider',
+    memory: 'Memory',
+    network: 'Network',
+    overview: 'Overview',
+    semantic: 'Semantic separator',
+  },
+  ko: {
+    cpu: 'CPU',
+    decorative: '장식용 구분선',
+    memory: '메모리',
+    network: '네트워크',
+    overview: '개요',
+    semantic: '의미 있는 구분선',
+  },
+  ja: {
+    cpu: 'CPU',
+    decorative: '装飾用の区切り線',
+    memory: 'メモリ',
+    network: 'ネットワーク',
+    overview: '概要',
+    semantic: '意味のある区切り線',
+  },
 } as const;
 
 type SeparatorStoryArgs = {

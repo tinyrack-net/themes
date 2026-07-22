@@ -560,9 +560,19 @@ export const componentDocsManifest = [
     file: 'app/content/en/components/checkbox.mdx',
     id: 'checkbox',
     controls: ['disabled', 'indeterminate', 'label', 'readOnly', 'uiSize'],
+    exampleGroups: [
+      exampleGroup('checkbox-basic', 'usage', 'basic', 1),
+      exampleGroup('checkbox-states', 'examples', 'series', 3),
+      exampleGroup('checkbox-sizes', 'examples', 'series', 3),
+      exampleGroup('checkbox-availability', 'examples', 'series', 3),
+      exampleGroup('checkbox-validation', 'examples', 'recipe', 1),
+      exampleGroup('checkbox-form-values', 'examples', 'recipe', 1),
+    ],
     requiredExamples: [
       'checkbox-basic',
       'checkbox-states',
+      'checkbox-sizes',
+      'checkbox-availability',
       'checkbox-validation',
       'checkbox-form-values',
     ],
@@ -573,6 +583,13 @@ export const componentDocsManifest = [
     file: 'app/content/en/components/checkbox-group.mdx',
     id: 'checkbox-group',
     controls: ['disabled', 'label', 'readOnly'],
+    exampleGroups: [
+      exampleGroup('checkbox-group-basic', 'usage', 'basic', 1),
+      exampleGroup('checkbox-group-states', 'examples', 'series', 3),
+      exampleGroup('checkbox-group-form', 'examples', 'recipe', 1),
+      exampleGroup('checkbox-group-parent', 'examples', 'recipe', 1),
+      exampleGroup('checkbox-group-external-form', 'examples', 'recipe', 1),
+    ],
     requiredExamples: [
       'checkbox-group-basic',
       'checkbox-group-states',
@@ -747,7 +764,18 @@ export const componentDocsManifest = [
     file: 'app/content/en/components/radio.mdx',
     id: 'radio',
     controls: ['label', 'disabled', 'readOnly', 'uiSize'],
-    requiredExamples: ['radio-basic', 'radio-states'],
+    exampleGroups: [
+      exampleGroup('radio-basic', 'usage', 'basic', 1),
+      exampleGroup('radio-states', 'examples', 'recipe', 2),
+      exampleGroup('radio-sizes', 'examples', 'series', 3),
+      exampleGroup('radio-availability', 'examples', 'series', 3),
+    ],
+    requiredExamples: [
+      'radio-basic',
+      'radio-states',
+      'radio-sizes',
+      'radio-availability',
+    ],
     title: 'Radio',
   },
   {
@@ -755,6 +783,12 @@ export const componentDocsManifest = [
     file: 'app/content/en/components/radio-group.mdx',
     id: 'radio-group',
     controls: ['disabled', 'readOnly'],
+    exampleGroups: [
+      exampleGroup('radio-group-basic', 'usage', 'basic', 1),
+      exampleGroup('radio-group-states', 'examples', 'series', 3),
+      exampleGroup('radio-group-validation', 'examples', 'recipe', 1),
+      exampleGroup('radio-group-external-form', 'examples', 'recipe', 1),
+    ],
     requiredExamples: [
       'radio-group-basic',
       'radio-group-states',
@@ -807,7 +841,18 @@ export const componentDocsManifest = [
     file: 'app/content/en/components/switch.mdx',
     id: 'switch',
     controls: ['label', 'disabled', 'readOnly'],
-    requiredExamples: ['switch-basic', 'switch-states', 'switch-validation'],
+    exampleGroups: [
+      exampleGroup('switch-basic', 'usage', 'basic', 1),
+      exampleGroup('switch-states', 'examples', 'recipe', 2),
+      exampleGroup('switch-availability', 'examples', 'series', 3),
+      exampleGroup('switch-validation', 'examples', 'recipe', 1),
+    ],
+    requiredExamples: [
+      'switch-basic',
+      'switch-states',
+      'switch-availability',
+      'switch-validation',
+    ],
     title: 'Switch',
   },
   {

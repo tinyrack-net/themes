@@ -109,8 +109,8 @@ export function AutocompletePreview({
   const valueProps = value === undefined ? { defaultValue } : { value };
 
   return (
+    <div className="contents" data-docs-example-item="">
     <TRAutocomplete.Root
-      data-docs-example-item=""
       {...openProps}
       {...valueProps}
       autoHighlight={autoHighlight}
@@ -153,6 +153,7 @@ export function AutocompletePreview({
         </TRAutocomplete.Positioner>
       </TRAutocomplete.Portal>
     </TRAutocomplete.Root>
+    </div>
   );
 }
 

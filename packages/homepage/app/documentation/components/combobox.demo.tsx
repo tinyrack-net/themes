@@ -72,8 +72,8 @@ export function ComboboxExample({
     : { defaultValue: selected === 'none' ? null : selected };
 
   return (
+    <div className="contents" data-docs-example-item="">
     <TRCombobox.Root
-      data-docs-example-item=""
       {...openProps}
       {...queryProps}
       {...selectionProps}
@@ -139,6 +139,7 @@ export function ComboboxExample({
         </TRCombobox.Positioner>
       </TRCombobox.Portal>
     </TRCombobox.Root>
+    </div>
   );
 }
 

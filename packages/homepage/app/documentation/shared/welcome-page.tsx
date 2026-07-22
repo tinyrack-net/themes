@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { createElement, type ReactNode, useEffect, useRef, useState } from 'react';
 import { componentDocsManifest } from './component-docs-manifest.js';
-import { ComponentInstall } from './component-install.js';
+import { GettingStartedCode } from './getting-started-contract.js';
 
 type WelcomeLocale = 'en' | 'ja' | 'ko';
 
@@ -69,11 +69,19 @@ type ProductCopy = {
 };
 
 type WelcomeCopy = {
-  appShell: string;
-  build: string;
-  explore: string;
   foundations: string;
-  installNote: string;
+  installation: string;
+  snippetLabels: {
+    button: string;
+    styles: string;
+    theme: string;
+    vite: string;
+    viteInstall: string;
+  };
+  proposition: string;
+  standards: readonly { description: string; title: string }[];
+  nextComponents: string;
+  nextFoundations: string;
   quickStartDescription: string;
   quickStartTitle: string;
   product: ProductCopy;
@@ -81,12 +89,33 @@ type WelcomeCopy = {
 
 const copy: Record<WelcomeLocale, WelcomeCopy> = {
   en: {
-    appShell: 'Explore the app shell',
-    build: 'Start building',
-    explore: 'Explore foundations',
     foundations: 'Foundations',
-    installNote:
-      'Import the foundation once, then add only the component CSS your interface uses.',
+    installation: 'Installation',
+    snippetLabels: {
+      button: 'Primary button example',
+      styles: 'Tinyrack style imports',
+      theme: 'Theme selection',
+      vite: 'Vite configuration',
+      viteInstall: 'Vite package installation',
+    },
+    proposition:
+      'Standardize accessible React interfaces with shared tokens, themes, and production-ready components.',
+    standards: [
+      {
+        title: 'Tokens',
+        description: 'Use one scale for color, type, spacing, and elevation.',
+      },
+      {
+        title: 'Themes',
+        description: 'Select a product theme without changing component code.',
+      },
+      {
+        title: 'Components',
+        description: 'Compose accessible controls with consistent interaction states.',
+      },
+    ],
+    nextFoundations: 'Understand the system rules',
+    nextComponents: 'Build with components',
     product: {
       activityDescription: 'Latest production events',
       activityTitle: 'Activity',
@@ -189,12 +218,33 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
     quickStartTitle: 'Start with the essentials.',
   },
   ko: {
-    appShell: '앱 셸 살펴보기',
-    build: '빌드 시작',
-    explore: '기초 살펴보기',
     foundations: '기초',
-    installNote:
-      '기초 CSS는 한 번만 불러오고, 인터페이스에서 사용하는 컴포넌트 CSS만 추가하세요.',
+    installation: '설치',
+    snippetLabels: {
+      button: '기본 버튼 예시',
+      styles: 'Tinyrack 스타일 불러오기',
+      theme: '테마 선택',
+      vite: 'Vite 설정',
+      viteInstall: 'Vite 패키지 설치',
+    },
+    proposition:
+      '공통 토큰과 테마, 프로덕션용 컴포넌트로 접근성 높은 React 인터페이스를 일관되게 만들어요.',
+    standards: [
+      {
+        title: '토큰',
+        description: '색상, 글꼴, 간격, 높이에 하나의 척도를 사용해요.',
+      },
+      {
+        title: '테마',
+        description: '컴포넌트 코드를 바꾸지 않고 제품 테마를 선택해요.',
+      },
+      {
+        title: '컴포넌트',
+        description: '일관된 상호작용 상태를 갖춘 접근성 높은 컨트롤을 조합해요.',
+      },
+    ],
+    nextFoundations: '시스템 규칙 이해',
+    nextComponents: '컴포넌트로 만들기',
     product: {
       activityDescription: '최근 프로덕션 이벤트',
       activityTitle: '활동',
@@ -297,12 +347,34 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
     quickStartTitle: '핵심부터 시작하세요.',
   },
   ja: {
-    appShell: 'App shell を見る',
-    build: '構築を始める',
-    explore: '基礎を見る',
     foundations: '基礎',
-    installNote:
-      '基礎 CSS を一度読み込み、インターフェースで使うコンポーネント CSS だけを追加します。',
+    installation: 'インストール',
+    snippetLabels: {
+      button: '主要ボタンの例',
+      styles: 'Tinyrackスタイルの読み込み',
+      theme: 'テーマの選択',
+      vite: 'Vite設定',
+      viteInstall: 'Viteパッケージのインストール',
+    },
+    proposition:
+      '共通のトークン、テーマ、実用的なコンポーネントで、アクセシブルな React インターフェースを統一できます。',
+    standards: [
+      {
+        title: 'トークン',
+        description: '色、文字、余白、エレベーションに共通の尺度を使います。',
+      },
+      {
+        title: 'テーマ',
+        description: 'コンポーネントのコードを変えずに製品テーマを選べます。',
+      },
+      {
+        title: 'コンポーネント',
+        description:
+          '一貫した操作状態を備えたアクセシブルなコントロールを組み合わせます。',
+      },
+    ],
+    nextFoundations: 'システムのルールを理解する',
+    nextComponents: 'コンポーネントで構築する',
     product: {
       activityDescription: '最新の本番イベント',
       activityTitle: 'アクティビティ',
@@ -917,6 +989,9 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
               <span>TINYRACK</span>
               <span>DESIGN SYSTEM</span>
             </h1>
+            <p className="mt-tinyrack-xl mb-0 max-w-[52rem] text-tinyrack-lg leading-tinyrack-md text-tinyrack-text-muted">
+              {content.proposition}
+            </p>
             <div className="mt-tinyrack-2xl flex max-md:mt-tinyrack-xl">
               <div
                 className="flex min-w-0 gap-tinyrack-sm max-md:w-full"
@@ -926,21 +1001,19 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
                   className="min-h-tinyrack-control-height-lg min-w-0 px-tinyrack-xl max-md:flex-1"
                   data-welcome-cta=""
                   nativeButton={false}
-                  render={createElement('a', { href: '#quick-start' })}
-                  variant="primary"
+                  intent="primary"
+                  render={createElement('a', { href: `${localeRoot}/installation/` })}
                 >
-                  {content.build}
+                  {content.installation}
                 </TRButton>
                 <TRButton
                   appearance="outline"
                   className="min-h-tinyrack-control-height-lg min-w-0 px-tinyrack-xl max-md:flex-1"
                   data-welcome-cta=""
                   nativeButton={false}
-                  render={createElement('a', {
-                    href: `${localeRoot}/components/app-shell/`,
-                  })}
+                  render={createElement('a', { href: `${localeRoot}/foundations/` })}
                 >
-                  {content.appShell}
+                  {content.foundations}
                 </TRButton>
               </div>
             </div>
@@ -952,6 +1025,14 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
         className="mx-auto w-[min(calc(100%_-_3rem),76rem)] max-md:w-[calc(100%_-_2rem)]"
         data-welcome-content=""
       >
+        <section className="grid grid-cols-3 gap-tinyrack-lg border-b-tinyrack-default border-tinyrack-border py-[clamp(3rem,6vw,6rem)] max-md:grid-cols-1">
+          {content.standards.map((area) => (
+            <div className="grid gap-tinyrack-sm" key={area.title}>
+              <h2 className="m-0 text-tinyrack-xl">{area.title}</h2>
+              <p className="m-0 text-tinyrack-text-muted">{area.description}</p>
+            </div>
+          ))}
+        </section>
         <section
           aria-labelledby="quick-start"
           className="grid grid-cols-[minmax(16rem,0.75fr)_minmax(0,1.25fr)] gap-[clamp(3rem,8vw,8rem)] border-b-0 border-tinyrack-border py-[clamp(4rem,8vw,8rem)] max-md:grid-cols-[minmax(0,1fr)] max-md:gap-tinyrack-2xl max-md:py-16"
@@ -967,29 +1048,22 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
             <p className="m-0 max-w-[42rem] text-tinyrack-lg leading-tinyrack-md text-tinyrack-text-muted max-md:text-tinyrack-md">
               {content.quickStartDescription}
             </p>
-            <div className="mt-tinyrack-lg flex flex-wrap gap-tinyrack-lg">
-              <TRLink href={`${localeRoot}/foundations/`}>{content.explore}</TRLink>
-              <TRLink href={`${localeRoot}/components/app-shell/`}>
-                {content.appShell}
-              </TRLink>
-            </div>
           </div>
-          <div className="min-w-0">
-            <ComponentInstall
-              surfaces={[
-                {
-                  label: 'React',
-                  install: 'pnpm add @tinyrack/ui tailwindcss react react-dom',
-                  imports: [
-                    "import '@tinyrack/ui/core.css';",
-                    "import '@tinyrack/ui/components/button.css';",
-                    "import { TRButton } from '@tinyrack/ui/components/button';",
-                  ],
-                  note: content.installNote,
-                },
-              ]}
+          <div className="grid min-w-0 gap-tinyrack-md">
+            <GettingStartedCode label={content.installation} snippet="install" />
+            <GettingStartedCode
+              label={content.snippetLabels.viteInstall}
+              snippet="viteInstall"
             />
+            <GettingStartedCode label={content.snippetLabels.vite} snippet="vite" />
+            <GettingStartedCode label={content.snippetLabels.styles} snippet="styles" />
+            <GettingStartedCode label={content.snippetLabels.theme} snippet="theme" />
+            <GettingStartedCode label={content.snippetLabels.button} snippet="button" />
           </div>
+        </section>
+        <section className="grid grid-cols-2 gap-tinyrack-xl py-[clamp(3rem,6vw,6rem)] max-md:grid-cols-1">
+          <TRLink href={`${localeRoot}/foundations/`}>{content.nextFoundations}</TRLink>
+          <TRLink href={`${localeRoot}/components/`}>{content.nextComponents}</TRLink>
         </section>
       </div>
     </div>

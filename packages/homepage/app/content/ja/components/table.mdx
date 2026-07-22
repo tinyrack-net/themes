@@ -34,7 +34,7 @@ import * as Stories from '../../../documentation/components/table.demo.js';
   title="Rack 状態"
   previewLayout="stretch"
   preview={(
-    <TRTable.Root className="min-w-3xl" containerProps={{ 'aria-label': 'Rack status scroll region', tabIndex: 0 }} striped>
+    <TRTable.Root className="min-w-3xl" containerProps={{ 'aria-label': 'Rack status scroll region', tabIndex: 0 }} data-docs-example-item="" striped>
       <TRTable.Caption>Rack status</TRTable.Caption>
       <TRTable.Header>
         <TRTable.Row>
@@ -112,11 +112,11 @@ const racks = [
   description="対応するすべての density で同じコンテンツを表示します。"
   previewLayout="stretch"
   preview={(
-    <div className="grid gap-5">
+    <div className="grid gap-5" data-docs-example-item-count="3">
       {['compact', 'comfortable', 'spacious'].map((density) => (
         <div className="grid gap-2" key={density}>
           <strong>{density[0].toUpperCase() + density.slice(1)}</strong>
-          <TRTable.Root className="min-w-2xl" containerProps={{ 'aria-label': `${density} rack density table`, tabIndex: 0 }} density={density}>
+          <TRTable.Root className="min-w-2xl" containerProps={{ 'aria-label': `${density} rack density table`, tabIndex: 0 }} data-docs-example-item="" density={density}>
             <TRTable.Caption>{density + ' rack status'}</TRTable.Caption>
             <TRTable.Header>
               <TRTable.Row>
@@ -194,7 +194,7 @@ const racks = [
   title="ストライプ row と footer"
   previewLayout="stretch"
   preview={(
-    <TRTable.Root className="min-w-3xl" containerProps={{ 'aria-label': 'Service totals table', tabIndex: 0 }} density="compact" striped>
+    <TRTable.Root className="min-w-3xl" containerProps={{ 'aria-label': 'Service totals table', tabIndex: 0 }} data-docs-example-item="" density="compact" striped>
       <TRTable.Caption>Service totals</TRTable.Caption>
       <TRTable.Header>
         <TRTable.Row>
@@ -283,10 +283,10 @@ const services = [
 
 <ComponentExampleTabs
   id="table-overflow-empty"
-  title="長いコンテンツと empty state"
-  description="幅広い table は見える scroll ヒントと keyboard focus 可能な名前付き領域を提供し、empty state は有効な table 構造内に残ります。"
+  title="幅広い表のオーバーフロー"
+  description="横スクロールのヒント、アクセシブル名、キーボードのフォーカス位置を用意すると、幅広い表を移動できます。"
   previewLayout="stretch"
-  preview={<Stories.TableOverflowAndEmptyStates />}
+  preview={<div data-docs-example-item-count="1"><Stories.TableOverflowState /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/table.css';
 import { TRTable } from '@tinyrack/ui/components/table';
 
@@ -313,14 +313,17 @@ export function DeploymentTables() {
       </TRTable.Row>
     </TRTable.Body>
   </TRTable.Root>
-  <TRTable.Root>
-    <TRTable.Caption>Queued deployments</TRTable.Caption>
-    <TRTable.Body>
-      <TRTable.Row><TRTable.Cell colSpan={2}>No deployments are queued.</TRTable.Cell></TRTable.Row>
-    </TRTable.Body>
-  </TRTable.Root>
   </>;
 }` }]}
+/>
+
+<ComponentExampleTabs
+  id="table-empty-state"
+  title="空の状態"
+  description="空のフィードバックは Body 内の Row と Cell に置き、colSpan で表示列をまたぎます。"
+  previewLayout="stretch"
+  preview={<div data-docs-example-item-count="1"><Stories.TableEmptyState /></div>}
+  sources={[{ label: 'React', language: 'tsx', code: Stories.tableEmptySource.replace('Queued deployments', '待機中のデプロイ').replace('No deployments are queued.', '待機中のデプロイはありません。') }]}
 />
 
 ## API

@@ -2,8 +2,8 @@
 
 import { Field as BaseField } from '@base-ui/react/field';
 import type { ComponentProps } from 'react';
-import { mergeComponentClassName } from '../../internal/component-class-name.js';
 import type { TRControlUiSize } from '../../core/tokens/control-metrics.js';
+import { mergeComponentClassName } from '../../internal/component-class-name.js';
 
 export type TRFieldControlProps = ComponentProps<typeof BaseField.Control> & {
   uiSize?: TRControlUiSize;

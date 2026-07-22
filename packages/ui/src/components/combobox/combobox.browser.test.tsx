@@ -535,8 +535,12 @@ test('forwards uiSize to InputGroup and aligns inner Input and Trigger heights',
 
   const group = document.querySelector<HTMLDivElement>('[data-testid="sized-group"]');
   expect(group?.getAttribute('data-ui-size')).toBe('sm');
-  const input = document.querySelector<HTMLInputElement>('[aria-label="Sized combobox"]');
-  const trigger = document.querySelector<HTMLButtonElement>('[aria-label="Open sized"]');
+  const input = document.querySelector<HTMLInputElement>(
+    '[aria-label="Sized combobox"]',
+  );
+  const trigger = document.querySelector<HTMLButtonElement>(
+    '[aria-label="Open sized"]',
+  );
   expect(input?.getBoundingClientRect().height).toBe(32);
   expect(trigger?.getBoundingClientRect().height).toBe(32);
 });

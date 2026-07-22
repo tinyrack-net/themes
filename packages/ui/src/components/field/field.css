@@ -67,10 +67,7 @@
       --_tr-field-control-font-size,
       var(--_tr-field-control-font-size-fallback)
     );
-    height: var(
-      --_tr-field-control-height,
-      var(--_tr-field-control-height-fallback)
-    );
+    height: var(--_tr-field-control-height, var(--_tr-field-control-height-fallback));
     line-height: var(
       --_tr-field-control-line-height,
       var(--_tr-field-control-line-height-fallback)

@@ -448,7 +448,9 @@ test('forwards uiSize to the root and matches Input height across sm/md/lg', asy
   );
 
   expect(rootRef.current?.getAttribute('data-ui-size')).toBe('sm');
-  const smInput = document.querySelector<HTMLInputElement>('[aria-label="Sized count"]');
+  const smInput = document.querySelector<HTMLInputElement>(
+    '[aria-label="Sized count"]',
+  );
   const smHeight = smInput?.getBoundingClientRect().height;
   expect(smHeight).toBe(32);
 });

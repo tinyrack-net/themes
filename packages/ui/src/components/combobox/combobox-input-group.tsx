@@ -2,8 +2,8 @@
 
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
 import type { ComponentProps } from 'react';
-import { mergeComponentClassName } from '../../internal/component-class-name.js';
 import type { TRControlUiSize } from '../../core/tokens/control-metrics.js';
+import { mergeComponentClassName } from '../../internal/component-class-name.js';
 
 export type TRComboboxInputGroupProps = ComponentProps<
   typeof BaseCombobox.InputGroup

@@ -406,7 +406,9 @@ test('forwards uiSize to InputGroup and aligns inner Input height', async () => 
     <TRAutocomplete.Root items={['Alpha', 'Beta']}>
       <TRAutocomplete.InputGroup data-testid="sized-autocomplete-group" uiSize="sm">
         <TRAutocomplete.Input aria-label="Sized autocomplete" />
-        <TRAutocomplete.Trigger aria-label="Open sized autocomplete">Open</TRAutocomplete.Trigger>
+        <TRAutocomplete.Trigger aria-label="Open sized autocomplete">
+          Open
+        </TRAutocomplete.Trigger>
       </TRAutocomplete.InputGroup>
     </TRAutocomplete.Root>,
   );

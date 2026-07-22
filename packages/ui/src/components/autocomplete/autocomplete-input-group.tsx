@@ -2,8 +2,8 @@
 
 import { Autocomplete as BaseAutocomplete } from '@base-ui/react/autocomplete';
 import type { ComponentProps } from 'react';
-import { mergeComponentClassName } from '../../internal/component-class-name.js';
 import type { TRControlUiSize } from '../../core/tokens/control-metrics.js';
+import { mergeComponentClassName } from '../../internal/component-class-name.js';
 
 export type TRAutocompleteInputGroupProps = ComponentProps<
   typeof BaseAutocomplete.InputGroup

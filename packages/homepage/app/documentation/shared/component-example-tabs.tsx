@@ -258,6 +258,7 @@ export function ComponentExampleTabs({
                   )}
                   data-component-example-preview-frame=""
                   data-preview-layout={previewLayout}
+                  style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}
                 >
                   {preview}
                 </div>

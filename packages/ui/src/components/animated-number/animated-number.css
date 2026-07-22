@@ -1,0 +1,143 @@
+@layer components {
+  .tr-animated-number {
+    --_tr-animated-number-duration: var(--tinyrack-duration-number);
+    display: inline-grid;
+    font-variant-numeric: tabular-nums;
+    isolation: isolate;
+    vertical-align: baseline;
+  }
+
+  .tr-animated-number-accessible,
+  .tr-animated-number-presentation {
+    grid-area: 1 / 1;
+  }
+
+  .tr-animated-number-accessible {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    block-size: var(--tinyrack-border-width-default);
+    inline-size: var(--tinyrack-border-width-default);
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+
+  .tr-animated-number-presentation,
+  .tr-animated-number-visual {
+    display: inline-flex;
+  }
+
+  .tr-animated-number-presentation,
+  .tr-animated-number-roll {
+    position: relative;
+  }
+
+  .tr-animated-number-slot {
+    display: inline-grid;
+    overflow: clip;
+  }
+
+  .tr-animated-number-outgoing,
+  .tr-animated-number-incoming {
+    grid-area: 1 / 1;
+  }
+
+  .tr-animated-number-roll[data-direction="up"] .tr-animated-number-outgoing {
+    animation: tr-animated-number-outgoing-up
+      var(--tr-animated-number-duration, var(--_tr-animated-number-duration))
+      var(--tinyrack-ease-out) both;
+  }
+
+  .tr-animated-number-roll[data-direction="up"] .tr-animated-number-incoming {
+    animation: tr-animated-number-incoming-up
+      var(--tr-animated-number-duration, var(--_tr-animated-number-duration))
+      var(--tinyrack-ease-out) both;
+  }
+
+  .tr-animated-number-roll[data-direction="down"] .tr-animated-number-outgoing {
+    animation: tr-animated-number-outgoing-down
+      var(--tr-animated-number-duration, var(--_tr-animated-number-duration))
+      var(--tinyrack-ease-out) both;
+  }
+
+  .tr-animated-number-roll[data-direction="down"] .tr-animated-number-incoming {
+    animation: tr-animated-number-incoming-down
+      var(--tr-animated-number-duration, var(--_tr-animated-number-duration))
+      var(--tinyrack-ease-out) both;
+  }
+
+  .tr-animated-number-entering {
+    animation: tr-animated-number-enter
+      var(--tr-animated-number-duration, var(--_tr-animated-number-duration))
+      var(--tinyrack-ease-out) both;
+  }
+
+  .tr-animated-number-removed {
+    display: inline-flex;
+    inset-inline-start: 0;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .tr-animated-number-placeholder {
+    visibility: hidden;
+  }
+
+  .tr-animated-number-departing {
+    animation: tr-animated-number-depart
+      var(--tr-animated-number-duration, var(--_tr-animated-number-duration))
+      var(--tinyrack-ease-out) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tr-animated-number-outgoing,
+    .tr-animated-number-departing {
+      display: none;
+    }
+
+    .tr-animated-number-incoming,
+    .tr-animated-number-entering {
+      animation: none;
+    }
+  }
+}
+
+@keyframes tr-animated-number-outgoing-up {
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes tr-animated-number-incoming-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes tr-animated-number-outgoing-down {
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes tr-animated-number-incoming-down {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes tr-animated-number-enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes tr-animated-number-depart {
+  to {
+    opacity: 0;
+  }
+}

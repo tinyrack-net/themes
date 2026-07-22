@@ -80,6 +80,32 @@ export const componentDocsManifest = [
     title: 'Alert',
   },
   {
+    capabilities: ['responsive', 'stateful'],
+    file: 'app/content/en/components/animated-number.mdx',
+    id: 'animated-number',
+    controls: [
+      'animation',
+      'duration',
+      'formatPreset',
+      'locale',
+      'rollDirection',
+      'value',
+    ],
+    exampleGroups: [
+      exampleGroup('animated-number-basic', 'usage', 'basic', 1),
+      exampleGroup('animated-number-modes', 'examples', 'recipe', 2),
+      exampleGroup('animated-number-formats', 'examples', 'series', 3),
+      exampleGroup('animated-number-direction', 'examples', 'recipe', 2),
+    ],
+    requiredExamples: [
+      'animated-number-basic',
+      'animated-number-modes',
+      'animated-number-formats',
+      'animated-number-direction',
+    ],
+    title: 'Animated Number',
+  },
+  {
     capabilities: ['responsive'],
     file: 'app/content/en/components/avatar.mdx',
     id: 'avatar',

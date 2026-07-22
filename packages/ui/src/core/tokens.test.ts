@@ -238,6 +238,7 @@ describe('tinyrack design tokens', () => {
       fast: '120ms',
       normal: '160ms',
       slow: '180ms',
+      number: '600ms',
       loading: '2.4s',
     });
     expect(tinyrackOpacity.disabled).toBe('0.5');

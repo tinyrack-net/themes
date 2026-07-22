@@ -116,6 +116,7 @@
   --transition-duration-tinyrack-fast: var(--tinyrack-duration-fast);
   --transition-duration-tinyrack-normal: var(--tinyrack-duration-normal);
   --transition-duration-tinyrack-slow: var(--tinyrack-duration-slow);
+  --transition-duration-tinyrack-number: var(--tinyrack-duration-number);
   --transition-duration-tinyrack-loading: var(--tinyrack-duration-loading);
   --ease-tinyrack-standard: var(--tinyrack-ease-standard);
   --ease-tinyrack-ease-out: var(--tinyrack-ease-out);
@@ -248,6 +249,7 @@
   --tinyrack-duration-fast: 120ms;
   --tinyrack-duration-normal: 160ms;
   --tinyrack-duration-slow: 180ms;
+  --tinyrack-duration-number: 600ms;
   --tinyrack-duration-loading: 2.4s;
   --tinyrack-ease-standard: ease;
   --tinyrack-ease-out: ease-out;

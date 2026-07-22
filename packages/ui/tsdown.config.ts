@@ -4,6 +4,7 @@ const entry = {
   'components/accordion/index': 'src/components/accordion/index.tsx',
   'components/alert/index': 'src/components/alert/index.tsx',
   'components/alert-dialog/index': 'src/components/alert-dialog/index.tsx',
+  'components/animated-number/index': 'src/components/animated-number/index.tsx',
   'components/app-shell/index': 'src/components/app-shell/index.tsx',
   'components/autocomplete/index': 'src/components/autocomplete/index.tsx',
   'components/avatar/index': 'src/components/avatar/index.tsx',
@@ -76,6 +77,10 @@ const copy = [
   {
     from: 'src/components/alert-dialog/alert-dialog.css',
     to: 'dist/components/alert-dialog',
+  },
+  {
+    from: 'src/components/animated-number/animated-number.css',
+    to: 'dist/components/animated-number',
   },
   { from: 'src/components/app-shell/app-shell.css', to: 'dist/components/app-shell' },
   {

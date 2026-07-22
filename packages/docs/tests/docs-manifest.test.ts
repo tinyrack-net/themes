@@ -91,7 +91,7 @@ describe('docs manifest', () => {
     expect(manifest.locales['ko']?.messages.search).toBe('문서 검색');
     expect(manifest.locales['ko']?.messages.nextDocument).toBe('다음 문서');
     expect(manifest.locales['ko']?.messages.useLightColorScheme).toBe(
-      '밝은 색상 모드 사용',
+      '밝은 색상 모드로 전환',
     );
     expect(manifest.redirects).toEqual({ '/': '/en/' });
   });

@@ -195,7 +195,7 @@ export function MotionDurationComparison({ locale }: { locale: Locale }) {
       data-motion-run={run}
     >
       <header className="flex flex-wrap items-start justify-between gap-tinyrack-md">
-        <div>
+        <div className="grid gap-tinyrack-lg">
           <h3 className="m-0 text-tinyrack-lg font-semibold">{text.durationTitle}</h3>
           <p className="m-0 text-tinyrack-sm text-tinyrack-text-muted">
             {text.durationBody}
@@ -249,7 +249,7 @@ export function MotionEasingComparison({ locale }: { locale: Locale }) {
       data-motion-run={run}
     >
       <header className="flex flex-wrap items-start justify-between gap-tinyrack-md">
-        <div>
+        <div className="grid gap-tinyrack-lg">
           <h3 className="m-0 text-tinyrack-lg font-semibold">{text.easingTitle}</h3>
           <p className="m-0 text-tinyrack-sm text-tinyrack-text-muted">
             {text.easingBody}
@@ -324,7 +324,7 @@ export function ReducedMotionPreview({ locale }: { locale: Locale }) {
       data-motion-run={run}
     >
       <header className="flex flex-wrap items-start justify-between gap-3">
-        <div>
+        <div className="grid gap-tinyrack-lg">
           <h3 className="m-0 text-tinyrack-lg font-semibold">{text.reducedTitle}</h3>
           <p className="m-0 text-tinyrack-sm text-tinyrack-text-muted">
             {text.reducedBody}

@@ -677,6 +677,11 @@ export const tailwindTokenBridge = [
   },
   {
     group: 'motion',
+    runtimeVariable: '--tinyrack-duration-number',
+    themeVariable: '--transition-duration-tinyrack-number',
+  },
+  {
+    group: 'motion',
     runtimeVariable: '--tinyrack-duration-loading',
     themeVariable: '--transition-duration-tinyrack-loading',
   },

@@ -3,6 +3,7 @@ export const tinyrackMotion = {
     fast: '120ms',
     normal: '160ms',
     slow: '180ms',
+    number: '600ms',
     loading: '2.4s',
   },
   easing: {

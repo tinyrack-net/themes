@@ -4,6 +4,7 @@ import { renderToString } from 'react-dom/server.browser';
 import { expect, test } from 'vitest';
 import { TRAccordion } from './accordion/index.js';
 import { TRAlertDialog } from './alert-dialog/index.js';
+import { TRAnimatedNumber } from './animated-number/index.js';
 import { TRAppShell } from './app-shell/index.js';
 import { TRAutocomplete } from './autocomplete/index.js';
 import { TRAvatar } from './avatar/index.js';
@@ -80,6 +81,7 @@ function InteractiveFixture() {
       <TRAlertDialog.Root>
         <TRAlertDialog.Trigger>Delete rack</TRAlertDialog.Trigger>
       </TRAlertDialog.Root>
+      <TRAnimatedNumber value={42} />
       <TRAutocomplete.Root items={['Rack A']}>
         <TRAutocomplete.Input aria-label="Search racks" />
       </TRAutocomplete.Root>

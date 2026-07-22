@@ -1,14 +1,14 @@
 ---
-title: "App icons"
+title: "앱 아이콘"
 description: "Tinyrack 기하에서 파생된 Dotweave와 TinyAuth의 승인된 앱 아이콘과 바로 사용할 수 있는 SVG·PNG 파일입니다."
 section: foundations
-order: 2
+order: 10
 ---
 import { TRCard } from '@tinyrack/ui/components/card';
 import { TRLink } from '@tinyrack/ui/components/link';
 import { TRTable } from '@tinyrack/ui/components/table';
 
-제공된 파일을 완성된 artwork로 사용하세요. preview에서 geometry를 다시 만들거나 어느 마크든 Tinyrack wordmark와 결합하지 마세요.
+제공된 파일을 완성된 원본으로 사용하세요. 미리보기에서 형태를 다시 만들거나 어느 마크든 Tinyrack 워드마크와 결합하지 마세요.
 
 ## 공통 구성
 
@@ -20,7 +20,7 @@ master brand와 두 제품 mark는 동일한 normalized rack bay를 사용합니
     <figure className="m-0 grid justify-items-center gap-2"><img alt="Dotweave app icon sharing the Tinyrack row grid" className="h-16 w-16 sm:h-20 sm:w-20" height="80" src="/brand/apps/dotweave-app-icon.svg" width="80" /><figcaption className="text-tinyrack-xs font-semibold text-tinyrack-text-muted">Dotweave</figcaption></figure>
     <figure className="m-0 grid justify-items-center gap-2"><img alt="TinyAuth app icon sharing the Tinyrack row grid" className="h-16 w-16 sm:h-20 sm:w-20" height="80" src="/brand/apps/tinyauth-app-icon.svg" width="80" /><figcaption className="text-tinyrack-xs font-semibold text-tinyrack-text-muted">TinyAuth</figcaption></figure>
   </div>
-  <p className="m-0 text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">At the same rendered size, all three marks begin and end on the same horizontal bounds. Dotweave crosses only between rows; TinyAuth opens only around the smaller keyhole.</p>
+  <p className="m-0 text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">같은 크기로 렌더링하면 세 마크의 좌우 경계가 일치합니다. Dotweave는 행 사이에서만 교차하고 TinyAuth는 작은 열쇠 구멍 주변에서만 열립니다.</p>
 </section>
 
 ## 제품 마크
@@ -32,7 +32,7 @@ master brand와 두 제품 mark는 동일한 normalized rack bay를 사용합니
     </div>
     <div className="grid gap-1">
       <strong>Dotweave</strong>
-      <span className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Three aligned configuration strands weave only at the center. Off-white and teal express settings being connected and synchronized.</span>
+      <span className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">나란한 세 구성 가닥은 중앙에서만 교차합니다. 미색과 청록색은 설정의 연결과 동기화를 표현합니다.</span>
     </div>
   </TRCard.Root>
   <TRCard.Root className="grid gap-5" role="listitem" variant="outlined">
@@ -41,7 +41,7 @@ master brand와 두 제품 mark는 동일한 normalized rack bay를 사용합니
     </div>
     <div className="grid gap-1">
       <strong>TinyAuth</strong>
-      <span className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">The same three rows separate around one identity aperture and keyhole. Off-white and blue express a clear authentication boundary.</span>
+      <span className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">같은 세 행이 하나의 식별 구멍과 열쇠 구멍 주변에서 갈라집니다. 미색과 파란색은 명확한 인증 경계를 표현합니다.</span>
     </div>
   </TRCard.Root>
 </div>
@@ -81,14 +81,14 @@ raster artwork를 렌더링 크기로 확인하세요. 16px 파일은 favicon용
       <img alt="Dotweave app icon on a light surface" className="h-24 w-24" height="96" src="/brand/apps/dotweave-app-icon.svg" width="96" />
       <img alt="TinyAuth app icon on a light surface" className="h-24 w-24" height="96" src="/brand/apps/tinyauth-app-icon.svg" width="96" />
     </div>
-    <div className="grid gap-1"><strong>Light surroundings</strong><span className="text-tinyrack-sm text-tinyrack-text-muted">Use the files unchanged. The tile provides its own dark field.</span></div>
+    <div className="grid gap-1"><strong>밝은 배경</strong><span className="text-tinyrack-sm text-tinyrack-text-muted">파일을 변경하지 않고 사용하세요. 타일 자체가 어두운 바탕을 제공합니다.</span></div>
   </section>
   <section className="grid gap-4 border border-tinyrack-border p-4">
     <div className="flex min-h-40 items-center justify-center gap-6 bg-[#262626] p-6">
       <img alt="Dotweave app icon on a dark surface" className="h-24 w-24" height="96" src="/brand/apps/dotweave-app-icon.svg" width="96" />
       <img alt="TinyAuth app icon on a dark surface" className="h-24 w-24" height="96" src="/brand/apps/tinyauth-app-icon.svg" width="96" />
     </div>
-    <div className="grid gap-1"><strong>Dark surroundings</strong><span className="text-tinyrack-sm text-tinyrack-text-muted">Add layout space rather than an outline, shadow, or alternate tile.</span></div>
+    <div className="grid gap-1"><strong>어두운 배경</strong><span className="text-tinyrack-sm text-tinyrack-text-muted">외곽선, 그림자, 대체 타일 대신 레이아웃 여백을 추가하세요.</span></div>
   </section>
 </div>
 
@@ -96,28 +96,28 @@ raster artwork를 렌더링 크기로 확인하세요. 16px 파일은 favicon용
 
 대상이 지원하면 항상 SVG를 우선하세요. 의도한 렌더링 크기에 맞는 PNG를 선택하고 작은 raster 파일을 확대하지 마세요.
 
-<TRTable.Root containerProps={{ 'aria-label': 'App icon file guidance', tabIndex: 0 }}>
-  <thead><tr><th scope="col">File</th><th scope="col">Use</th><th scope="col">Guidance</th></tr></thead>
+<TRTable.Root containerProps={{ 'aria-label': '앱 아이콘 파일 지침', tabIndex: 0 }}>
+  <thead><tr><th scope="col">파일</th><th scope="col">용도</th><th scope="col">지침</th></tr></thead>
   <tbody>
-    <tr><th scope="row">SVG</th><td>Web interfaces and scalable assets</td><td>Default choice; one canonical 64×64 vector grid.</td></tr>
-    <tr><th scope="row">16px PNG</th><td>Browser favicon</td><td>Use only where SVG favicons are unavailable.</td></tr>
-    <tr><th scope="row">32px PNG</th><td>High-density favicon and compact lists</td><td>Render at 32px or 16px on a 2× display.</td></tr>
-    <tr><th scope="row">48px PNG</th><td>간결하게 launchers and shortcuts</td><td>Use at the native 48px size.</td></tr>
-    <tr><th scope="row">128px PNG</th><td>Service avatars and large launchers</td><td>Use when the surface requires a raster image.</td></tr>
-    <tr><th scope="row">512px PNG</th><td>Store listings and downstream export</td><td>Keep as a high-resolution raster source; scale down, never up.</td></tr>
+    <tr><th scope="row">SVG</th><td>웹 인터페이스와 크기 조절 자산</td><td>기본 선택입니다. 하나의 표준 64×64 벡터 격자를 사용합니다.</td></tr>
+    <tr><th scope="row">16px PNG</th><td>브라우저 파비콘</td><td>SVG 파비콘을 사용할 수 없을 때만 사용합니다.</td></tr>
+    <tr><th scope="row">32px PNG</th><td>고밀도 파비콘과 작은 목록</td><td>32px 또는 2배율 화면에서 16px로 렌더링합니다.</td></tr>
+    <tr><th scope="row">48px PNG</th><td>작은 실행기와 바로 가기</td><td>원본 48px 크기로 사용합니다.</td></tr>
+    <tr><th scope="row">128px PNG</th><td>서비스 아바타와 큰 실행기</td><td>표면에서 래스터 이미지가 필요할 때 사용합니다.</td></tr>
+    <tr><th scope="row">512px PNG</th><td>스토어 등록과 후속 내보내기</td><td>고해상도 래스터 원본으로 유지하고 축소만 합니다.</td></tr>
   </tbody>
 </TRTable.Root>
 
-## 사용법 rules
+## 사용 규칙
 
 <div className="grid gap-3 sm:grid-cols-2" role="list">
   {[
-    ['Do not recolor', 'The off-white and product accent colors are fixed parts of each mark.'],
-    ['Do not distort', 'Scale the tile proportionally and preserve its square viewBox.'],
-    ['Do not add a badge', 'Notifications and environment labels belong outside the artwork.'],
-    ['Do not add effects', 'Avoid outlines, shadows, gradients, masks, and textures.'],
-    ['Do not crop', 'Keep the full black tile and its rounded corners visible.'],
-    ['Do not rearrange', 'Keep every row, crossing, aperture, and keyhole in its supplied position.'],
+    ['색을 바꾸지 마세요', '미색과 제품 강조색은 각 마크에 고정된 요소입니다.'],
+    ['왜곡하지 마세요', '타일의 비율과 정사각형 viewBox를 유지하세요.'],
+    ['배지를 추가하지 마세요', '알림과 환경 레이블은 원본 밖에 배치하세요.'],
+    ['효과를 추가하지 마세요', '외곽선, 그림자, 그라데이션, 마스크, 질감을 피하세요.'],
+    ['자르지 마세요', '둥근 모서리를 포함한 검은 타일 전체를 표시하세요.'],
+    ['재배치하지 마세요', '모든 행, 교차점, 구멍과 열쇠 구멍을 제공된 위치에 유지하세요.'],
   ].map(([title, description]) => (
     <section className="grid content-start gap-2 border border-tinyrack-border p-4" key={title} role="listitem">
       <strong>{title}</strong>
@@ -132,7 +132,7 @@ raster artwork를 렌더링 크기로 확인하세요. 16px 파일은 favicon용
 
 <div className="grid gap-3 md:grid-cols-2" data-app-icon-downloads>
   <TRCard.Root className="grid gap-3" variant="outlined">
-    <div className="grid gap-1"><strong>Dotweave</strong><span className="text-tinyrack-sm text-tinyrack-text-muted">Off-white and teal configuration weave.</span></div>
+    <div className="grid gap-1"><strong>Dotweave</strong><span className="text-tinyrack-sm text-tinyrack-text-muted">미색과 청록색으로 표현한 구성의 엮임입니다.</span></div>
     <div className="flex flex-wrap gap-x-4 gap-y-2">
       <TRLink download="dotweave-app-icon.svg" href="/brand/apps/dotweave-app-icon.svg">SVG</TRLink>
       <TRLink download="dotweave-app-icon-16.png" href="/brand/apps/dotweave-app-icon-16.png">16px PNG</TRLink>
@@ -143,7 +143,7 @@ raster artwork를 렌더링 크기로 확인하세요. 16px 파일은 favicon용
     </div>
   </TRCard.Root>
   <TRCard.Root className="grid gap-3" variant="outlined">
-    <div className="grid gap-1"><strong>TinyAuth</strong><span className="text-tinyrack-sm text-tinyrack-text-muted">Off-white and blue authentication boundary.</span></div>
+    <div className="grid gap-1"><strong>TinyAuth</strong><span className="text-tinyrack-sm text-tinyrack-text-muted">미색과 파란색으로 표현한 인증 경계입니다.</span></div>
     <div className="flex flex-wrap gap-x-4 gap-y-2">
       <TRLink download="tinyauth-app-icon.svg" href="/brand/apps/tinyauth-app-icon.svg">SVG</TRLink>
       <TRLink download="tinyauth-app-icon-16.png" href="/brand/apps/tinyauth-app-icon-16.png">16px PNG</TRLink>

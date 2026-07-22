@@ -298,6 +298,25 @@ describe('React Router documentation contract', () => {
         "import { TailwindTokenReference } from '../../../documentation/shared/tailwind-token-reference.js';",
       );
       expect(docs).toContain(`<TailwindTokenReference locale="${locale}" />`);
+      expect(docs.match(/^ {2}- \{ depth:/gm)).toHaveLength(14);
+      for (const anchor of [
+        'setup',
+        'choose-utilities',
+        'arbitrary-values',
+        'reference',
+        'breakpoints',
+        'colors',
+        'typography',
+        'spacing-controls',
+        'containers',
+        'borders-focus',
+        'radius-shadows',
+        'motion',
+        'visual-state',
+        'decoration',
+      ]) {
+        expect(docs).toContain(`id: ${anchor}`);
+      }
       expect(overview).toContain(`href="/${locale}/foundations/tailwind/"`);
       expect(overview).toContain(`href="/${locale}/foundations/breakpoints/"`);
       expect(readText(`app/content/${locale}/foundations/breakpoints.mdx`)).toContain(
@@ -313,7 +332,7 @@ describe('React Router documentation contract', () => {
       expect(staticDocumentRoutes).toContainEqual(
         expect.objectContaining({
           id: `${locale}-foundations-breakpoints`,
-          order: 6,
+          order: 4,
           path: `/${locale}/foundations/breakpoints`,
         }),
       );
@@ -323,6 +342,85 @@ describe('React Router documentation contract', () => {
     expect(tailwindTokenGroups).toHaveLength(10);
     for (const group of tailwindTokenGroups) {
       expect(tailwindTokenBridge.some((entry) => entry.group === group.id)).toBe(true);
+    }
+  });
+
+  it('keeps the localized Foundations learning path aligned', () => {
+    const foundationOrder = [
+      'overview',
+      'colors',
+      'typography',
+      'spacing',
+      'breakpoints',
+      'radius',
+      'controls',
+      'elevation',
+      'motion',
+      'logo',
+      'app-icons',
+      'tailwind',
+    ];
+    const localizedTitles = {
+      en: [
+        'Foundations',
+        'Colors',
+        'Typography',
+        'Spacing',
+        'Breakpoints',
+        'Radius',
+        'Controls',
+        'Elevation',
+        'Motion',
+        'Logo',
+        'App icons',
+        'Tailwind tokens',
+      ],
+      ko: [
+        '기초',
+        '색상',
+        '타이포그래피',
+        '간격',
+        '브레이크포인트',
+        '모서리 반경',
+        '컨트롤',
+        '고도',
+        '모션',
+        '로고',
+        '앱 아이콘',
+        'Tailwind 토큰',
+      ],
+      ja: [
+        '基礎',
+        'カラー',
+        'タイポグラフィ',
+        'スペーシング',
+        'ブレークポイント',
+        '角丸',
+        'コントロール',
+        'エレベーション',
+        'モーション',
+        'ロゴ',
+        'アプリアイコン',
+        'Tailwind トークン',
+      ],
+    } as const;
+
+    for (const locale of ['en', 'ko', 'ja'] as const) {
+      const routes = staticDocumentRoutes
+        .filter((route) => route.path.startsWith(`/${locale}/foundations`))
+        .sort((left, right) => left.order - right.order);
+
+      expect(routes.map((route) => route.path)).toEqual(
+        foundationOrder.map((slug) =>
+          slug === 'overview'
+            ? `/${locale}/foundations`
+            : `/${locale}/foundations/${slug}`,
+        ),
+      );
+      expect(routes.map((route) => route.title)).toEqual(localizedTitles[locale]);
+      expect(routes.map((route) => route.order)).toEqual(
+        foundationOrder.map((_, index) => index),
+      );
     }
   });
 

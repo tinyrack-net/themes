@@ -1,17 +1,23 @@
 ---
 title: "ブレークポイント"
-description: "TypeScript、CSS media query、Tailwind responsive variant で Tinyrack の共通 viewport threshold を一貫して使用します。"
+description: "TypeScript、CSS メディアクエリ、Tailwind のレスポンシブ variant で Tinyrack 共通のビューポートしきい値を一貫して使います。"
 section: foundations
-order: 6
+order: 4
 ---
 import { TRCode } from '@tinyrack/ui/components/code';
 import { BreakpointReference } from '../../../documentation/shared/breakpoint-reference.js';
 
 ## スケール
 
-Breakpoint token はレイアウトに利用可能なスペースが増える位置を定義します。Mobile-first で構成し、コンテンツに必要な時点でのみ <TRCode>{'*-min'}</TRCode> rule を追加します。
+ブレークポイントトークンは、レイアウトで利用できるスペースが増える位置を定義します。モバイルファーストで構成し、コンテンツに必要な時点でだけ <TRCode>{'*-min'}</TRCode> 規則を追加します。
 
 <BreakpointReference locale="ja" />
+
+## 選択基準
+
+- 特定の端末が始まる位置ではなく、コンテンツがタスクを実行しにくくなる位置にブレークポイントを追加します。
+- ページシェルとアプリケーション領域にはビューポートブレークポイントを使います。再利用コンポーネントの適応は、そのコンポーネントやコンテナ内で処理します。
+- 視覚的なリフローには CSS を優先します。動作、データ読み込み、操作モードまで変える必要がある場合だけ TypeScript で共通値を読みます。
 
 ## TypeScript
 
@@ -23,7 +29,7 @@ const desktopQuery = `(width >= ${tinyrackBreakpoints.lg})`;
 
 ## CSS と Tailwind
 
-Tinyrack CSS は Tailwind の <TRCode>@variant</TRCode> directive を使用します。<TRCode>@tinyrack/ui/core.css</TRCode> を component style より先に import すると、Tailwind が共通 breakpoint scale を解決します。
+Tinyrack CSS は Tailwind の <TRCode>@variant</TRCode> ディレクティブを使います。<TRCode>@tinyrack/ui/core.css</TRCode> をコンポーネントスタイルより先に読み込むと、Tailwind が共通ブレークポイントスケールを解決します。
 
 ```css
 @variant md {
@@ -37,4 +43,8 @@ Tailwind は <TRCode>--breakpoint-xs</TRCode> から <TRCode>--breakpoint-xl</TR
 <section className="grid gap-4 md:grid-cols-2 max-md:grid-cols-1" />
 ```
 
-互換 alias の <TRCode>xs-at-most</TRCode> と <TRCode>sm-at-most</TRCode> は境界値を含みます。新しい rule では <TRCode>{'*-min'}</TRCode> の補集合となる strict な <TRCode>{'*-max'}</TRCode> を使います。
+互換エイリアスの <TRCode>xs-at-most</TRCode> と <TRCode>sm-at-most</TRCode> は境界値を含みます。新しい規則では <TRCode>{'*-min'}</TRCode> の反対範囲となる厳密な <TRCode>{'*-max'}</TRCode> を使います。
+
+## レスポンシブ品質確認
+
+変更したレイアウトは、ブレークポイントの直前、境界上、直後で確認します。390px のモバイルビューポート、200% ズーム、長い翻訳ラベル、キーボードのフォーカス順序を含め、レイアウトが折りたたまれても必須アクションが消えないことを検証します。

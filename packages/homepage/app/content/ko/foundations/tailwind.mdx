@@ -1,15 +1,30 @@
 ---
 title: "Tailwind 토큰"
-description: "명시적인 반응형 임계값과 접두사가 붙은 foundation token utility를 Tinyrack Tailwind v4 브리지로 사용합니다."
+description: "명시적인 반응형 임계값과 접두사가 붙은 기초 토큰 유틸리티를 Tinyrack Tailwind v4 브리지로 사용합니다."
 section: foundations
 order: 11
+headings:
+  - { depth: 2, id: setup, label: "설정" }
+  - { depth: 2, id: choose-utilities, label: "유틸리티 선택" }
+  - { depth: 2, id: arbitrary-values, label: "임의 값" }
+  - { depth: 2, id: reference, label: "레퍼런스" }
+  - { depth: 3, id: breakpoints, label: "브레이크포인트" }
+  - { depth: 3, id: colors, label: "색상" }
+  - { depth: 3, id: typography, label: "타이포그래피" }
+  - { depth: 3, id: spacing-controls, label: "간격과 컨트롤" }
+  - { depth: 3, id: containers, label: "컨테이너" }
+  - { depth: 3, id: borders-focus, label: "테두리와 포커스" }
+  - { depth: 3, id: radius-shadows, label: "모서리 반경과 그림자" }
+  - { depth: 3, id: motion, label: "모션" }
+  - { depth: 3, id: visual-state, label: "투명도, 레이어, 스케일" }
+  - { depth: 3, id: decoration, label: "텍스트 장식" }
 ---
 import { TRCode } from '@tinyrack/ui/components/code';
 import { TailwindTokenReference } from '../../../documentation/shared/tailwind-token-reference.js';
 
-## 설정
+<h2 className="tr-mdx-h2" id="setup">설정</h2>
 
-Tailwind를 먼저 불러오고 Tinyrack core CSS를 이어서 불러옵니다. Core stylesheet는 runtime <TRCode>--tinyrack-*</TRCode> 변수를 유지하면서 Tailwind v4의 static theme namespace로 노출합니다.
+Tailwind를 먼저 불러오고 Tinyrack 핵심 CSS를 이어서 불러옵니다. 핵심 스타일시트는 런타임 <TRCode>--tinyrack-*</TRCode> 변수를 유지하면서 Tailwind v4의 정적 테마 이름 공간으로 노출합니다.
 
 ```css
 @import "tailwindcss";
@@ -22,12 +37,12 @@ Tailwind를 먼저 불러오고 Tinyrack core CSS를 이어서 불러옵니다. 
 @import "@tinyrack/ui/components/button.css";
 ```
 
-## Utility 선택
+<h2 className="tr-mdx-h2" id="choose-utilities">유틸리티 선택</h2>
 
-- 색상, 타이포그래피, 간격, 형태, elevation, motion이 디자인 시스템 결정을 나타내면 <TRCode>tinyrack-*</TRCode> utility를 사용합니다.
-- viewport 임계값에는 공통 <TRCode>xs:</TRCode>부터 <TRCode>xl:</TRCode>까지의 반응형 variant를 사용합니다.
-- 일회성 grid 열 개수처럼 Tinyrack 토큰을 의미하지 않는 부수적인 레이아웃에는 Tailwind 기본 utility를 유지합니다.
-- 그 밖의 Tailwind 기본 theme은 전역 override하지 않습니다. 접두사가 기존 애플리케이션 코드와 외부 예제의 의미를 안정적으로 보존합니다.
+- 색상, 타이포그래피, 간격, 형태, 고도, 모션이 디자인 시스템 결정을 나타내면 <TRCode>tinyrack-*</TRCode> 유틸리티를 사용합니다.
+- 뷰포트 임계값에는 공통 <TRCode>xs:</TRCode>부터 <TRCode>xl:</TRCode>까지의 반응형 변형을 사용합니다.
+- 일회성 격자 열 개수처럼 Tinyrack 토큰을 의미하지 않는 부수적인 레이아웃에는 Tailwind 기본 유틸리티를 유지합니다.
+- 그 밖의 Tailwind 기본 테마는 전역에서 재정의하지 않습니다. 접두사가 기존 애플리케이션 코드와 외부 예제의 의미를 안정적으로 보존합니다.
 
 ```tsx
 <section className="grid gap-tinyrack-lg rounded-tinyrack-lg border-tinyrack-default border-tinyrack-border bg-tinyrack-surface p-tinyrack-xl">
@@ -38,9 +53,9 @@ Tailwind를 먼저 불러오고 Tinyrack core CSS를 이어서 불러옵니다. 
 </section>
 ```
 
-## Arbitrary value
+<h2 className="tr-mdx-h2" id="arbitrary-values">임의 값</h2>
 
-컴포넌트 범위의 <TRCode>--tr-*</TRCode> 변수나 다른 CSS 값에 자연스러운 Tailwind theme namespace가 없으면 type hint를 사용합니다. 계산된 값을 복사하지 말고 변수를 source of truth로 유지합니다.
+컴포넌트 범위의 <TRCode>--tr-*</TRCode> 변수나 다른 CSS 값에 자연스러운 Tailwind 테마 이름 공간이 없으면 유형 힌트를 사용합니다. 계산된 값을 복사하지 말고 변수를 기준값으로 유지합니다.
 
 ```tsx
 <div className="bg-[color:var(--tr-card-background)] [width:var(--tr-layer-anchor-width)]">
@@ -48,10 +63,10 @@ Tailwind를 먼저 불러오고 Tinyrack core CSS를 이어서 불러옵니다. 
 </div>
 ```
 
-아래 레퍼런스에 이름 있는 utility가 있으면 그것을 우선합니다. Arbitrary value는 의도적인 컴포넌트 customization을 위한 것이며 별도의 토큰 체계가 아닙니다.
+아래 참조에 이름 있는 유틸리티가 있으면 그것을 우선합니다. 임의 값은 의도적인 컴포넌트 맞춤 설정을 위한 것이며 별도의 토큰 체계가 아닙니다.
 
-## 레퍼런스
+<h2 className="tr-mdx-h2" id="reference">레퍼런스</h2>
 
-Utility, Tailwind theme 변수 또는 runtime 변수로 검색할 수 있습니다. 각 표는 좁은 화면에서 독립적으로 스크롤되며 키보드 스크롤을 위해 focus할 수 있습니다.
+유틸리티, Tailwind 테마 변수 또는 런타임 변수로 검색할 수 있습니다. 각 표는 좁은 화면에서 독립적으로 스크롤되며 키보드 스크롤을 위해 초점을 받을 수 있습니다.
 
 <TailwindTokenReference locale="ko" />

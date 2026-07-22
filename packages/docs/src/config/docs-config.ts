@@ -114,6 +114,7 @@ export type DocsConfig = {
 export type DocsFrontmatter = {
   contentKey?: string;
   description: string;
+  headings?: readonly DocsHeading[];
   layout?: DocsPageLayout;
   navigation?: boolean;
   order: number;

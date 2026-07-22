@@ -34,9 +34,11 @@ const copy = {
     },
     searchLabel: 'Search Tailwind token reference',
     searchPlaceholder: 'Search utilities or CSS variables',
+    scrollHint:
+      'On narrow screens, scroll each table horizontally to compare every column.',
   },
   ko: {
-    columns: ['Tailwind theme 변수', 'Runtime 변수 / media 토큰', 'Utility 예시'],
+    columns: ['Tailwind 테마 변수', '런타임 변수 / 미디어 토큰', '유틸리티 예시'],
     empty: '검색과 일치하는 Tailwind 토큰이 없습니다.',
     groups: {
       breakpoint: '브레이크포인트',
@@ -51,11 +53,16 @@ const copy = {
       decoration: '텍스트 장식',
     },
     searchLabel: 'Tailwind 토큰 레퍼런스 검색',
-    searchPlaceholder: 'Utility 또는 CSS 변수 검색',
+    searchPlaceholder: '유틸리티 또는 CSS 변수 검색',
+    scrollHint: '좁은 화면에서는 각 표를 가로로 스크롤해 모든 열을 비교할 수 있습니다.',
   },
   ja: {
-    columns: ['Tailwind theme 変数', 'Runtime 変数 / media token', 'Utility 例'],
-    empty: '検索に一致する Tailwind token はありません。',
+    columns: [
+      'Tailwind テーマ変数',
+      'ランタイム変数 / メディアトークン',
+      'ユーティリティ例',
+    ],
+    empty: '検索に一致する Tailwind トークンはありません。',
     groups: {
       breakpoint: 'ブレークポイント',
       color: 'カラー',
@@ -68,8 +75,9 @@ const copy = {
       'visual-state': '不透明度、レイヤー、スケール',
       decoration: 'テキスト装飾',
     },
-    searchLabel: 'Tailwind token リファレンスを検索',
-    searchPlaceholder: 'Utility または CSS 変数を検索',
+    searchLabel: 'Tailwind トークンリファレンスを検索',
+    searchPlaceholder: 'ユーティリティまたは CSS 変数を検索',
+    scrollHint: '狭い画面では各表を横にスクロールすると、すべての列を比較できます。',
   },
 } as const satisfies Record<
   TailwindReferenceLocale,
@@ -79,6 +87,7 @@ const copy = {
     groups: Record<TailwindTokenGroupId, string>;
     searchLabel: string;
     searchPlaceholder: string;
+    scrollHint: string;
   }
 >;
 
@@ -166,6 +175,9 @@ export function TailwindTokenReference({
         type="search"
         value={query}
       />
+      <p className="m-0 text-tinyrack-sm text-tinyrack-text-muted sm:hidden">
+        {labels.scrollHint}
+      </p>
 
       {visibleGroups.length === 0 ? (
         <p className="m-0 text-tinyrack-sm text-tinyrack-text-muted" role="status">
@@ -180,7 +192,7 @@ export function TailwindTokenReference({
             key={group.id}
           >
             <div className="grid gap-tinyrack-xs">
-              <h2 className="tr-mdx-h2 m-0">{labels.groups[group.id]}</h2>
+              <h3 className="tr-mdx-h3 m-0">{labels.groups[group.id]}</h3>
               <p className="m-0 text-tinyrack-sm text-tinyrack-text-muted">
                 <TRCode>{group.utilityPattern}</TRCode>
               </p>

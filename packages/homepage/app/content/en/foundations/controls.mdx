@@ -2,7 +2,7 @@
 title: "Controls"
 description: "One size recipe keeps actions, fields, and navigation aligned across the component system."
 section: foundations
-order: 8
+order: 6
 ---
 import { TRButton } from '@tinyrack/ui/components/button';
 import { TRField } from '@tinyrack/ui/components/field';
@@ -13,6 +13,12 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
 ## Principle
 
 Use `sm` for dense secondary actions, `md` for the default operational interface, and `lg` only when touch comfort or emphasis requires it.
+
+## Choice guide
+
+- Keep controls in one action row on the same size recipe unless a primary action deliberately needs stronger emphasis.
+- Use `sm` where density matters and a pointer is expected, `md` as the default, and `lg` for touch-first or high-emphasis tasks.
+- Change the whole recipe—height, padding, gap, font size, and line height—rather than overriding only height.
 
 ## Visual scale
 
@@ -45,6 +51,10 @@ Override the global metric when an entire product needs a different density, or 
   --tr-btn-height: 2.25rem;
 }
 ```
+
+## Accessibility
+
+Every control needs a visible label or accessible name, a visible focus state, and a state that does not rely on color alone. Preserve the component's keyboard behavior and use `lg` when a touch-first workflow needs a larger target; do not enlarge only the visual surface while leaving the interactive hit area behind.
 
 ## Reference
 

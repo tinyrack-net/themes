@@ -114,6 +114,65 @@ describe('docs manifest', () => {
     expect(manifest.locales['en']?.messages.nextDocument).toBe('Next document');
   });
 
+  it('allows MDX frontmatter to override generated headings', () => {
+    const project = createTestProject('/');
+    dispose.push(project.dispose);
+    project.write(
+      'index.mdx',
+      `---
+title: Home
+description: A test document.
+section: start
+order: 0
+headings:
+  - depth: 2
+    id: generated-reference
+    label: Generated reference
+  - depth: 3
+    id: generated-colors
+    label: Colors
+---
+
+## Authored heading
+`,
+    );
+
+    const manifest = loadDocsManifest(project.config, { root: project.root });
+    expect(manifest.pages[0]?.headings).toEqual([
+      { depth: 2, id: 'generated-reference', label: 'Generated reference' },
+      { depth: 3, id: 'generated-colors', label: 'Colors' },
+    ]);
+  });
+
+  it.each([
+    ['invalid depth', '  - depth: 4\n    id: invalid\n    label: Invalid', 'depth'],
+    ['empty id', '  - depth: 2\n    id: ""\n    label: Empty', 'id'],
+    [
+      'duplicate id',
+      '  - depth: 2\n    id: duplicate\n    label: First\n  - depth: 3\n    id: duplicate\n    label: Second',
+      'duplicate heading id',
+    ],
+  ])('rejects MDX frontmatter headings with %s', (_name, headings, message) => {
+    const project = createTestProject('/');
+    dispose.push(project.dispose);
+    project.write(
+      'index.mdx',
+      `---
+title: Home
+description: A test document.
+section: start
+order: 0
+headings:
+${headings}
+---
+`,
+    );
+
+    expect(() => loadDocsManifest(project.config, { root: project.root })).toThrow(
+      message,
+    );
+  });
+
   it('derives deterministic routes, navigation, canonical URLs, and assets from MDX', () => {
     const project = createTestProject();
     dispose.push(project.dispose);

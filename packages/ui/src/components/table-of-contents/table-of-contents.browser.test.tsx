@@ -46,9 +46,13 @@ test('renders active headings, router links, and mobile select', async () => {
   const select = document.querySelector('[role="combobox"]') as HTMLElement;
   expect(select).toHaveAccessibleName('On this page');
   await userEvent.click(select);
-  await userEvent.click(
-    document.querySelectorAll<HTMLElement>('[role="option"]')[1] as HTMLElement,
+  const options = document.querySelectorAll<HTMLElement>('[role="option"]');
+  expect(options[0]).toHaveAttribute('data-depth', '2');
+  expect(options[1]).toHaveAttribute('data-depth', '3');
+  expect(getComputedStyle(options[1] as HTMLElement).paddingInlineStart).not.toBe(
+    getComputedStyle(options[0] as HTMLElement).paddingInlineStart,
   );
+  await userEvent.click(options[1] as HTMLElement);
   expect(onNavigate).toHaveBeenCalledWith(items[1]);
   expect(onNavigate).toHaveBeenCalledTimes(1);
 

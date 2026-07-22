@@ -1,8 +1,8 @@
 ---
-title: "Typography"
+title: "タイポグラフィ"
 description: "名前付きのテキスト役割で、装飾的な書体変更や色だけに頼らず、密度の高い運用 UI に階層を作ります。"
 section: foundations
-order: 4
+order: 2
 ---
 import { TRCode } from '@tinyrack/ui/components/code';
 import { TRTable } from '@tinyrack/ui/components/table';
@@ -12,16 +12,16 @@ import { tinyrackTypography } from '@tinyrack/ui/core';
 
 <div className="grid gap-3 md:grid-cols-3" role="list">
   <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Establish scan order</h3>
-    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Size and weight establish the primary hierarchy before muted color lowers secondary content.</div>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">読む順序を作る</h3>
+    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">サイズと太さで先に主要な階層を作り、控えめな色で補助コンテンツを下げます。</div>
   </section>
   <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Keep reading text calm</h3>
-    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Body and bodySm use comfortable line height; compact UI should not make explanatory copy cramped.</div>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">本文は落ち着いて読めるようにする</h3>
+    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">body と bodySm は余裕のある行間を使います。小さな UI でも説明文を窮屈にしません。</div>
   </section>
   <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Track only terse labels</h3>
-    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">Uppercase tracking belongs to short labels and status eyebrows, never paragraphs or long interface copy.</div>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">字間は短いラベルだけに使う</h3>
+    <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">大文字の字間は短いラベルと状態の小見出しだけに使い、段落や長い案内文には使いません。</div>
   </section>
 </div>
 
@@ -29,14 +29,14 @@ import { tinyrackTypography } from '@tinyrack/ui/core';
 
 <div className="grid gap-3" role="list">
   {[
-    { name: 'Display', key: 'display', sample: 'Rack 操作s', recipe: tinyrackTypography.textStyle.display },
-    { name: 'Heading large', key: 'headingLg', sample: 'Cluster health', recipe: tinyrackTypography.textStyle.headingLg },
-    { name: 'Heading medium', key: 'headingMd', sample: 'Capacity and backup', recipe: tinyrackTypography.textStyle.headingMd },
-    { name: 'Heading small', key: 'headingSm', sample: 'Node details', recipe: tinyrackTypography.textStyle.headingSm },
-    { name: 'Body', key: 'body', sample: 'Operate small systems with clear status and durable defaults.', recipe: tinyrackTypography.textStyle.body },
-    { name: 'Body small', key: 'bodySm', sample: 'Backup completed at 03:18 with all nodes available.', recipe: tinyrackTypography.textStyle.bodySm },
-    { name: 'Caption', key: 'caption', sample: 'Updated 2 minutes ago', recipe: tinyrackTypography.textStyle.caption },
-    { name: 'Label', key: 'label', sample: 'RACK STATUS', recipe: tinyrackTypography.textStyle.label },
+    { name: 'ディスプレイ', key: 'display', sample: 'ラック操作', recipe: tinyrackTypography.textStyle.display },
+    { name: '大見出し', key: 'headingLg', sample: 'クラスター状態', recipe: tinyrackTypography.textStyle.headingLg },
+    { name: '中見出し', key: 'headingMd', sample: '容量とバックアップ', recipe: tinyrackTypography.textStyle.headingMd },
+    { name: '小見出し', key: 'headingSm', sample: 'ノード詳細', recipe: tinyrackTypography.textStyle.headingSm },
+    { name: '本文', key: 'body', sample: '明確な状態と堅牢な初期値で小規模システムを運用します。', recipe: tinyrackTypography.textStyle.body },
+    { name: '小さい本文', key: 'bodySm', sample: 'すべてのノードが利用可能な状態で 03:18 にバックアップが完了しました。', recipe: tinyrackTypography.textStyle.bodySm },
+    { name: '補足', key: 'caption', sample: '2 分前に更新', recipe: tinyrackTypography.textStyle.caption },
+    { name: 'ラベル', key: 'label', sample: 'ラック状態', recipe: tinyrackTypography.textStyle.label },
     { name: 'TRCode', key: 'code', sample: 'pnpm verify --filter @tinyrack/ui', recipe: tinyrackTypography.textStyle.code },
   ].map(({ name, key, sample, recipe }) => (
     <section className="grid gap-2 border-b border-tinyrack-border py-3 md:grid-cols-[9rem_minmax(0,1fr)] md:items-baseline" key={key} role="listitem">
@@ -60,12 +60,12 @@ import { tinyrackTypography } from '@tinyrack/ui/core';
 <section className="grid gap-4 border border-tinyrack-border p-4">
   <header className="grid gap-1">
     <div className="text-tinyrack-xs font-bold leading-tinyrack-xs tracking-tinyrack-lg text-tinyrack-text-muted uppercase">Rack A</div>
-    <div className="text-tinyrack-3xl font-semibold leading-tinyrack-sm" role="heading" aria-level={3}>12 nodes online</div>
-    <div className="max-w-2xl text-tinyrack-md leading-tinyrack-md">The cluster is healthy and ready for the next deployment window.</div>
+    <div className="text-tinyrack-3xl font-semibold leading-tinyrack-sm" role="heading" aria-level={3}>12 ノードがオンライン</div>
+    <div className="max-w-2xl text-tinyrack-md leading-tinyrack-md">クラスターは正常で、次のデプロイ時間帯を待っています。</div>
   </header>
   <div className="grid gap-2 border-t border-tinyrack-border pt-3 text-tinyrack-sm leading-tinyrack-md sm:grid-cols-2">
-    <div><strong>Load</strong><div className="text-tinyrack-text-muted">41% across all nodes</div></div>
-    <div><strong>Command</strong><div><TRCode>pnpm verify --filter @tinyrack/ui</TRCode></div></div>
+    <div><strong>負荷</strong><div className="text-tinyrack-text-muted">全ノードで 41%</div></div>
+    <div><strong>コマンド</strong><div><TRCode>pnpm verify --filter @tinyrack/ui</TRCode></div></div>
   </div>
 </section>
 
@@ -97,8 +97,8 @@ const bodySize = tinyrackTypography.fontSize.md;
 
 ## リファレンス
 
-<TRTable.Root className="mt-tinyrack-lg" containerProps={{ 'aria-label': 'Typography token reference', tabIndex: 0 }} data-foundation-reference="typography">
-    <thead><tr><th scope="col">Role</th><th scope="col">Size</th><th scope="col">Line</th><th scope="col">Tracking</th><th scope="col">Utility recipe</th></tr></thead>
+<TRTable.Root className="mt-tinyrack-lg" containerProps={{ 'aria-label': 'タイポグラフィトークンリファレンス', tabIndex: 0 }} data-foundation-reference="typography">
+    <thead><tr><th scope="col">役割</th><th scope="col">サイズ</th><th scope="col">行間</th><th scope="col">字間</th><th scope="col">ユーティリティ構成</th></tr></thead>
     <tbody>
       {[
         { name: 'display', recipe: tinyrackTypography.textStyle.display },

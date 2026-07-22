@@ -1,8 +1,8 @@
 ---
-title: "Spacing"
+title: "スペーシング"
 description: "近さによって要素の関係を示し、同じまとまりか、コンポーネントの反復か、新しいタスクの開始かを表すコンパクトな関係スケールです。"
 section: foundations
-order: 5
+order: 3
 ---
 import { TRCode } from '@tinyrack/ui/components/code';
 import { TRTable } from '@tinyrack/ui/components/table';
@@ -12,15 +12,15 @@ import { tinyrackSpacing } from '@tinyrack/ui/core';
 
 <div className="grid gap-3 md:grid-cols-3" role="list">
   <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Detail · xs–sm</h3>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">詳細 · xs–sm</h3>
     <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">アイコン、ラベル、ステータスマーク、繰り返すインラインアクションを視覚的につなげて保ちます。</div>
   </section>
   <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Component · md–lg</h3>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">コンポーネント · md–lg</h3>
     <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">field、panel、toolbar、繰り返し行の内部には標準のリズムを使います。</div>
   </section>
   <section className="grid content-start gap-2 border border-tinyrack-border p-4" role="listitem">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Section · xl–2xl</h3>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">セクション · xl–2xl</h3>
     <div className="text-tinyrack-sm leading-tinyrack-md text-tinyrack-text-muted">読み取りグループや運用タスクが変わる場合だけ大きな間隔を使います。</div>
   </section>
 </div>
@@ -51,21 +51,21 @@ import { tinyrackSpacing } from '@tinyrack/ui/core';
 
 <div className="grid gap-4 md:grid-cols-3">
   <section className="grid content-start gap-2 border border-tinyrack-border p-4">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Dense row</h3>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">密な行</h3>
     <div className="grid gap-2 border-y border-tinyrack-border py-2">
-      <div className="flex items-center justify-between gap-2"><span>api</span><strong>online</strong></div>
-      <div className="flex items-center justify-between gap-2"><span>worker</span><strong>online</strong></div>
+      <div className="flex items-center justify-between gap-2"><span>API</span><strong>オンライン</strong></div>
+      <div className="flex items-center justify-between gap-2"><span>ワーカー</span><strong>オンライン</strong></div>
     </div>
     <div className="text-tinyrack-sm text-tinyrack-text-muted">繰り返す状態を 1 つの単位として読み取る場合は xs–sm の間隔を使います。</div>
   </section>
   <section className="grid content-start gap-3 border border-tinyrack-border p-4">
-    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">TRForm group</h3>
-    <div className="grid gap-3"><strong>Cluster</strong><div className="border border-tinyrack-border p-3">rack-a</div><span className="text-tinyrack-sm text-tinyrack-text-muted">安定した rack 識別子を使います。</span></div>
+    <h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">TRForm グループ</h3>
+    <div className="grid gap-3"><strong>クラスター</strong><div className="border border-tinyrack-border p-3">rack-a</div><span className="text-tinyrack-sm text-tinyrack-text-muted">安定したラック識別子を使います。</span></div>
     <div className="text-tinyrack-sm text-tinyrack-text-muted">label、control、helper、action のリズムには md–lg を使います。</div>
   </section>
   <section className="grid content-start gap-4 border border-tinyrack-border p-4">
-    <div><h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">Health</h3><span className="text-tinyrack-sm text-tinyrack-text-muted">Status and capacity</span></div>
-    <div className="border-t border-tinyrack-border pt-4"><strong>Backup window</strong><div className="text-tinyrack-sm text-tinyrack-text-muted">ここから新しい運用タスクが始まります。</div></div>
+    <div><h3 className="m-0 text-tinyrack-lg font-semibold leading-tinyrack-sm">状態</h3><span className="text-tinyrack-sm text-tinyrack-text-muted">状態と容量</span></div>
+    <div className="border-t border-tinyrack-border pt-4"><strong>バックアップ時間帯</strong><div className="text-tinyrack-sm text-tinyrack-text-muted">ここから新しい運用タスクが始まります。</div></div>
     <div className="text-tinyrack-sm text-tinyrack-text-muted">タスクが変わる場合だけ xl–2xl を使います。</div>
   </section>
 </div>
@@ -93,7 +93,7 @@ const sectionGap = tinyrackSpacing.xl;
 ## リファレンス
 
 <TRTable.Root className="mt-tinyrack-lg" containerProps={{ 'aria-label': 'Spacing token reference', tabIndex: 0 }} data-foundation-reference="spacing">
-    <thead><tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Relationship</th><th scope="col">Tinyrack utility</th><th scope="col">TypeScript</th></tr></thead>
+    <thead><tr><th scope="col">トークン</th><th scope="col">値</th><th scope="col">関係</th><th scope="col">Tinyrack ユーティリティ</th><th scope="col">TypeScript</th></tr></thead>
     <tbody>
       {[
         { token: 'xs', value: tinyrackSpacing.xs, relationship: 'Detail', utility: 'gap-tinyrack-xs / p-tinyrack-xs' },

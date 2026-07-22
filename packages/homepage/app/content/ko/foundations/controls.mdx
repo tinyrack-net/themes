@@ -1,8 +1,8 @@
 ---
-title: "Controls"
+title: "컨트롤"
 description: "하나의 크기 레시피로 컴포넌트 시스템 전체의 액션, 필드, 탐색을 정렬합니다."
 section: foundations
-order: 8
+order: 6
 ---
 import { TRButton } from '@tinyrack/ui/components/button';
 import { TRField } from '@tinyrack/ui/components/field';
@@ -14,13 +14,19 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
 
 밀도 높은 보조 액션에는 `sm`, 기본 운영 인터페이스에는 `md`, 터치 편의나 강조가 필요할 때만 `lg`를 사용하세요.
 
+## 선택 기준
+
+- 기본 액션을 의도적으로 더 강조하는 경우가 아니라면 한 액션 행의 컨트롤은 같은 크기 레시피를 사용합니다.
+- 포인터 사용이 예상되고 밀도가 중요하면 `sm`, 기본값은 `md`, 터치 중심이거나 강조가 큰 작업에는 `lg`를 사용합니다.
+- 높이만 재정의하지 말고 높이, 안쪽 여백, 간격, 글자 크기, 행간을 포함한 전체 레시피를 함께 바꿉니다.
+
 ## 시각적 스케일
 
 <div className="grid gap-tinyrack-md" role="list">
   {['sm', 'md', 'lg'].map((size) => (
     <section className="grid items-center gap-tinyrack-md border border-tinyrack-border p-tinyrack-lg md:grid-cols-[7rem_minmax(0,1fr)]" key={size} role="listitem">
       <div><strong>{size}</strong><div className="text-tinyrack-sm text-tinyrack-text-muted"><TRCode>{tinyrackControlMetrics[size].height}</TRCode></div></div>
-      <div className="flex flex-wrap items-center gap-tinyrack-sm"><TRButton uiSize={size}>Deploy</TRButton><TRField.Root><TRField.Control aria-label={`${size} rack name`} data-uiSize={size} placeholder="rack-a" /></TRField.Root></div>
+      <div className="flex flex-wrap items-center gap-tinyrack-sm"><TRButton uiSize={size}>배포</TRButton><TRField.Root><TRField.Control aria-label={`${size} 랙 이름`} data-uiSize={size} placeholder="rack-a" /></TRField.Root></div>
     </section>
   ))}
 </div>
@@ -28,13 +34,13 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
 ## 적용 패턴
 
 <section className="grid gap-tinyrack-lg border border-tinyrack-border p-tinyrack-lg">
-  <div className="grid gap-tinyrack-sm md:grid-cols-[minmax(0,1fr)_auto]"><TRField.Root><TRField.Control aria-label="Rack 이름" placeholder="rack-a" /></TRField.Root><TRButton variant="primary">Save rack</TRButton></div>
+  <div className="grid gap-tinyrack-sm md:grid-cols-[minmax(0,1fr)_auto]"><TRField.Root><TRField.Control aria-label="랙 이름" placeholder="rack-a" /></TRField.Root><TRButton variant="primary">랙 저장</TRButton></div>
   <div className="text-tinyrack-sm text-tinyrack-text-muted">두 컨트롤은 동일한 40px 중간 높이와 타이포그래피 레시피를 사용합니다.</div>
 </section>
 
 ## 구현
 
-제품 전체에 다른 밀도가 필요하면 전역 metric을 재정의하고, 하나의 컴포넌트에 의도적인 예외가 필요하면 `--tr-*` 레시피 토큰을 사용하세요.
+제품 전체에 다른 밀도가 필요하면 전역 치수를 재정의하고, 하나의 컴포넌트에 의도적인 예외가 필요하면 `--tr-*` 레시피 토큰을 사용하세요.
 
 ```css
 :root {
@@ -46,10 +52,14 @@ import { tinyrackControlMetrics } from '@tinyrack/ui/core';
 }
 ```
 
+## 접근성
+
+모든 컨트롤에는 보이는 레이블 또는 접근 가능한 이름, 명확한 포커스 상태, 색상에만 의존하지 않는 상태 표현이 필요합니다. 컴포넌트의 키보드 동작을 유지하고 터치 중심 흐름에 더 큰 목표 영역이 필요하면 `lg`를 사용합니다. 보이는 표면만 키우고 실제 상호작용 영역을 그대로 두지 마세요.
+
 ## 참조
 
-<TRTable.Root containerProps={{ 'aria-label': 'Control metric reference', tabIndex: 0 }} data-foundation-reference="controls">
-    <thead><tr><th scope="col">Size</th><th scope="col">Height</th><th scope="col">Padding</th><th scope="col">Gap</th><th scope="col">Type</th></tr></thead>
+<TRTable.Root containerProps={{ 'aria-label': '컨트롤 치수 참조', tabIndex: 0 }} data-foundation-reference="controls">
+    <thead><tr><th scope="col">크기</th><th scope="col">높이</th><th scope="col">안쪽 여백</th><th scope="col">간격</th><th scope="col">글자</th></tr></thead>
     <tbody>{['sm', 'md', 'lg'].map((size) => <tr key={size}><th scope="row">{size}</th><td><TRCode>{tinyrackControlMetrics[size].height}</TRCode></td><td><TRCode>{tinyrackControlMetrics[size].paddingInline}</TRCode></td><td><TRCode>{tinyrackControlMetrics[size].gap}</TRCode></td><td><TRCode>{tinyrackControlMetrics[size].fontSize}</TRCode></td></tr>)}</tbody>
   </TRTable.Root>
 

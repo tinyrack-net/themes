@@ -2,7 +2,7 @@
 title: "Breakpoints"
 description: "Use Tinyrack's shared viewport thresholds consistently across TypeScript, authored CSS media queries, and Tailwind responsive variants."
 section: foundations
-order: 6
+order: 4
 ---
 import { TRCode } from '@tinyrack/ui/components/code';
 import { BreakpointReference } from '../../../documentation/shared/breakpoint-reference.js';
@@ -12,6 +12,12 @@ import { BreakpointReference } from '../../../documentation/shared/breakpoint-re
 Breakpoint tokens define where a layout gains available space. Start mobile-first and add a <TRCode>{'*-min'}</TRCode> rule only when the content needs it.
 
 <BreakpointReference locale="en" />
+
+## Decision guide
+
+- Add a breakpoint when the content no longer fits its task, not when a named device begins.
+- Use viewport breakpoints for page shells and application regions. Keep reusable component adaptations local to the component or its container.
+- Prefer CSS for visual reflow. Read the shared value in TypeScript only when behavior, data loading, or an interaction mode must change.
 
 ## TypeScript
 
@@ -38,3 +44,7 @@ Tailwind uses the same values through <TRCode>--breakpoint-xs</TRCode> to <TRCod
 ```
 
 The compatibility aliases <TRCode>xs-at-most</TRCode> and <TRCode>sm-at-most</TRCode> include the exact boundary. Use strict <TRCode>{'*-max'}</TRCode> for new rules so it remains the complement of <TRCode>{'*-min'}</TRCode>.
+
+## Responsive QA
+
+Check each changed layout immediately below, at, and above its breakpoint. Include a 390px mobile viewport, 200% zoom, long localized labels, keyboard focus order, and confirmation that no essential action disappears when the layout collapses.

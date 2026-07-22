@@ -17,6 +17,25 @@ export type ComponentDocsExampleGroup = {
   section: 'examples' | 'usage';
 };
 
+function exampleGroup(
+  id: string,
+  section: ComponentDocsExampleGroup['section'],
+  kind: ComponentDocsExampleGroup['kind'],
+  minItems?: number,
+  maxItems?: number,
+): ComponentDocsExampleGroup {
+  const defaultRange: readonly [number, number] =
+    kind === 'basic' ? [1, 1] : kind === 'recipe' ? [1, 2] : [3, 6];
+
+  return {
+    id,
+    kind,
+    maxItems: maxItems ?? minItems ?? defaultRange[1],
+    minItems: minItems ?? defaultRange[0],
+    section,
+  };
+}
+
 export type ComponentDocsManifestEntry = {
   capabilities: readonly ComponentDocCapability[];
   file: string;
@@ -102,48 +121,12 @@ export const componentDocsManifest = [
       'uiSize',
     ],
     exampleGroups: [
-      {
-        id: 'button-basic',
-        kind: 'basic',
-        maxItems: 1,
-        minItems: 1,
-        section: 'usage',
-      },
-      {
-        id: 'button-solid-intents',
-        kind: 'series',
-        maxItems: 6,
-        minItems: 3,
-        section: 'examples',
-      },
-      {
-        id: 'button-outline-intents',
-        kind: 'series',
-        maxItems: 6,
-        minItems: 3,
-        section: 'examples',
-      },
-      {
-        id: 'button-ghost-intents',
-        kind: 'series',
-        maxItems: 6,
-        minItems: 3,
-        section: 'examples',
-      },
-      {
-        id: 'button-sizes',
-        kind: 'series',
-        maxItems: 6,
-        minItems: 3,
-        section: 'examples',
-      },
-      {
-        id: 'button-states',
-        kind: 'series',
-        maxItems: 6,
-        minItems: 3,
-        section: 'examples',
-      },
+      exampleGroup('button-basic', 'usage', 'basic', 1),
+      exampleGroup('button-solid-intents', 'examples', 'series', 6),
+      exampleGroup('button-outline-intents', 'examples', 'series', 6),
+      exampleGroup('button-ghost-intents', 'examples', 'series', 6),
+      exampleGroup('button-sizes', 'examples', 'series', 3),
+      exampleGroup('button-states', 'examples', 'series', 3),
     ],
     requiredExamples: [
       'button-basic',

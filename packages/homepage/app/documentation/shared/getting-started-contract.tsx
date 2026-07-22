@@ -3,7 +3,7 @@ import type { BundledLanguage } from 'shiki/bundle/web';
 
 export const gettingStartedContract = {
   install: 'pnpm add @tinyrack/ui tailwindcss react react-dom',
-  viteInstall: 'pnpm add -D @tailwindcss/vite @vitejs/plugin-react vite',
+  viteInstall: 'pnpm add -D @tailwindcss/vite',
   vite: `import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';

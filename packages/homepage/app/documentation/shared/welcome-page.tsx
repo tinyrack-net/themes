@@ -69,6 +69,8 @@ type ProductCopy = {
 };
 
 type WelcomeCopy = {
+  componentCount: (count: number) => string;
+  heroLabel: string;
   foundations: string;
   installation: string;
   snippetLabels: {
@@ -79,6 +81,7 @@ type WelcomeCopy = {
     viteInstall: string;
   };
   proposition: string;
+  quickStartEyebrow: string;
   standards: readonly { description: string; title: string }[];
   nextComponents: string;
   nextFoundations: string;
@@ -89,6 +92,8 @@ type WelcomeCopy = {
 
 const copy: Record<WelcomeLocale, WelcomeCopy> = {
   en: {
+    componentCount: (count) => `${count} components`,
+    heroLabel: 'Tinyrack Design System introduction',
     foundations: 'Foundations',
     installation: 'Installation',
     snippetLabels: {
@@ -100,6 +105,7 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
     },
     proposition:
       'Standardize accessible React interfaces with shared tokens, themes, and production-ready components.',
+    quickStartEyebrow: '01 / Quick start',
     standards: [
       {
         title: 'Tokens',
@@ -218,6 +224,8 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
     quickStartTitle: 'Start with the essentials.',
   },
   ko: {
+    componentCount: (count) => `컴포넌트 ${count}개`,
+    heroLabel: 'Tinyrack Design System 소개',
     foundations: '기초',
     installation: '설치',
     snippetLabels: {
@@ -229,6 +237,7 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
     },
     proposition:
       '공통 토큰과 테마, 프로덕션용 컴포넌트로 접근성 높은 React 인터페이스를 일관되게 만들어요.',
+    quickStartEyebrow: '01 / 빠른 시작',
     standards: [
       {
         title: '토큰',
@@ -347,6 +356,8 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
     quickStartTitle: '핵심부터 시작하세요.',
   },
   ja: {
+    componentCount: (count) => `コンポーネント ${count}個`,
+    heroLabel: 'Tinyrack Design System の紹介',
     foundations: '基礎',
     installation: 'インストール',
     snippetLabels: {
@@ -358,6 +369,7 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
     },
     proposition:
       '共通のトークン、テーマ、実用的なコンポーネントで、アクセシブルな React インターフェースを統一できます。',
+    quickStartEyebrow: '01 / クイックスタート',
     standards: [
       {
         title: 'トークン',
@@ -965,7 +977,7 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
       data-welcome-page=""
     >
       <section
-        aria-label="Tinyrack Design System introduction"
+        aria-label={content.heroLabel}
         className="relative h-[max(42rem,calc(100dvh-var(--tinyrack-control-height-lg)))] min-h-[42rem] overflow-hidden bg-tinyrack-canvas max-md:h-[max(40rem,calc(100dvh-var(--tinyrack-control-height-lg)))] max-md:min-h-[40rem]"
         data-welcome-hero=""
       >
@@ -983,7 +995,7 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
             <p className="m-0 mb-tinyrack-lg flex items-center gap-0 text-tinyrack-xs font-tinyrack-semibold tracking-tinyrack-lg text-tinyrack-text-muted uppercase max-md:flex-wrap max-md:text-tinyrack-2xs [&>span+span]:before:px-tinyrack-md [&>span+span]:before:text-tinyrack-border-strong [&>span+span]:before:content-['/']">
               <span>React 19</span>
               <span>Base UI</span>
-              <span>{componentDocsManifest.length} components</span>
+              <span>{content.componentCount(componentDocsManifest.length)}</span>
             </p>
             <h1 className="m-0 max-w-none text-[clamp(calc(var(--tinyrack-text-5xl)*1.35),9vw,calc(var(--tinyrack-text-5xl)*3.15))] leading-[0.98] font-tinyrack-bold tracking-[-0.065em] text-balance max-md:text-[clamp(calc(var(--tinyrack-text-5xl)*1.15),15vw,calc(var(--tinyrack-text-5xl)*1.7))] max-md:tracking-[-0.055em] [&>span]:block">
               <span>TINYRACK</span>
@@ -1040,7 +1052,7 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
         >
           <div className="grid content-start gap-tinyrack-lg">
             <span className="text-tinyrack-xs font-tinyrack-semibold tracking-tinyrack-lg text-tinyrack-text-muted uppercase">
-              01 / Quick start
+              {content.quickStartEyebrow}
             </span>
             <h2 className="m-0 max-w-[48rem] text-[clamp(var(--tinyrack-text-3xl),5vw,calc(var(--tinyrack-text-5xl)*1.45))] leading-tinyrack-sm tracking-[-0.04em]">
               {content.quickStartTitle}

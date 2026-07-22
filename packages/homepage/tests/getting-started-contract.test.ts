@@ -67,6 +67,7 @@ afterAll(() => {
 
 describe('canonical getting-started contract', () => {
   it('builds a minimal Vite and Tailwind consumer with themed button styles', () => {
+    expect(gettingStartedContract.viteInstall).toBe('pnpm add -D @tailwindcss/vite');
     execFileSync(process.execPath, [viteCli, 'build'], {
       cwd: fixtureRoot,
       encoding: 'utf8',

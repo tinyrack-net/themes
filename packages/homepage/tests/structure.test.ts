@@ -661,7 +661,10 @@ describe('React Router documentation contract', () => {
     expect(welcomePage).toContain('01 / Quick start');
     expect(welcomePage).toContain("title: '프로덕션 개요'");
     expect(welcomePage).toContain("title: '本番環境の概要'");
-    expect(welcomePage).toContain('motion-safe:animate-welcome-enter');
+    expect(welcomePage).not.toContain('motion-safe:animate-welcome-enter');
+    expect(welcomePage).toContain('data-welcome-simulation-phase={phase}');
+    expect(welcomePage).toContain('data-welcome-simulation-running={running');
+    expect(welcomePage).toContain('const SIMULATION_STEP_MS = 2_400;');
     expect(welcomePage).toContain('max-md:grid-cols-[minmax(0,1fr)]');
     expect(welcomePage).not.toContain('welcomeStyles');
     expect(welcomePage).not.toMatch(/className=(?:"|')welcome-/);
@@ -670,7 +673,8 @@ describe('React Router documentation contract', () => {
     ).toBe(false);
     expect(appStyles).not.toContain('@import "../content/shared/welcome-page.css"');
     expect(appStyles).toContain('.tr-mdx:has(> [data-welcome-page])');
-    expect(appStyles).toContain('@keyframes welcome-enter');
+    expect(appStyles).not.toContain('@keyframes welcome-enter');
+    expect(appStyles).toContain('@keyframes welcome-feed-enter');
 
     for (const locale of ['en', 'ko', 'ja'] as const) {
       const index = readText(`app/content/${locale}/index.tsx`);

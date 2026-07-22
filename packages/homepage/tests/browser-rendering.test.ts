@@ -479,6 +479,232 @@ describe('built React Router documentation', () => {
     }
   });
 
+  it('loops the Welcome operations simulation without moving the app window', async () => {
+    const desktopPage = await browser.newPage({
+      viewport: { height: 1024, width: 1440 },
+    });
+    const reducedPage = await browser.newPage({
+      viewport: { height: 844, width: 390 },
+    });
+    const readSimulationValues = async (page: typeof desktopPage) => {
+      const productWindow = page.locator('[data-welcome-app]');
+      return {
+        bars: await productWindow
+          .locator('[data-welcome-throughput-bar]')
+          .evaluateAll((elements) =>
+            elements.map((element) => (element as HTMLElement).style.height),
+          ),
+        metrics: await productWindow
+          .locator('[data-welcome-metric-value]')
+          .allTextContents(),
+        progress: await productWindow
+          .locator('[data-welcome-deployment-progress]')
+          .textContent(),
+        services: await productWindow
+          .locator('[data-welcome-service-value]')
+          .allTextContents(),
+      };
+    };
+
+    try {
+      await desktopPage.clock.install();
+      await setTheme(desktopPage, 'tinyrack-dark');
+      await gotoHydrated(desktopPage, `${origin}/en`);
+
+      const productWindow = desktopPage.locator('[data-welcome-app]');
+      await expect
+        .poll(() => productWindow.getAttribute('data-welcome-simulation-running'))
+        .toBe('true');
+      expect(await productWindow.getAttribute('data-welcome-simulation-phase')).toBe(
+        'monitoring',
+      );
+      expect(
+        await productWindow.evaluate(
+          (element) => getComputedStyle(element).animationName,
+        ),
+      ).toBe('none');
+      const initialBox = await productWindow.boundingBox();
+      expect(initialBox).not.toBeNull();
+
+      const expectedFrames = [
+        {
+          load: '41%',
+          nodes: '12 / 12',
+          phase: 'monitoring',
+          progress: '100%',
+          services: ['92%', '68%', '84%'],
+          status: 'All systems operational',
+        },
+        {
+          load: '48%',
+          nodes: '12 / 12',
+          phase: 'deploying',
+          progress: '28%',
+          services: ['91%', '74%', '84%'],
+          status: 'Deploying v2.8.5',
+        },
+        {
+          load: '57%',
+          nodes: '14 / 14',
+          phase: 'scaling',
+          progress: '62%',
+          services: ['90%', '82%', '82%'],
+          status: 'Scaling compute',
+        },
+        {
+          load: '46%',
+          nodes: '14 / 14',
+          phase: 'verifying',
+          progress: '88%',
+          services: ['91%', '76%', '83%'],
+          status: 'Verifying rollout',
+        },
+        {
+          load: '41%',
+          nodes: '12 / 12',
+          phase: 'complete',
+          progress: '100%',
+          services: ['92%', '68%', '84%'],
+          status: 'Deployment completed',
+        },
+      ] as const;
+
+      for (const [index, expectedFrame] of expectedFrames.entries()) {
+        await expect
+          .poll(() => productWindow.getAttribute('data-welcome-simulation-phase'))
+          .toBe(expectedFrame.phase);
+        expect(
+          await productWindow.locator('[data-welcome-status]').textContent(),
+        ).toContain(expectedFrame.status);
+        const values = await readSimulationValues(desktopPage);
+        expect(values.metrics.slice(0, 2)).toEqual([
+          expectedFrame.nodes,
+          expectedFrame.load,
+        ]);
+        expect(values.progress).toBe(expectedFrame.progress);
+        expect(values.services).toEqual(expectedFrame.services);
+
+        if (index < expectedFrames.length - 1) {
+          await desktopPage.clock.runFor(2_400);
+        }
+      }
+
+      const completedValues = await readSimulationValues(desktopPage);
+      await desktopPage.clock.runFor(2_400);
+      await expect
+        .poll(() => productWindow.getAttribute('data-welcome-simulation-phase'))
+        .toBe('monitoring');
+      expect(await readSimulationValues(desktopPage)).toEqual(completedValues);
+      const loopedBox = await productWindow.boundingBox();
+      expect(loopedBox).not.toBeNull();
+      expect(Math.abs((loopedBox?.x ?? 0) - (initialBox?.x ?? 0))).toBeLessThanOrEqual(
+        1,
+      );
+
+      await reducedPage.clock.install();
+      await reducedPage.emulateMedia({ reducedMotion: 'reduce' });
+      await setTheme(reducedPage, 'tinyrack-dark');
+      await gotoHydrated(reducedPage, `${origin}/ko`);
+      const reducedProductWindow = reducedPage.locator('[data-welcome-app]');
+      await expect
+        .poll(() =>
+          reducedProductWindow.getAttribute('data-welcome-simulation-running'),
+        )
+        .toBe('false');
+      const reducedValues = await readSimulationValues(reducedPage);
+      await reducedPage.clock.runFor(12_000);
+      expect(
+        await reducedProductWindow.getAttribute('data-welcome-simulation-phase'),
+      ).toBe('monitoring');
+      expect(await readSimulationValues(reducedPage)).toEqual(reducedValues);
+    } finally {
+      await desktopPage.close();
+      await reducedPage.close();
+    }
+  });
+
+  it('keeps every localized Welcome simulation readable at 320px', async () => {
+    const localeCases = [
+      {
+        build: 'Start building',
+        locale: 'en',
+        phases: ['Live', 'Deploy', 'Scale', 'Verify', 'Done'],
+        shell: 'Explore the app shell',
+      },
+      {
+        build: '빌드 시작',
+        locale: 'ko',
+        phases: ['정상', '배포', '확장', '검증', '완료'],
+        shell: '앱 셸 살펴보기',
+      },
+      {
+        build: '構築を始める',
+        locale: 'ja',
+        phases: ['正常', 'デプロイ', '拡張', '検証', '完了'],
+        shell: 'App shell を見る',
+      },
+    ] as const;
+
+    for (const localeCase of localeCases) {
+      const page = await browser.newPage({ viewport: { height: 800, width: 320 } });
+      try {
+        await page.clock.install();
+        await setTheme(page, 'tinyrack-light');
+        await gotoHydrated(page, `${origin}/${localeCase.locale}`);
+
+        const productWindow = page.locator('[data-welcome-app]');
+        const status = productWindow.locator('[data-welcome-status]');
+        const phaseLabel = productWindow.locator('[data-welcome-phase-label]');
+        const compactPhaseLabel = phaseLabel.locator(
+          '[data-welcome-phase-label-compact]',
+        );
+        await expectHidden(status);
+
+        const heroContent = page.locator('[data-welcome-hero-content]');
+        const [heroContentBox, buildBox, shellBox] = await Promise.all([
+          heroContent.boundingBox(),
+          page.getByRole('button', { name: localeCase.build }).boundingBox(),
+          page.getByRole('button', { name: localeCase.shell }).boundingBox(),
+        ]);
+        expect(heroContentBox).not.toBeNull();
+        expect(buildBox).not.toBeNull();
+        expect(shellBox).not.toBeNull();
+        expect(buildBox?.x ?? 0).toBeGreaterThanOrEqual(heroContentBox?.x ?? 0);
+        expect(
+          (heroContentBox?.x ?? 0) +
+            (heroContentBox?.width ?? 0) -
+            ((shellBox?.x ?? 0) + (shellBox?.width ?? 0)),
+        ).toBeGreaterThanOrEqual(0);
+
+        for (const compactLabel of localeCase.phases) {
+          await expect.poll(() => compactPhaseLabel.textContent()).toBe(compactLabel);
+          await expectVisible(compactPhaseLabel);
+          const phaseMetrics = await phaseLabel.evaluate((element) => {
+            const style = getComputedStyle(element);
+            return {
+              height: element.getBoundingClientRect().height,
+              lineHeight: Number.parseFloat(style.lineHeight),
+              whiteSpace: style.whiteSpace,
+            };
+          });
+          expect(phaseMetrics.whiteSpace).toBe('nowrap');
+          expect(phaseMetrics.height).toBeLessThanOrEqual(
+            phaseMetrics.lineHeight * 1.75,
+          );
+          await page.clock.runFor(2_400);
+        }
+
+        await expectNoLocalOverflow(page.locator('html'), '320px Welcome document');
+        await expectHorizontallyInsideViewport(
+          page,
+          page.locator('[data-welcome-hero]'),
+        );
+      } finally {
+        await page.close();
+      }
+    }
+  });
+
   it('presents Welcome as a cinematic responsive product showcase', async () => {
     const desktopPage = await browser.newPage({
       viewport: { height: 1024, width: 1440 },
@@ -800,8 +1026,13 @@ describe('built React Router documentation', () => {
           exact: true,
         }),
       );
-      await expectVisible(
+      await expectHidden(
         mobilePage.locator('[data-welcome-app]').getByText('서비스 상태', {
+          exact: true,
+        }),
+      );
+      await expectVisible(
+        mobilePage.locator('[data-welcome-app]').getByText('배포 처리량', {
           exact: true,
         }),
       );

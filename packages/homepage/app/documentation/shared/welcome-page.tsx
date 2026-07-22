@@ -1,5 +1,5 @@
 import { TRAppShell } from '@tinyrack/ui/components/app-shell';
-import { TRBadge } from '@tinyrack/ui/components/badge';
+import { TRBadge, type TRBadgeVariant } from '@tinyrack/ui/components/badge';
 import { TRButton } from '@tinyrack/ui/components/button';
 import { TRCard } from '@tinyrack/ui/components/card';
 import { TRLink } from '@tinyrack/ui/components/link';
@@ -19,11 +19,28 @@ import {
   TerminalSquare,
   Users,
 } from 'lucide-react';
-import { createElement, type ReactNode } from 'react';
+import { createElement, type ReactNode, useEffect, useRef, useState } from 'react';
 import { componentDocsManifest } from './component-docs-manifest.js';
 import { ComponentInstall } from './component-install.js';
 
 type WelcomeLocale = 'en' | 'ja' | 'ko';
+
+const simulationPhases = [
+  'monitoring',
+  'deploying',
+  'scaling',
+  'verifying',
+  'complete',
+] as const;
+
+type SimulationPhase = (typeof simulationPhases)[number];
+
+type SimulationStepCopy = {
+  activity: { label: string; meta: string; time: string };
+  compactLabel: string;
+  label: string;
+  status: string;
+};
 
 type ProductCopy = {
   activityDescription: string;
@@ -44,7 +61,7 @@ type ProductCopy = {
   serviceDescription: string;
   serviceRows: readonly { detail: string; label: string }[];
   serviceTitle: string;
-  status: string;
+  simulation: Record<SimulationPhase, SimulationStepCopy>;
   throughputDescription: string;
   throughputStats: readonly { label: string; value: string }[];
   throughputTitle: string;
@@ -106,7 +123,58 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
         { detail: '3 regions', label: 'Primary database' },
       ],
       serviceTitle: 'Service health',
-      status: 'All systems operational',
+      simulation: {
+        monitoring: {
+          activity: {
+            label: 'Deployment completed',
+            meta: 'api-gateway · v2.8.4',
+            time: 'Now',
+          },
+          compactLabel: 'Live',
+          label: 'Monitoring',
+          status: 'All systems operational',
+        },
+        deploying: {
+          activity: {
+            label: 'Deployment started',
+            meta: 'api-gateway · v2.8.5',
+            time: 'Now',
+          },
+          compactLabel: 'Deploy',
+          label: 'Deploying',
+          status: 'Deploying v2.8.5',
+        },
+        scaling: {
+          activity: {
+            label: 'Workers scaling',
+            meta: 'compute-pool · 8 → 10',
+            time: 'Now',
+          },
+          compactLabel: 'Scale',
+          label: 'Auto scaling',
+          status: 'Scaling compute',
+        },
+        verifying: {
+          activity: {
+            label: 'Health checks running',
+            meta: 'api-gateway · 12 / 12 passing',
+            time: 'Now',
+          },
+          compactLabel: 'Verify',
+          label: 'Verifying',
+          status: 'Verifying rollout',
+        },
+        complete: {
+          activity: {
+            label: 'Deployment completed',
+            meta: 'api-gateway · v2.8.5',
+            time: 'Now',
+          },
+          compactLabel: 'Done',
+          label: 'Complete',
+          status: 'Deployment completed',
+        },
+      },
       throughputDescription: 'Successful releases over the last 12 hours',
       throughputStats: [
         { label: 'Successful', value: '28' },
@@ -163,7 +231,58 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
         { detail: '3개 리전', label: '기본 데이터베이스' },
       ],
       serviceTitle: '서비스 상태',
-      status: '모든 시스템 정상',
+      simulation: {
+        monitoring: {
+          activity: {
+            label: '배포 완료',
+            meta: 'api-gateway · v2.8.4',
+            time: '지금',
+          },
+          compactLabel: '정상',
+          label: '모니터링',
+          status: '모든 시스템 정상',
+        },
+        deploying: {
+          activity: {
+            label: '배포 시작',
+            meta: 'api-gateway · v2.8.5',
+            time: '지금',
+          },
+          compactLabel: '배포',
+          label: '배포 중',
+          status: 'v2.8.5 배포 중',
+        },
+        scaling: {
+          activity: {
+            label: '워커 자동 확장',
+            meta: 'compute-pool · 8 → 10',
+            time: '지금',
+          },
+          compactLabel: '확장',
+          label: '자동 확장',
+          status: '컴퓨트 확장 중',
+        },
+        verifying: {
+          activity: {
+            label: '상태 검사 실행',
+            meta: 'api-gateway · 12 / 12 통과',
+            time: '지금',
+          },
+          compactLabel: '검증',
+          label: '검증 중',
+          status: '롤아웃 검증 중',
+        },
+        complete: {
+          activity: {
+            label: '배포 완료',
+            meta: 'api-gateway · v2.8.5',
+            time: '지금',
+          },
+          compactLabel: '완료',
+          label: '완료',
+          status: '배포 완료',
+        },
+      },
       throughputDescription: '최근 12시간 동안 성공한 릴리스',
       throughputStats: [
         { label: '성공', value: '28' },
@@ -220,7 +339,58 @@ const copy: Record<WelcomeLocale, WelcomeCopy> = {
         { detail: '3 リージョン', label: 'プライマリDB' },
       ],
       serviceTitle: 'サービス状態',
-      status: 'すべて正常',
+      simulation: {
+        monitoring: {
+          activity: {
+            label: 'デプロイ完了',
+            meta: 'api-gateway · v2.8.4',
+            time: '現在',
+          },
+          compactLabel: '正常',
+          label: 'モニタリング',
+          status: 'すべて正常',
+        },
+        deploying: {
+          activity: {
+            label: 'デプロイ開始',
+            meta: 'api-gateway · v2.8.5',
+            time: '現在',
+          },
+          compactLabel: 'デプロイ',
+          label: 'デプロイ中',
+          status: 'v2.8.5 をデプロイ中',
+        },
+        scaling: {
+          activity: {
+            label: 'ワーカーを自動スケール',
+            meta: 'compute-pool · 8 → 10',
+            time: '現在',
+          },
+          compactLabel: '拡張',
+          label: '自動スケール',
+          status: 'コンピュートを拡張中',
+        },
+        verifying: {
+          activity: {
+            label: 'ヘルスチェック実行中',
+            meta: 'api-gateway · 12 / 12 合格',
+            time: '現在',
+          },
+          compactLabel: '検証',
+          label: '検証中',
+          status: 'ロールアウトを検証中',
+        },
+        complete: {
+          activity: {
+            label: 'デプロイ完了',
+            meta: 'api-gateway · v2.8.5',
+            time: '現在',
+          },
+          compactLabel: '完了',
+          label: '完了',
+          status: 'デプロイ完了',
+        },
+      },
       throughputDescription: '過去12時間に成功したリリース',
       throughputStats: [
         { label: '成功', value: '28' },
@@ -244,22 +414,157 @@ const workspaceNavigation = [
 ] as const;
 
 const serviceRows = [
-  { value: 92, variant: 'success' },
-  { value: 68, variant: 'info' },
-  { value: 84, variant: 'success' },
+  { variant: 'success' },
+  { variant: 'info' },
+  { variant: 'success' },
 ] as const;
 
 const metricIcons = [Server, Activity, CloudCog, TerminalSquare] as const;
 
-const throughput = [38, 52, 44, 68, 61, 78, 70, 88, 76, 92, 84, 96] as const;
+const SIMULATION_STEP_MS = 2_400;
+
+type SimulationFrame = {
+  activeNodes: string;
+  averageLoad: string;
+  deploymentProgress: number;
+  serviceValues: readonly [number, number, number];
+  throughput: readonly number[];
+  variant: TRBadgeVariant;
+};
+
+const simulationFrames: Record<SimulationPhase, SimulationFrame> = {
+  monitoring: {
+    activeNodes: '12 / 12',
+    averageLoad: '41%',
+    deploymentProgress: 100,
+    serviceValues: [92, 68, 84],
+    throughput: [38, 52, 44, 68, 61, 78, 70, 88, 76, 92, 84, 96],
+    variant: 'success',
+  },
+  deploying: {
+    activeNodes: '12 / 12',
+    averageLoad: '48%',
+    deploymentProgress: 28,
+    serviceValues: [91, 74, 84],
+    throughput: [38, 52, 44, 68, 61, 78, 70, 88, 76, 84, 72, 78],
+    variant: 'info',
+  },
+  scaling: {
+    activeNodes: '14 / 14',
+    averageLoad: '57%',
+    deploymentProgress: 62,
+    serviceValues: [90, 82, 82],
+    throughput: [38, 52, 44, 68, 61, 78, 70, 88, 82, 90, 86, 92],
+    variant: 'info',
+  },
+  verifying: {
+    activeNodes: '14 / 14',
+    averageLoad: '46%',
+    deploymentProgress: 88,
+    serviceValues: [91, 76, 83],
+    throughput: [38, 52, 44, 68, 61, 78, 70, 88, 80, 94, 90, 96],
+    variant: 'warning',
+  },
+  complete: {
+    activeNodes: '12 / 12',
+    averageLoad: '41%',
+    deploymentProgress: 100,
+    serviceValues: [92, 68, 84],
+    throughput: [38, 52, 44, 68, 61, 78, 70, 88, 76, 92, 84, 96],
+    variant: 'success',
+  },
+};
+
+const throughputSlots = [
+  'slot-01',
+  'slot-02',
+  'slot-03',
+  'slot-04',
+  'slot-05',
+  'slot-06',
+  'slot-07',
+  'slot-08',
+  'slot-09',
+  'slot-10',
+  'slot-11',
+  'slot-12',
+] as const;
+
 const throughputTimes = ['12h', '9h', '6h', '3h', 'Now'] as const;
 
+function useWelcomeSimulation(root: { current: HTMLDivElement | null }) {
+  const [phaseIndex, setPhaseIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const syncPreference = () => setReducedMotion(media.matches);
+
+    syncPreference();
+    media.addEventListener('change', syncPreference);
+    return () => media.removeEventListener('change', syncPreference);
+  }, []);
+
+  useEffect(() => {
+    const element = root.current;
+    if (!element) return;
+
+    if (!('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry?.isIntersecting ?? false),
+      { threshold: 0.08 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [root]);
+
+  useEffect(() => {
+    if (reducedMotion) setPhaseIndex(0);
+  }, [reducedMotion]);
+
+  const running = isVisible && !reducedMotion;
+
+  useEffect(() => {
+    if (!running) return;
+
+    const timer = window.setInterval(() => {
+      setPhaseIndex((current) => (current + 1) % simulationPhases.length);
+    }, SIMULATION_STEP_MS);
+    return () => window.clearInterval(timer);
+  }, [running]);
+
+  return {
+    phase: simulationPhases[phaseIndex] ?? simulationPhases[0],
+    running,
+  };
+}
+
 function ProductWindow({ content }: { content: ProductCopy }) {
+  const root = useRef<HTMLDivElement>(null);
+  const { phase, running } = useWelcomeSimulation(root);
+  const frame = simulationFrames[phase];
+  const step = content.simulation[phase];
+  const metricValues = [
+    frame.activeNodes,
+    frame.averageLoad,
+    content.metrics[2]?.value,
+    content.metrics[3]?.value,
+  ];
+  const StatusIcon = frame.variant === 'success' ? CircleCheck : Activity;
+
   return (
     <div
       aria-hidden="true"
-      className="absolute start-1/2 top-tinyrack-measure-xs z-0 min-h-[63rem] w-[min(calc(100%_-_6rem),86rem)] -translate-x-1/2 overflow-hidden rounded-tinyrack-xl border-tinyrack-default border-tinyrack-border-strong bg-tinyrack-surface shadow-tinyrack-overlay motion-safe:animate-welcome-enter motion-reduce:animate-none max-lg:w-[calc(100%_-_2rem)] max-md:top-tinyrack-2xl max-md:min-h-[54rem]"
+      className="absolute start-1/2 top-tinyrack-measure-xs z-0 min-h-[63rem] w-[min(calc(100%_-_6rem),86rem)] -translate-x-1/2 overflow-hidden rounded-tinyrack-xl border-tinyrack-default border-tinyrack-border-strong bg-tinyrack-surface shadow-tinyrack-overlay max-lg:w-[calc(100%_-_2rem)] max-md:top-tinyrack-2xl max-md:min-h-[54rem]"
       data-welcome-app=""
+      data-welcome-simulation-phase={phase}
+      data-welcome-simulation-running={running ? 'true' : 'false'}
+      ref={root}
     >
       <TRAppShell.Root
         className="min-h-[59.5rem] bg-tinyrack-surface [--tr-app-shell-sidebar-rail-width:calc(var(--tinyrack-space-2xl)*2)] [--tr-app-shell-sidebar-width:13rem]"
@@ -338,89 +643,59 @@ function ProductWindow({ content }: { content: ProductCopy }) {
           className="min-w-0 p-tinyrack-xl max-md:p-tinyrack-lg"
           render={<div />}
         >
-          <header className="mb-tinyrack-xl flex items-end justify-between max-md:items-start max-md:gap-tinyrack-md [&>div]:grid [&>div]:gap-tinyrack-xs [&_span]:text-tinyrack-xs [&_span]:text-tinyrack-text-muted [&_h2]:m-0 [&_h2]:text-tinyrack-2xl [&_h2]:leading-tinyrack-sm max-md:[&_h2]:text-tinyrack-xl [&_.tr-badge_svg]:size-tinyrack-md max-md:[&_.tr-badge]:hidden">
+          <header className="mb-tinyrack-xl flex items-end justify-between max-md:items-start max-md:gap-tinyrack-md [&>div]:grid [&>div]:gap-tinyrack-xs [&_span]:text-tinyrack-xs [&_span]:text-tinyrack-text-muted [&_h2]:m-0 [&_h2]:text-tinyrack-2xl [&_h2]:leading-tinyrack-sm max-md:[&_h2]:text-tinyrack-xl [&_.tr-badge_svg]:size-tinyrack-md">
             <div>
               <span>{content.breadcrumb}</span>
               <h2>{content.title}</h2>
             </div>
-            <TRBadge variant="success">
-              <CircleCheck /> {content.status}
+            <TRBadge
+              className="motion-safe:animate-welcome-feed-enter motion-reduce:animate-none"
+              data-welcome-status=""
+              key={phase}
+              variant={frame.variant}
+            >
+              <StatusIcon /> {step.status}
             </TRBadge>
           </header>
           <div className="mb-tinyrack-md grid grid-cols-4 gap-tinyrack-md max-md:grid-cols-2">
             {content.metrics.map((metric, index) => {
               const Icon = metricIcons[index];
               if (!Icon) return null;
-              return <Metric icon={<Icon />} key={metric.label} {...metric} />;
+              return (
+                <Metric
+                  icon={<Icon />}
+                  key={metric.label}
+                  {...metric}
+                  value={metricValues[index] ?? metric.value}
+                />
+              );
             })}
           </div>
           <div className="grid grid-cols-[minmax(0,1.45fr)_minmax(16rem,0.8fr)] gap-tinyrack-md max-lg:grid-cols-[minmax(0,1fr)]">
-            <TRCard.Root className="min-w-0" padding="none" variant="outlined">
-              <header className="flex items-center justify-between border-b-tinyrack-default border-tinyrack-border p-tinyrack-lg [&>div]:grid [&>div]:gap-tinyrack-xs [&_span]:text-tinyrack-xs [&_span]:text-tinyrack-text-muted">
-                <div>
-                  <strong>{content.serviceTitle}</strong>
-                  <span>{content.serviceDescription}</span>
-                </div>
-                <TRBadge>{content.live}</TRBadge>
-              </header>
-              <div className="px-tinyrack-lg">
-                {serviceRows.map((service, index) => {
-                  const localizedService = content.serviceRows[index];
-                  if (!localizedService) return null;
-                  return (
-                    <div
-                      className="flex min-h-16 items-center gap-tinyrack-lg border-b-tinyrack-default border-tinyrack-border last:border-b-0 [&>.tr-progress-root]:flex-1 [&>span]:text-tinyrack-2xs [&>span]:text-tinyrack-text-muted"
-                      key={localizedService.label}
-                    >
-                      <div className="grid w-[9rem] gap-tinyrack-xs max-md:w-[7rem] [&>strong]:text-tinyrack-xs [&>span]:text-tinyrack-2xs [&>span]:text-tinyrack-text-muted">
-                        <strong>{localizedService.label}</strong>
-                        <span>{localizedService.detail}</span>
-                      </div>
-                      <TRProgress.Root value={service.value} variant={service.variant}>
-                        <TRProgress.Track>
-                          <TRProgress.Indicator />
-                        </TRProgress.Track>
-                      </TRProgress.Root>
-                      <span>{service.value}%</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </TRCard.Root>
-            <TRCard.Root
-              className="min-w-0 max-lg:hidden"
-              padding="none"
-              variant="outlined"
-            >
-              <header className="flex items-center justify-between border-b-tinyrack-default border-tinyrack-border p-tinyrack-lg [&>div]:grid [&>div]:gap-tinyrack-xs [&_span]:text-tinyrack-xs [&_span]:text-tinyrack-text-muted">
-                <div>
-                  <strong>{content.activityTitle}</strong>
-                  <span>{content.activityDescription}</span>
-                </div>
-                <Activity className="size-tinyrack-lg text-tinyrack-text-muted" />
-              </header>
-              <ol className="m-0 list-none px-tinyrack-lg">
-                {content.activityRows.map((row) => (
-                  <ActivityRow key={row.label} {...row} />
-                ))}
-              </ol>
-            </TRCard.Root>
-          </div>
-          <div className="mt-tinyrack-md grid grid-cols-[minmax(0,1.45fr)_minmax(16rem,0.8fr)] gap-tinyrack-md max-lg:grid-cols-[minmax(0,1fr)]">
             <TRCard.Root
               className="min-w-0"
               data-welcome-throughput=""
               padding="none"
               variant="outlined"
             >
-              <header className="flex items-center justify-between border-b-tinyrack-default border-tinyrack-border p-tinyrack-lg [&>div]:grid [&>div]:gap-tinyrack-xs [&_span]:text-tinyrack-xs [&_span]:text-tinyrack-text-muted">
+              <header className="flex items-center justify-between gap-tinyrack-sm border-b-tinyrack-default border-tinyrack-border p-tinyrack-lg [&>div]:min-w-0 [&>div]:grid [&>div]:gap-tinyrack-xs [&_span]:text-tinyrack-xs [&_span]:text-tinyrack-text-muted">
                 <div>
                   <strong>{content.throughputTitle}</strong>
-                  <span>{content.throughputDescription}</span>
+                  <span data-welcome-throughput-description="">
+                    {content.throughputDescription}
+                  </span>
                 </div>
-                <TRBadge variant="success">+18.4%</TRBadge>
+                <TRBadge
+                  className="shrink-0 whitespace-nowrap motion-safe:animate-welcome-feed-enter motion-reduce:animate-none"
+                  data-welcome-phase-label=""
+                  key={phase}
+                  variant={frame.variant}
+                >
+                  <span data-welcome-phase-label-full="">{step.label}</span>
+                  <span data-welcome-phase-label-compact="">{step.compactLabel}</span>
+                </TRBadge>
               </header>
-              <dl className="m-0 grid grid-cols-3 border-b-tinyrack-default border-tinyrack-border px-tinyrack-lg py-tinyrack-md [&>div]:grid [&>div]:gap-tinyrack-xs [&>div+div]:border-s-tinyrack-default [&>div+div]:border-tinyrack-border [&>div+div]:ps-tinyrack-lg [&_dd]:m-0 [&_dd]:text-tinyrack-lg [&_dd]:font-tinyrack-semibold [&_dt]:text-tinyrack-2xs [&_dt]:text-tinyrack-text-muted">
+              <dl className="m-0 grid grid-cols-3 border-b-tinyrack-default border-tinyrack-border px-tinyrack-lg py-tinyrack-md max-md:hidden [&>div]:grid [&>div]:gap-tinyrack-xs [&>div+div]:border-s-tinyrack-default [&>div+div]:border-tinyrack-border [&>div+div]:ps-tinyrack-lg [&_dd]:m-0 [&_dd]:text-tinyrack-lg [&_dd]:font-tinyrack-semibold [&_dt]:text-tinyrack-2xs [&_dt]:text-tinyrack-text-muted">
                 {content.throughputStats.map((stat) => (
                   <div data-welcome-throughput-stat="" key={stat.label}>
                     <dt>{stat.label}</dt>
@@ -437,14 +712,21 @@ function ProductWindow({ content }: { content: ProductCopy }) {
                     <span />
                   </div>
                   <div className="absolute inset-0 grid grid-cols-12 items-end gap-tinyrack-sm max-md:gap-tinyrack-xs">
-                    {throughput.map((value) => (
-                      <span
-                        className="min-h-tinyrack-space-xs rounded-t-tinyrack-xs bg-tinyrack-primary-subtle"
-                        data-welcome-throughput-bar=""
-                        key={value}
-                        style={{ height: `${value}%` }}
-                      />
-                    ))}
+                    {throughputSlots.map((slot, index) => {
+                      const value = frame.throughput[index] ?? 0;
+                      return (
+                        <span
+                          className={
+                            index === throughputSlots.length - 1
+                              ? 'min-h-tinyrack-space-xs rounded-t-tinyrack-xs bg-tinyrack-primary transition-[height] duration-tinyrack-slow ease-tinyrack-ease-out motion-reduce:transition-none'
+                              : 'min-h-tinyrack-space-xs rounded-t-tinyrack-xs bg-tinyrack-info transition-[height] duration-tinyrack-slow ease-tinyrack-ease-out motion-reduce:transition-none'
+                          }
+                          data-welcome-throughput-bar=""
+                          key={slot}
+                          style={{ height: `${value}%` }}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
                 <div className="mt-tinyrack-sm flex justify-between text-tinyrack-2xs text-tinyrack-text-muted">
@@ -453,41 +735,86 @@ function ProductWindow({ content }: { content: ProductCopy }) {
                   ))}
                 </div>
               </div>
-            </TRCard.Root>
-            <TRCard.Root
-              className="min-w-0 max-lg:hidden"
-              data-welcome-regions=""
-              padding="none"
-              variant="outlined"
-            >
-              <header className="border-b-tinyrack-default border-tinyrack-border p-tinyrack-lg [&>div]:grid [&>div]:gap-tinyrack-xs [&_span]:text-tinyrack-xs [&_span]:text-tinyrack-text-muted">
-                <div>
-                  <strong>{content.regionTitle}</strong>
-                  <span>{content.regionDescription}</span>
+              <div className="grid gap-tinyrack-sm border-t-tinyrack-default border-tinyrack-border px-tinyrack-lg py-tinyrack-md">
+                <div className="flex items-center justify-between text-tinyrack-xs [&>strong]:font-tinyrack-semibold [&>span]:text-tinyrack-text-muted">
+                  <strong>{step.status}</strong>
+                  <span data-welcome-deployment-progress="">
+                    {frame.deploymentProgress}%
+                  </span>
                 </div>
-              </header>
-              <div className="grid gap-tinyrack-lg p-tinyrack-lg">
-                {content.regionRows.map((region) => (
-                  <div className="grid gap-tinyrack-sm" key={region.label}>
-                    <div className="flex items-center justify-between text-tinyrack-xs">
-                      <span className="flex items-center gap-tinyrack-sm">
-                        <span className="size-tinyrack-sm rounded-tinyrack-full bg-tinyrack-success" />
-                        <strong>{region.label}</strong>
-                        <small className="text-tinyrack-text-muted">
-                          {region.detail}
-                        </small>
-                      </span>
-                      <span>{region.value}%</span>
-                    </div>
-                    <TRProgress.Root value={region.value} variant="success">
-                      <TRProgress.Track>
-                        <TRProgress.Indicator />
-                      </TRProgress.Track>
-                    </TRProgress.Root>
-                  </div>
-                ))}
+                <TRProgress.Root
+                  value={frame.deploymentProgress}
+                  variant={frame.variant}
+                >
+                  <TRProgress.Track>
+                    <TRProgress.Indicator />
+                  </TRProgress.Track>
+                </TRProgress.Root>
               </div>
             </TRCard.Root>
+            <div className="grid min-w-0 content-start gap-tinyrack-md max-lg:hidden">
+              <TRCard.Root className="order-2" padding="none" variant="outlined">
+                <header className="flex items-center justify-between border-b-tinyrack-default border-tinyrack-border p-tinyrack-md [&>div]:grid [&>div]:gap-tinyrack-xs [&_span]:text-tinyrack-2xs [&_span]:text-tinyrack-text-muted">
+                  <div>
+                    <strong>{content.serviceTitle}</strong>
+                    <span>{content.serviceDescription}</span>
+                  </div>
+                  <TRBadge>{content.live}</TRBadge>
+                </header>
+                <div className="grid grid-cols-3 gap-tinyrack-md p-tinyrack-md">
+                  {serviceRows.map((service, index) => {
+                    const localizedService = content.serviceRows[index];
+                    const value = frame.serviceValues[index];
+                    if (!localizedService || value === undefined) return null;
+                    return (
+                      <div
+                        className="grid min-w-0 gap-tinyrack-sm [&>div]:flex [&>div]:items-center [&>div]:justify-between [&_strong]:truncate [&_strong]:text-tinyrack-2xs [&_span]:text-tinyrack-2xs [&_span]:text-tinyrack-text-muted"
+                        key={localizedService.label}
+                      >
+                        <div>
+                          <strong>{localizedService.label}</strong>
+                          <span data-welcome-service-value="">{value}%</span>
+                        </div>
+                        <TRProgress.Root value={value} variant={service.variant}>
+                          <TRProgress.Track>
+                            <TRProgress.Indicator />
+                          </TRProgress.Track>
+                        </TRProgress.Root>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div
+                  className="grid grid-cols-3 gap-tinyrack-md border-t-tinyrack-default border-tinyrack-border px-tinyrack-md py-tinyrack-sm"
+                  data-welcome-regions=""
+                >
+                  {content.regionRows.map((region) => (
+                    <div
+                      className="flex min-w-0 items-center justify-between gap-tinyrack-xs text-tinyrack-2xs [&>strong]:truncate [&>span]:text-tinyrack-text-muted"
+                      key={region.label}
+                    >
+                      <strong>{region.label}</strong>
+                      <span>{region.value}%</span>
+                    </div>
+                  ))}
+                </div>
+              </TRCard.Root>
+              <TRCard.Root className="order-1" padding="none" variant="outlined">
+                <header className="flex items-center justify-between border-b-tinyrack-default border-tinyrack-border p-tinyrack-md [&>div]:grid [&>div]:gap-tinyrack-xs [&_span]:text-tinyrack-2xs [&_span]:text-tinyrack-text-muted">
+                  <div>
+                    <strong>{content.activityTitle}</strong>
+                    <span>{content.activityDescription}</span>
+                  </div>
+                  <Activity className="size-tinyrack-lg text-tinyrack-text-muted" />
+                </header>
+                <ol className="m-0 list-none px-tinyrack-md">
+                  <ActivityRow animated key={phase} {...step.activity} />
+                  {content.activityRows.slice(1, 2).map((row) => (
+                    <ActivityRow key={row.label} {...row} />
+                  ))}
+                </ol>
+              </TRCard.Root>
+            </div>
           </div>
         </TRAppShell.Main>
       </TRAppShell.Root>
@@ -512,23 +839,38 @@ function Metric({
         <span>{icon}</span>
         <strong>{label}</strong>
       </div>
-      <b>{value}</b>
+      <b
+        className="motion-safe:animate-welcome-feed-enter motion-reduce:animate-none"
+        data-welcome-metric-value=""
+        key={value}
+      >
+        {value}
+      </b>
       <small>{meta}</small>
     </div>
   );
 }
 
 function ActivityRow({
+  animated = false,
   label,
   meta,
   time,
 }: {
+  animated?: boolean;
   label: string;
   meta: string;
   time: string;
 }) {
   return (
-    <li className="flex min-h-16 items-center gap-tinyrack-md border-b-tinyrack-default border-tinyrack-border last:border-b-0 [&_small]:text-tinyrack-2xs [&_small]:text-tinyrack-text-muted [&_time]:text-tinyrack-2xs [&_time]:text-tinyrack-text-muted">
+    <li
+      className={`flex min-h-14 items-center gap-tinyrack-md border-b-tinyrack-default border-tinyrack-border last:border-b-0 [&_small]:text-tinyrack-2xs [&_small]:text-tinyrack-text-muted [&_time]:text-tinyrack-2xs [&_time]:text-tinyrack-text-muted ${
+        animated
+          ? 'motion-safe:animate-welcome-feed-enter motion-reduce:animate-none'
+          : ''
+      }`}
+      data-welcome-live-activity={animated ? '' : undefined}
+    >
       <span className="grid min-h-tinyrack-control-height-sm min-w-tinyrack-control-height-sm place-items-center rounded-tinyrack-full bg-tinyrack-surface-muted [&>svg]:size-tinyrack-md">
         <Sparkles />
       </span>
@@ -576,9 +918,13 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
               <span>DESIGN SYSTEM</span>
             </h1>
             <div className="mt-tinyrack-2xl flex max-md:mt-tinyrack-xl">
-              <div className="flex flex-none gap-tinyrack-sm max-md:w-full">
+              <div
+                className="flex min-w-0 gap-tinyrack-sm max-md:w-full"
+                data-welcome-actions=""
+              >
                 <TRButton
-                  className="min-h-tinyrack-control-height-lg px-tinyrack-xl max-md:flex-1"
+                  className="min-h-tinyrack-control-height-lg min-w-0 px-tinyrack-xl max-md:flex-1"
+                  data-welcome-cta=""
                   nativeButton={false}
                   render={createElement('a', { href: '#quick-start' })}
                   variant="primary"
@@ -587,7 +933,8 @@ export function WelcomePage({ locale }: { locale: WelcomeLocale }) {
                 </TRButton>
                 <TRButton
                   appearance="outline"
-                  className="min-h-tinyrack-control-height-lg px-tinyrack-xl max-md:flex-1"
+                  className="min-h-tinyrack-control-height-lg min-w-0 px-tinyrack-xl max-md:flex-1"
+                  data-welcome-cta=""
                   nativeButton={false}
                   render={createElement('a', {
                     href: `${localeRoot}/components/app-shell/`,

@@ -113,7 +113,16 @@ const appearances = ['solid', 'outline', 'ghost'] as const;
 
 export function ShellControls() {
   return appearances.map((appearance) => (
-    <TRAppShell.Trigger appearance={appearance} aria-label="탐색을 열어요" key={appearance} />
+    <TRAppShell.Root breakpoint="lg" key={appearance} layout="header-first">
+      <TRAppShell.Header>
+        <TRAppShell.Trigger appearance={appearance} aria-label="탐색 열기" />
+        <strong>{appearance} 컨트롤</strong>
+      </TRAppShell.Header>
+      <TRAppShell.Sidebar aria-label={appearance + ' 탐색'}>
+        탐색
+      </TRAppShell.Sidebar>
+      <TRAppShell.Main>워크스페이스 콘텐츠</TRAppShell.Main>
+    </TRAppShell.Root>
   ));
 }` }]}
   title="컨트롤 모양이에요"

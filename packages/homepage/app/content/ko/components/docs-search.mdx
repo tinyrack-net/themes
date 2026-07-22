@@ -51,9 +51,32 @@ export function CompactSearch() { return <TRDocsSearch.Trigger aria-label="문�
 
 검색할 수 없을 때는 대화상자 단축키를 포함한 모든 열기 경로를 비활성화해요.
 
-<ComponentExampleTabs id="docs-search-disabled" data-docs-example-item-count="1" title="검색할 수 없어요" preview={<Stories.DocsSearchDisabled />} sources={[{ label: 'React', language: 'tsx', code: String.raw`import { TRDocsSearch } from '@tinyrack/ui/components/docs-search';
+<ComponentExampleTabs id="docs-search-disabled" data-docs-example-item-count="1" title="검색할 수 없어요" preview={<Stories.DocsSearchDisabled />} sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useRef, useState } from 'react';
+import '@tinyrack/ui/components/docs-search.css';
+import { TRDocsSearch } from '@tinyrack/ui/components/docs-search';
 
-export function DisabledSearch() { return <TRDocsSearch.Trigger aria-label="검색할 수 없어요" disabled label="문서를 검색해요" />; }` }]} />
+export function DisabledSearch() {
+  const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  return <>
+    <TRDocsSearch.Trigger
+      aria-label="검색할 수 없어요"
+      disabled
+      label="문서를 검색해요"
+      onClick={() => setOpen(true)}
+      ref={triggerRef}
+    />
+    <TRDocsSearch.Dialog
+      enableShortcut={false}
+      onOpenChange={setOpen}
+      onSearch={async () => []}
+      onSelect={() => setOpen(false)}
+      open={open}
+      returnFocusRef={triggerRef}
+    />
+  </>;
+}` }]} />
 
 - 포커스는 combobox에 유지되며 `ArrowDown`과 `ArrowUp`으로 활성 결과를 이동해요. `Enter`는 결과를 선택하고 `Escape`는 dialog를 닫아요.
 - `enableShortcut={false}`는 전역 단축키를 꺼요. 임베드된 preview 또는 disabled trigger에서 모든 열기 경로를 막을 때 사용해요.

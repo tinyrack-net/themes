@@ -130,7 +130,16 @@ const appearances = ['solid', 'outline', 'ghost'] as const;
 
 export function ShellControls() {
   return appearances.map((appearance) => (
-    <TRAppShell.Trigger appearance={appearance} aria-label="Open navigation" key={appearance} />
+    <TRAppShell.Root breakpoint="lg" key={appearance} layout="header-first">
+      <TRAppShell.Header>
+        <TRAppShell.Trigger appearance={appearance} aria-label="Open navigation" />
+        <strong>{appearance} controls</strong>
+      </TRAppShell.Header>
+      <TRAppShell.Sidebar aria-label={appearance + ' navigation'}>
+        Navigation
+      </TRAppShell.Sidebar>
+      <TRAppShell.Main>Workspace content</TRAppShell.Main>
+    </TRAppShell.Root>
   ));
 }` }]}
   title="Control appearances"

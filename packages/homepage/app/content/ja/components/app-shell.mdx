@@ -113,7 +113,16 @@ const appearances = ['solid', 'outline', 'ghost'] as const;
 
 export function ShellControls() {
   return appearances.map((appearance) => (
-    <TRAppShell.Trigger appearance={appearance} aria-label="ナビゲーションを開く" key={appearance} />
+    <TRAppShell.Root breakpoint="lg" key={appearance} layout="header-first">
+      <TRAppShell.Header>
+        <TRAppShell.Trigger appearance={appearance} aria-label="ナビゲーションを開く" />
+        <strong>{appearance} コントロール</strong>
+      </TRAppShell.Header>
+      <TRAppShell.Sidebar aria-label={appearance + ' ナビゲーション'}>
+        ナビゲーション
+      </TRAppShell.Sidebar>
+      <TRAppShell.Main>ワークスペースのコンテンツ</TRAppShell.Main>
+    </TRAppShell.Root>
   ));
 }` }]}
   title="コントロールの外観"

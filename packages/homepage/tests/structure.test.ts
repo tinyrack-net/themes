@@ -81,6 +81,26 @@ function demoControlNames(path: string) {
   return result;
 }
 
+function componentExampleIds(source: string) {
+  return Array.from(
+    source.matchAll(/<ComponentExampleTabs[\s\S]*?\bid="([a-z0-9-]+)"/g),
+    ([, id]) => id as string,
+  );
+}
+
+function componentExampleItemCount(source: string, id: string) {
+  const idOffset = source.indexOf(`id="${id}"`);
+  if (idOffset < 0) return 0;
+  const nextExampleOffset = source.indexOf('<ComponentExampleTabs', idOffset);
+  const apiOffset = source.indexOf('## API', idOffset);
+  const endOffset =
+    nextExampleOffset >= 0 && nextExampleOffset < apiOffset
+      ? nextExampleOffset
+      : apiOffset;
+  const block = source.slice(idOffset, endOffset);
+  return block.match(/data-docs-example-item=""/g)?.length ?? 0;
+}
+
 function filesUnder(directory: string): string[] {
   return readdirSync(directory).flatMap((name) => {
     const path = join(directory, name);
@@ -133,10 +153,7 @@ describe('React Router documentation contract', () => {
         join(homepageRoot, `app/content/en/components/${entry.id}.mdx`),
         'utf8',
       );
-      const expectedExampleIds = Array.from(
-        english.matchAll(/\bid="([a-z0-9-]+)"/g),
-        ([, id]) => id,
-      );
+      const expectedExampleIds = componentExampleIds(english);
 
       for (const locale of ['en', 'ko', 'ja']) {
         const docs = readFileSync(
@@ -164,13 +181,25 @@ describe('React Router documentation contract', () => {
         const sections = Array.from(docs.matchAll(/^## (.+)$/gm), ([, section]) =>
           section ? canonicalSection.get(section.trim()) : undefined,
         ).filter((section): section is string => section !== undefined);
-        const exampleIds = Array.from(
-          docs.matchAll(/\bid="([a-z0-9-]+)"/g),
-          ([, id]) => id,
-        );
+        const exampleIds = componentExampleIds(docs);
 
         expect(sections, `${locale}/${entry.id}`).toEqual(expectedSections);
         expect(exampleIds, `${locale}/${entry.id}`).toEqual(expectedExampleIds);
+
+        if ('exampleGroups' in entry && entry.exampleGroups !== undefined) {
+          expect(exampleIds, `${locale}/${entry.id}`).toEqual(
+            entry.exampleGroups.map((group) => group.id),
+          );
+          for (const group of entry.exampleGroups) {
+            const itemCount = componentExampleItemCount(docs, group.id);
+            expect(itemCount, `${locale}/${group.id}`).toBeGreaterThanOrEqual(
+              group.minItems,
+            );
+            expect(itemCount, `${locale}/${group.id}`).toBeLessThanOrEqual(
+              group.maxItems,
+            );
+          }
+        }
       }
     }
   });
@@ -217,12 +246,9 @@ describe('React Router documentation contract', () => {
       ]);
 
       const examplesOffset = docs.indexOf('## Examples');
-      for (const [index, group] of entry.exampleGroups.entries()) {
+      for (const group of entry.exampleGroups) {
         const idOffset = docs.indexOf(`id="${group.id}"`);
-        const nextId = entry.exampleGroups[index + 1]?.id;
-        const end = nextId === undefined ? docs.indexOf('## API') : docs.indexOf(`id="${nextId}"`);
-        const block = docs.slice(idOffset, end);
-        const itemCount = block.match(/data-docs-example-item=""/g)?.length ?? 0;
+        const itemCount = componentExampleItemCount(docs, group.id);
 
         expect(idOffset, group.id).toBeGreaterThanOrEqual(0);
         expect(group.section === 'usage' ? idOffset < examplesOffset : idOffset > examplesOffset).toBe(true);

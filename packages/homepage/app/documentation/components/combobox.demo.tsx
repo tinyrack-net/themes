@@ -15,9 +15,45 @@ import {
 import { useDemoLocale } from '../shared/demo-locale.js';
 
 const comboboxCopy = {
-  en: { clear: 'Clear', deploy: 'Deploy', empty: 'No matching racks', label: 'Deployment rack', maintenance: 'Maintenance', multiple: 'Deployment racks', open: 'Show racks', placeholder: 'Choose a rack', remove: 'Remove', required: 'Choose a rack from the list.', selected: 'Selected' },
-  ja: { clear: 'クリア', deploy: 'デプロイ', empty: '一致するラックはありません', label: 'デプロイ先ラック', maintenance: 'メンテナンス中', multiple: 'デプロイ先ラック', open: 'ラックを表示', placeholder: 'ラックを選択', remove: '削除', required: 'リストからラックを選択してください。', selected: '選択済み' },
-  ko: { clear: '지우기', deploy: '배포', empty: '일치하는 랙이 없어요', label: '배포 랙', maintenance: '점검 중', multiple: '배포 랙', open: '랙 보기', placeholder: '랙 선택', remove: '제거', required: '목록에서 랙을 선택하세요.', selected: '선택됨' },
+  en: {
+    clear: 'Clear',
+    deploy: 'Deploy',
+    empty: 'No matching racks',
+    label: 'Deployment rack',
+    maintenance: 'Maintenance',
+    multiple: 'Deployment racks',
+    open: 'Show racks',
+    placeholder: 'Choose a rack',
+    remove: 'Remove',
+    required: 'Choose a rack from the list.',
+    selected: 'Selected',
+  },
+  ja: {
+    clear: 'クリア',
+    deploy: 'デプロイ',
+    empty: '一致するラックはありません',
+    label: 'デプロイ先ラック',
+    maintenance: 'メンテナンス中',
+    multiple: 'デプロイ先ラック',
+    open: 'ラックを表示',
+    placeholder: 'ラックを選択',
+    remove: '削除',
+    required: 'リストからラックを選択してください。',
+    selected: '選択済み',
+  },
+  ko: {
+    clear: '지우기',
+    deploy: '배포',
+    empty: '일치하는 랙이 없어요',
+    label: '배포 랙',
+    maintenance: '점검 중',
+    multiple: '배포 랙',
+    open: '랙 보기',
+    placeholder: '랙 선택',
+    remove: '제거',
+    required: '목록에서 랙을 선택하세요.',
+    selected: '선택됨',
+  },
 } as const;
 
 type ComboboxStoryArgs = {
@@ -73,72 +109,77 @@ export function ComboboxExample({
 
   return (
     <div className="contents" data-docs-example-item="">
-    <TRCombobox.Root
-      {...openProps}
-      {...queryProps}
-      {...selectionProps}
-      autoHighlight={autoHighlight}
-      disabled={disabled}
-      filter={filterMode === 'none' ? null : filter[filterMode]}
-      items={comboboxItems}
-      name="rack"
-      readOnly={readOnly}
-      required={required}
-    >
-      <label className="tr-label" htmlFor={inputId}>
-        {copy.label}
-      </label>
-      <TRCombobox.InputGroup className="tinyrack-combobox-story-layout w-full max-w-md">
-        <TRCombobox.InputAdornment aria-hidden="true">
-          <Search />
-        </TRCombobox.InputAdornment>
-        <TRCombobox.Input id={inputId} placeholder={placeholder === 'Choose a rack' ? copy.placeholder : placeholder} />
-        <TRCombobox.Clear aria-label={copy.clear}>
-          <X aria-hidden="true" />
-        </TRCombobox.Clear>
-        <TRCombobox.Trigger aria-label={copy.open}>
-          <TRCombobox.Icon aria-hidden="true">
-            <ChevronDown />
-          </TRCombobox.Icon>
-        </TRCombobox.Trigger>
-      </TRCombobox.InputGroup>
-      <TRCombobox.Portal>
-        <TRCombobox.Positioner sideOffset={8}>
-          <TRCombobox.Popup>
-            <TRCombobox.Arrow />
-            <TRCombobox.Status />
-            <TRCombobox.List>
-              <TRCombobox.Group>
-                <TRCombobox.GroupLabel>Production</TRCombobox.GroupLabel>
-                <TRCombobox.Item value="Rack A">
-                  Rack A
-                  <TRCombobox.ItemIndicator aria-hidden="true">
-                    ✓
-                  </TRCombobox.ItemIndicator>
-                </TRCombobox.Item>
-                <TRCombobox.Item disabled={disabledOption} value="Rack B">
-                  Rack B {disabledOption ? `· ${copy.maintenance}` : ''}
-                  <TRCombobox.ItemIndicator aria-hidden="true">
-                    ✓
-                  </TRCombobox.ItemIndicator>
-                </TRCombobox.Item>
-              </TRCombobox.Group>
-              <TRCombobox.Separator />
-              <TRCombobox.Group>
-                <TRCombobox.GroupLabel>Non-production</TRCombobox.GroupLabel>
-                <TRCombobox.Item value="Rack C">
-                  Rack C
-                  <TRCombobox.ItemIndicator aria-hidden="true">
-                    ✓
-                  </TRCombobox.ItemIndicator>
-                </TRCombobox.Item>
-              </TRCombobox.Group>
-              <TRCombobox.Empty>{copy.empty}</TRCombobox.Empty>
-            </TRCombobox.List>
-          </TRCombobox.Popup>
-        </TRCombobox.Positioner>
-      </TRCombobox.Portal>
-    </TRCombobox.Root>
+      <TRCombobox.Root
+        {...openProps}
+        {...queryProps}
+        {...selectionProps}
+        autoHighlight={autoHighlight}
+        disabled={disabled}
+        filter={filterMode === 'none' ? null : filter[filterMode]}
+        items={comboboxItems}
+        name="rack"
+        readOnly={readOnly}
+        required={required}
+      >
+        <label className="tr-label" htmlFor={inputId}>
+          {copy.label}
+        </label>
+        <TRCombobox.InputGroup className="tinyrack-combobox-story-layout w-full max-w-md">
+          <TRCombobox.InputAdornment aria-hidden="true">
+            <Search />
+          </TRCombobox.InputAdornment>
+          <TRCombobox.Input
+            id={inputId}
+            placeholder={
+              placeholder === 'Choose a rack' ? copy.placeholder : placeholder
+            }
+          />
+          <TRCombobox.Clear aria-label={copy.clear}>
+            <X aria-hidden="true" />
+          </TRCombobox.Clear>
+          <TRCombobox.Trigger aria-label={copy.open}>
+            <TRCombobox.Icon aria-hidden="true">
+              <ChevronDown />
+            </TRCombobox.Icon>
+          </TRCombobox.Trigger>
+        </TRCombobox.InputGroup>
+        <TRCombobox.Portal>
+          <TRCombobox.Positioner sideOffset={8}>
+            <TRCombobox.Popup>
+              <TRCombobox.Arrow />
+              <TRCombobox.Status />
+              <TRCombobox.List>
+                <TRCombobox.Group>
+                  <TRCombobox.GroupLabel>Production</TRCombobox.GroupLabel>
+                  <TRCombobox.Item value="Rack A">
+                    Rack A
+                    <TRCombobox.ItemIndicator aria-hidden="true">
+                      ✓
+                    </TRCombobox.ItemIndicator>
+                  </TRCombobox.Item>
+                  <TRCombobox.Item disabled={disabledOption} value="Rack B">
+                    Rack B {disabledOption ? `· ${copy.maintenance}` : ''}
+                    <TRCombobox.ItemIndicator aria-hidden="true">
+                      ✓
+                    </TRCombobox.ItemIndicator>
+                  </TRCombobox.Item>
+                </TRCombobox.Group>
+                <TRCombobox.Separator />
+                <TRCombobox.Group>
+                  <TRCombobox.GroupLabel>Non-production</TRCombobox.GroupLabel>
+                  <TRCombobox.Item value="Rack C">
+                    Rack C
+                    <TRCombobox.ItemIndicator aria-hidden="true">
+                      ✓
+                    </TRCombobox.ItemIndicator>
+                  </TRCombobox.Item>
+                </TRCombobox.Group>
+                <TRCombobox.Empty>{copy.empty}</TRCombobox.Empty>
+              </TRCombobox.List>
+            </TRCombobox.Popup>
+          </TRCombobox.Positioner>
+        </TRCombobox.Portal>
+      </TRCombobox.Root>
     </div>
   );
 }
@@ -146,23 +187,94 @@ export function ComboboxExample({
 export function ComboboxOptionStates() {
   return (
     <div className="grid gap-5 sm:grid-cols-2">
-      <ComboboxExample disabled={false} disabledOption={false} autoHighlight={false} filterMode="contains" open={false} placeholder="Choose a rack" query="Rack A" readOnly={false} selected="Rack A" />
-      <ComboboxExample disabled={false} disabledOption autoHighlight={false} filterMode="contains" open placeholder="Choose a rack" query="" readOnly={false} selected="none" />
-      <ComboboxExample disabled={false} disabledOption={false} autoHighlight={false} filterMode="contains" open={false} placeholder="Choose a rack" query="Rack C" readOnly selected="Rack C" />
+      <ComboboxExample
+        disabled={false}
+        disabledOption={false}
+        autoHighlight={false}
+        filterMode="contains"
+        open={false}
+        placeholder="Choose a rack"
+        query="Rack A"
+        readOnly={false}
+        selected="Rack A"
+      />
+      <ComboboxExample
+        disabled={false}
+        disabledOption
+        autoHighlight={false}
+        filterMode="contains"
+        open
+        placeholder="Choose a rack"
+        query=""
+        readOnly={false}
+        selected="none"
+      />
+      <ComboboxExample
+        disabled={false}
+        disabledOption={false}
+        autoHighlight={false}
+        filterMode="contains"
+        open={false}
+        placeholder="Choose a rack"
+        query="Rack C"
+        readOnly
+        selected="Rack C"
+      />
     </div>
   );
 }
 
 export function ComboboxFilterModes() {
-  return <div className="grid gap-5 sm:grid-cols-2">{(['contains', 'startsWith', 'none'] as const).map((filterMode) => <ComboboxExample key={filterMode} disabled={false} disabledOption={false} autoHighlight={false} filterMode={filterMode} open placeholder="Choose a rack" query="Rack" readOnly={false} selected="none" />)}</div>;
+  return (
+    <div className="grid gap-5 sm:grid-cols-2">
+      {(['contains', 'startsWith', 'none'] as const).map((filterMode) => (
+        <ComboboxExample
+          key={filterMode}
+          disabled={false}
+          disabledOption={false}
+          autoHighlight={false}
+          filterMode={filterMode}
+          open
+          placeholder="Choose a rack"
+          query="Rack"
+          readOnly={false}
+          selected="none"
+        />
+      ))}
+    </div>
+  );
 }
 
 export function ComboboxOverlayPreview() {
-  return <ComboboxExample disabled={false} disabledOption={false} autoHighlight={false} filterMode="contains" open placeholder="Choose a rack" query="" readOnly={false} selected="none" />;
+  return (
+    <ComboboxExample
+      disabled={false}
+      disabledOption={false}
+      autoHighlight={false}
+      filterMode="contains"
+      open
+      placeholder="Choose a rack"
+      query=""
+      readOnly={false}
+      selected="none"
+    />
+  );
 }
 
 export function ComboboxKeyboardPreview() {
-  return <ComboboxExample disabled={false} disabledOption={false} autoHighlight filterMode="contains" open={false} placeholder="Choose a rack" query="" readOnly={false} selected="none" />;
+  return (
+    <ComboboxExample
+      disabled={false}
+      disabledOption={false}
+      autoHighlight
+      filterMode="contains"
+      open={false}
+      placeholder="Choose a rack"
+      query=""
+      readOnly={false}
+      selected="none"
+    />
+  );
 }
 
 export function ComboboxValidationPreview() {
@@ -197,9 +309,7 @@ export function ComboboxValidationPreview() {
           required
           selected={selected}
         />
-        {invalid ? (
-          <TRField.Error match>{copy.required}</TRField.Error>
-        ) : null}
+        {invalid ? <TRField.Error match>{copy.required}</TRField.Error> : null}
       </TRField.Root>
       <TRButton type="submit">{copy.deploy}</TRButton>
       <output aria-live="polite">
@@ -215,59 +325,62 @@ export function ComboboxMultipleAnatomy() {
   const copy = comboboxCopy[useDemoLocale()];
 
   return (
-    <TRCombobox.Root
-      data-docs-example-item=""
-      grid
-      items={comboboxItems}
-      multiple
-      onValueChange={setValue}
-      value={value}
-    >
-      <label className="tr-label" htmlFor={inputId}>
-        {copy.multiple}
-      </label>
-      <TRCombobox.InputGroup>
-        <TRCombobox.Chips>
-          <TRCombobox.Value>
-            {(selectedValue: string[]) =>
-              selectedValue.map((item) => (
-                <TRCombobox.Chip key={item}>
-                  {item}
-                  <TRCombobox.ChipRemove aria-label={`${copy.remove} ${item}`}>
-                    ×
-                  </TRCombobox.ChipRemove>
-                </TRCombobox.Chip>
-              ))
-            }
-          </TRCombobox.Value>
-          <TRCombobox.Input id={inputId} placeholder="Add a rack" />
-        </TRCombobox.Chips>
-        <TRCombobox.Trigger aria-label={copy.open}>
-          <ChevronDown aria-hidden="true" />
-        </TRCombobox.Trigger>
-      </TRCombobox.InputGroup>
-      <TRCombobox.Portal>
-        <TRCombobox.Positioner>
-          <TRCombobox.Popup>
-            <TRCombobox.List>
-              <TRCombobox.Collection>
-                {(item: string) => (
-                  <TRCombobox.Row key={item}>
-                    <TRCombobox.Item value={item}>
-                      {item}
-                      <TRCombobox.ItemIndicator aria-hidden="true">
-                        ✓
-                      </TRCombobox.ItemIndicator>
-                    </TRCombobox.Item>
-                  </TRCombobox.Row>
-                )}
-              </TRCombobox.Collection>
-            </TRCombobox.List>
-          </TRCombobox.Popup>
-        </TRCombobox.Positioner>
-      </TRCombobox.Portal>
-      <output aria-live="polite">{copy.selected}: {value.join(', ') || '—'}</output>
-    </TRCombobox.Root>
+    <div className="contents" data-docs-example-item="">
+      <TRCombobox.Root
+        grid
+        items={comboboxItems}
+        multiple
+        onValueChange={setValue}
+        value={value}
+      >
+        <label className="tr-label" htmlFor={inputId}>
+          {copy.multiple}
+        </label>
+        <TRCombobox.InputGroup>
+          <TRCombobox.Chips>
+            <TRCombobox.Value>
+              {(selectedValue: string[]) =>
+                selectedValue.map((item) => (
+                  <TRCombobox.Chip key={item}>
+                    {item}
+                    <TRCombobox.ChipRemove aria-label={`${copy.remove} ${item}`}>
+                      ×
+                    </TRCombobox.ChipRemove>
+                  </TRCombobox.Chip>
+                ))
+              }
+            </TRCombobox.Value>
+            <TRCombobox.Input id={inputId} placeholder="Add a rack" />
+          </TRCombobox.Chips>
+          <TRCombobox.Trigger aria-label={copy.open}>
+            <ChevronDown aria-hidden="true" />
+          </TRCombobox.Trigger>
+        </TRCombobox.InputGroup>
+        <TRCombobox.Portal>
+          <TRCombobox.Positioner>
+            <TRCombobox.Popup>
+              <TRCombobox.List>
+                <TRCombobox.Collection>
+                  {(item: string) => (
+                    <TRCombobox.Row key={item}>
+                      <TRCombobox.Item value={item}>
+                        {item}
+                        <TRCombobox.ItemIndicator aria-hidden="true">
+                          ✓
+                        </TRCombobox.ItemIndicator>
+                      </TRCombobox.Item>
+                    </TRCombobox.Row>
+                  )}
+                </TRCombobox.Collection>
+              </TRCombobox.List>
+            </TRCombobox.Popup>
+          </TRCombobox.Positioner>
+        </TRCombobox.Portal>
+        <output aria-live="polite">
+          {copy.selected}: {value.join(', ') || '—'}
+        </output>
+      </TRCombobox.Root>
+    </div>
   );
 }
 

@@ -28,7 +28,7 @@ import * as Stories from '../../../documentation/components/color-scheme-toggle.
   id="color-scheme-toggle-basic"
   title="制御付き scheme"
   description="ボタンを操作すると次の具体的な scheme を通知し、状態の所有権はアプリケーションに残ります。"
-  preview={<div data-docs-example-item=""><Stories.ColorSchemeTogglePreview value="light" /></div>}
+  preview={<div data-docs-example-item-count="1"><Stories.ColorSchemeTogglePreview value="light" /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.colorSchemeToggleBasicSource }]}
 />
 
@@ -38,7 +38,7 @@ import * as Stories from '../../../documentation/components/color-scheme-toggle.
   id="color-scheme-toggle-adapter"
   title="システム設定と保存"
   description="`system` をアプリケーション設定として保持し、light または dark に解決して具体的な値だけをトグルへ渡します。決定的な初期値は hydration リカバリーを防ぎます。初回描画のテーマ点滅を防ぐには、同等のロジックを React hydration 前の document スクリプトにも適用してください。"
-  preview={<div data-docs-example-item=""><Stories.ColorSchemeTogglePreview value="light" /></div>}
+  preview={<div data-docs-example-item-count="1"><Stories.ColorSchemeTogglePreview value="light" /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.colorSchemeToggleAdapterSource }]}
 />
 

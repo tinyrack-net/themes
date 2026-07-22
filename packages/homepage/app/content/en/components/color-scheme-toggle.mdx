@@ -28,7 +28,7 @@ import * as Stories from '../../../documentation/components/color-scheme-toggle.
   id="color-scheme-toggle-basic"
   title="Controlled scheme"
   description="Activating the button emits the next concrete scheme and leaves state ownership with the application."
-  preview={<div data-docs-example-item=""><Stories.ColorSchemeTogglePreview value="light" /></div>}
+  preview={<div data-docs-example-item-count="1"><Stories.ColorSchemeTogglePreview value="light" /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.colorSchemeToggleBasicSource }]}
 />
 
@@ -38,7 +38,7 @@ import * as Stories from '../../../documentation/components/color-scheme-toggle.
   id="color-scheme-toggle-adapter"
   title="System preference and persistence"
   description="Keep `system` as an application preference, resolve it to light or dark, and pass only that concrete value to the toggle. The deterministic initial value avoids hydration recovery; apply an equivalent pre-hydration document script when preventing a first-paint theme flash."
-  preview={<div data-docs-example-item=""><Stories.ColorSchemeTogglePreview value="light" /></div>}
+  preview={<div data-docs-example-item-count="1"><Stories.ColorSchemeTogglePreview value="light" /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.colorSchemeToggleAdapterSource }]}
 />
 

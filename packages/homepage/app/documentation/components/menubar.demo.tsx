@@ -33,21 +33,21 @@ const menubarCopy = {
     app: '애플리케이션 메뉴',
     none: '명령을 선택하지 않았어요',
     file: '파일',
-    edit: '편집해요',
-    view: '보기를 바꿔요',
+    edit: '편집',
+    view: '보기',
     newRack: '새 랙',
-    open: '열어요',
-    rename: '이름을 바꿔요',
-    duplicate: '복제할 수 없어요',
-    status: '상태를 보여요',
+    open: '열기',
+    rename: '이름 바꾸기',
+    duplicate: '복제 사용 불가',
+    status: '상태 표시',
     shortcuts: '키보드 단축키',
-    horizontal: '가로 도구예요',
-    vertical: '세로 도구예요',
-    enabled: '사용할 수 있는 메뉴 막대예요',
-    itemDisabled: '한 메뉴를 사용할 수 없어요',
-    disabled: '메뉴 막대를 사용할 수 없어요',
-    looping: '초점이 순환해요',
-    bounded: '초점이 경계에서 멈춰요',
+    horizontal: '가로 도구',
+    vertical: '세로 도구',
+    enabled: '사용 가능한 메뉴 막대',
+    itemDisabled: '메뉴 하나 사용 불가',
+    disabled: '사용할 수 없는 메뉴 막대',
+    looping: '초점 순환',
+    bounded: '초점 경계 유지',
   },
   ja: {
     app: 'アプリケーションメニュー',
@@ -354,7 +354,7 @@ export function MenubarConfigurations() {
 const menubarBasicSourceKo = `import '@tinyrack/ui/components/menubar.css';
 import { TRMenu } from '@tinyrack/ui/components/menu';
 import { TRMenubar } from '@tinyrack/ui/components/menubar';
-export function BasicMenubar() { return <TRMenubar aria-label="애플리케이션 메뉴예요"><TRMenu.Root><TRMenu.Trigger>파일을 열어요</TRMenu.Trigger><TRMenu.Portal><TRMenu.Positioner><TRMenu.Popup><TRMenu.Item>새 랙을 만들어요</TRMenu.Item></TRMenu.Popup></TRMenu.Positioner></TRMenu.Portal></TRMenu.Root></TRMenubar>; }`;
+export function BasicMenubar() { return <TRMenubar aria-label="애플리케이션 메뉴"><TRMenu.Root><TRMenu.Trigger>파일</TRMenu.Trigger><TRMenu.Portal><TRMenu.Positioner><TRMenu.Popup><TRMenu.Item>새 랙</TRMenu.Item></TRMenu.Popup></TRMenu.Positioner></TRMenu.Portal></TRMenu.Root></TRMenubar>; }`;
 const menubarBasicSourceJa = `import '@tinyrack/ui/components/menubar.css';
 import { TRMenu } from '@tinyrack/ui/components/menu';
 import { TRMenubar } from '@tinyrack/ui/components/menubar';
@@ -363,7 +363,7 @@ const menubarApplicationSourceKo = menubarBasicSourceKo;
 const menubarApplicationSourceJa = menubarBasicSourceJa;
 const menubarConfigurationsSourceKo = `import '@tinyrack/ui/components/menubar.css';
 import { TRMenubar } from '@tinyrack/ui/components/menubar';
-export function Orientations() { return <><TRMenubar aria-label="가로로 탐색해요" orientation="horizontal" /><TRMenubar aria-label="세로로 탐색해요" orientation="vertical" /></>; }`;
+export function Orientations() { return <><TRMenubar aria-label="가로 탐색" orientation="horizontal" /><TRMenubar aria-label="세로 탐색" orientation="vertical" /></>; }`;
 const menubarConfigurationsSourceJa = `import '@tinyrack/ui/components/menubar.css';
 import { TRMenubar } from '@tinyrack/ui/components/menubar';
 export function Orientations() { return <><TRMenubar aria-label="横方向" orientation="horizontal" /><TRMenubar aria-label="縦方向" orientation="vertical" /></>; }`;

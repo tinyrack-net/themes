@@ -9,7 +9,7 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/switch.demo.js';
 
-## Contract
+## 계약
 
 | 판단 기준 | 선택 방법 |
 | --- | --- |
@@ -20,24 +20,24 @@ import * as Stories from '../../../documentation/components/switch.demo.js';
 
 스위치에 보이는 레이블이나 접근 가능한 이름을 제공해요. 편집 가능한 스위치에 초점이 있을 때 Space 키로 전환해요.
 
-## Install
+## 설치
 
 <ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui', imports: ["import '@tinyrack/ui/components/switch.css';", "import { TRSwitch } from '@tinyrack/ui/components/switch';"] }]} />
 
-## Playground
+## 플레이그라운드
 
 <ComponentPlayground definition={Stories.playground} />
 
-## Usage
+## 사용법
 
-<ComponentExampleTabs id="switch-basic" title="자동 백업을 사용해요" preview={<div data-docs-example-item-count="1"><Stories.SwitchPreview defaultChecked disabled={false} label="자동 백업을 사용해요" readOnly={false} /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/switch.css';
+<ComponentExampleTabs id="switch-basic" title="자동 백업" preview={<div data-docs-example-item-count="1"><Stories.SwitchPreview defaultChecked disabled={false} label="자동 백업" readOnly={false} /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/switch.css';
 import { TRSwitch } from '@tinyrack/ui/components/switch';
 
 export function AutomaticBackups() {
   return <label><TRSwitch.Root defaultChecked name="automatic-backups" value="enabled"><TRSwitch.Thumb /></TRSwitch.Root> 자동 백업을 사용해요</label>;
 }` }]} />
 
-## Examples
+## 예시
 
 ### 현재 설정을 보여줘요
 

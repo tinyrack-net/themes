@@ -28,7 +28,7 @@ import * as Stories from '../../../documentation/components/scroll-area.demo.js'
 <ComponentExampleTabs
   id="scroll-area-basic"
   title="세로 event log"
-  preview={<div data-docs-example-item-count="1"><Stories.ScrollAreaPreview autoHide={false} content={'Rack event log'} orientation={'vertical'} variant={'surface'} /></div>}
+  preview={<div data-docs-example-item-count="1"><Stories.ScrollAreaPreview autoHide={false} content={'랙 이벤트 로그'} orientation={'vertical'} variant={'surface'} /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.scrollAreaVerticalSource }]}
 />
 
@@ -38,7 +38,7 @@ import * as Stories from '../../../documentation/components/scroll-area.demo.js'
   id="scroll-area-states"
   title="두 축 overflow"
   description="overflow되는 각 축에 scrollbar 하나를 렌더링하고 track이 만나는 곳에 Corner를 포함하세요."
-  preview={<div data-docs-example-item-count="1"><Stories.ScrollAreaPreview autoHide={false} content={'Rack event log'} orientation={'both'} variant={'plain'} /></div>}
+  preview={<div data-docs-example-item-count="1"><Stories.ScrollAreaPreview autoHide={false} content={'랙 이벤트 로그'} orientation={'both'} variant={'plain'} /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.scrollAreaBothSource }]}
 />
 
@@ -46,7 +46,7 @@ import * as Stories from '../../../documentation/components/scroll-area.demo.js'
   id="scroll-area-horizontal"
   title="가로 overflow"
   description="content가 inline axis에서 overflow할 때 horizontal track만 렌더링해요. Viewport의 native touch, trackpad, wheel, keyboard scrolling은 유지돼요."
-  preview={<div data-docs-example-item-count="1"><Stories.ScrollAreaPreview autoHide={false} content={'Deployment stage'} orientation={'horizontal'} variant={'plain'} /></div>}
+  preview={<div data-docs-example-item-count="1"><Stories.ScrollAreaPreview autoHide={false} content={'배포 단계'} orientation={'horizontal'} variant={'plain'} /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.scrollAreaHorizontalSource }]}
 />
 
@@ -54,7 +54,7 @@ import * as Stories from '../../../documentation/components/scroll-area.demo.js'
   id="scroll-area-auto-hide"
   title="자동 숨김 scrollbar"
   description="autoHide를 설정해 유휴 track을 숨기세요. viewport를 hover, scroll하거나 focus하면 다시 표시돼요. reduced-motion 설정은 opacity transition을 제거해요."
-  preview={<div data-docs-example-item-count="1"><Stories.ScrollAreaPreview autoHide content={'Hover or focus this event log'} orientation={'vertical'} variant={'surface'} /></div>}
+  preview={<div data-docs-example-item-count="1"><Stories.ScrollAreaPreview autoHide content={'이 이벤트 로그에 마우스를 올리거나 포커스하세요'} orientation={'vertical'} variant={'surface'} /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.scrollAreaAutoHideSource }]}
 />
 
@@ -66,7 +66,7 @@ import * as Stories from '../../../documentation/components/scroll-area.demo.js'
   sources={[{ label: 'React', language: 'tsx', code: Stories.scrollAreaRTLSource }]}
 />
 
-## Anatomy
+## 구조
 
 - `Root`는 measurement, overflow-edge state, `surface` 또는 `plain` `variant`, 선택적 `autoHide` styling을 소유해요.
 - `Viewport`는 native scroll container이며 accessible name, keyboard focus, wheel, touch, trackpad input을 받아요.

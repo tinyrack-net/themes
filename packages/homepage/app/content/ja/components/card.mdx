@@ -1,6 +1,6 @@
 ---
 title: "Card"
-description: "意味のあるセクション、elevation、padding 密度を備えた構造化コンテンツのサーフェスです。"
+description: "意味のあるセクション、立体感、内側の余白を備えた構造化コンテンツのサーフェスです。"
 section: components
 order: 6
 ---
@@ -17,7 +17,7 @@ import * as Stories from '../../../documentation/components/card.demo.js';
 | --- | --- | --- |
 | `variant` | `default`, `outlined`, `elevated` | `default` |
 | `padding` | `none`, `sm`, `md`, `lg` | `md` |
-| parts | `Root`, `Header`, `Title`, `Description`, `Content`, `Footer` | compound API |
+| パーツ | `Root`、`Header`、`Title`、`Description`、`Content`、`Footer` | 複合 API |
 
 ## インストール
 
@@ -31,7 +31,7 @@ import * as Stories from '../../../documentation/components/card.demo.js';
 
 <ComponentExampleTabs
   id="card-basic"
-  title="構造化された surface"
+  title="構造化されたサーフェス"
   preview={<TRCard.Root className="w-full max-w-md" data-docs-example-item="" variant="elevated"><TRCard.Header><TRCard.Title render={<h4>ラック A</h4>} /><TRCard.Description>12 ノード</TRCard.Description></TRCard.Header><TRCard.Content>すべてのシステムは正常です。</TRCard.Content><TRCard.Footer>たった今更新</TRCard.Footer></TRCard.Root>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/card.css';
@@ -51,7 +51,7 @@ import { TRCard } from '@tinyrack/ui/components/card';
 
 <ComponentExampleTabs
   id="card-variants"
-  title="surface variant"
+  title="サーフェスのバリアント"
   previewLayout="stretch"
   preview={(
     <div className="grid gap-4 md:grid-cols-3">
@@ -74,7 +74,7 @@ import { TRCard } from '@tinyrack/ui/components/card';
 <ComponentExampleTabs
   id="card-padding"
   title="内側の余白"
-  description="コンテンツの密度に合わせて padding を選びます。子要素をカードの端まで広げる場合だけ none を使用してください。"
+  description="コンテンツの密度に合わせて内側の余白を選びます。子要素をカードの端まで広げる場合だけ none を使用してください。"
   previewLayout="stretch"
   preview={(
     <div className="grid gap-4 md:grid-cols-2">
@@ -99,8 +99,8 @@ import { TRCard } from '@tinyrack/ui/components/card';
 
 <ComponentExampleTabs
   id="card-edge-to-edge"
-  title="端まで広がる media"
-  description="media を card の境界まで広げる場合は外側の card に padding none を使い、semantic section に spacing を置きます。"
+  title="端まで広がるメディア"
+  description="メディアをカードの境界まで広げる場合は、外側のカードに padding none を使い、意味のある各セクションに余白を設けます。"
   preview={(
     <TRCard.Root className="w-full max-w-md overflow-hidden" data-docs-example-item="" padding="none" variant="outlined">
       <div className="grid min-h-32 place-items-center bg-tinyrack-surface-muted text-tinyrack-text-muted">ラックトポロジーのプレビュー</div>
@@ -126,7 +126,7 @@ import { TRCard } from '@tinyrack/ui/components/card';
 
 <ComponentExampleTabs
   id="card-semantic-render"
-  title="semantic article と heading"
+  title="意味のある article と見出し"
   description="`render` プロパティはラッパー要素を挿入せず、既定の要素を置き換えます。周囲のページと見出しレベルを揃えます。"
   preview={<TRCard.Root className="max-w-md" data-docs-example-item="" render={<article aria-labelledby="rack-card-title" />} variant="outlined"><TRCard.Header><TRCard.Title render={<h4 id="rack-card-title">ラック A の状態</h4>} /><TRCard.Description>2 分前に更新</TRCard.Description></TRCard.Header><TRCard.Content>12 ノードすべてがトラフィックを処理しています。</TRCard.Content></TRCard.Root>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core.css';
@@ -147,13 +147,13 @@ import { TRCard } from '@tinyrack/ui/components/card';
 
 ## API
 
-| パート | 既定の要素 | 主な props |
+| パート | 既定の要素 | 主なプロパティ |
 | --- | --- | --- |
 | `TRCard.Root` | `div` | `variant`, `padding`, `render` |
-| `TRCard.Header` | `header` | ネイティブ header props |
-| `TRCard.Title` | `h2` | 文脈に合う heading level のための `render` |
-| `TRCard.Description` | `p` | ネイティブ paragraph props |
-| `TRCard.Content` | `div` | ネイティブ div props |
-| `TRCard.Footer` | `footer` | ネイティブ footer props |
+| `TRCard.Header` | `header` | ネイティブの `header` プロパティ |
+| `TRCard.Title` | `h2` | 文脈に合う見出しレベルへ変更するための `render` |
+| `TRCard.Description` | `p` | ネイティブの段落プロパティ |
+| `TRCard.Content` | `div` | ネイティブの `div` プロパティ |
+| `TRCard.Footer` | `footer` | ネイティブの `footer` プロパティ |
 
-`TRCard.Root` と `TRCard.Title` は wrapper node を追加しない Base UI の additive `render` contract をサポートします。すべてのパートは `className` をマージし、ネイティブ props と `ref` を転送し、consumer style を受け取ります。Card を構成するときは heading の文書順を守り、child を card edge まで広げる場合にのみ `padding="none"` を使用してください。
+`TRCard.Root` と `TRCard.Title` は、ラッパー要素を追加しない Base UI の加算型 `render` コントラクトをサポートします。すべてのパートは `className` をマージし、ネイティブプロパティと `ref` を転送して、利用側のスタイルを受け取ります。カードを構成するときは見出しの文書順を守り、子要素をカードの端まで広げる場合にのみ `padding="none"` を使用してください。

@@ -9,19 +9,19 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/docs-shell.demo.js';
 
-## Contract
+## 계약
 
 `Root`, `Header`, `Brand`, `Actions`, `Sidebar`, `Main`, `Outline`이 반응형 shell을 구성해요. `docs`는 desktop navigation과 focus가 관리되는 mobile drawer를 제공하고, `splash`는 global header만 유지하며, `standalone`은 두 navigation 영역을 모두 제거해요. Router 상태는 props로만 전달돼요.
 
-## Install
+## 설치
 
 <ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui', imports: ["import '@tinyrack/ui/components/docs-shell.css';", "import { TRDocsShell } from '@tinyrack/ui/components/docs-shell';"] }]} />
 
-## Playground
+## 플레이그라운드
 
 <ComponentPlayground definition={Stories.playground} />
 
-## Usage
+## 사용법
 
 <ComponentExampleTabs
   description="header, action, navigation, content, outline anatomy를 모두 포함한 붙여 넣어 바로 사용할 수 있는 shell이에요. Preview 크기를 조절해 mobile drawer를 확인해요."
@@ -34,7 +34,7 @@ import * as Stories from '../../../documentation/components/docs-shell.demo.js';
   title="문서 구성"
 />
 
-## Examples
+## 예시
 
 <ComponentExampleTabs
   description="header만 있는 landing page에는 splash를, 문서 navigation이 없는 content에는 standalone을 사용해요."
@@ -44,7 +44,7 @@ import * as Stories from '../../../documentation/components/docs-shell.demo.js';
   previewClassName="!min-h-96 !min-w-0 !p-0"
   previewLayout="stretch"
   sources={[{ label: 'React', language: 'tsx', code: Stories.docsShellLayoutsSource }]}
-  title="문서 레이아웃이에요"
+  title="문서 레이아웃"
 />
 
 ## API

@@ -63,7 +63,7 @@ export function BackupChoice() {
 
 ### 選択と操作
 
-| Prop | 型 / デフォルト | 用途 |
+| プロパティ | 型 / 既定値 | 用途 |
 | --- | --- | --- |
 | `checked`, `defaultChecked` | `boolean`, `false` | 選択を制御または初期化します。 |
 | `indeterminate` | `boolean`, `false` | 一部選択を公開し、ユーザーが確定したら解除します。 |
@@ -73,6 +73,6 @@ export function BackupChoice() {
 
 ### フォームと合成
 
-`name`、`value`、`uncheckedValue`、`form`、`required`、`inputRef` は非表示のネイティブ入力へ渡されます。非制御ルートはリセット時に `defaultChecked` へ戻り、制御ルートは `checked` に従います。Base UI の `render`、ref、イベント、状態に応じた `className` と `style` を利用できます。
+`name`、`value`、`uncheckedValue`、`form`、`required`、`inputRef` は非表示のネイティブ入力へ渡されます。非制御ルートはリセット時に `defaultChecked` へ戻り、制御ルートは `checked` に従います。Base UI の `render`、`ref`、イベント、状態に応じた `className` と `style` を利用できます。
 
-`TRCheckbox.Indicator` は選択済みまたは一部選択で表示されます。render コールバックは `state.indeterminate` を受け取り、`keepMounted` はトランジション向けに DOM を維持します。モジュールは複合オブジェクト、各パーツ、prop 型、状態型、`TRCheckboxUiSize` を公開します。CSS は明示的に読み込みます。
+`TRCheckbox.Indicator` は選択済みまたは一部選択で表示されます。`render` コールバックは `state.indeterminate` を受け取り、`keepMounted` はトランジション向けに DOM を維持します。モジュールは複合オブジェクト、各パーツ、プロパティ型、状態型、`TRCheckboxUiSize` を公開します。CSS は明示的に読み込みます。

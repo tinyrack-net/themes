@@ -1,6 +1,6 @@
 ---
 title: "Checkbox Group"
-description: "独立して切り替えられる値を1つのアクセシブルなグループとして連携させます。"
+description: "独立して切り替えられる値を 1 つのアクセシブルなグループとして連携させます。"
 section: components
 order: 29
 ---
@@ -55,7 +55,7 @@ import * as Stories from '../../../documentation/components/checkbox-group.demo.
 
 ### 値と利用可否
 
-| Prop | 型 / デフォルト | 用途 |
+| プロパティ | 型 / 既定値 | 用途 |
 | --- | --- | --- |
 | `value`, `defaultValue` | `string[]`, `[]` | 選択した子の値を制御または初期化します。 |
 | `onValueChange` | `(value, details) => void` | 次の値配列を通知します。 |
@@ -66,4 +66,4 @@ import * as Stories from '../../../documentation/components/checkbox-group.demo.
 
 異なる `value` と共通の `name` を持つ `TRCheckbox.Root` をレンダリングします。`readOnly` とフォーム所有は子チェックボックスに設定します。非制御グループはリセット時に `defaultValue` へ戻り、制御グループは `value` に従います。
 
-ルートは Base UI の `render`、`ref`、イベント、ネイティブ属性、状態に応じた `className` と `style` を維持します。モジュールは `TRCheckboxGroup` と prop・状態型を公開します。CSS は明示的に読み込みます。
+ルートは Base UI の `render`、`ref`、イベント、ネイティブ属性、状態に応じた `className` と `style` を維持します。モジュールは `TRCheckboxGroup` とプロパティ・状態型を公開します。CSS は明示的に読み込みます。

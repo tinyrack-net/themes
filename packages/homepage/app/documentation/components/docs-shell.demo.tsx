@@ -35,7 +35,7 @@ export function DocsShellPreview({
   const locale = useDemoLocale();
   const copy = {
     en: ['Documentation', 'Navigation', 'Router-neutral documentation shell.'],
-    ko: ['문서예요', '탐색이에요', '라우터에 종속되지 않는 문서 셸이에요.'],
+    ko: ['문서', '탐색', '라우터에 종속되지 않는 문서 셸이에요.'],
     ja: [
       'ドキュメント',
       'ナビゲーション',
@@ -71,7 +71,7 @@ const getNavigationItems = (
 ): readonly TRDocsNavigationItem[] => {
   const copy = {
     en: ['Installation', 'Configuration', 'Getting started', 'Components'],
-    ko: ['설치해요', '구성해요', '시작하기예요', '컴포넌트예요'],
+    ko: ['설치', '구성', '시작하기', '컴포넌트'],
     ja: ['インストール', '設定', 'はじめに', 'コンポーネント'],
   }[locale];
   return [
@@ -191,19 +191,19 @@ export function DocsShellDocsPreview() {
         'Router state stays at the edge while the shell handles mobile disclosure and scroll restoration.',
     },
     ko: {
-      site: '사이트 탐색이에요',
-      docs: '문서예요',
-      components: '컴포넌트예요',
-      language: '언어예요',
-      search: '문서를 검색해요',
-      navigation: '문서 탐색이에요',
-      section: '컴포넌트예요',
-      layout: '레이아웃이에요',
-      composition: '구성이에요',
-      description: '탐색, 검색, 페이지 맥락을 위한 반응형 문서 chrome이에요.',
+      site: '사이트 탐색',
+      docs: '문서',
+      components: '컴포넌트',
+      language: '언어',
+      search: '문서 검색',
+      navigation: '문서 탐색',
+      section: '컴포넌트',
+      layout: '레이아웃',
+      composition: '구성',
+      description: '탐색, 검색, 페이지 맥락을 위한 반응형 문서 UI예요.',
       compositionText:
         '반응형 셸 상태를 직접 관리하지 않고 탐색, 동작, 콘텐츠, 개요를 결합해요.',
-      apiText: '라우터 상태는 경계에 두고 셸이 모바일 공개와 스크롤 복원을 처리해요.',
+      apiText: '라우터 상태는 경계에 두고 셸이 모바일 탐색과 스크롤 복원을 처리해요.',
     },
     ja: {
       site: 'サイトナビゲーション',
@@ -216,7 +216,7 @@ export function DocsShellDocsPreview() {
       layout: 'レイアウト',
       composition: '構成',
       description:
-        'ナビゲーション、検索、ページコンテキストのためのレスポンシブなドキュメント chrome です。',
+        'ナビゲーション、検索、ページコンテキストのためのレスポンシブなドキュメント UI です。',
       compositionText:
         'レスポンシブなシェル状態を所有せずに、ナビゲーション、操作、コンテンツ、アウトラインを組み合わせます。',
       apiText:

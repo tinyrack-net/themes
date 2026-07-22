@@ -16,7 +16,7 @@ const previewCardCopy = {
   ja: {
     description: '正常 · 12 サービス',
     edge: '衝突を回避し、プレビュー内容をビューポート内に収めます。',
-    label: 'ラック Alpha',
+    label: 'ラックアルファ',
   },
   ko: {
     description: '정상 · 서비스 12개',
@@ -81,7 +81,7 @@ export function PreviewCardHandlePreview() {
         href="#rack-beta"
         id="rack-beta-trigger"
       >
-        {locale === 'ko' ? '랙 베타' : locale === 'ja' ? 'ラック Beta' : 'Rack Beta'}
+        {locale === 'ko' ? '랙 베타' : locale === 'ja' ? 'ラックベータ' : 'Rack Beta'}
       </TRPreviewCard.Trigger>
       <TRPreviewCard.Root handle={rackBetaPreview}>
         <TRPreviewCard.Portal>
@@ -220,8 +220,8 @@ const meta = {
   localizedArgs: {
     ja: {
       description: '正常 · 12 サービス',
-      label: 'ラック Alpha',
-      title: 'ラック Alpha',
+      label: 'ラックアルファ',
+      title: 'ラックアルファ',
     },
     ko: { description: '정상 · 서비스 12개', label: '랙 알파', title: '랙 알파' },
   },

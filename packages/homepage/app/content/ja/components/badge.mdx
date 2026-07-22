@@ -62,8 +62,8 @@ import { CircleCheck, Clock } from 'lucide-react';
 
 <ComponentExampleTabs
   id="badge-size-variant-matrix"
-  title="ステータス variant"
-  description="色だけでなく、ステータスの意味に合わせて variant を選びます。"
+  title="ステータスのバリアント"
+  description="色だけでなく、ステータスの意味に合うバリアントを選びます。"
   previewLayout="stretch"
   preview={(
     <div className="flex flex-wrap gap-2">
@@ -85,11 +85,11 @@ import { CircleCheck, Clock } from 'lucide-react';
 
 ### オプション
 
-| Prop | 型 | 既定値 | 用途 |
+| プロパティ | 型 | 既定値 | 用途 |
 | --- | --- | --- | --- |
 | `variant` | `'neutral' \| 'info' \| 'success' \| 'warning' \| 'danger'` | `'neutral'` | ステータスの意味と色の表現を選びます。 |
-| `uiSize` | `'sm' \| 'md' \| 'lg'` | `'md'` | Badge の密度を設定します。 |
+| `uiSize` | `'sm' \| 'md' \| 'lg'` | `'md'` | バッジの密度を設定します。 |
 
 ### HTML とアクセシビリティ
 
-`TRBadge` は `span` をレンダリングし、ネイティブ属性、イベント、スタイル、React 19 `ref` を転送します。`TRBadgeProps`、`TRBadgeUiSize`、`TRBadgeVariant` 型もエクスポートします。role や live-region の動作は自動付与しません。ステータステキストを表示し、アイコンだけを使う場合はアプリケーション側でアクセシブルなラベルを指定してください。
+`TRBadge` は `span` をレンダリングし、ネイティブ属性、イベント、スタイル、React 19 の `ref` を転送します。`TRBadgeProps`、`TRBadgeUiSize`、`TRBadgeVariant` 型もエクスポートします。ロールやライブリージョンの動作は自動付与しません。ステータステキストを表示し、アイコンだけを使う場合はアプリケーション側でアクセシブルなラベルを指定してください。

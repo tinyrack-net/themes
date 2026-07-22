@@ -48,37 +48,37 @@ const contextCopy = {
   },
   ko: {
     hint: '랙 행을 오른쪽 클릭하거나 초점을 둔 뒤 Shift+F10을 누르세요.',
-    inventory: '랙 목록이에요',
+    inventory: '랙 목록',
     onlineCount: '3개가 온라인이에요',
-    online: '온라인이에요',
-    open: '작업 메뉴를 열어요',
+    online: '온라인',
+    open: '작업 메뉴 열기',
     more: '작업 더 보기',
     details: '세부 정보 열기',
     copy: '주소 복사',
     restart: '다시 시작',
-    move: '이동해요',
-    production: '프로덕션으로 이동해요',
-    staging: '스테이징으로 이동해요',
+    move: '이동',
+    production: '프로덕션으로 이동',
+    staging: '스테이징으로 이동',
     remove: '랙 제거',
-    enabled: '실행할 수 있어요',
-    disabled: '실행할 수 없어요',
-    link: '이동 링크예요',
-    normal: '기본 작업이에요',
-    danger: '위험 작업이에요',
-    pointer: '포인터 좌표를 써요',
-    anchor: '명시한 anchor를 써요',
-    keyboard: '키보드 대상이에요',
-    fallback: '터치 작업 버튼이에요',
+    enabled: '사용 가능한 명령',
+    disabled: '사용할 수 없는 명령',
+    link: '이동 링크',
+    normal: '기본 작업',
+    danger: '위험 작업',
+    pointer: '포인터 좌표',
+    anchor: '명시적 앵커',
+    keyboard: '키보드 대상',
+    fallback: '터치 작업 버튼',
     canvasHint: '랙 표시 방법을 바꾸려면 캔버스를 오른쪽 클릭하세요.',
-    canvas: '랙 캔버스예요',
-    view: '보기를 바꿔요',
-    labels: '레이블을 보여요',
-    density: '밀도를 골라요',
-    comfortable: '여유 있게 보여요',
-    compact: '조밀하게 보여요',
-    reset: '보기를 초기화해요',
-    shown: '레이블을 보여요',
-    hidden: '레이블을 숨겨요',
+    canvas: '랙 캔버스',
+    view: '보기',
+    labels: '레이블 표시',
+    density: '밀도',
+    comfortable: '여유 있게',
+    compact: '조밀하게',
+    reset: '보기 초기화',
+    shown: '레이블 표시 중',
+    hidden: '레이블 숨김',
   },
   ja: {
     hint: 'ラック行を右クリックするか、フォーカスして Shift+F10 を押してください。',
@@ -628,12 +628,12 @@ export function CanvasViewOptions() {
 
 const contextMenuBasicSourceKo = `import '@tinyrack/ui/components/context-menu.css';
 import { TRContextMenu } from '@tinyrack/ui/components/context-menu';
-export function RackActions() { return <TRContextMenu.Root><TRContextMenu.Trigger tabIndex={0}>랙 작업을 열어요</TRContextMenu.Trigger><TRContextMenu.Portal><TRContextMenu.Positioner><TRContextMenu.Popup><TRContextMenu.Item>주소를 복사해요</TRContextMenu.Item><TRContextMenu.Item variant="danger">랙을 제거해요</TRContextMenu.Item></TRContextMenu.Popup></TRContextMenu.Positioner></TRContextMenu.Portal></TRContextMenu.Root>; }`;
+export function RackActions() { return <TRContextMenu.Root><TRContextMenu.Trigger tabIndex={0}>랙 작업 열기</TRContextMenu.Trigger><TRContextMenu.Portal><TRContextMenu.Positioner><TRContextMenu.Popup><TRContextMenu.Item>주소 복사</TRContextMenu.Item><TRContextMenu.Item variant="danger">랙 제거</TRContextMenu.Item></TRContextMenu.Popup></TRContextMenu.Positioner></TRContextMenu.Portal></TRContextMenu.Root>; }`;
 const contextMenuBasicSourceJa = `import '@tinyrack/ui/components/context-menu.css';
 import { TRContextMenu } from '@tinyrack/ui/components/context-menu';
 export function RackActions() { return <TRContextMenu.Root><TRContextMenu.Trigger tabIndex={0}>ラック操作</TRContextMenu.Trigger><TRContextMenu.Portal><TRContextMenu.Positioner><TRContextMenu.Popup><TRContextMenu.Item>アドレスをコピー</TRContextMenu.Item><TRContextMenu.Item variant="danger">ラックを削除</TRContextMenu.Item></TRContextMenu.Popup></TRContextMenu.Positioner></TRContextMenu.Portal></TRContextMenu.Root>; }`;
 const contextMenuSelectionSourceKo = `import { TRContextMenu } from '@tinyrack/ui/components/context-menu';
-export function ViewOptions() { return <TRContextMenu.CheckboxItem defaultChecked><TRContextMenu.CheckboxItemIndicator>✓</TRContextMenu.CheckboxItemIndicator>레이블을 보여요</TRContextMenu.CheckboxItem>; }`;
+export function ViewOptions() { return <TRContextMenu.CheckboxItem defaultChecked><TRContextMenu.CheckboxItemIndicator>✓</TRContextMenu.CheckboxItemIndicator>레이블 표시</TRContextMenu.CheckboxItem>; }`;
 const contextMenuSelectionSourceJa = `import { TRContextMenu } from '@tinyrack/ui/components/context-menu';
 export function ViewOptions() { return <TRContextMenu.CheckboxItem defaultChecked><TRContextMenu.CheckboxItemIndicator>✓</TRContextMenu.CheckboxItemIndicator>ラベルを表示</TRContextMenu.CheckboxItem>; }`;
 
@@ -660,7 +660,7 @@ const meta = {
   },
   localizedArgs: {
     ja: { label: 'ラックアルファ' },
-    ko: { label: '알파 랙이에요' },
+    ko: { label: '알파 랙' },
   },
   argTypes: {
     label: { control: 'text' },

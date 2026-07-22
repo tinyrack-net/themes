@@ -45,7 +45,7 @@ import * as Stories from '../../../documentation/components/button.demo.js';
 <ComponentExampleTabs
   id="button-basic"
   title="基本アクション"
-  description="主要な操作には primary を指定します。TRButton はデフォルトで HTML ボタン要素をレンダリングします。"
+  description="主要な操作には primary を指定します。TRButton は既定で HTML ボタン要素をレンダリングします。"
   preview={<TRButton data-docs-example-item="" intent="primary">変更をデプロイ</TRButton>}
   sources={[
     {
@@ -66,16 +66,16 @@ export function DeployAction() {
 
 <ComponentExampleTabs
   id="button-solid-intents"
-  title="Solid intent"
-  description="最も強く強調したい操作には solid ボタンを使います。"
+  title="ソリッドの目的別表示"
+  description="最も強く強調したい操作にはソリッドボタンを使います。"
   preview={(
     <div className="flex flex-wrap gap-2">
-      <TRButton data-docs-example-item="" appearance="solid" intent="neutral">Neutral</TRButton>
-      <TRButton data-docs-example-item="" appearance="solid" intent="primary">Primary</TRButton>
-      <TRButton data-docs-example-item="" appearance="solid" intent="info">Info</TRButton>
-      <TRButton data-docs-example-item="" appearance="solid" intent="success">Success</TRButton>
-      <TRButton data-docs-example-item="" appearance="solid" intent="warning">Warning</TRButton>
-      <TRButton data-docs-example-item="" appearance="solid" intent="danger">Danger</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="neutral">通常</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="primary">主要</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="info">情報</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="success">成功</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="warning">警告</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="danger">危険</TRButton>
     </div>
   )}
   sources={[
@@ -88,12 +88,12 @@ import { TRButton } from '@tinyrack/ui/components/button';
 
 export function SolidButtonIntents() {
   return <div className="flex flex-wrap gap-2">
-  <TRButton appearance="solid" intent="neutral">Neutral</TRButton>
-  <TRButton appearance="solid" intent="primary">Primary</TRButton>
-  <TRButton appearance="solid" intent="info">Info</TRButton>
-  <TRButton appearance="solid" intent="success">Success</TRButton>
-  <TRButton appearance="solid" intent="warning">Warning</TRButton>
-  <TRButton appearance="solid" intent="danger">Danger</TRButton>
+  <TRButton appearance="solid" intent="neutral">通常</TRButton>
+  <TRButton appearance="solid" intent="primary">主要</TRButton>
+  <TRButton appearance="solid" intent="info">情報</TRButton>
+  <TRButton appearance="solid" intent="success">成功</TRButton>
+  <TRButton appearance="solid" intent="warning">警告</TRButton>
+  <TRButton appearance="solid" intent="danger">危険</TRButton>
 </div>;
 }`,
     },
@@ -102,16 +102,16 @@ export function SolidButtonIntents() {
 
 <ComponentExampleTabs
   id="button-outline-intents"
-  title="Outline intent"
-  description="目立たせながら強調を抑えたい操作には outline ボタンを使います。"
+  title="アウトラインの目的別表示"
+  description="目立たせながら強調を抑えたい操作にはアウトラインボタンを使います。"
   preview={(
     <div className="flex flex-wrap gap-2">
-      <TRButton data-docs-example-item="" appearance="outline" intent="neutral">Neutral</TRButton>
-      <TRButton data-docs-example-item="" appearance="outline" intent="primary">Primary</TRButton>
-      <TRButton data-docs-example-item="" appearance="outline" intent="info">Info</TRButton>
-      <TRButton data-docs-example-item="" appearance="outline" intent="success">Success</TRButton>
-      <TRButton data-docs-example-item="" appearance="outline" intent="warning">Warning</TRButton>
-      <TRButton data-docs-example-item="" appearance="outline" intent="danger">Danger</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="neutral">通常</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="primary">主要</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="info">情報</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="success">成功</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="warning">警告</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="danger">危険</TRButton>
     </div>
   )}
   sources={[
@@ -124,12 +124,12 @@ import { TRButton } from '@tinyrack/ui/components/button';
 
 export function OutlineButtonIntents() {
   return <div className="flex flex-wrap gap-2">
-  <TRButton appearance="outline" intent="neutral">Neutral</TRButton>
-  <TRButton appearance="outline" intent="primary">Primary</TRButton>
-  <TRButton appearance="outline" intent="info">Info</TRButton>
-  <TRButton appearance="outline" intent="success">Success</TRButton>
-  <TRButton appearance="outline" intent="warning">Warning</TRButton>
-  <TRButton appearance="outline" intent="danger">Danger</TRButton>
+  <TRButton appearance="outline" intent="neutral">通常</TRButton>
+  <TRButton appearance="outline" intent="primary">主要</TRButton>
+  <TRButton appearance="outline" intent="info">情報</TRButton>
+  <TRButton appearance="outline" intent="success">成功</TRButton>
+  <TRButton appearance="outline" intent="warning">警告</TRButton>
+  <TRButton appearance="outline" intent="danger">危険</TRButton>
 </div>;
 }`,
     },
@@ -138,16 +138,16 @@ export function OutlineButtonIntents() {
 
 <ComponentExampleTabs
   id="button-ghost-intents"
-  title="Ghost intent"
-  description="情報量の少ない画面で強調を抑えたい操作には ghost ボタンを使います。"
+  title="ゴーストの目的別表示"
+  description="情報量の少ない画面で強調を抑えたい操作にはゴーストボタンを使います。"
   preview={(
     <div className="flex flex-wrap gap-2">
-      <TRButton data-docs-example-item="" appearance="ghost" intent="neutral">Neutral</TRButton>
-      <TRButton data-docs-example-item="" appearance="ghost" intent="primary">Primary</TRButton>
-      <TRButton data-docs-example-item="" appearance="ghost" intent="info">Info</TRButton>
-      <TRButton data-docs-example-item="" appearance="ghost" intent="success">Success</TRButton>
-      <TRButton data-docs-example-item="" appearance="ghost" intent="warning">Warning</TRButton>
-      <TRButton data-docs-example-item="" appearance="ghost" intent="danger">Danger</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="neutral">通常</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="primary">主要</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="info">情報</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="success">成功</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="warning">警告</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="danger">危険</TRButton>
     </div>
   )}
   sources={[
@@ -160,12 +160,12 @@ import { TRButton } from '@tinyrack/ui/components/button';
 
 export function GhostButtonIntents() {
   return <div className="flex flex-wrap gap-2">
-  <TRButton appearance="ghost" intent="neutral">Neutral</TRButton>
-  <TRButton appearance="ghost" intent="primary">Primary</TRButton>
-  <TRButton appearance="ghost" intent="info">Info</TRButton>
-  <TRButton appearance="ghost" intent="success">Success</TRButton>
-  <TRButton appearance="ghost" intent="warning">Warning</TRButton>
-  <TRButton appearance="ghost" intent="danger">Danger</TRButton>
+  <TRButton appearance="ghost" intent="neutral">通常</TRButton>
+  <TRButton appearance="ghost" intent="primary">主要</TRButton>
+  <TRButton appearance="ghost" intent="info">情報</TRButton>
+  <TRButton appearance="ghost" intent="success">成功</TRButton>
+  <TRButton appearance="ghost" intent="warning">警告</TRButton>
+  <TRButton appearance="ghost" intent="danger">危険</TRButton>
 </div>;
 }`,
     },
@@ -274,8 +274,8 @@ export function ButtonStates() {
 アクセシブル名として使い、既存の `aria-labelledby` に代わります。`loading` が
 `false` の場合は、明示した `aria-busy` の値を維持します。
 
-### 以前の variant との互換性
+### 以前のバリアントとの互換性
 
 非推奨の `variant` は以前のコードとの互換性を保つために残しています。
-`secondary` は `neutral` に、`primary` と `danger` は同名の intent に対応します。
+`secondary` は `neutral` に、`primary` と `danger` は同名の `intent` に対応します。
 `intent` を明示すると `variant` より優先されます。

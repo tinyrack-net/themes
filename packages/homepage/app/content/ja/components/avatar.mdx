@@ -1,6 +1,6 @@
 ---
 title: "Avatar"
-description: "決定的なフォールバックコンテンツ、サイズ、形状を備えた ID 画像です。"
+description: "一貫したフォールバックコンテンツ、サイズ、形状を備えたプロフィール画像です。"
 section: components
 order: 2
 ---
@@ -20,7 +20,7 @@ export const unavailableAvatar = 'data:image/png;base64,aW52YWxpZA==';
 | --- | --- | --- |
 | `uiSize` | `sm`, `md`, `lg` | `md` |
 | `shape` | `circle`, `square` | `circle` |
-| parts | `Root`, `Image`, `Fallback` | compound API |
+| パーツ | `Root`、`Image`、`Fallback` | 複合 API |
 
 ## インストール
 
@@ -34,7 +34,7 @@ export const unavailableAvatar = 'data:image/png;base64,aW52YWxpZA==';
 
 <ComponentExampleTabs
   id="avatar-basic"
-  title="fallback 付き画像"
+  title="フォールバック付き画像"
   preview={<TRAvatar.Root data-docs-example-item=""><TRAvatar.Image alt="Tinyrack のサーバーラック" src={avatarFixture} /><TRAvatar.Fallback>TR</TRAvatar.Fallback></TRAvatar.Root>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/avatar.css';
 import { TRAvatar } from '@tinyrack/ui/components/avatar';
@@ -42,7 +42,7 @@ import { TRAvatar } from '@tinyrack/ui/components/avatar';
 const avatarFixture = new URL('./tinyrack-avatar.svg', import.meta.url).href;
 
 <TRAvatar.Root>
-  <TRAvatar.Image alt="Tinyrack server rack" src={avatarFixture} />
+  <TRAvatar.Image alt="Tinyrack のサーバーラック" src={avatarFixture} />
   <TRAvatar.Fallback>TR</TRAvatar.Fallback>
 </TRAvatar.Root>` }]}
 />
@@ -51,8 +51,8 @@ const avatarFixture = new URL('./tinyrack-avatar.svg', import.meta.url).href;
 
 <ComponentExampleTabs
   id="avatar-image-failure"
-  title="画像失敗時の fallback"
-  description="Image の隣に Fallback を置くと、画像を読み込めない場合に認識しやすいイニシャルを表示できます。この data URI はネットワーク要求なしで失敗を再現します。"
+  title="画像読み込み失敗時のフォールバック"
+  description="`Image` の隣に `Fallback` を置くと、画像を読み込めない場合に認識しやすいイニシャルを表示できます。このデータ URI はネットワーク要求なしで失敗を再現します。"
   preview={<TRAvatar.Root data-docs-example-item="" uiSize="lg"><TRAvatar.Image alt="利用できないオペレーターのプロフィール画像" src={unavailableAvatar} /><TRAvatar.Fallback>OP</TRAvatar.Fallback></TRAvatar.Root>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/avatar.css';
 import { TRAvatar } from '@tinyrack/ui/components/avatar';
@@ -60,7 +60,7 @@ import { TRAvatar } from '@tinyrack/ui/components/avatar';
 const unavailableAvatar = 'data:image/png;base64,aW52YWxpZA==';
 
 <TRAvatar.Root uiSize="lg">
-  <TRAvatar.Image alt="Unavailable operator portrait" src={unavailableAvatar} />
+  <TRAvatar.Image alt="利用できないオペレーターのプロフィール画像" src={unavailableAvatar} />
   <TRAvatar.Fallback>OP</TRAvatar.Fallback>
 </TRAvatar.Root>` }]}
 />
@@ -89,7 +89,7 @@ import { TRAvatar } from '@tinyrack/ui/components/avatar';
 <ComponentExampleTabs
   id="avatar-shapes"
   title="形状"
-  description="人物には circle、製品や組織のマークには square を使います。"
+  description="人物には `circle`、製品や組織のマークには `square` を使います。"
   preview={<div className="flex items-center gap-3"><TRAvatar.Root data-docs-example-item=""><TRAvatar.Fallback>TR</TRAvatar.Fallback></TRAvatar.Root><TRAvatar.Root data-docs-example-item="" shape="square"><TRAvatar.Fallback>TR</TRAvatar.Fallback></TRAvatar.Root></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/avatar.css';
 import { TRAvatar } from '@tinyrack/ui/components/avatar';
@@ -104,15 +104,15 @@ import { TRAvatar } from '@tinyrack/ui/components/avatar';
 
 ### Root のオプション
 
-| Prop | 型 | 既定値 | 用途 |
+| プロパティ | 型 | 既定値 | 用途 |
 | --- | --- | --- | --- |
-| `uiSize` | `'sm' \| 'md' \| 'lg'` | `'md'` | Avatar のサイズを設定します。 |
+| `uiSize` | `'sm' \| 'md' \| 'lg'` | `'md'` | アバターのサイズを設定します。 |
 | `shape` | `'circle' \| 'square'` | `'circle'` | アイデンティティの外形を設定します。 |
 
-### 画像と fallback
+### 画像とフォールバック
 
-`Image` は `render`、`ref`、`onLoadingStatusChange` を含むネイティブ画像と Base UI props を転送します。人物を表す画像には意味のある `alt` テキストを使ってください。`Fallback` は Image がない場合または失敗した場合に表示されます。内容は短く認識しやすく保ち、Image の読み込み中のちらつきを避けるには `delay` をミリ秒単位で指定します。
+`Image` は `render`、`ref`、`onLoadingStatusChange` を含むネイティブ画像と Base UI のプロパティを転送します。人物を表す画像には意味のある `alt` テキストを使ってください。`Fallback` は `Image` がない場合や読み込みに失敗した場合に表示されます。内容は短く認識しやすいものにしてください。`Image` の読み込み中のちらつきを避けるには、`delay` をミリ秒単位で指定します。
 
 ### 合成とスタイル
 
-`Root` は Base UI Root props、状態に応じた `className` と `style`、`render`、React 19 `ref` を転送します。コンポーネント単位のスタイルには `--tr-avatar-size`、`--tr-avatar-radius`、`--tr-avatar-background`、`--tr-avatar-border`、`--tr-avatar-color`、`--tr-avatar-font-size`、`--tr-avatar-font-weight` を上書きします。
+`Root` は Base UI のルートプロパティ、状態に応じた `className` と `style`、`render`、React 19 の `ref` を転送します。コンポーネント単位のスタイルを調整するには、`--tr-avatar-size`、`--tr-avatar-radius`、`--tr-avatar-background`、`--tr-avatar-border`、`--tr-avatar-color`、`--tr-avatar-font-size`、`--tr-avatar-font-weight` を上書きします。

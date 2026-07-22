@@ -9,7 +9,7 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/navigation-menu.demo.js';
 
-## Contract
+## 계약
 
 | 판단 기준 | 선택 방법 |
 | --- | --- |
@@ -20,26 +20,26 @@ import * as Stories from '../../../documentation/components/navigation-menu.demo
 
 작업 중심 플라이아웃을 만들고 바로 이동할 목적지는 링크로 유지해요. 사이트 탐색용이며 애플리케이션 명령 메뉴 막대가 아니에요.
 
-## Install
+## 설치
 
 <ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui', imports: ["import '@tinyrack/ui/components/navigation-menu.css';", "import { TRNavigationMenu } from '@tinyrack/ui/components/navigation-menu';"] }]} />
 
-## Playground
+## 플레이그라운드
 
 <ComponentPlayground definition={Stories.playground} />
 
-## Usage
+## 사용법
 
-<ComponentExampleTabs id="navigation-menu-basic" title="사이트 헤더를 탐색해요" previewLayout="stretch" preview={<div data-docs-example-item-count="1"><Stories.NavigationMenuPreview active={false} align="center" disabled={false} locale="ko" navigationLabel="사이트를 탐색해요" openSection="none" orientation="horizontal" side="bottom" /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/link.css';
+<ComponentExampleTabs id="navigation-menu-basic" title="사이트 헤더 탐색" previewLayout="stretch" preview={<div data-docs-example-item-count="1"><Stories.NavigationMenuPreview active={false} align="center" disabled={false} locale="ko" navigationLabel="사이트 탐색" openSection="none" orientation="horizontal" side="bottom" /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/link.css';
 import '@tinyrack/ui/components/navigation-menu.css';
 import { TRNavigationMenu } from '@tinyrack/ui/components/navigation-menu';
 export function SiteHeader() { return <TRNavigationMenu.Root aria-label="사이트를 탐색해요"><TRNavigationMenu.List><TRNavigationMenu.Item><TRNavigationMenu.Link active href="/pricing">요금을 봐요</TRNavigationMenu.Link></TRNavigationMenu.Item></TRNavigationMenu.List></TRNavigationMenu.Root>; }` }]} />
 
-## Examples
+## 예시
 
 ### 목적지 상태를 표시해요
 
-<ComponentExampleTabs id="navigation-menu-states" title="비활성, 현재 위치, 사용 불가" preview={<div data-docs-example-item-count="3"><Stories.NavigationMenuStateComparison /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`export function ControlledNavigation() { const [value, setValue] = useState<string | null>(null); return <TRNavigationMenu.Root value={value} onValueChange={setValue}><TRNavigationMenu.Link active href="/pricing">요금을 봐요</TRNavigationMenu.Link><TRNavigationMenu.Trigger disabled>제품을 열 수 없어요</TRNavigationMenu.Trigger></TRNavigationMenu.Root>; }` }]} />
+<ComponentExampleTabs id="navigation-menu-states" title="비활성, 현재 위치, 사용 불가" preview={<div data-docs-example-item-count="3"><Stories.NavigationMenuStateComparison /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`export function ControlledNavigation() { const [value, setValue] = useState<string | null>(null); return <TRNavigationMenu.Root value={value} onValueChange={setValue}><TRNavigationMenu.Link active href="/pricing">요금 보기</TRNavigationMenu.Link><TRNavigationMenu.Trigger disabled>제품 사용 불가</TRNavigationMenu.Trigger></TRNavigationMenu.Root>; }` }]} />
 
 ### 탐색 방향을 골라요
 

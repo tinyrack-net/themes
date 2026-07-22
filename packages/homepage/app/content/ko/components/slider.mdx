@@ -40,7 +40,7 @@ import '@tinyrack/ui/components/slider.css';
 import { TRSlider } from '@tinyrack/ui/components/slider';
 
 <TRSlider.Root defaultValue={[48]} name="volume">
-  <TRSlider.Label>볼륨이에요</TRSlider.Label>
+  <TRSlider.Label>볼륨</TRSlider.Label>
   <TRSlider.Value />
   <TRSlider.Control>
     <TRSlider.Track><TRSlider.Indicator /></TRSlider.Track>
@@ -83,10 +83,10 @@ import { TRSlider } from '@tinyrack/ui/components/slider';
 
 <div className="grid gap-6 sm:grid-cols-2">
   <TRSlider.Root defaultValue={[48]} name="horizontal-volume">
-    <TRSlider.Label>가로 볼륨이에요</TRSlider.Label><TRSlider.Value /><TRSlider.Control><TRSlider.Track><TRSlider.Indicator /></TRSlider.Track><TRSlider.Thumb aria-label="가로 볼륨이에요" /></TRSlider.Control>
+    <TRSlider.Label>가로 볼륨</TRSlider.Label><TRSlider.Value /><TRSlider.Control><TRSlider.Track><TRSlider.Indicator /></TRSlider.Track><TRSlider.Thumb aria-label="가로 볼륨" /></TRSlider.Control>
   </TRSlider.Root>
   <TRSlider.Root defaultValue={[36]} name="vertical-volume" orientation="vertical">
-    <TRSlider.Label>세로 볼륨이에요</TRSlider.Label><TRSlider.Value /><TRSlider.Control><TRSlider.Track><TRSlider.Indicator /></TRSlider.Track><TRSlider.Thumb aria-label="세로 볼륨이에요" /></TRSlider.Control>
+    <TRSlider.Label>세로 볼륨</TRSlider.Label><TRSlider.Value /><TRSlider.Control><TRSlider.Track><TRSlider.Indicator /></TRSlider.Track><TRSlider.Thumb aria-label="세로 볼륨" /></TRSlider.Control>
   </TRSlider.Root>
 </div>` }]}
 />
@@ -101,7 +101,7 @@ import '@tinyrack/ui/components/slider.css';
 import { TRSlider } from '@tinyrack/ui/components/slider';
 
 <TRSlider.Root defaultValue={[82]} disabled name="volume">
-  <TRSlider.Label>사용할 수 없는 볼륨이에요</TRSlider.Label><TRSlider.Value />
+  <TRSlider.Label>사용할 수 없는 볼륨</TRSlider.Label><TRSlider.Value />
   <TRSlider.Control><TRSlider.Track><TRSlider.Indicator /></TRSlider.Track><TRSlider.Thumb aria-label="사용할 수 없는 볼륨이에요" /></TRSlider.Control>
 </TRSlider.Root>` }]}
 />
@@ -109,7 +109,7 @@ import { TRSlider } from '@tinyrack/ui/components/slider';
 <ComponentExampleTabs
   id="slider-range"
   title="두 thumb 범위"
-  description="Root는 Intl.NumberFormat으로 보이는 값을 형식화하고, 각 Thumb은 보조 기술에 역할을 설명하는 value text를 제공해요."
+  description="Root는 Intl.NumberFormat으로 보이는 값을 형식화하고, 각 Thumb은 보조 기술에 역할을 설명하는 값 텍스트를 제공해요."
   preview={<div data-docs-example-item-count="1"><Stories.SliderRangePreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/slider.css';
@@ -122,7 +122,7 @@ import { TRSlider } from '@tinyrack/ui/components/slider';
   minStepsBetweenValues={10}
   name="window"
 >
-  <TRSlider.Label>유지보수 구간이에요</TRSlider.Label>
+  <TRSlider.Label>유지보수 구간</TRSlider.Label>
   <TRSlider.Value />
   <TRSlider.Control>
     <TRSlider.Track><TRSlider.Indicator /></TRSlider.Track>
@@ -142,7 +142,7 @@ import { TRSlider } from '@tinyrack/ui/components/slider';
 
 <ComponentExampleTabs
   id="slider-form"
-  title="Form 제출"
+  title="폼 제출"
   preview={<div data-docs-example-item-count="1"><Stories.SliderFormPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';
@@ -160,7 +160,7 @@ function VolumeForm() {
   return (
     <TRForm onSubmit={(event) => { event.preventDefault(); setSubmitted(value[0]); }}>
       <TRSlider.Root name="volume" onValueChange={setValue} value={value}>
-        <TRSlider.Label>볼륨이에요</TRSlider.Label><TRSlider.Value /><TRSlider.Control><TRSlider.Track><TRSlider.Indicator /></TRSlider.Track><TRSlider.Thumb aria-label="볼륨이에요" /></TRSlider.Control>
+        <TRSlider.Label>볼륨</TRSlider.Label><TRSlider.Value /><TRSlider.Control><TRSlider.Track><TRSlider.Indicator /></TRSlider.Track><TRSlider.Thumb aria-label="볼륨" /></TRSlider.Control>
       </TRSlider.Root>
       <TRButton type="submit">볼륨을 저장하세요</TRButton>
       <output aria-live="polite">{submitted === null ? '' : '볼륨 ' + submitted + '를 저장했어요.'}</output>
@@ -171,7 +171,7 @@ function VolumeForm() {
 
 <ComponentExampleTabs
   id="slider-validation"
-  title="Field 소유 validation과 focus 복구"
+  title="Field가 소유한 유효성 검사와 포커스 복구"
   description="60% 미만으로 submit해 thumb에 focus하고 오류를 표시하세요. 값을 올려 오류를 지운 다음 다시 submit하세요."
   preview={<div data-docs-example-item-count="1"><Stories.SliderValidationPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useId, useRef, useState } from 'react';
@@ -216,7 +216,7 @@ function CapacitySliderForm() {
           }}
           value={[value]}
         >
-          <TRSlider.Label>예약 용량이에요</TRSlider.Label>
+          <TRSlider.Label>예약 용량</TRSlider.Label>
           <TRSlider.Value />
           <TRSlider.Control>
             <TRSlider.Track><TRSlider.Indicator /></TRSlider.Track>

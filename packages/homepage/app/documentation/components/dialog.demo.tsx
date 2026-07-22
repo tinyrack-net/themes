@@ -60,12 +60,12 @@ export function DialogExample({
       description: '서비스가 다시 시작돼요.',
       initial: '변경 사항을 저장하지 않았어요',
       open: '대화 상자 열기',
-      rack: '랙 이름이에요',
-      rollback: '롤백 메모예요',
+      rack: '랙 이름',
+      rollback: '롤백 메모',
       rollbackValue: '이전 배포를 복원하고 랙 상태를 확인하세요.',
       save: '변경 사항 저장',
       saved: (rack: FormDataEntryValue | null) => `${rack} 이름으로 저장했어요.`,
-      title: '변경 사항을 배포하세요',
+      title: '변경 사항 배포',
       paragraph1:
         '배포를 저장하기 전에 대상 환경, 유지보수 시간, 롤백 담당자를 확인하세요.',
       paragraph2:
@@ -168,15 +168,15 @@ export function DialogHandleExample() {
       'Close',
     ],
     ko: [
-      '분리된 대화 상자를 여세요',
-      '분리된 트리거예요',
-      '공유 handle이 Root 바깥의 트리거를 연결해요.',
-      '닫으세요',
+      '분리된 대화 상자 열기',
+      '분리된 트리거',
+      '공유 핸들이 Root 바깥의 트리거를 연결해요.',
+      '닫기',
     ],
     ja: [
       '分離したダイアログを開く',
       '分離したトリガー',
-      '共有 handle が Root 外のトリガーを接続します。',
+      '共有ハンドルが Root 外のトリガーを接続します。',
       '閉じる',
     ],
   }[locale];

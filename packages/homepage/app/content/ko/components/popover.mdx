@@ -25,7 +25,7 @@ import * as Stories from '../../../documentation/components/popover.demo.js';
 
 ## 사용법
 
-<ComponentExampleTabs id="popover-basic" title="랙 세부 정보예요" preview={<div data-docs-example-item=""><TRPopover.Root><TRPopover.Trigger>랙 세부 정보예요</TRPopover.Trigger><TRPopover.Portal><TRPopover.Positioner sideOffset={8}><TRPopover.Popup><TRPopover.Arrow /><TRPopover.Title>랙 A예요</TRPopover.Title><TRPopover.Description>모든 node가 online이에요.</TRPopover.Description><TRPopover.Close>닫으세요</TRPopover.Close></TRPopover.Popup></TRPopover.Positioner></TRPopover.Portal></TRPopover.Root></div>} sources={[{ label: 'React', language: 'tsx', code: Stories.popoverBasicSourceKo }]} />
+<ComponentExampleTabs id="popover-basic" title="랙 세부 정보" preview={<div data-docs-example-item=""><TRPopover.Root><TRPopover.Trigger>랙 세부 정보</TRPopover.Trigger><TRPopover.Portal><TRPopover.Positioner sideOffset={8}><TRPopover.Popup><TRPopover.Arrow /><TRPopover.Title>랙 A</TRPopover.Title><TRPopover.Description>모든 노드가 온라인이에요.</TRPopover.Description><TRPopover.Close>닫기</TRPopover.Close></TRPopover.Popup></TRPopover.Positioner></TRPopover.Portal></TRPopover.Root></div>} sources={[{ label: 'React', language: 'tsx', code: Stories.popoverBasicSourceKo }]} />
 
 ## 예시
 
@@ -34,17 +34,17 @@ import * as Stories from '../../../documentation/components/popover.demo.js';
   data-docs-example-item-count="4"
   title="배치 방향"
   description="각 trigger가 요청한 방향에 실제 anchored popup을 열고 collision을 처리해요."
-  preview={<div className="flex flex-wrap gap-3" data-docs-example-item-count={4}>{['top', 'right', 'bottom', 'left'].map((side) => <div data-docs-example-item="" key={side}><TRPopover.Root><TRPopover.Trigger>{side} 방향이에요</TRPopover.Trigger><TRPopover.Portal><TRPopover.Positioner side={side} sideOffset={8}><TRPopover.Popup><TRPopover.Arrow /><TRPopover.Title>{side} 방향이에요</TRPopover.Title><TRPopover.Description>고정된 콘텐츠예요.</TRPopover.Description><TRPopover.Close>닫으세요</TRPopover.Close></TRPopover.Popup></TRPopover.Positioner></TRPopover.Portal></TRPopover.Root></div>)}</div>}
+  preview={<div className="flex flex-wrap gap-3" data-docs-example-item-count={4}>{['top', 'right', 'bottom', 'left'].map((side) => <div data-docs-example-item="" key={side}><TRPopover.Root><TRPopover.Trigger>{side} 방향</TRPopover.Trigger><TRPopover.Portal><TRPopover.Positioner side={side} sideOffset={8}><TRPopover.Popup><TRPopover.Arrow /><TRPopover.Title>{side} 방향</TRPopover.Title><TRPopover.Description>고정된 콘텐츠예요.</TRPopover.Description><TRPopover.Close>닫기</TRPopover.Close></TRPopover.Popup></TRPopover.Positioner></TRPopover.Portal></TRPopover.Root></div>)}</div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.popoverSidesSourceKo }]}
 />
 
-<ComponentExampleTabs id="popover-alignments" data-docs-example-item-count="3" title="인라인 정렬" description="side와 별개로 start, center, end를 선택하세요." preview={<Stories.PopoverAlignments />} sources={[{ label: 'React', language: 'tsx', code: Stories.popoverAlignmentsSourceKo }]} />
+<ComponentExampleTabs id="popover-alignments" data-docs-example-item-count="3" title="인라인 정렬" description="`side`와 별개로 `start`, `center`, `end`를 선택하세요." preview={<Stories.PopoverAlignments />} sources={[{ label: 'React', language: 'tsx', code: Stories.popoverAlignmentsSourceKo }]} />
 
 <ComponentExampleTabs
   id="popover-collision-offset"
   data-docs-example-item-count="1"
   title="제어형 lifecycle, collision, offset"
-  description="live state가 제어형 open 변경을 반영하고 side와 alignment offset은 inline edge 근처에서 collision-aware 상태를 유지해요."
+  description="실시간 상태가 제어형 열림 변경을 반영하고 방향과 정렬 오프셋은 인라인 가장자리 근처에서 충돌을 피한 상태를 유지해요."
   previewLayout="stretch"
   preview={<Stories.PopoverControlledLifecycle />}
   sources={[{ label: 'React', language: 'tsx', code: Stories.popoverCollisionSourceKo }]}
@@ -54,7 +54,7 @@ import * as Stories from '../../../documentation/components/popover.demo.js';
   id="popover-handle"
   data-docs-example-item-count="1"
   title="분리된 trigger handle"
-  description="typed handle이 Root 외부의 trigger를 연결하고 payload를 popup 콘텐츠로 전달해요."
+  description="타입이 지정된 `handle`이 Root 외부의 트리거를 연결하고 페이로드를 팝업 콘텐츠로 전달해요."
   preview={<Stories.PopoverHandleExample />}
   sources={[{ label: 'React', language: 'tsx', code: Stories.popoverHandleSourceKo }]}
 />

@@ -9,7 +9,7 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/checkbox.demo.js';
 
-## Contract
+## 계약
 
 | 판단 기준 | 선택 방법 |
 | --- | --- |
@@ -20,15 +20,15 @@ import * as Stories from '../../../documentation/components/checkbox.demo.js';
 
 모든 체크박스에 보이는 레이블이나 접근 가능한 이름을 제공해요. 독립 선택이나 여러 항목을 함께 제출하는 선택에는 체크박스를 쓰고, 여러 체크박스 값을 조정할 때는 `TRCheckboxGroup`을 써요.
 
-## Install
+## 설치
 
 <ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui', imports: ["import '@tinyrack/ui/components/checkbox.css';", "import { TRCheckbox } from '@tinyrack/ui/components/checkbox';"] }]} />
 
-## Playground
+## 플레이그라운드
 
 <ComponentPlayground definition={Stories.playground} />
 
-## Usage
+## 사용법
 
 <ComponentExampleTabs id="checkbox-basic" title="레이블이 있는 선택" preview={<div data-docs-example-item-count="1"><Stories.CheckboxPreview defaultChecked disabled={false} indeterminate={false} label="백업을 사용해요" readOnly={false} required={false} /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/checkbox.css';
 import { TRCheckbox } from '@tinyrack/ui/components/checkbox';
@@ -37,7 +37,7 @@ export function BackupChoice() {
   return <label><TRCheckbox.Root defaultChecked name="backups" value="enabled"><TRCheckbox.Indicator aria-hidden="true">✓</TRCheckbox.Indicator></TRCheckbox.Root> 백업을 사용해요</label>;
 }` }]} />
 
-## Examples
+## 예시
 
 ### 선택 상태를 정해요
 
@@ -65,7 +65,7 @@ export function BackupChoice() {
 
 ### 켜짐과 꺼짐 값을 모두 제출해요
 
-<ComponentExampleTabs id="checkbox-form-values" title="외부 폼에 연결해요" description="숨겨진 입력을 다른 폼에 연결하려면 `form`을 쓰고, 꺼진 상태도 직렬화하려면 `uncheckedValue`를 써요." preview={<div data-docs-example-item-count="1"><Stories.CheckboxFormValuesPreview /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<TRCheckbox.Root form="monitoring-form" name="monitoring" uncheckedValue="사용하지 않아요" value="사용해요"><TRCheckbox.Indicator>✓</TRCheckbox.Indicator></TRCheckbox.Root>` }]} />
+<ComponentExampleTabs id="checkbox-form-values" title="외부 폼 연결" description="숨겨진 입력을 다른 폼에 연결하려면 `form`을 쓰고, 꺼진 상태도 직렬화하려면 `uncheckedValue`를 써요." preview={<div data-docs-example-item-count="1"><Stories.CheckboxFormValuesPreview /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<TRCheckbox.Root form="monitoring-form" name="monitoring" uncheckedValue="미사용" value="사용"><TRCheckbox.Indicator>✓</TRCheckbox.Indicator></TRCheckbox.Root>` }]} />
 
 ## API
 

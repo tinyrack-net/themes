@@ -1,6 +1,6 @@
 ---
 title: "Callout"
-description: "共有 TRAlert サーフェスを基盤にした意味のあるドキュメント通知です。"
+description: "共有の TRAlert サーフェスを基盤にした、意味のあるドキュメント通知です。"
 section: components
 order: 51
 ---
@@ -12,7 +12,7 @@ import * as Stories from '../../../documentation/components/callout.demo.js';
 
 ## コントラクト
 
-Callout は補足ガイダンスを文書の主要な流れから分離します。`note` は背景情報、`tip` は任意の助言、`caution` は回避可能なリスク、`danger` はデータ損失など重大な損害を招く操作に使用します。既定では静的コンテンツであり、ライブ通知ではありません。
+Callout は補足ガイダンスを文書の主要な流れから分離します。`note` は背景情報、`tip` は任意の助言、`caution` は回避可能なリスク、`danger` はデータ損失など重大な損害を招く操作に使用します。既定では静的なコンテンツであり、ライブ通知ではありません。
 
 ## インストール
 
@@ -81,12 +81,12 @@ export function DeploymentCaution() {
 
 ## API
 
-### 内容、variant、HTML
+### 内容、バリアント、HTML
 
-| Prop | 型 | 既定値 | 用途 |
+| プロパティ | 型 | 既定値 | 用途 |
 | --- | --- | --- | --- |
 | `children` | `ReactNode` | 必須 | インラインまたはブロックレベルのガイダンスです。 |
 | `variant` | `'note' \| 'tip' \| 'caution' \| 'danger'` | `'note'` | 意味論的な見出しと視覚表現を選択します。 |
 | `title` | `ReactNode` | バリアント別の見出し | ローカライズを含め、既定の英語見出しを置き換えます。 |
 
-`TRCallout` はネイティブの `div` props、イベント、`className`、`style`、React 19 の `ref` も転送します。動的に挿入する緊急または丁寧な通知には `role="alert"` または `role="status"` を明示してください。静的な文書ガイダンスにはライブリージョンのロールを追加しないでください。
+`TRCallout` はネイティブの `div` プロパティ、イベント、`className`、`style`、React 19 の `ref` も転送します。動的に挿入する緊急または丁寧な通知には `role="alert"` または `role="status"` を明示してください。静的な文書ガイダンスにはライブリージョンのロールを追加しないでください。

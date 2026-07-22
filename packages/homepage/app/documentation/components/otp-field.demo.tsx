@@ -52,7 +52,7 @@ const otpCopy = {
   ko: {
     accepted: '인증 코드를 확인했어요.',
     changed: (value: string, reason: string) =>
-      `${reason} 방식으로 ${value || '빈 값'}을 입력했어요.`,
+      `${reason} 방식으로 입력했어요: ${value || '빈 값'}`,
     completed: (value: string, reason: string) =>
       `${reason} 방식으로 ${value} 입력을 마쳤어요.`,
     current: '현재 값',

@@ -24,17 +24,17 @@ import * as Stories from '../../../documentation/components/drawer.demo.js';
 
 ## 사용법
 
-<ComponentExampleTabs id="drawer-basic" title="기본" preview={<div data-docs-example-item=""><TRDrawer.Root><TRDrawer.Trigger>설정을 여세요</TRDrawer.Trigger><TRDrawer.Portal><TRDrawer.Backdrop /><TRDrawer.Viewport><TRDrawer.Popup><TRDrawer.Content><TRDrawer.Title>랙 설정이에요</TRDrawer.Title><TRDrawer.Description>배포 환경 설정을 변경하세요.</TRDrawer.Description><TRDrawer.Close>닫으세요</TRDrawer.Close></TRDrawer.Content></TRDrawer.Popup></TRDrawer.Viewport></TRDrawer.Portal></TRDrawer.Root></div>} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerBasicSourceKo }]} />
+<ComponentExampleTabs id="drawer-basic" title="기본" preview={<div data-docs-example-item=""><TRDrawer.Root><TRDrawer.Trigger>설정 열기</TRDrawer.Trigger><TRDrawer.Portal><TRDrawer.Backdrop /><TRDrawer.Viewport><TRDrawer.Popup><TRDrawer.Content><TRDrawer.Title>랙 설정</TRDrawer.Title><TRDrawer.Description>배포 환경 설정을 변경하세요.</TRDrawer.Description><TRDrawer.Close>닫기</TRDrawer.Close></TRDrawer.Content></TRDrawer.Popup></TRDrawer.Viewport></TRDrawer.Portal></TRDrawer.Root></div>} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerBasicSourceKo }]} />
 
 ## 예시
 
-<ComponentExampleTabs id="drawer-states" data-docs-example-item-count="1" title="스냅 지점과 중첩 콘텐츠" description="compact, medium, full-height 위치 사이를 드래그해요. 중첩 드로어는 포커스 가두기와 연동되는 들여쓰기를 보여 줘요." preview={<Stories.DrawerPreview activeSnapPoint="compact" label="Snap drawer를 여세요" open={false} swipeDirection="down" />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerSnapPointsSourceKo }]} />
+<ComponentExampleTabs id="drawer-states" data-docs-example-item-count="1" title="스냅 지점과 중첩 콘텐츠" description="`compact`, `medium`, `full-height` 위치 사이를 드래그해요. 중첩 드로어는 포커스 가두기와 연동되는 들여쓰기를 보여 줘요." preview={<Stories.DrawerPreview activeSnapPoint="compact" label="스냅 드로어 열기" open={false} swipeDirection="down" />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerSnapPointsSourceKo }]} />
 
-<ComponentExampleTabs id="drawer-directions" data-docs-example-item-count="4" title="방향" description="swipeDirection을 down, up, left, right로 설정할 수 있어요. popup은 해당 viewport edge에 붙고 같은 방향으로 닫혀요." preview={<Stories.DrawerDirectionPreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerDirectionsSourceKo }]} />
+<ComponentExampleTabs id="drawer-directions" data-docs-example-item-count="4" title="방향" description="`swipeDirection`을 `down`, `up`, `left`, `right`로 설정할 수 있어요. 팝업은 해당 뷰포트 가장자리에 붙고 같은 방향으로 닫혀요." preview={<Stories.DrawerDirectionPreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerDirectionsSourceKo }]} />
 
-<ComponentExampleTabs id="drawer-provider-handle" data-docs-example-item-count="1" title="Provider, detached handle, swipe area" description="Provider는 page indentation을 조정하고 typed detached trigger는 createHandle로 payload를 전달해요. SwipeArea는 viewport edge에서 같은 drawer를 열어요." preview={<Stories.DrawerProviderHandlePreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerProviderHandleSourceKo }]} />
+<ComponentExampleTabs id="drawer-provider-handle" data-docs-example-item-count="1" title="Provider, 분리된 handle, 스와이프 영역" description="Provider는 페이지 들여쓰기를 조정하고 타입이 지정된 분리형 트리거는 `createHandle`로 페이로드를 전달해요. SwipeArea는 뷰포트 가장자리에서 같은 드로어를 열어요." preview={<Stories.DrawerProviderHandlePreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerProviderHandleSourceKo }]} />
 
-<ComponentExampleTabs id="drawer-virtual-keyboard" data-docs-example-item-count="1" title="Virtual keyboard" description="VirtualKeyboardProvider는 mobile virtual keyboard가 visual viewport를 바꿀 때 focused field가 보이도록 유지해요." preview={<Stories.DrawerVirtualKeyboardPreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerVirtualKeyboardSourceKo }]} />
+<ComponentExampleTabs id="drawer-virtual-keyboard" data-docs-example-item-count="1" title="가상 키보드" description="VirtualKeyboardProvider는 모바일 가상 키보드가 시각적 뷰포트를 바꿀 때 포커스된 필드가 보이도록 유지해요." preview={<Stories.DrawerVirtualKeyboardPreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.drawerVirtualKeyboardSourceKo }]} />
 
 ## 구조
 

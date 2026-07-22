@@ -1,6 +1,6 @@
 ---
 title: "Docs Shell"
-description: "route 状態、スクロール、レイアウトモードに対応するレスポンシブなドキュメント chrome です。"
+description: "ルート状態、スクロール、レイアウトモードに対応するレスポンシブなドキュメントシェルです。"
 section: components
 order: 55
 ---
@@ -11,7 +11,7 @@ import * as Stories from '../../../documentation/components/docs-shell.demo.js';
 
 ## コントラクト
 
-`Root`、`Header`、`Brand`、`Actions`、`Sidebar`、`Main`、`Outline` でレスポンシブな shell を構成します。`docs` は desktop navigation と focus が管理された mobile drawer を提供し、`splash` は global header だけを残し、`standalone` は両方の navigation 領域を取り除きます。Router 状態は props だけで渡されます。
+`Root`、`Header`、`Brand`、`Actions`、`Sidebar`、`Main`、`Outline` でレスポンシブなシェルを構成します。`docs` はデスクトップナビゲーションとフォーカス管理されたモバイルドロワーを提供し、`splash` はグローバルヘッダーだけを残し、`standalone` は両方のナビゲーション領域を取り除きます。ルーターの状態はプロパティだけで渡されます。
 
 ## インストール
 
@@ -49,8 +49,8 @@ import * as Stories from '../../../documentation/components/docs-shell.demo.js';
 
 ## API
 
-`Root` には `currentPath` と `locationKey` が必要です。Shell 内の heading scroll には `hash`、scroll 復元には `POP`、`PUSH`、`REPLACE` のいずれかの `navigationKind`、pending progress と `aria-busy` の表示には `pendingPath` を渡します。`layout` は `docs`、`splash`、`standalone` から選びます。
+`Root` には `currentPath` と `locationKey` が必要です。シェル内の見出しへのスクロールには `hash`、スクロール復元には `POP`、`PUSH`、`REPLACE` のいずれかを取る `navigationKind`、保留中の進捗と `aria-busy` の表示には `pendingPath` を渡します。`layout` は `docs`、`splash`、`standalone` から選びます。
 
-`Header`、`Brand`、`Actions`、`Sidebar`、`Outline` は native props、class name、style、ref を保持します。`Main` は inner content 用の `contentClassName` と scroll region の accessible name 用の `viewportLabel` も受け取ります。
+`Header`、`Brand`、`Actions`、`Sidebar`、`Outline` はネイティブプロパティ、クラス名、スタイル、`ref` を保持します。`Main` は内部コンテンツ用の `contentClassName` と、スクロール領域のアクセシブルな名前に使う `viewportLabel` も受け取ります。
 
-制限された preview や application 領域に shell を埋め込む場合は `--tr-docs-shell-block-size` を設定してください。既定値は `100dvh` です。
+制限されたプレビューやアプリケーション領域にシェルを埋め込む場合は、`--tr-docs-shell-block-size` を設定してください。既定値は `100dvh` です。

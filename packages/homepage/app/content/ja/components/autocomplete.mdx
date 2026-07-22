@@ -15,8 +15,8 @@ import * as Stories from '../../../documentation/components/autocomplete.demo.js
 | 軸 | 動作 |
 | --- | --- |
 | 値 | 項目と一致しない場合でも、テキスト値を自由に編集できます。 |
-| 入力の構造 | Label → InputGroup → 任意の InputAdornment + Input + Clear + Trigger の順で、Icon は Trigger 内に配置します。 |
-| ポップアップの構造 | Status が結果を通知し、List にグループ、項目、区切り線、Empty フィードバックを含めます。 |
+| 入力の構造 | `Label` → `InputGroup` → 任意の `InputAdornment` + `Input` + `Clear` + `Trigger` の順で、`Icon` は `Trigger` 内に配置します。 |
+| ポップアップの構造 | `Status` が結果を通知し、`List` にグループ、項目、区切り線、`Empty` のフィードバックを含めます。 |
 
 ## インストール
 
@@ -30,8 +30,8 @@ import * as Stories from '../../../documentation/components/autocomplete.demo.js
 
 <ComponentExampleTabs
   id="autocomplete-basic"
-  title="Rack 検索"
-  preview={<div data-docs-example-item-count="1"><Stories.AutocompletePreview autoHighlight={false} defaultValue="" disabled={false} disabledItem={false} mode="list" openOnInputClick={false} placeholder="Search racks" readOnly={false} required={false} submitOnItemClick={false} /></div>}
+  title="ラック検索"
+  preview={<div data-docs-example-item-count="1"><Stories.AutocompletePreview autoHighlight={false} defaultValue="" disabled={false} disabledItem={false} mode="list" openOnInputClick={false} placeholder="ラックを検索" readOnly={false} required={false} submitOnItemClick={false} /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.autocompleteBasicSource }]}
 />
 
@@ -78,7 +78,7 @@ import * as Stories from '../../../documentation/components/autocomplete.demo.js
 <ComponentExampleTabs
   id="autocomplete-overlay"
   title="オーバーレイの構成"
-  description="Portal はポップアップをコントロール外に配置し、Positioner が位置を合わせます。Escape キーで閉じるとフォーカスが戻ります。"
+  description="`Portal` はポップアップをコントロール外に配置し、`Positioner` が位置を合わせます。Escape キーで閉じるとフォーカスが戻ります。"
   preview={<div data-docs-example-item-count="1"><Stories.AutocompleteOverlayPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.autocompleteBasicSource }]}
 />
@@ -101,4 +101,4 @@ import * as Stories from '../../../documentation/components/autocomplete.demo.js
 
 ## API
 
-`@tinyrack/ui/components/autocomplete` は、`Root`、`Value`、`Trigger`、`Input`、`InputGroup`、`Icon`、`Clear`、`List`、`Status`、`Portal`、`Backdrop`、`Positioner`、`Popup`、`Arrow`、`Group`、`GroupLabel`、`Item`、`Row`、`Collection`、`Empty`、`Separator` という Base UI の完全な構造を export します。`InputAdornment` は Tinyrack が提供する入力装飾パートです。各パートの named export と prop type に加え、Base UI の state、root action/event-detail、filter、filter-option type を `TRAutocomplete*` 名で利用できます。ロケールを考慮した照合には `useAutocompleteFilter`/`TRAutocomplete.useFilter` を使い、`Root` 内でフィルタ済みコレクションを読むには `useAutocompleteFilteredItems`/`TRAutocomplete.useFilteredItems` を使います。
+`@tinyrack/ui/components/autocomplete` は、`Root`、`Value`、`Trigger`、`Input`、`InputGroup`、`Icon`、`Clear`、`List`、`Status`、`Portal`、`Backdrop`、`Positioner`、`Popup`、`Arrow`、`Group`、`GroupLabel`、`Item`、`Row`、`Collection`、`Empty`、`Separator` という Base UI の完全な構造をエクスポートします。`InputAdornment` は Tinyrack が提供する入力装飾パートです。各パートの名前付きエクスポートとプロパティ型に加え、Base UI の状態型、ルートアクション、イベント詳細、フィルター、フィルターオプションの型を `TRAutocomplete*` 名で利用できます。ロケールを考慮した照合には `useAutocompleteFilter` または `TRAutocomplete.useFilter` を使い、`Root` 内でフィルタリング済みのコレクションを読むには `useAutocompleteFilteredItems` または `TRAutocomplete.useFilteredItems` を使います。

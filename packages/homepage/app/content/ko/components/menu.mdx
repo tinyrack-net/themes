@@ -9,7 +9,7 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/menu.demo.js';
 
-## Contract
+## 계약
 
 | 판단 기준 | 선택 방법 |
 | --- | --- |
@@ -20,21 +20,21 @@ import * as Stories from '../../../documentation/components/menu.demo.js';
 
 전용 트리거가 명령을 열 때 메뉴를 써요. 임의의 오른쪽 클릭 대상에는 `TRContextMenu`, 사이트 목적지에는 `TRNavigationMenu`를 써요.
 
-## Install
+## 설치
 
 <ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui', imports: ["import '@tinyrack/ui/components/menu.css';", "import { TRMenu } from '@tinyrack/ui/components/menu';"] }]} />
 
-## Playground
+## 플레이그라운드
 
 <ComponentPlayground definition={Stories.playground} />
 
-## Usage
+## 사용법
 
 <ComponentExampleTabs id="menu-basic" title="작업 메뉴를 열어요" preview={<div data-docs-example-item-count="1"><Stories.MenuBasicPreview /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/menu.css';
 import { TRMenu } from '@tinyrack/ui/components/menu';
 export function ActionMenu() { return <TRMenu.Root><TRMenu.Trigger>작업을 열어요</TRMenu.Trigger><TRMenu.Portal><TRMenu.Positioner><TRMenu.Popup><TRMenu.Item>다시 시작해요</TRMenu.Item><TRMenu.Item>삭제해요</TRMenu.Item></TRMenu.Popup></TRMenu.Positioner></TRMenu.Portal></TRMenu.Root>; }` }]} />
 
-## Examples
+## 예시
 
 ### 명령 의미를 골라요
 

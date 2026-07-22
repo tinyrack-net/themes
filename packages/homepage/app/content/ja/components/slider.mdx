@@ -17,7 +17,7 @@ import * as Stories from '../../../documentation/components/slider.demo.js';
 | value | 単一 slider は数値または 1 要素の配列を受け取り、range は順序付き配列と値ごとに index を指定した Thumb を 1 つ使います。 |
 | range | `min`、`max`、`step`、`minStepsBetweenValues` が pointer と keyboard による変更を制限します。 |
 | form | `name` は現在の thumb 値を native hidden input を通してシリアライズします。 |
-| validation | TRSlider に native `required` はありません。ビジネスルールは `TRField.Root` に置き、`TRField.Error` を表示して無効な thumb に focus します。 |
+| 検証 | TRSlider にネイティブの `required` はありません。ビジネスルールは `TRField.Root` に置き、`TRField.Error` を表示して無効なつまみにフォーカスします。 |
 
 slider が密度の高いコントロールサーフェスの一部である場合は `uiSize="sm"` を使います。
 
@@ -127,7 +127,7 @@ import { TRSlider } from '@tinyrack/ui/components/slider';
   <TRSlider.Control>
     <TRSlider.Track><TRSlider.Indicator /></TRSlider.Track>
     <TRSlider.Thumb
-      aria-label="Start"
+      aria-label="開始"
       getAriaValueText={(formattedValue) => formattedValue + ' で開始します'}
       index={0}
     />

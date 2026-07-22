@@ -164,12 +164,12 @@ const drawerSourceKo = (source: string) =>
     .replaceAll('Open settings', '설정 열기')
     .replaceAll('Rack settings', '랙 설정')
     .replaceAll('Update deployment preferences.', '배포 환경 설정을 변경하세요.')
-    .replaceAll('Open snap drawer', 'Snap drawer를 여세요')
-    .replaceAll('Drag between three snap points.', '세 snap point 사이를 drag해요.')
-    .replaceAll('Side drawer', '측면 drawer예요')
-    .replaceAll('Rack actions', '랙 작업이에요')
-    .replaceAll('Open detached drawer', '분리된 drawer를 여세요')
-    .replaceAll('Edit rack', '랙을 편집하세요')
+    .replaceAll('Open snap drawer', '스냅 드로어 열기')
+    .replaceAll('Drag between three snap points.', '세 스냅 지점 사이를 드래그해요.')
+    .replaceAll('Side drawer', '측면 드로어')
+    .replaceAll('Rack actions', '랙 작업')
+    .replaceAll('Open detached drawer', '분리된 드로어 열기')
+    .replaceAll('Edit rack', '랙 편집')
     .replaceAll('Rack name', '랙 이름')
     .replaceAll('Close', '닫기')
     .replaceAll('Save', '저장');
@@ -178,14 +178,14 @@ const drawerSourceJa = (source: string) =>
     .replaceAll('Open settings', '設定を開く')
     .replaceAll('Rack settings', 'ラック設定')
     .replaceAll('Update deployment preferences.', 'デプロイ設定を更新します。')
-    .replaceAll('Open snap drawer', 'Snap drawer を開く')
+    .replaceAll('Open snap drawer', 'スナップドロワーを開く')
     .replaceAll(
       'Drag between three snap points.',
-      '3 つの snap point 間を drag します。',
+      '3 つのスナップポイント間をドラッグします。',
     )
-    .replaceAll('Side drawer', 'サイド drawer')
+    .replaceAll('Side drawer', 'サイドドロワー')
     .replaceAll('Rack actions', 'ラック操作')
-    .replaceAll('Open detached drawer', '分離した drawer を開く')
+    .replaceAll('Open detached drawer', '分離したドロワーを開く')
     .replaceAll('Edit rack', 'ラックを編集')
     .replaceAll('Rack name', 'ラック名')
     .replaceAll('Close', '閉じる')
@@ -216,17 +216,17 @@ export function DrawerProviderHandlePreview() {
       'Close',
     ],
     ko: [
-      'Provider가 조정하는 페이지 표면이에요',
-      '분리된 랙 작업이에요',
-      '분리된 drawer를 여세요',
-      '트리거와 drawer가 imperative handle을 공유해요.',
-      '닫으세요',
+      '프로바이더가 조정하는 페이지 표면',
+      '분리된 랙 작업',
+      '분리된 드로어 열기',
+      '트리거와 드로어가 명령형 핸들을 공유해요.',
+      '닫기',
     ],
     ja: [
-      'Provider が調整するページ表面',
+      'プロバイダーが調整するページ面',
       '外部トリガーで開くラック操作',
-      '分離した drawer を開く',
-      'トリガーと drawer が imperative handle を共有します。',
+      '分離したドロワーを開く',
+      'トリガーとドロワーが命令型ハンドルを共有します。',
       '閉じる',
     ],
   }[locale];
@@ -292,16 +292,16 @@ export function DrawerPreview({
       title: 'Rack settings',
     },
     ko: {
-      back: '돌아가세요',
-      close: '닫으세요',
-      confirm: '환경을 확인하세요',
+      back: '돌아가기',
+      close: '닫기',
+      confirm: '환경 확인',
       description: '배포 환경 설정을 변경하세요.',
-      environment: '환경이에요',
-      nested: '중첩 drawer는 상위 표면을 들여 써요.',
-      openNested: '중첩 확인을 여세요',
-      production: '프로덕션이에요',
-      staging: '스테이징이에요',
-      title: '랙 설정이에요',
+      environment: '환경',
+      nested: '중첩 드로어는 상위 표면을 들여 써요.',
+      openNested: '중첩 확인 열기',
+      production: '프로덕션',
+      staging: '스테이징',
+      title: '랙 설정',
     },
     ja: {
       back: '戻る',
@@ -309,7 +309,7 @@ export function DrawerPreview({
       confirm: '環境を確認',
       description: 'デプロイ設定を更新します。',
       environment: '環境',
-      nested: 'ネストした drawer は親の表面をインデントします。',
+      nested: 'ネストしたドロワーは親の表面をインデントします。',
       openNested: 'ネストした確認を開く',
       production: '本番',
       staging: 'ステージング',
@@ -406,8 +406,13 @@ export function DrawerDirectionPreview() {
   const locale = useDemoLocale();
   const label = {
     en: 'Open {direction} drawer',
-    ko: '{direction} 방향 drawer를 여세요',
-    ja: '{direction} 方向の drawer を開く',
+    ko: '{direction} 방향 드로어 열기',
+    ja: '{direction}方向のドロワーを開く',
+  }[locale];
+  const directionLabels = {
+    en: { down: 'down', up: 'up', left: 'left', right: 'right' },
+    ko: { down: '아래', up: '위', left: '왼쪽', right: '오른쪽' },
+    ja: { down: '下', up: '上', left: '左', right: '右' },
   }[locale];
   return (
     <div className="grid gap-4 sm:grid-cols-2" data-docs-example-item-count={4}>
@@ -415,7 +420,7 @@ export function DrawerDirectionPreview() {
         <DrawerPreview
           activeSnapPoint="full"
           key={direction}
-          label={label.replace('{direction}', direction)}
+          label={label.replace('{direction}', directionLabels[direction])}
           open={false}
           swipeDirection={direction}
         />
@@ -428,7 +433,7 @@ export function DrawerVirtualKeyboardPreview() {
   const locale = useDemoLocale();
   const copy = {
     en: ['Edit rack', 'Rack name', 'Save'],
-    ko: ['랙을 편집하세요', '랙 이름이에요', '저장하세요'],
+    ko: ['랙 편집', '랙 이름', '저장'],
     ja: ['ラックを編集', 'ラック名', '保存'],
   }[locale];
   return (

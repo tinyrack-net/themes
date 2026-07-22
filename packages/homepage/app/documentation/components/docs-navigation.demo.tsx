@@ -43,9 +43,7 @@ const getItems = (locale: 'en' | 'ko' | 'ja'): readonly TRDocsNavigationItem[] =
 export function DocsNavigationPreview() {
   const locale = useDemoLocale();
   const items = getItems(locale);
-  const label = { en: 'Documentation', ko: '문서 탐색이에요', ja: 'ドキュメント' }[
-    locale
-  ];
+  const label = { en: 'Documentation', ko: '문서 탐색', ja: 'ドキュメント' }[locale];
   return (
     <div className="w-64 max-w-full" data-docs-example-item="">
       <TRDocsNavigation
@@ -61,9 +59,7 @@ export function DocsNavigationPreview() {
 export function DocsNavigationPendingPreview() {
   const locale = useDemoLocale();
   const items = getItems(locale);
-  const label = { en: 'Documentation', ko: '문서 탐색이에요', ja: 'ドキュメント' }[
-    locale
-  ];
+  const label = { en: 'Documentation', ko: '문서 탐색', ja: 'ドキュメント' }[locale];
   return (
     <div className="w-64 max-w-full" data-docs-example-item="">
       <TRDocsNavigation

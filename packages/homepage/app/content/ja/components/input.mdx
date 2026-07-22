@@ -55,9 +55,9 @@ import { TRInput } from '@tinyrack/ui/components/input';
 export function InputSizes() {
   return (
     <div className="grid gap-4">
-      <label>SM input <TRInput placeholder="rack-alpha" uiSize="sm" /></label>
-      <label>MD input <TRInput placeholder="rack-alpha" /></label>
-      <label>LG input <TRInput placeholder="rack-alpha" uiSize="lg" /></label>
+      <label>小 <TRInput placeholder="rack-alpha" uiSize="sm" /></label>
+      <label>中 <TRInput placeholder="rack-alpha" /></label>
+      <label>大 <TRInput placeholder="rack-alpha" uiSize="lg" /></label>
     </div>
   );
 }` }]}
@@ -73,9 +73,9 @@ import { TRInput } from '@tinyrack/ui/components/input';
 export function InputStates() {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      <label>Default <TRInput defaultValue="rack-alpha" /></label>
-      <label>Disabled <TRInput defaultValue="rack-disabled" disabled /></label>
-      <label>Read only <TRInput defaultValue="rack-locked" readOnly /></label>
+      <label>デフォルト <TRInput defaultValue="rack-alpha" /></label>
+      <label>無効 <TRInput defaultValue="rack-disabled" disabled /></label>
+      <label>読み取り専用 <TRInput defaultValue="rack-locked" readOnly /></label>
       <label>
         Invalid
         <TRInput aria-invalid="true" defaultValue="rack duplicate" required />
@@ -134,8 +134,8 @@ export function RequiredInput() {
           value={value}
         />
       </label>
-      {invalid ? <p id={errorId} role="alert">Rack name is required.</p> : null}
-      <TRButton type="submit">Continue</TRButton>
+      {invalid ? <p id={errorId} role="alert">ラック名を入力してください。</p> : null}
+      <TRButton type="submit">続行</TRButton>
       <output aria-live="polite">
         {submitted ? 'Ready to create ' + value + '.' : ''}
       </output>

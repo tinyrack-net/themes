@@ -9,7 +9,7 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/radio-group.demo.js';
 
-## Contract
+## 계약
 
 | 판단 기준 | 선택 방법 |
 | --- | --- |
@@ -21,21 +21,21 @@ import * as Stories from '../../../documentation/components/radio-group.demo.js'
 
 그룹은 값 하나만 선택해요. 두 축 방향키 탐색을 사용하고 공개 `orientation` prop은 없어요. 보이는 방향은 레이아웃 클래스로 정해요.
 
-## Install
+## 설치
 
 <ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui', imports: ["import '@tinyrack/ui/components/radio-group.css';", "import { TRRadioGroup } from '@tinyrack/ui/components/radio-group';", "import { TRRadio } from '@tinyrack/ui/components/radio';"] }]} />
 
-## Playground
+## 플레이그라운드
 
 <ComponentPlayground definition={Stories.playground} />
 
-## Usage
+## 사용법
 
 <ComponentExampleTabs id="radio-group-basic" title="배포 랙을 골라요" preview={<div data-docs-example-item-count="1"><Stories.RadioGroupPreview defaultValue="alpha" disabled={false} label="배포 랙을 골라요" readOnly={false} required={false} /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<TRRadioGroup aria-label="배포 랙을 골라요" defaultValue="alpha" name="rack">
   {racks.map((rack) => <label key={rack.value}><TRRadio.Root value={rack.value}><TRRadio.Indicator /></TRRadio.Root>{rack.label}</label>)}
 </TRRadioGroup>` }]} />
 
-## Examples
+## 예시
 
 ### 전체 선택의 사용 가능 여부를 정해요
 

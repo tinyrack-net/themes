@@ -23,11 +23,11 @@ const getResults = (locale: 'en' | 'ko' | 'ja'): readonly TRDocsSearchResult[] =
     ],
     ko: [
       'UI 패키지를 설치하고 컴포넌트 스타일시트를 불러오세요.',
-      '시작하기예요',
-      '설치해요',
+      '시작하기',
+      '설치',
       '현지화 메시지와 키보드 단축키를 구성하세요.',
-      '가이드예요',
-      '현지화해요',
+      '가이드',
+      '현지화',
     ],
     ja: [
       'UI パッケージをインストールし、コンポーネントのスタイルシートを読み込みます。',
@@ -147,7 +147,7 @@ export function DocsSearchSizes() {
   const locale = useDemoLocale();
   const label = {
     en: 'Search docs',
-    ko: '문서를 검색하세요',
+    ko: '문서 검색',
     ja: 'ドキュメントを検索',
   }[locale];
   return (
@@ -169,7 +169,7 @@ export function DocsSearchSizes() {
 export function DocsSearchCompact() {
   const label = {
     en: 'Search docs',
-    ko: '문서를 검색하세요',
+    ko: '문서 검색',
     ja: 'ドキュメントを検索',
   }[useDemoLocale()];
   return (
@@ -186,7 +186,7 @@ export function DocsSearchCompact() {
 export function DocsSearchDisabled() {
   const label = {
     en: 'Search unavailable',
-    ko: '검색할 수 없어요',
+    ko: '검색 사용 불가',
     ja: '検索できません',
   }[useDemoLocale()];
   return (

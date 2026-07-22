@@ -31,9 +31,9 @@ import { TRSeparator } from '@tinyrack/ui/components/separator';
 export function NetworkOverview() {
   return (
     <section className="grid gap-3">
-      <h3>Overview</h3>
+      <h3>개요</h3>
       <TRSeparator />
-      <p>Network activity is healthy.</p>
+      <p>네트워크 활동이 정상이에요.</p>
     </section>
   );
 }` }]} />
@@ -57,17 +57,17 @@ export function SeparatorOrientations() {
   return (
     <div className="grid gap-6">
       <div className="grid gap-2">
-        <strong>Horizontal</strong>
+        <strong>가로</strong>
         <TRSeparator />
       </div>
       <div className="grid gap-2">
-        <strong>Vertical</strong>
+        <strong>세로</strong>
         <div className="flex h-12 items-center gap-4">
           <span>CPU</span>
           <TRSeparator orientation="vertical" />
-          <span>Memory</span>
+          <span>메모리</span>
           <TRSeparator orientation="vertical" />
-          <span>Storage</span>
+          <span>스토리지</span>
         </div>
       </div>
     </div>
@@ -92,14 +92,14 @@ export function SeparatorSemantics() {
   return (
     <div className="grid gap-4">
       <section className="grid gap-2">
-        <strong>Related settings</strong>
+        <strong>관련 설정</strong>
         <TRSeparator />
-        <span>The separator marks a section boundary.</span>
+        <span>구분선이 섹션 경계를 표시해요.</span>
       </section>
       <div className="grid gap-2">
-        <strong>Decorative accent</strong>
+        <strong>장식용 강조선</strong>
         <TRSeparator role="presentation" />
-        <span>The line adds visual rhythm only.</span>
+        <span>선이 시각적 리듬만 더해요.</span>
       </div>
     </div>
   );
@@ -110,7 +110,7 @@ export function SeparatorSemantics() {
 
 ### 방향과 의미
 
-| Prop | 타입 | 기본값 | 설명 |
+| 속성 | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 시각적 방향과 구분선의 `aria-orientation`을 설정해요. |
 | `role` | `React.AriaRole` | `'separator'` | 순수한 장식용 선에는 `presentation`을 사용해요. 이 경우 구분선 전용 방향 ARIA가 생략돼요. |
@@ -118,4 +118,4 @@ export function SeparatorSemantics() {
 
 ### 합성과 스타일
 
-지원되는 모든 네이티브 `<div>` prop과 `className`, `style`, `ref`가 전달돼요. `--tr-separator-color`, `--tr-separator-thickness`, `--tr-separator-min-length`로 모양을 사용자 지정할 수 있어요.
+지원되는 모든 네이티브 `<div>` 속성과 `className`, `style`, `ref`가 전달돼요. `--tr-separator-color`, `--tr-separator-thickness`, `--tr-separator-min-length`로 모양을 사용자 지정할 수 있어요.

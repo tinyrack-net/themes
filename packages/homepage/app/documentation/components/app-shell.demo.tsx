@@ -34,7 +34,7 @@ type StoryArgs = {
 const getNavigationItems = (locale: 'en' | 'ko' | 'ja') => {
   const labels = {
     en: ['Overview', 'Deployments', 'Services', 'Data stores'],
-    ko: ['개요예요', '배포예요', '서비스예요', '데이터 저장소예요'],
+    ko: ['개요', '배포', '서비스', '데이터 저장소'],
     ja: ['概要', 'デプロイ', 'サービス', 'データストア'],
   }[locale];
   return [GaugeIcon, RocketIcon, BoxesIcon, DatabaseIcon].map((icon, index) => ({
@@ -58,11 +58,11 @@ function WorkspaceSidebar({
       'Platform team',
     ],
     ko: [
-      '사이드바를 전환해요',
-      '탐색을 닫아요',
-      '워크스페이스 페이지예요',
-      '프로덕션 워크스페이스예요',
-      '플랫폼 팀이에요',
+      '사이드바 전환',
+      '탐색 닫기',
+      '워크스페이스 페이지',
+      '프로덕션 워크스페이스',
+      '플랫폼 팀',
     ],
     ja: [
       'サイドバーを切り替える',
@@ -154,13 +154,13 @@ function WorkspaceContent() {
       'Database backup completed',
     ],
     ko: [
-      '정상 서비스예요',
-      '오늘 배포예요',
-      'P95 응답이에요',
-      '시스템 개요예요',
+      '정상 서비스',
+      '오늘 배포',
+      'P95 응답',
+      '시스템 개요',
       '모든 시스템이 정상이에요',
-      '최근 활동이에요',
-      '실시간이에요',
+      '최근 활동',
+      '실시간',
       'api-gateway 배포에 성공했어요',
       '데이터베이스 백업을 마쳤어요',
     ],
@@ -266,9 +266,9 @@ export function AppShellPreview({
       environment: 'Production environment',
     },
     ko: {
-      open: '탐색을 열어요',
-      nav: '예제 탐색이에요',
-      environment: '프로덕션 환경이에요',
+      open: '탐색 열기',
+      nav: '예제 탐색',
+      environment: '프로덕션 환경',
     },
     ja: {
       open: 'ナビゲーションを開く',
@@ -364,36 +364,36 @@ export function AppShellLayoutMatrix() {
     ],
     ko: [
       [
-        '워크스페이스 탐색이에요',
-        '48rem부터 탐색을 펼치고 그 아래에서는 포함형 drawer를 사용해요.',
-        '48rem breakpoint예요',
+        '워크스페이스 탐색',
+        '48rem부터 탐색을 펼치고 그 아래에서는 포함형 드로어를 사용해요.',
+        '48rem 중단점',
       ],
       [
-        '헤더 우선 제품이에요',
+        '헤더 우선 제품',
         '64rem부터 전체 너비 헤더가 탐색과 콘텐츠 위에 있어요.',
-        '64rem breakpoint예요',
+        '64rem 중단점',
       ],
       [
-        '밀도 높은 운영 도구예요',
-        '작은 화면에서도 주요 목적지를 간결한 rail로 유지해요.',
-        '모바일 rail을 유지해요',
+        '밀도 높은 운영 도구',
+        '작은 화면에서도 주요 목적지를 간결한 레일로 유지해요.',
+        '항상 표시되는 모바일 레일',
       ],
     ],
     ja: [
       [
         'ワークスペースナビゲーション',
-        '48rem からナビゲーションを展開し、それ未満では内包された drawer を使います。',
-        '48rem breakpoint',
+        '48rem からナビゲーションを展開し、それ未満では内包されたドロワーを使います。',
+        '48rem ブレークポイント',
       ],
       [
         'ヘッダー優先のプロダクト',
         '64rem から全幅ヘッダーをナビゲーションとコンテンツの上に配置します。',
-        '64rem breakpoint',
+        '64rem ブレークポイント',
       ],
       [
         '高密度な運用ツール',
-        '小さい画面でも主要な移動先をコンパクトな rail として表示します。',
-        '常時表示の mobile rail',
+        '小さい画面でも主要な移動先をコンパクトなレールとして表示します。',
+        '常時表示のモバイルレール',
       ],
     ],
   }[locale];

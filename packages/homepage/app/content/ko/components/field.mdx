@@ -40,7 +40,7 @@ import * as Stories from '../../../documentation/components/field.demo.js';
 
 <ComponentExampleTabs
   id="field-basic"
-  title="label이 있는 이메일 Field"
+  title="레이블이 있는 이메일 필드"
   previewLayout="stretch"
   preview={<Stories.FieldPreview data-docs-example-item="" defaultValue="ops@example.com" disabled={false} invalid={false} label="이메일" required size="md" />}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core.css';
@@ -100,7 +100,7 @@ export function FieldStates() {
 
 <ComponentExampleTabs
   id="field-validation"
-  title="submit, 복구, reset"
+  title="제출, 복구, 초기화"
   description="네이티브 이메일 유효성이 알맞은 오류를 선택하고 Reset이 입력값과 피드백을 복원해요."
   preview={<div data-docs-example-item=""><Stories.FieldValidationPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
@@ -129,7 +129,7 @@ export function EmailValidation() {
 
 <ComponentExampleTabs
   id="field-item-validity"
-  title="Collection item과 native validity"
+  title="컬렉션 항목과 네이티브 유효성"
   description="Item은 옵션과 설명을 배치하고 Validity는 검증 규칙을 중복하지 않고 현재 상태를 보여줘요."
   preview={<div data-docs-example-item=""><Stories.FieldItemValidityPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core.css';
@@ -139,7 +139,7 @@ import '@tinyrack/ui/components/field.css';
 import { TRField } from '@tinyrack/ui/components/field';
 
 export function NotificationChannels() {
-  return <TRField.Root><TRField.Label>알림 channel</TRField.Label>
+  return <TRField.Root><TRField.Label>알림 채널</TRField.Label>
     <TRField.Item><TRCheckbox.Root defaultChecked name="channel" value="email"><TRCheckbox.Indicator aria-hidden="true">✓</TRCheckbox.Indicator></TRCheckbox.Root><div><TRField.Label>이메일</TRField.Label><TRField.Description>배포 결과를 이메일로 보내요.</TRField.Description></div></TRField.Item>
     <TRField.Validity>{(state) => <output>{state.validity.valid === null ? '아직 검증하지 않았어요' : state.validity.valid ? '올바른 값이에요' : '올바르지 않은 값이에요'}</output>}</TRField.Validity>
   </TRField.Root>;

@@ -154,10 +154,10 @@ const popoverSourceKo = (source: string) =>
     .replaceAll('All nodes online.', '모든 노드가 온라인이에요.')
     .replaceAll('Anchored content.', '고정된 콘텐츠예요.')
     .replaceAll('Alignment preview.', '정렬 미리 보기예요.')
-    .replaceAll('Controlled edge popover', '제어형 가장자리 popover예요')
+    .replaceAll('Controlled edge popover', '화면 가장자리의 제어형 팝오버')
     .replaceAll('Collision-aware content.', '충돌을 고려한 콘텐츠예요.')
-    .replaceAll('Rack Delta', '랙 델타예요')
-    .replaceAll('Detached rack details', '분리된 랙 세부 정보예요')
+    .replaceAll('Rack Delta', '랙 델타')
+    .replaceAll('Detached rack details', '외부 트리거로 여는 랙 세부 정보')
     .replaceAll('Opened by an external trigger.', '외부 트리거에서 열었어요.')
     .replaceAll('Close', '닫기');
 const popoverSourceJa = (source: string) =>
@@ -209,13 +209,13 @@ export function PopoverExample({
     },
     ko: {
       close: '닫기',
-      dashboard: '대시보드 테마예요',
-      dark: '어두운 테마예요',
+      dashboard: '대시보드 테마',
+      dark: '어두운 테마',
       description: '모든 노드가 온라인이에요.',
       details: '랙 세부 정보',
-      light: '밝은 테마예요',
-      system: '시스템 테마예요',
-      theme: '테마예요',
+      light: '밝은 테마',
+      system: '시스템 테마',
+      theme: '테마',
       title: '랙 A',
     },
     ja: {
@@ -308,8 +308,8 @@ export function PopoverControlledLifecycle() {
       'closed',
     ],
     ko: [
-      '충돌 처리가 긴 표면을 viewport 안에 유지해요.',
-      '제어형 가장자리 popover예요',
+      '충돌 처리가 긴 표면을 뷰포트 안에 유지해요.',
+      '화면 가장자리의 제어형 팝오버',
       'TRPopover가 ',
       '열려 있어요',
       '닫혀 있어요',
@@ -355,10 +355,10 @@ export function PopoverHandleExample() {
       'Close',
     ],
     ko: [
-      '랙 델타예요',
-      '분리된 랙 세부 정보예요',
+      '랙 델타',
+      '외부 트리거로 여는 랙 세부 정보',
       '외부 트리거에서 열었어요.',
-      '닫으세요',
+      '닫기',
     ],
     ja: [
       'ラックデルタ',

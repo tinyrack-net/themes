@@ -31,8 +31,8 @@ import * as Stories from '../../../documentation/components/form.demo.js';
 
 <ComponentExampleTabs
   id="form-basic"
-  title="native FormData와 reset"
-  description="Submit은 FormData에서 이름이 지정된 input을 읽어요. Reset은 초기 비제어 값을 복원하고 제출 결과를 지워요."
+  title="네이티브 FormData와 초기화"
+  description="제출하면 FormData에서 이름이 지정된 입력을 읽어요. 초기화하면 최초 비제어 값을 복원하고 제출 결과를 지워요."
   preview={<div data-docs-example-item=""><Stories.FormNativeValuesPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';
@@ -120,7 +120,7 @@ function RequiredRackForm() {
 
 <ComponentExampleTabs
   id="form-server-errors"
-  title="server 오류와 복구"
+  title="서버 오류와 복구"
   description="랙 알파가 서버 거부를 재현해요. 편집하면 TRField 오류가 지워지고 다시 제출하면 성공해요. 네이티브 reset은 값과 결과 상태를 모두 지워요."
   preview={<div data-docs-example-item=""><Stories.FormServerErrorPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
@@ -198,8 +198,8 @@ export function RackForm() {
       <TRField.Control required />
       <TRField.Error match="valueMissing">리전을 입력해요.</TRField.Error>
     </TRField.Root>
-    <TRButton onClick={() => actionsRef.current?.validate('rack')} type="button">랙을 검증해요</TRButton>
-    <TRButton onClick={() => actionsRef.current?.validate()} type="button">모두 검증해요</TRButton>
+    <TRButton onClick={() => actionsRef.current?.validate('rack')} type="button">랙 검증</TRButton>
+    <TRButton onClick={() => actionsRef.current?.validate()} type="button">모두 검증</TRButton>
     <TRButton type="submit">제출해요</TRButton>
     <output aria-live="polite">{result}</output>
   </TRForm>;

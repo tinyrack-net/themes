@@ -34,7 +34,7 @@ trigger가 밀도 높은 컨트롤 표면에 속하면 `TRSelect.Trigger uiSize=
 
 <ComponentExampleTabs
   id="select-basic"
-  title="group으로 묶은 배포 rack"
+  title="그룹으로 묶은 배포 랙"
   preview={<Stories.SelectPreview data-docs-example-item="" defaultValue="alpha" disabled={false} disabledItem readOnly={false} />}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/select.css';
@@ -44,7 +44,7 @@ import { ChevronDown } from 'lucide-react';
 const racks = { alpha: '랙 알파예요', beta: '랙 베타예요', gamma: '랙 감마예요', staging: '스테이징 랙이에요' };
 
 <TRSelect.Root defaultValue="alpha" items={racks} name="rack">
-  <TRSelect.Label>배포 랙이에요</TRSelect.Label>
+  <TRSelect.Label>배포 랙</TRSelect.Label>
   <TRSelect.Trigger aria-label="배포 랙이에요">
     <TRSelect.Value placeholder="랙을 선택하세요" />
     <TRSelect.Icon aria-hidden="true"><ChevronDown /></TRSelect.Icon>
@@ -87,7 +87,7 @@ import { TRSelect } from '@tinyrack/ui/components/select';
 
 {(['sm', 'md', 'lg'] as const).map((uiSize) => (
   <TRSelect.Root defaultValue="alpha" items={{ alpha: '랙 알파' }} key={uiSize}>
-    <TRSelect.Label>{uiSize.toUpperCase() + ' 배포 랙이에요'}</TRSelect.Label>
+    <TRSelect.Label>{uiSize.toUpperCase() + ' 배포 랙'}</TRSelect.Label>
     <TRSelect.Trigger uiSize={uiSize}><TRSelect.Value /></TRSelect.Trigger>
     <TRSelect.Portal><TRSelect.Positioner><TRSelect.Popup><TRSelect.List>
       <TRSelect.Item value="alpha"><TRSelect.ItemText>랙 알파예요</TRSelect.ItemText></TRSelect.Item>
@@ -130,7 +130,7 @@ function RackSelectForm() {
     <TRForm className="grid w-full max-w-80 min-w-0 gap-3" noValidate onSubmit={(event) => { event.preventDefault(); setAttempted(true); event.currentTarget.checkValidity(); }}>
       <TRField.Root invalid={invalid}>
         <TRSelect.Root items={racks} name="rack" onValueChange={setValue} required value={value}>
-          <TRSelect.Label>배포 랙이에요</TRSelect.Label>
+          <TRSelect.Label>배포 랙</TRSelect.Label>
           <TRSelect.Trigger aria-label="배포 랙이에요"><TRSelect.Value placeholder="랙을 선택하세요" /><TRSelect.Icon aria-hidden="true"><ChevronDown /></TRSelect.Icon></TRSelect.Trigger>
           <TRSelect.Portal><TRSelect.Positioner sideOffset={8}><TRSelect.Popup><TRSelect.Arrow /><TRSelect.ScrollUpArrow aria-label="위로 스크롤하세요">↑</TRSelect.ScrollUpArrow><TRSelect.List>
             <TRSelect.Group><TRSelect.GroupLabel>프로덕션이에요</TRSelect.GroupLabel>
@@ -154,7 +154,7 @@ function RackSelectForm() {
 <ComponentExampleTabs
   id="select-long-collection"
   title="길게 스크롤되는 collection"
-  description="popup을 열어 제한된 height, scroll arrow, 긴 label과 강조된 focus 처리를 확인하세요."
+  description="팝업을 열어 제한된 높이, 스크롤 화살표, 긴 레이블과 강조된 포커스 처리를 확인하세요."
   preview={<div data-docs-example-item-count="1"><Stories.SelectLongCollection /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/select.css';
@@ -169,7 +169,7 @@ const racks = Object.fromEntries(
 );
 
 <TRSelect.Root defaultValue="rack-1" items={racks}>
-  <TRSelect.Label>긴 랙 목록이에요</TRSelect.Label>
+  <TRSelect.Label>긴 랙 목록</TRSelect.Label>
   <TRSelect.Trigger aria-label="긴 랙 목록이에요">
     <TRSelect.Value /><TRSelect.Icon aria-hidden="true"><ChevronDown /></TRSelect.Icon>
   </TRSelect.Trigger>

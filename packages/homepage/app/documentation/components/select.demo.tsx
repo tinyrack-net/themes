@@ -60,19 +60,19 @@ const copy = {
     beta: '랙 베타',
     gamma: '랙 감마',
     rackPrefix: '랙',
-    deploy: '배포하세요',
+    deploy: '배포',
     deploymentRack: '배포 랙',
     disabled: '사용 불가',
     editable: '편집 가능',
     longCollection: '긴 랙 목록',
     nonProduction: '비프로덕션',
     offline: '오프라인',
-    placeholder: '랙을 선택하세요',
+    placeholder: '랙 선택',
     production: '프로덕션',
     readOnly: '읽기 전용',
     required: '배포할 랙을 선택하세요.',
-    scrollDown: '아래로 스크롤하세요',
-    scrollUp: '위로 스크롤하세요',
+    scrollDown: '아래로 스크롤',
+    scrollUp: '위로 스크롤',
     staging: '스테이징 랙',
     ready: (rack: string) => `${rack}에 배포할 준비가 됐어요.`,
     zone: '서울 가용 영역',
@@ -396,7 +396,7 @@ export const selectStatesSourceKo = selectStatesSource
   .replaceAll('Rack Beta', '랙 베타')
   .replaceAll('Rack Gamma', '랙 감마')
   .replaceAll('Staging rack', '스테이징 랙')
-  .replaceAll('Choose a rack', '랙을 선택하세요')
+  .replaceAll('Choose a rack', '랙 선택')
   .replaceAll('Production', '프로덕션')
   .replaceAll('Non-production', '비프로덕션')
   .replaceAll('Offline', '오프라인')

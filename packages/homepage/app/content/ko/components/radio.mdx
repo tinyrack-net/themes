@@ -9,7 +9,7 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/radio.demo.js';
 
-## Contract
+## 계약
 
 | 판단 기준 | 선택 방법 |
 | --- | --- |
@@ -20,21 +20,21 @@ import * as Stories from '../../../documentation/components/radio.demo.js';
 
 라디오는 단독 불리언 컨트롤이 아니에요. 하나의 독립 값을 켜고 끌 수 있다면 `TRCheckbox`나 `TRSwitch`를 써요.
 
-## Install
+## 설치
 
 <ComponentInstall surfaces={[{ label: 'React', install: 'pnpm add @tinyrack/ui', imports: ["import '@tinyrack/ui/components/radio.css';", "import { TRRadio } from '@tinyrack/ui/components/radio';", "import { TRRadioGroup } from '@tinyrack/ui/components/radio-group';"] }]} />
 
-## Playground
+## 플레이그라운드
 
 <ComponentPlayground definition={Stories.playground} />
 
-## Usage
+## 사용법
 
 <ComponentExampleTabs id="radio-basic" title="지원 요금제를 골라요" preview={<div data-docs-example-item-count="1"><Stories.RadioPlanExample /></div>} sources={[{ label: 'React', language: 'tsx', code: String.raw`<TRRadioGroup aria-label="지원 요금제를 골라요" defaultValue="standard" name="support-plan">
   {plans.map((plan) => <label key={plan.value}><TRRadio.Root value={plan.value}><TRRadio.Indicator aria-hidden="true" /></TRRadio.Root>{plan.label}</label>)}
 </TRRadioGroup>` }]} />
 
-## Examples
+## 예시
 
 ### 선택 상태를 보여줘요
 
@@ -57,7 +57,7 @@ import * as Stories from '../../../documentation/components/radio.demo.js';
 
 ## API
 
-### Root
+### `Root` 속성
 
 | Prop | 타입 / 기본값 | 용도 |
 | --- | --- | --- |

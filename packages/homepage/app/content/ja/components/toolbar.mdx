@@ -51,11 +51,11 @@ import * as Stories from '../../../documentation/components/toolbar.demo.js';
 ### 構造
 
 ```tsx
-<TRToolbar.Root aria-label="Editor controls">
-  <TRToolbar.Group aria-label="Formatting"><TRToolbar.Button>Bold</TRToolbar.Button></TRToolbar.Group>
+<TRToolbar.Root aria-label="エディターのコントロール">
+  <TRToolbar.Group aria-label="書式設定"><TRToolbar.Button>太字</TRToolbar.Button></TRToolbar.Group>
   <TRToolbar.Separator />
-  <TRToolbar.Link href="#help">Help</TRToolbar.Link>
-  <TRToolbar.Input aria-label="Document title" />
+  <TRToolbar.Link href="#help">ヘルプ</TRToolbar.Link>
+  <TRToolbar.Input aria-label="ドキュメントタイトル" />
 </TRToolbar.Root>
 ```
 
@@ -63,7 +63,7 @@ import * as Stories from '../../../documentation/components/toolbar.demo.js';
 
 ### Root のプロパティ
 
-| Prop | Type | デフォルト | 用途 |
+| プロパティ | 型 | 既定値 | 用途 |
 | --- | --- | --- | --- |
 | `orientation` | `horizontal \| vertical` | `horizontal` | Left/Right または Up/Down の roving navigation を選択します。 |
 | `loopFocus` | `boolean` | `true` | 両端で keyboard focus を循環します。 |
@@ -76,7 +76,7 @@ import * as Stories from '../../../documentation/components/toolbar.demo.js';
 
 ### 外観
 
-| Token | Fallback | 用途 |
+| トークン | フォールバック | 用途 |
 | --- | --- | --- |
 | `--tr-toolbar-background` | `--tinyrack-surface` | ツールバーの背景。 |
 | `--tr-toolbar-border` | `--tinyrack-border` | ツールバーの境界線。 |

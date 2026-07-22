@@ -31,9 +31,9 @@ import { TRSeparator } from '@tinyrack/ui/components/separator';
 export function NetworkOverview() {
   return (
     <section className="grid gap-3">
-      <h3>Overview</h3>
+      <h3>概要</h3>
       <TRSeparator />
-      <p>Network activity is healthy.</p>
+      <p>ネットワークは正常に稼働しています。</p>
     </section>
   );
 }` }]} />
@@ -57,17 +57,17 @@ export function SeparatorOrientations() {
   return (
     <div className="grid gap-6">
       <div className="grid gap-2">
-        <strong>Horizontal</strong>
+        <strong>横</strong>
         <TRSeparator />
       </div>
       <div className="grid gap-2">
-        <strong>Vertical</strong>
+        <strong>縦</strong>
         <div className="flex h-12 items-center gap-4">
           <span>CPU</span>
           <TRSeparator orientation="vertical" />
-          <span>Memory</span>
+          <span>メモリ</span>
           <TRSeparator orientation="vertical" />
-          <span>Storage</span>
+          <span>ストレージ</span>
         </div>
       </div>
     </div>
@@ -92,14 +92,14 @@ export function SeparatorSemantics() {
   return (
     <div className="grid gap-4">
       <section className="grid gap-2">
-        <strong>Related settings</strong>
+        <strong>関連設定</strong>
         <TRSeparator />
-        <span>The separator marks a section boundary.</span>
+        <span>区切り線はセクションの境界を示します。</span>
       </section>
       <div className="grid gap-2">
-        <strong>Decorative accent</strong>
+        <strong>装飾的なアクセント</strong>
         <TRSeparator role="presentation" />
-        <span>The line adds visual rhythm only.</span>
+        <span>線は視覚的なリズムだけを加えます。</span>
       </div>
     </div>
   );
@@ -110,7 +110,7 @@ export function SeparatorSemantics() {
 
 ### 向き、セマンティクス、合成
 
-| Prop | 型 | 既定値 | 説明 |
+| プロパティ | 型 | 既定値 | 説明 |
 | --- | --- | --- | --- |
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | 視覚的な方向と区切りの `aria-orientation` を設定します。 |
 | `role` | `React.AriaRole` | `'separator'` | 純粋に装飾的な線には `presentation` を使用します。この場合、区切り専用の方向 ARIA は省略されます。 |

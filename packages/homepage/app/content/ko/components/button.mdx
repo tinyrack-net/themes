@@ -45,7 +45,7 @@ import * as Stories from '../../../documentation/components/button.demo.js';
 <ComponentExampleTabs
   id="button-basic"
   title="기본 동작"
-  description="주요 동작에는 primary를 지정하세요. TRButton은 기본적으로 HTML 버튼 요소를 렌더링해요."
+  description="주요 동작에는 `primary`를 지정하세요. TRButton은 기본적으로 HTML 버튼 요소를 렌더링해요."
   preview={<TRButton data-docs-example-item="" intent="primary">변경 사항 배포</TRButton>}
   sources={[
     {
@@ -66,16 +66,16 @@ export function DeployAction() {
 
 <ComponentExampleTabs
   id="button-solid-intents"
-  title="Solid intent"
-  description="가장 강한 강조가 필요한 동작에는 solid 버튼을 사용하세요."
+  title="채움형 버튼의 의도"
+  description="가장 강한 강조가 필요한 동작에는 `solid` 버튼을 사용하세요."
   preview={(
     <div className="flex flex-wrap gap-2">
-      <TRButton data-docs-example-item="" appearance="solid" intent="neutral">Neutral</TRButton>
-      <TRButton data-docs-example-item="" appearance="solid" intent="primary">Primary</TRButton>
-      <TRButton data-docs-example-item="" appearance="solid" intent="info">Info</TRButton>
-      <TRButton data-docs-example-item="" appearance="solid" intent="success">Success</TRButton>
-      <TRButton data-docs-example-item="" appearance="solid" intent="warning">Warning</TRButton>
-      <TRButton data-docs-example-item="" appearance="solid" intent="danger">Danger</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="neutral">일반</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="primary">주요</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="info">정보</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="success">성공</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="warning">경고</TRButton>
+      <TRButton data-docs-example-item="" appearance="solid" intent="danger">위험</TRButton>
     </div>
   )}
   sources={[
@@ -88,12 +88,12 @@ import { TRButton } from '@tinyrack/ui/components/button';
 
 export function SolidButtonIntents() {
   return <div className="flex flex-wrap gap-2">
-  <TRButton appearance="solid" intent="neutral">Neutral</TRButton>
-  <TRButton appearance="solid" intent="primary">Primary</TRButton>
-  <TRButton appearance="solid" intent="info">Info</TRButton>
-  <TRButton appearance="solid" intent="success">Success</TRButton>
-  <TRButton appearance="solid" intent="warning">Warning</TRButton>
-  <TRButton appearance="solid" intent="danger">Danger</TRButton>
+  <TRButton appearance="solid" intent="neutral">일반</TRButton>
+  <TRButton appearance="solid" intent="primary">주요</TRButton>
+  <TRButton appearance="solid" intent="info">정보</TRButton>
+  <TRButton appearance="solid" intent="success">성공</TRButton>
+  <TRButton appearance="solid" intent="warning">경고</TRButton>
+  <TRButton appearance="solid" intent="danger">위험</TRButton>
 </div>;
 }`,
     },
@@ -102,16 +102,16 @@ export function SolidButtonIntents() {
 
 <ComponentExampleTabs
   id="button-outline-intents"
-  title="Outline intent"
-  description="눈에 띄어야 하지만 강조를 낮춰야 하는 동작에는 outline 버튼을 사용하세요."
+  title="윤곽선 버튼의 의도"
+  description="눈에 띄어야 하지만 강조를 낮춰야 하는 동작에는 `outline` 버튼을 사용하세요."
   preview={(
     <div className="flex flex-wrap gap-2">
-      <TRButton data-docs-example-item="" appearance="outline" intent="neutral">Neutral</TRButton>
-      <TRButton data-docs-example-item="" appearance="outline" intent="primary">Primary</TRButton>
-      <TRButton data-docs-example-item="" appearance="outline" intent="info">Info</TRButton>
-      <TRButton data-docs-example-item="" appearance="outline" intent="success">Success</TRButton>
-      <TRButton data-docs-example-item="" appearance="outline" intent="warning">Warning</TRButton>
-      <TRButton data-docs-example-item="" appearance="outline" intent="danger">Danger</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="neutral">일반</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="primary">주요</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="info">정보</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="success">성공</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="warning">경고</TRButton>
+      <TRButton data-docs-example-item="" appearance="outline" intent="danger">위험</TRButton>
     </div>
   )}
   sources={[
@@ -124,12 +124,12 @@ import { TRButton } from '@tinyrack/ui/components/button';
 
 export function OutlineButtonIntents() {
   return <div className="flex flex-wrap gap-2">
-  <TRButton appearance="outline" intent="neutral">Neutral</TRButton>
-  <TRButton appearance="outline" intent="primary">Primary</TRButton>
-  <TRButton appearance="outline" intent="info">Info</TRButton>
-  <TRButton appearance="outline" intent="success">Success</TRButton>
-  <TRButton appearance="outline" intent="warning">Warning</TRButton>
-  <TRButton appearance="outline" intent="danger">Danger</TRButton>
+  <TRButton appearance="outline" intent="neutral">일반</TRButton>
+  <TRButton appearance="outline" intent="primary">주요</TRButton>
+  <TRButton appearance="outline" intent="info">정보</TRButton>
+  <TRButton appearance="outline" intent="success">성공</TRButton>
+  <TRButton appearance="outline" intent="warning">경고</TRButton>
+  <TRButton appearance="outline" intent="danger">위험</TRButton>
 </div>;
 }`,
     },
@@ -138,16 +138,16 @@ export function OutlineButtonIntents() {
 
 <ComponentExampleTabs
   id="button-ghost-intents"
-  title="Ghost intent"
-  description="복잡하지 않은 화면에서 강조가 낮은 동작에는 ghost 버튼을 사용하세요."
+  title="투명형 버튼의 의도"
+  description="복잡하지 않은 화면에서 강조가 낮은 동작에는 `ghost` 버튼을 사용하세요."
   preview={(
     <div className="flex flex-wrap gap-2">
-      <TRButton data-docs-example-item="" appearance="ghost" intent="neutral">Neutral</TRButton>
-      <TRButton data-docs-example-item="" appearance="ghost" intent="primary">Primary</TRButton>
-      <TRButton data-docs-example-item="" appearance="ghost" intent="info">Info</TRButton>
-      <TRButton data-docs-example-item="" appearance="ghost" intent="success">Success</TRButton>
-      <TRButton data-docs-example-item="" appearance="ghost" intent="warning">Warning</TRButton>
-      <TRButton data-docs-example-item="" appearance="ghost" intent="danger">Danger</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="neutral">일반</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="primary">주요</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="info">정보</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="success">성공</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="warning">경고</TRButton>
+      <TRButton data-docs-example-item="" appearance="ghost" intent="danger">위험</TRButton>
     </div>
   )}
   sources={[
@@ -160,12 +160,12 @@ import { TRButton } from '@tinyrack/ui/components/button';
 
 export function GhostButtonIntents() {
   return <div className="flex flex-wrap gap-2">
-  <TRButton appearance="ghost" intent="neutral">Neutral</TRButton>
-  <TRButton appearance="ghost" intent="primary">Primary</TRButton>
-  <TRButton appearance="ghost" intent="info">Info</TRButton>
-  <TRButton appearance="ghost" intent="success">Success</TRButton>
-  <TRButton appearance="ghost" intent="warning">Warning</TRButton>
-  <TRButton appearance="ghost" intent="danger">Danger</TRButton>
+  <TRButton appearance="ghost" intent="neutral">일반</TRButton>
+  <TRButton appearance="ghost" intent="primary">주요</TRButton>
+  <TRButton appearance="ghost" intent="info">정보</TRButton>
+  <TRButton appearance="ghost" intent="success">성공</TRButton>
+  <TRButton appearance="ghost" intent="warning">경고</TRButton>
+  <TRButton appearance="ghost" intent="danger">위험</TRButton>
 </div>;
 }`,
     },
@@ -205,7 +205,7 @@ export function ButtonUiSizes() {
 <ComponentExampleTabs
   id="button-states"
   title="상태"
-  description="동작을 사용할 수 없을 때는 disabled를, 진행 중일 때는 loading을 사용하세요."
+  description="동작을 사용할 수 없을 때는 `disabled`를, 진행 중일 때는 `loading`을 사용하세요."
   preview={(
     <div className="flex flex-wrap items-center gap-3">
       <TRButton data-docs-example-item="">변경 사항 배포</TRButton>

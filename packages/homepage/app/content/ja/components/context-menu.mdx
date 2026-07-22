@@ -13,9 +13,9 @@ import * as Stories from '../../../documentation/components/context-menu.demo.js
 
 | 判断軸 | 選択肢 |
 | --- | --- |
-| 対象 | 右クリック、長押し、Shift+F10、Context Menu キーを受けるフォーカス可能な `Trigger` |
+| 対象 | 右クリック、長押し、Shift+F10、コンテキストメニューキーを受けるフォーカス可能な `Trigger` |
 | 項目 | 有効、無効、ナビゲーションリンク、値を維持する選択項目 |
-| variant | 通常は `default`、破壊的な操作は `danger` |
+| バリアント | 通常は `default`、破壊的な操作は `danger` |
 | 位置 | 通常はポインター座標、必要に応じて `Positioner.anchor` を明示します。 |
 | タッチ | 同じコマンドを開く表示ボタンを用意します。 |
 
@@ -58,10 +58,10 @@ import * as Stories from '../../../documentation/components/context-menu.demo.js
 ## API
 
 ### `TRContextMenu.Root`
-`open` / `defaultOpen`、`onOpenChange`、方向、フォーカス循環、モダリティ、ルートの `disabled` を制御します。変更詳細と root action の公開型も利用できます。
+`open` / `defaultOpen`、`onOpenChange`、方向、フォーカス循環、モダリティ、ルートの `disabled` を制御します。変更の詳細とルートアクションの公開型も利用できます。
 
 ### `TRContextMenu.Trigger`
-コンテキスト対象です。Shift+F10 と Context Menu キーのためにフォーカス可能にします。
+コンテキスト対象です。Shift+F10 とコンテキストメニューキーで開けるように、フォーカス可能にします。
 
 ### `TRContextMenu.Portal`
 オーバーレイを `document.body` またはカスタムコンテナへ移し、`keepMounted` をサポートします。
@@ -70,7 +70,7 @@ import * as Stories from '../../../documentation/components/context-menu.demo.js
 透明なモーダル操作レイヤーです。
 
 ### `TRContextMenu.Positioner`
-ポインターまたはキーボード座標を使います。`anchor` は座標を上書きし、ネスト時は submenu trigger に配置します。
+ポインターまたはキーボード座標を使います。`anchor` は座標を上書きし、ネスト時はサブメニューのトリガーに配置します。
 
 ### `TRContextMenu.Popup`
 ロービングフォーカス、タイプアヘッド、制限付きスクロールを持つメニュー面です。
@@ -106,7 +106,7 @@ import * as Stories from '../../../documentation/components/context-menu.demo.js
 選択時に表示され、マウントを維持できます。
 
 ### `TRContextMenu.SubmenuRoot`
-ネストした open 状態と Escape 動作を所有します。
+ネストした開閉状態と Escape キーの動作を管理します。
 
 ### `TRContextMenu.SubmenuTrigger`
 ポインターまたはキーボードでサブメニューを開きます。
@@ -114,4 +114,4 @@ import * as Stories from '../../../documentation/components/context-menu.demo.js
 ### `TRContextMenu.Separator`
 コマンドグループを視覚的に分けます。
 
-すべてのパーツ、prop 型、状態型を公開し、Base UI の render 合成、ref、ネイティブ prop、イベント、状態 data 属性を維持します。CSS は明示的に読み込みます。
+すべてのパーツ、プロパティ型、状態型を公開し、Base UI の `render` 合成、`ref`、ネイティブプロパティ、イベント、状態を表すデータ属性を維持します。CSS は明示的に読み込みます。

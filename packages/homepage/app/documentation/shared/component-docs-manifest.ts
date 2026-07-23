@@ -580,6 +580,25 @@ export const componentDocsManifest = [
     title: 'Tabs',
   },
   {
+    capabilities: ['overflow'],
+    file: 'app/content/en/components/text.mdx',
+    id: 'text',
+    controls: ['align', 'children', 'color', 'truncate', 'variant'],
+    exampleGroups: [
+      exampleGroup('text-basic', 'usage', 'basic', 1),
+      exampleGroup('text-type-roles', 'examples', 'series', 3, 9),
+      exampleGroup('text-semantic-color', 'examples', 'series', 3, 9),
+      exampleGroup('text-alignment-and-truncation', 'examples', 'recipe', 2, 2),
+    ],
+    requiredExamples: [
+      'text-basic',
+      'text-type-roles',
+      'text-semantic-color',
+      'text-alignment-and-truncation',
+    ],
+    title: 'Text',
+  },
+  {
     capabilities: ['responsive', 'keyboard', 'stateful', 'overlay'],
     file: 'app/content/en/components/toast.mdx',
     id: 'toast',

@@ -11,13 +11,13 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/dialog.demo.js';
 
-## 계약
+## 핵심 속성
 
-| 축 | 값 | 기본값 |
+| 속성 | 값 | 기본값 |
 | --- | --- | --- |
-| `placement` on `Popup` | `middle`, `top`, `bottom`, `start`, `end` | `middle` |
-| `modal` on `Root` | focus trap and scroll lock when true | `true` |
-| state | controlled `open` or uncontrolled `defaultOpen` | closed |
+| `Popup`의 `placement` | `middle`, `top`, `bottom`, `start`, `end` | `middle` |
+| `Root`의 `modal` | `true`이면 초점을 가두고 스크롤을 잠가요 | `true` |
+| 상태 | 제어형 `open` 또는 비제어형 `defaultOpen` | 닫힘 |
 
 ## 설치
 
@@ -76,7 +76,7 @@ const placements: TRDialogPlacement[] = ['middle', 'top', 'bottom', 'start', 'en
   id="dialog-handle"
   data-docs-example-item-count="1"
   title="분리된 trigger handle"
-  description="안정적인 handle이 공통 ancestor를 공유하지 않는 trigger와 root를 연결하고 Viewport가 mobile containment를 담당해요."
+  description="안정적인 handle이 공통 조상을 공유하지 않는 trigger와 root를 이어 주고, Viewport가 모바일에서 대화 상자를 화면 안에 담아요."
   preview={<Stories.DialogHandleExample />}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/button.css';
 import '@tinyrack/ui/components/dialog.css';

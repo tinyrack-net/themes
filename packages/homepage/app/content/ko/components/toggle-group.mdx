@@ -10,9 +10,9 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/toggle-group.demo.js';
 
-## 계약
+## 핵심 속성
 
-| 항목 | 계약 |
+| 항목 | 설명 |
 | --- | --- |
 | 선택 | 기본값은 0개 또는 1개이며, `multiple`로 여러 값을 독립적으로 선택 |
 | 상태 | 제어형 `value` 또는 비제어형 `defaultValue`; 둘 다 문자열 배열을 사용하고 기본값은 `[]` |
@@ -166,4 +166,4 @@ export function AvailabilityExample() {
 
 Root는 `role="group"`으로 렌더링되므로 `aria-label` 또는 `aria-labelledby`를 제공하세요. 가로에서는 Left/Right, 세로에서는 Up/Down으로 포커스를 이동하고 Home/End는 첫 번째·마지막 활성 항목으로 이동해요. 비활성화된 항목은 순환 포커스에서 건너뛰어요. Group의 `disabled`는 모든 항목에 적용되지만 개별 `TRToggle`은 독립적으로 비활성화할 수 있어요.
 
-`className`, `style`, 네이티브 `div` 속성, 이벤트 처리기, ref가 전달돼요. `--tr-toggle-group-gap`과 `--tr-toggle-group-color`로 간격과 텍스트 색상을 바꾸고, 토글 자체의 모양은 `TRToggle` 토큰으로 조정하세요. ToggleGroup은 이름 있는 폼 값을 제출하지 않으므로 선택 값이 폼 제출에 참여해야 한다면 `TRCheckboxGroup` 또는 `TRRadioGroup`을 사용해요.
+`className`, `style`, 네이티브 `div` 속성, 이벤트 처리기, ref가 전달돼요. `--tr-toggle-group-gap`과 `--tr-toggle-group-color`로 간격과 텍스트 색상을 바꾸고, 토글 자체의 모양은 `TRToggle` 토큰으로 조정하세요. ToggleGroup은 이름 있는 폼 값을 제출하지 않으므로, 선택 값이 폼 제출에 포함돼야 한다면 `TRCheckboxGroup` 또는 `TRRadioGroup`을 사용하세요.

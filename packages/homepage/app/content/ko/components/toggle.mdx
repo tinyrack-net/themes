@@ -1,6 +1,6 @@
 ---
 title: "Toggle"
-description: "서식이나 뷰 옵션을 위한 2상태 버튼이에요. aria-pressed를 노출하며 폼 필드가 아니고 자체 값을 제출하지 않아요."
+description: "서식이나 뷰 옵션을 전환하는 2상태 버튼이에요. aria-pressed를 노출하며 폼 필드가 아니고 자체 값을 제출하지 않아요."
 section: components
 order: 47
 ---
@@ -11,9 +11,9 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/toggle.demo.js';
 
-## 계약
+## 핵심 속성
 
-| 축 | 값 | 기본값 |
+| 속성 | 값 | 기본값 |
 | --- | --- | --- |
 | 상태 | 제어형 `pressed` 또는 비제어형 `defaultPressed` | 꺼짐 |
 | 사용 가능 여부 | 활성 또는 `disabled` | 활성 |
@@ -98,4 +98,4 @@ export function ToggleStates() {
 | `className` | `string \| (state) => string` | — | 사용자 클래스를 추가하며 `TRToggleState`를 사용할 수 있어요. |
 | `render` | `ReactElement \| (props, state) => ReactElement` | `<button>` | 병합된 동작을 유지하면서 렌더링 요소를 바꿔요. |
 
-`TRToggleProps`와 `TRToggleState`는 `@tinyrack/ui/components/toggle`에서 내보내요. TRToggle은 버튼 ref, 스타일, 네이티브 속성과 이벤트 처리기도 보존해요. 네이티브 Space·Enter 활성화, 포커스, `disabled` 의미는 버튼 동작을 따르며 기본 버튼 타입은 둘러싼 폼을 제출하지 않아요. 모든 토글에 접근 가능한 이름을 제공하세요. 다형성 `render`는 버튼 키보드 의미를 보존해야 해요. 폼 제출이나 필수 검증에 값이 참여해야 하면 TRCheckbox 또는 TRSwitch를 사용하세요.
+`TRToggleProps`와 `TRToggleState`는 `@tinyrack/ui/components/toggle`에서 내보내요. TRToggle은 버튼 ref, 스타일, 네이티브 속성과 이벤트 처리기도 보존해요. 네이티브 Space·Enter 활성화, 포커스, `disabled` 의미는 버튼 동작을 따르며 기본 버튼 타입은 둘러싼 폼을 제출하지 않아요. 모든 토글에 접근 가능한 이름을 제공하세요. 다형성 `render`는 버튼 키보드 의미를 보존해야 해요. 폼 제출이나 필수 검증에 값이 포함돼야 하면 TRCheckbox 또는 TRSwitch를 사용하세요.

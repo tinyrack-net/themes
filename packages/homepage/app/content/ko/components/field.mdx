@@ -10,19 +10,19 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/field.demo.js';
 
-## 계약
+## 핵심 속성
 
 `TRField`는 Base UI Field의 전체 구조를 감싸요. `Label`, `Description`, 표시 중인 `Error`는 Control에 자동으로 연결돼요. Root의 `name`과 `disabled`는 Control의 같은 prop보다 우선해요.
 
 | Part | 역할 |
 | --- | --- |
-| `Root` | name, 사용 가능 상태, validation 시점, dirty/touched/filled/focused state |
-| `Label` | accessible name과 click-to-focus target |
-| `Control` | native input value, event, validity, form data, reset |
-| `Description` | `aria-describedby`에 포함되는 지속적인 안내 |
-| `Error` | native validity 또는 외부 state에 따른 복구 메시지 |
-| `Validity` | value, errors, native `ValidityState`를 읽는 render prop |
-| `Item` | collection의 checkbox/radio와 label/description 배치 |
+| `Root` | 이름, 사용 가능 상태, 유효성 검사 시점, dirty/touched/filled/focused 상태 |
+| `Label` | 접근 가능한 이름과 클릭하면 포커스되는 대상 |
+| `Control` | 네이티브 입력 값, 이벤트, 유효성, 폼 데이터, 초기화 |
+| `Description` | `aria-describedby`에 포함되는 상시 안내 |
+| `Error` | 네이티브 유효성이나 외부 상태에 따른 복구 메시지 |
+| `Validity` | 값, 오류, 네이티브 `ValidityState`를 읽는 render prop |
+| `Item` | 컬렉션의 checkbox/radio와 label/description 배치 |
 
 값을 포커스 가능한 상태로 제출해야 하면 Control의 `readOnly`를 사용해요. 사용할 수 없고 폼 데이터에서도 제외해야 하면 Root의 `disabled`를 사용해요. 표준 파트를 조합할 때는 `aria-labelledby`나 `aria-describedby`를 직접 추가하지 않아요.
 

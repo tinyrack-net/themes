@@ -9,11 +9,11 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/textarea.demo.js';
 
-## 계약
+## 핵심 속성
 
 TRTextarea는 네이티브 ref, 이름, FormData, 초기화, 비활성, 읽기 전용, 필수, 잘못된 값 상태를 그대로 보존해요.
 
-밀도 높은 화면에서는 `uiSize="sm"`을, 더 큰 읽기 및 편집 영역이 필요하면 `uiSize="lg"`를 사용하세요. 내용이 표시 영역을 넘으면 네이티브 스크롤이 동작하며, 가로 레이아웃 넘침을 방지하도록 세로 방향으로만 크기를 조절할 수 있어요.
+밀도 높은 화면에는 `uiSize="sm"`을, 읽고 편집할 공간이 더 필요하면 `uiSize="lg"`를 사용하세요. 내용이 표시 영역을 넘으면 네이티브 스크롤이 동작하고, 가로로 레이아웃이 넘치지 않도록 크기는 세로로만 조절할 수 있어요.
 
 ## 설치
 
@@ -123,7 +123,7 @@ function ChangeReasonForm() {
 
 ## API
 
-`TRTextarea`는 모든 네이티브 텍스트 영역 속성, ref, 이벤트, 클래스, 스타일을 전달해요. 기본 크기 조절 방향은 세로이며 네이티브 유효성이 기준으로 유지돼요.
+`TRTextarea`는 네이티브 텍스트 영역 속성, ref, 이벤트, 클래스, 스타일을 모두 전달해요. 크기 조절은 기본적으로 세로 방향이고 네이티브 유효성 검사를 그대로 따라요.
 
 | 속성 | 타입 | 기본값 | 설명 |
 | --- | --- | --- | --- |

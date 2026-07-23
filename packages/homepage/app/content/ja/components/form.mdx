@@ -10,9 +10,9 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/form.demo.js';
 
-## コントラクト
+## 主なプロパティ
 
-| 項目 | コントラクト |
+| 項目 | 説明 |
 | --- | --- |
 | 送信 | ネイティブの `submit` イベントと `FormData`、または `onFormSubmit` で解析されたフィールド値を使用します。 |
 | 検証 | ネイティブ validity と、Base UI の `TRField.Error` コンポジションで表示する外部 `errors` を組み合わせます。 |
@@ -31,8 +31,8 @@ import * as Stories from '../../../documentation/components/form.demo.js';
 
 <ComponentExampleTabs
   id="form-basic"
-  title="native FormData と reset"
-  description="Submit は FormData から名前付き input を読みます。Reset は初期の非制御値を復元し、送信結果を消去します。"
+  title="ネイティブの FormData とリセット"
+  description="送信すると FormData から名前付きの入力を読み取ります。リセットすると初期の非制御値が復元され、送信結果が消去されます。"
   preview={<div data-docs-example-item=""><Stories.FormNativeValuesPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';
@@ -71,7 +71,7 @@ function NativeRackForm() {
 <ComponentExampleTabs
   id="form-states"
   title="必須送信と復旧"
-  description="空のまま submit してエラーを確認し、rack name を入力してもう一度 submit し成功を確認します。"
+  description="空のまま送信してエラーを確認し、ラック名を入力してもう一度送信すると成功を確認できます。"
   preview={<div data-docs-example-item=""><Stories.FormValidationPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';
@@ -120,7 +120,7 @@ function RequiredRackForm() {
 
 <ComponentExampleTabs
   id="form-server-errors"
-  title="server エラーと復旧"
+  title="サーバーエラーと復旧"
   description="ラックアルファを選ぶと、サーバーによる拒否を再現します。編集すると TRField のエラーが消え、再送信が成功します。ネイティブのリセットでは、値と結果の両方が消去されます。"
   preview={<div data-docs-example-item=""><Stories.FormServerErrorPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
@@ -167,7 +167,7 @@ function ServerValidatedRackForm() {
 
 <ComponentExampleTabs
   id="form-actions"
-  title="命令型 validation と最初の invalid への focus"
+  title="命令型の検証と最初の無効項目へのフォーカス"
   description="`actionsRef` を使うと、名前付きの TRField 1 つまたはフォーム全体を検証できます。ネイティブ送信では最初の無効な TRField コントロールへフォーカスが移り、型付けされた `onFormSubmit` の値は文字列として安全に扱えます。"
   preview={<div data-docs-example-item=""><Stories.FormActionsPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useRef, useState } from 'react';
@@ -208,4 +208,4 @@ export function RackForm() {
 
 ## API
 
-`TRForm` はネイティブ form props、ref、event、`className`、`style`、`render` を転送し、control は自身の value を管理します。`TRFormProps<Values>` は `onFormSubmit(values, details)` を通じて field-value generic を保持し、event detail には `TRFormSubmitEventDetails` と `TRFormSubmitEventReason` を利用できます。server response には field name と `errors` を使い、TRForm または TRField スコープで `validationMode` を選びます。submit を生成せず明示的に検証するには `TRFormActions.validate(name?)` を使います。native reset が復元するのは非制御 control のみなので、制御値はアプリケーションの `onReset` handler でリセットしてください。
+`TRForm` はネイティブの form プロパティ、`ref`、イベント、`className`、`style`、`render` を転送し、各コントロールは自身の値を管理します。`TRFormProps<Values>` は `onFormSubmit(values, details)` を通じてフィールド値のジェネリックを保持し、イベント詳細には `TRFormSubmitEventDetails` と `TRFormSubmitEventReason` を利用できます。サーバーの応答にはフィールド名と `errors` を使い、`validationMode` は TRForm または TRField のスコープで選びます。送信を発生させずに明示的に検証するには `TRFormActions.validate(name?)` を使います。ネイティブのリセットで復元されるのは非制御のコントロールだけなので、制御値はアプリケーションの `onReset` ハンドラーでリセットしてください。

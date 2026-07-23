@@ -11,9 +11,9 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/meter.demo.js';
 
-## 계약
+## 핵심 속성
 
-이 Tinyrack 래퍼는 Base UI 동작, React 19 ref, 네이티브 props, 이벤트, `render` 계약을 보존해요. 값을 서식화하기 전에 `min`과 `max` 범위로 제한하므로 표시 값, 채움, ARIA 값이 일치해요. 플레이그라운드는 제한된 범위, 로케일별 숫자 서식, 모든 명시적 의미 변형을 다루며 재설정하면 문서의 기본값으로 돌아가요.
+이 Tinyrack 래퍼는 Base UI 동작, React 19 ref, 네이티브 props, 이벤트, `render` 규약을 그대로 유지해요. 값을 서식화하기 전에 `min`과 `max` 범위로 제한하므로 표시 값, 채움, ARIA 값이 서로 일치해요. 플레이그라운드는 제한된 범위, 로케일별 숫자 서식, 모든 명시적 의미 변형을 다루며 재설정하면 문서의 기본값으로 돌아가요.
 
 ## 설치
 
@@ -71,7 +71,7 @@ export function MeterVariants() {
 <ComponentExampleTabs
   id="meter-custom-range"
   title="사용자 정의 범위와 형식화된 값"
-  description="0이 아닌 최솟값, 단위 형식, 사람이 읽을 수 있는 값 설명이 같은 Meter 계약에 연결돼요."
+  description="0이 아닌 최솟값, 단위 형식, 사람이 읽을 수 있는 값 설명이 같은 Meter 규약에 연결돼요."
   preview={<div data-docs-example-item-count="1"><Stories.MeterCustomRangePreview ariaSuffix="안전한 온도 범위 내" label="랙 흡입구 온도 범위" locale="ko-KR" /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/meter.css';
 import { TRMeter } from '@tinyrack/ui/components/meter';

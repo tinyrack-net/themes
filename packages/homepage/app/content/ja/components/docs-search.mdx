@@ -9,7 +9,7 @@ import { ComponentInstall } from '../../../documentation/shared/component-instal
 import { ComponentPlayground } from '../../../playground/playground.js';
 import * as Stories from '../../../documentation/components/docs-search.demo.js';
 
-## コントラクト
+## 主なプロパティ
 
 `TRDocsSearch.Trigger` は単独のボタン、`TRDocsSearch.Dialog` は制御されたポータル検索画面です。ダイアログは Ctrl/⌘+K、読み込み中、空の結果、エラー、`fallback`、キーボード選択、フォーカス復帰、古いリクエストのキャンセルを管理します。データソースは `onSearch(query, signal)` が管理し、キャンセル可能な処理には受け取った `AbortSignal` を渡してください。
 

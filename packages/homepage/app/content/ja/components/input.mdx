@@ -10,7 +10,7 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/input.demo.js';
 
-## コントラクト
+## 主なプロパティ
 
 `TRInput` はネイティブの `<input>` をレンダーし、props、ref、イベント、妥当性、フォーム動作を保持します。ラベルは別のネイティブ要素です。表示される `<label>` を `htmlFor` と `id` で関連付け、説明やエラーには `aria-describedby` を使います。
 
@@ -28,7 +28,7 @@ import * as Stories from '../../../documentation/components/input.demo.js';
 
 <ComponentExampleTabs
   id="input-basic"
-  title="label 付き Input"
+  title="ラベル付き Input"
   preview={<div data-docs-example-item-count="1"><Stories.InputPreview defaultValue="" disabled={false} label="Rack 名" placeholder="rack-alpha" readOnly={false} required={false} /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/components/input.css';
 import { TRInput } from '@tinyrack/ui/components/input';
@@ -146,6 +146,6 @@ export function RequiredInput() {
 
 ## API
 
-`TRInputProps` は Base UI Input props を拡張し、デフォルトが `md` の `uiSize?: 'sm' | 'md' | 'lg'` を追加します。`name`、`type`、`autoComplete`、`disabled`、`readOnly`、`required` などのネイティブ input 属性に加え、`ref`、`className`、`style`、イベントハンドラーを転送します。
+`TRInputProps` は Base UI Input のプロパティを拡張し、デフォルトが `md` の `uiSize?: 'sm' | 'md' | 'lg'` を追加します。`name`、`type`、`autoComplete`、`disabled`、`readOnly`、`required` などのネイティブ input 属性に加え、`ref`、`className`、`style`、イベントハンドラーを転送します。
 
-制御されたテキストには `value` と `onValueChange(value, details)` を使い、ネイティブの非制御およびフォームリセット動作には `defaultValue` を使います。イベントオブジェクトが必要な場合はネイティブの `onChange` を使います。`aria-invalid="true"`、Base UI の `data-invalid`、ネイティブの `:invalid` はすべて invalid border を有効にします。`render` prop はレンダーされる要素を置き換え、Base UI が動作、状態、ref、`.tr-input` スタイルをマージします。
+制御されたテキストには `value` と `onValueChange(value, details)` を使い、ネイティブの非制御およびフォームリセット動作には `defaultValue` を使います。イベントオブジェクトが必要な場合はネイティブの `onChange` を使います。`aria-invalid="true"`、Base UI の `data-invalid`、ネイティブの `:invalid` はすべて無効状態の枠線を有効にします。`render` プロパティはレンダリングされる要素を置き換え、Base UI が動作、状態、`ref`、`.tr-input` スタイルをマージします。

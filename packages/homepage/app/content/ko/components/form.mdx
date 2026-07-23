@@ -10,14 +10,14 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/form.demo.js';
 
-## 계약
+## 핵심 속성
 
-| 항목 | 계약 |
+| 항목 | 설명 |
 | --- | --- |
-| 제출 | 네이티브 `submit` 이벤트와 `FormData`를 사용하거나 `onFormSubmit`으로 파싱된 필드 값을 받아요. |
-| 유효성 검사 | 네이티브 validity와 Base UI `TRField.Error` 조합이 렌더링하는 외부 `errors`를 함께 사용해요. |
-| 초기화 | 네이티브 `type="reset"`은 비제어 값을 복원해요. 제어 값과 애플리케이션 결과는 `onReset`에서 초기화해야 해요. |
-| 상태 | 컨트롤은 비제어 또는 애플리케이션 제어 방식으로 사용할 수 있으며, 애플리케이션이 서버 오류와 제출 결과를 소유해요. |
+| 제출 | 네이티브 `submit` 이벤트와 `FormData`를 쓰거나 `onFormSubmit`으로 파싱된 필드 값을 받아요. |
+| 유효성 검사 | 네이티브 validity와 함께 Base UI `TRField.Error`가 렌더링하는 외부 `errors`를 같이 써요. |
+| 초기화 | 네이티브 `type="reset"`은 비제어 값을 되돌려요. 제어 값과 애플리케이션 결과는 `onReset`에서 직접 초기화하세요. |
+| 상태 | 컨트롤은 비제어형으로 두거나 애플리케이션이 제어할 수 있고, 서버 오류와 제출 결과는 애플리케이션이 관리해요. |
 
 ## 설치
 
@@ -71,7 +71,7 @@ function NativeRackForm() {
 <ComponentExampleTabs
   id="form-states"
   title="필수 제출과 복구"
-  description="비어 있는 상태로 submit해 오류를 보고 rack name을 입력한 다음 다시 submit해 성공을 확인하세요."
+  description="비어 있는 채로 제출해 오류를 확인하고, 랙 이름을 입력한 다음 다시 제출해 성공을 확인하세요."
   preview={<div data-docs-example-item=""><Stories.FormValidationPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';

@@ -295,8 +295,8 @@ describe('React Router documentation contract', () => {
         );
         const canonicalSection = new Map([
           ['Contract', 'Contract'],
-          ['계약', 'Contract'],
-          ['コントラクト', 'Contract'],
+          ['핵심 속성', 'Contract'],
+          ['主なプロパティ', 'Contract'],
           ['Install', 'Install'],
           ['설치', 'Install'],
           ['インストール', 'Install'],

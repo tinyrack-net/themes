@@ -9,7 +9,7 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/app-shell.demo.js';
 
-## 계약
+## 핵심 속성
 
 `Main`은 페이지의 단일 메인 랜드마크를 담당해요. 선택한 중단점 이상에서 `Sidebar`는 고정되고 독립적으로 스크롤돼요. `sidebarMode`로 확장 모드와 아이콘 레일을 전환하며, `SidebarLabel`은 두 상태 모두에서 탐색 이름을 접근 가능하게 유지해요. 중단점 아래에서는 `mobileSidebar="drawer"`가 기존 Base UI `TRDrawer` 동작을 보존하고, `mobileSidebar="rail"`이 인라인 고정 레일을 활성화해요.
 
@@ -132,8 +132,8 @@ export function ShellControls() {
 
 `Root`는 `breakpoint`(`sm` 또는 `lg`), `layout`(`header-first` 또는 `sidebar-first`), `mobileSidebar`(`drawer` 또는 `rail`)를 받아요. 드로어 상태는 `open`, `defaultOpen`, `onOpenChange`로, 사이드바 너비는 `sidebarMode`, `defaultSidebarMode`, `onSidebarModeChange`로 제어해요. 포함형 미리 보기나 임베드된 앱에서는 `portalContainer`를, 팝업 스타일에는 `drawerPopupClassName`을 사용해요.
 
-`Header`는 헤더 랜드마크를 렌더링해요. `Sidebar`는 독립적으로 스크롤되는 `aside`이며 모바일 대화상자에도 접근 가능한 이름을 전달해요. `Trigger`는 모바일 드로어를 열고 `Close`는 닫아요. `SidebarToggle`은 포커스를 유지하고 `aria-expanded`를 노출하면서 확장 모드와 레일 모드를 전환해요. `SidebarLabel`은 레일 모드에서도 제거되지 않고 시각적으로 숨겨져요. `Main`은 메인 랜드마크와 Base UI `render` 계약을 제공해요.
+`Header`는 헤더 랜드마크를 렌더링해요. `Sidebar`는 독립적으로 스크롤되는 `aside`이며 모바일 대화상자에도 접근 가능한 이름을 전달해요. `Trigger`는 모바일 드로어를 열고 `Close`는 닫아요. `SidebarToggle`은 포커스를 유지하고 `aria-expanded`를 노출하면서 확장 모드와 레일 모드를 전환해요. `SidebarLabel`은 레일 모드에서도 제거되지 않고 시각적으로 숨겨져요. `Main`은 메인 랜드마크와 Base UI `render` 규약을 제공해요.
 
-안정적인 스타일 계약은 `--tr-app-shell-background`, `--tr-app-shell-sidebar-background`, `--tr-app-shell-sidebar-width`, `--tr-app-shell-sidebar-rail-width`, `--tr-app-shell-drawer-block-size`예요. `Root` 상태는 `data-breakpoint`, `data-layout`, `data-mobile-sidebar`, `data-sidebar-mode`에 반영돼요.
+안정적인 스타일 규약은 `--tr-app-shell-background`, `--tr-app-shell-sidebar-background`, `--tr-app-shell-sidebar-width`, `--tr-app-shell-sidebar-rail-width`, `--tr-app-shell-drawer-block-size`예요. `Root` 상태는 `data-breakpoint`, `data-layout`, `data-mobile-sidebar`, `data-sidebar-mode`에 반영돼요.
 
 SSR에서는 모듈을 평가할 때 브라우저 전역 객체를 읽지 않고 데스크톱용 정적 구조를 렌더링한 뒤 하이드레이션해요. 이후 클라이언트가 선택한 미디어 쿼리를 적용하므로 애플리케이션을 렌더링할 때 `window`에 따라 자식 마크업을 바꾸지 말아요. 모달 드로어는 포커스를 가두고 Escape 키나 배경을 누르면 닫혀요. 닫힌 뒤에는 포커스를 `Trigger`로 복원하고, 열려 있는 동안 페이지 스크롤을 막아요.

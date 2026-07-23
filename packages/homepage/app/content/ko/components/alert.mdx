@@ -12,12 +12,12 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/alert.demo.js';
 
-## 계약
+## 핵심 속성
 
-| 축 | 값 | 기본값 |
+| 속성 | 값 | 기본값 |
 | --- | --- | --- |
 | `variant` | `neutral`, `info`, `success`, `warning`, `danger` | `neutral` |
-| `role` | `status`, `alert` 같은 native `div` role | 없음 |
+| `role` | `status`, `alert` 등 네이티브 `div` role | 없음 |
 | parts | `Root`, `Title`, `Description`, `Actions` | compound API |
 
 ## 설치
@@ -156,4 +156,4 @@ import { TRButton } from '@tinyrack/ui/components/button';
 
 ### 합성과 접근성
 
-`Root`와 `Actions`는 네이티브 `div` props와 React 19 `ref`를 전달해요. `Title`과 `Description`은 기본 요소가 주변 의미에 맞지 않을 때 Base UI `render` 계약을 지원해요. 알림의 긴급성은 애플리케이션 맥락에 따라 달라지므로 `Root`는 live-region role을 자동으로 지정하지 않아요. `status`, `alert`, live-region role 없음 중에서 의도에 맞게 선택하세요.
+`Root`와 `Actions`는 네이티브 `div` props와 React 19 `ref`를 전달해요. `Title`과 `Description`은 기본 요소가 주변 의미에 맞지 않을 때 Base UI `render` 규약을 지원해요. 알림의 긴급성은 애플리케이션 맥락에 따라 달라지므로 `Root`는 live-region role을 자동으로 지정하지 않아요. `status`, `alert`, live-region role 없음 중에서 의도에 맞게 선택하세요.

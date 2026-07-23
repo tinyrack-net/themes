@@ -49,7 +49,7 @@ pnpm add @tinyrack/ui react react-dom
 
 ## 적용 범위 이해
 
-`disableStyleElements`는 Base UI CSP 컨텍스트를 통해 생성되는 스타일 요소만 막아요. Tinyrack, Base UI, 애플리케이션 코드가 만드는 인라인 `style` 속성은 제거하지 않아요. 이런 속성은 `style-src-attr` 같은 지시문이 별도로 제어하므로 애플리케이션 정책에서 처리 방법을 정하세요.
+`disableStyleElements`는 Base UI CSP 컨텍스트에서 생성되는 스타일 요소만 막아요. Tinyrack, Base UI, 애플리케이션 코드가 만드는 인라인 `style` 속성은 제거하지 않아요. 이런 속성은 `style-src-attr` 같은 지시문이 별도로 제어하므로 애플리케이션 정책에서 처리 방법을 정하세요.
 
 프로바이더는 애플리케이션이 만드는 다른 요소, 프레임워크 스크립트, 서드파티 태그, 스타일시트에 nonce를 붙이지 않아요. 해당 리소스에는 프레임워크의 CSP 연동을 계속 사용하세요. 기반 동작은 [Base UI CSP Provider 문서](https://base-ui.com/react/utils/csp-provider)에서 확인할 수 있어요.
 

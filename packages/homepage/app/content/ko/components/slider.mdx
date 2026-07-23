@@ -10,16 +10,16 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/slider.demo.js';
 
-## 계약
+## 핵심 속성
 
-| 축 | 동작 |
+| 속성 | 동작 |
 | --- | --- |
-| value | 단일 slider는 숫자 또는 항목 하나인 배열을 받고, range는 정렬된 배열과 값마다 인덱스가 지정된 Thumb 하나를 사용해요. |
-| range | `min`, `max`, `step`, `minStepsBetweenValues`가 pointer와 keyboard 변경을 제한해요. |
-| form | `name`은 현재 thumb 값을 native hidden input을 통해 직렬화해요. |
-| validation | TRSlider에는 native `required`가 없어요. 비즈니스 규칙은 `TRField.Root`에 두고 `TRField.Error`를 표시한 뒤 유효하지 않은 thumb에 focus하세요. |
+| value | 단일 slider는 숫자 또는 항목 하나짜리 배열을 받고, range는 정렬된 배열과 값마다 인덱스를 지정한 Thumb를 사용해요. |
+| range | `min`, `max`, `step`, `minStepsBetweenValues`가 pointer와 keyboard 변경 폭을 제한해요. |
+| form | `name`은 현재 thumb 값을 native hidden input으로 직렬화해요. |
+| validation | TRSlider에는 native `required`가 없어요. 비즈니스 규칙은 `TRField.Root`에 두고 `TRField.Error`를 표시한 뒤 유효하지 않은 thumb로 focus를 옮기세요. |
 
-slider가 밀도 높은 컨트롤 표면의 일부이면 `uiSize="sm"`을 사용하세요.
+밀도 높은 컨트롤 화면에 slider를 넣을 때는 `uiSize="sm"`을 사용하세요.
 
 ## 설치
 
@@ -241,7 +241,7 @@ function CapacitySliderForm() {
 
 ## API
 
-`Root`, `Label`, `Value`, `Control`, `Track`, `Indicator`, `Thumb`와 prop/state type은 `@tinyrack/ui/components/slider`에서 export돼요. `Root`는 하나의 thumb에 scalar number 또는 readonly number array를 받아요. range에는 array를 사용하고 각 range `Thumb`에 0부터 시작하는 `index`를 지정해 SSR과 hydration이 올바른 값에 매핑되게 하세요.
+`Root`, `Label`, `Value`, `Control`, `Track`, `Indicator`, `Thumb`와 prop/state type을 `@tinyrack/ui/components/slider`에서 export해요. `Root`는 thumb 하나에는 scalar number 또는 readonly number array를 받아요. range에는 array를 쓰고, 각 range `Thumb`에 0부터 시작하는 `index`를 지정해 SSR과 hydration이 올바른 값에 매핑되도록 하세요.
 
 | 목적 | 공개 prop과 기본값 |
 | --- | --- |
@@ -253,4 +253,4 @@ function CapacitySliderForm() {
 
 `Value`가 렌더링하는 `Intl.NumberFormat` 출력을 설정하려면 `Root`에서 `format`과 `locale`을 사용하세요. 각 Thumb에 간결한 접근 가능한 이름을 제공하고, 형식화된 숫자에 “20퍼센트에서 시작해요” 같은 role 맥락이 필요하면 `getAriaValueText(formattedValue, value, index)`를 사용하세요. 값이 바뀌어도 텍스트가 올바른 경우에만 고정 `aria-valuetext`를 사용하세요.
 
-`onValueChange`는 pointer와 keyboard의 실시간 변경을 보고해요. 완료된 상호작용 후 한 번만 실행할 작업에는 `onValueCommitted`를 사용하세요. 화살표 키는 `step`만큼 변경하고 Page Up/Page Down과 Shift+Arrow는 `largeStep`을 사용하며 Home/End는 경계로 이동해요. `name`은 form 제출을 위한 native range input을 만들고 Thumb의 `inputRef`는 focus 복구를 위해 해당 input에 접근해요. `minStepsBetweenValues`와 `thumbCollisionBehavior`는 range thumb가 서로 가까워지거나 교차하는 방식을 정의해요.
+`onValueChange`는 pointer와 keyboard의 실시간 변경을 보고해요. 완료된 상호작용 후 한 번만 실행할 작업에는 `onValueCommitted`를 사용하세요. 화살표 키는 `step`만큼 값을 바꾸고 Page Up/Page Down과 Shift+Arrow는 `largeStep`을 사용하며 Home/End는 경계로 이동해요. `name`은 form 제출용 native range input을 만들고, Thumb의 `inputRef`는 focus를 되돌릴 때 그 input에 접근해요. `minStepsBetweenValues`와 `thumbCollisionBehavior`는 range thumb가 서로 가까워지거나 교차하는 방식을 정의해요.

@@ -10,15 +10,15 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/combobox.demo.js';
 
-## 계약
+## 핵심 속성
 
-| 축 | 동작 |
+| 속성 | 동작 |
 | --- | --- |
-| 상태 | 입력 텍스트, 선택 값, 열림 상태는 각각 제어 또는 비제어로 사용할 수 있어요. |
-| 입력 구조 | 네이티브 레이블 또는 Field.Label → InputGroup → 선택적 InputAdornment + Input + Clear + Trigger 순서이며 Icon은 Trigger 안에 둬요. |
-| 다중 선택 구조 | Chips → Value → Chip + ChipRemove를 사용하고 그리드 컬렉션은 Collection → Row → Item으로 구성해요. |
-| 팝업 구조 | Portal → 선택적 Backdrop + Positioner → Popup → Arrow + Status + List 순서이며 Group, Indicator, Separator, Collection, Empty를 조합해요. |
-| 상호작용 | 포인터, 방향키, Home/End, Enter, Escape, 필터링, 포커스 복원, 비활성화된 항목, 읽기 전용 루트 동작은 Base UI가 담당해요. |
+| 상태 | 입력 텍스트, 선택 값, 열림 상태를 각각 제어형이나 비제어형으로 쓸 수 있어요. |
+| 입력 구조 | 네이티브 레이블이나 Field.Label → InputGroup → 선택적 InputAdornment + Input + Clear + Trigger 순서로 두고 Icon은 Trigger 안에 넣어요. |
+| 다중 선택 구조 | Chips → Value → Chip + ChipRemove로 묶고 그리드 컬렉션은 Collection → Row → Item으로 구성해요. |
+| 팝업 구조 | Portal → 선택적 Backdrop + Positioner → Popup → Arrow + Status + List 순서로 두고 Group, Indicator, Separator, Collection, Empty를 조합해요. |
+| 상호작용 | 포인터, 방향키, Home/End, Enter, Escape, 필터링, 포커스 복원, 비활성 항목, 읽기 전용 루트 동작은 Base UI가 맡아요. |
 | 폼 | Root에서 `name`, `form`, `required`, `disabled`, `readOnly`, 객체 직렬화, 네이티브 유효성 검사, 제출, 초기화를 지원해요. |
 
 ## 설치

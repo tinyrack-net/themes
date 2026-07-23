@@ -1,6 +1,6 @@
 ---
 title: "File Tree"
-description: "작성한 문서를 위한 의미 있는 파일과 접을 수 있는 디렉터리예요."
+description: "직접 작성하는 문서를 위한 의미 있는 파일과 접을 수 있는 디렉터리예요."
 section: components
 order: 57
 ---
@@ -8,9 +8,9 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/file-tree.demo.js';
 
-## 계약
+## 핵심 속성
 
-`TRFileTree`는 작성된 Markdown unordered list를 의미 있는 파일 목록으로 변환해요. 중첩된 list는 디렉터리가 되고, `/`로 끝나는 항목은 장식용 placeholder가 있는 빈 디렉터리가 돼요. 디렉터리는 플랫폼 `details` disclosure를 사용하고 기본으로 열리며 pointer, Enter, Space의 native 동작을 유지해요.
+`TRFileTree`는 직접 작성한 Markdown 순서 없는 목록을 의미 있는 파일 목록으로 바꿔요. 중첩한 목록은 디렉터리가 되고, `/`로 끝나는 항목은 장식용 placeholder가 있는 빈 디렉터리가 돼요. 디렉터리는 플랫폼 `details` 요소로 펼치고 접어요. 기본으로 열려 있고 포인터, Enter, Space의 네이티브 동작을 그대로 유지해요.
 
 ## 설치
 
@@ -22,7 +22,7 @@ import * as Stories from '../../../documentation/components/file-tree.demo.js';
 
 ## 예시
 
-다른 Markdown list를 중첩해 디렉터리를 만드세요. 경로는 마지막 문자가 `/`일 때만 디렉터리가 돼요. link, strong text, code를 포함한 inline Markdown은 보존되며 긴 경로는 좁은 layout 안에서 줄바꿈돼요.
+Markdown 목록을 중첩해 디렉터리를 만드세요. 경로는 마지막 글자가 `/`일 때만 디렉터리가 돼요. 링크, 굵은 글씨, 코드 같은 인라인 Markdown은 그대로 유지되고, 긴 경로는 좁은 레이아웃 안에서 줄바꿈돼요.
 
 <ComponentExampleTabs id="file-tree-authored-content" data-docs-example-item-count="1" title="경로, Markdown, placeholder" preview={<Stories.FileTreeAuthoredContentPreview />} sources={[{ label: 'MDX', language: 'mdx', code: Stories.fileTreeAuthoredContentSource }]} />
 

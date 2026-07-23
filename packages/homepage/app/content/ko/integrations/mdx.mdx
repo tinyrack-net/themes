@@ -61,11 +61,11 @@ Tailwind 진입점을 먼저 불러오고 Tinyrack 코어, MDX, 컴포넌트 맵
 
 ## 컴포넌트 맵 맞춤 설정하기
 
-`createTinyrackMdxComponents({ components })`는 모든 기본 키를 담은 새 맵을 만든 뒤 전달받은 항목을 덮어써요. `tinyrackMdxComponents`를 변경하지 않고 제목, 링크, 래퍼와 다른 매핑 요소를 바꿀 때 사용하세요. 의미 있는 HTML, 전달받은 속성, 접근 가능한 이름, 교체 컴포넌트의 스타일 계약에 필요한 클래스를 유지하세요.
+`createTinyrackMdxComponents({ components })`는 모든 기본 키를 담은 새 맵을 만든 뒤 전달받은 항목을 덮어써요. `tinyrackMdxComponents`를 변경하지 않고 제목, 링크, 래퍼와 다른 매핑 요소를 바꿀 때 사용하세요. 의미 있는 HTML, 전달받은 속성, 접근 가능한 이름, 교체 컴포넌트의 스타일 규약에 필요한 클래스를 유지하세요.
 
-## 계약과 제한
+## 규약과 제한
 
-<TRTable.Root containerProps={{ 'aria-label': 'MDX 컴포넌트 맵 계약', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">MDX 출력</th><th scope="col">기본 담당</th><th scope="col">주요 동작</th></tr></thead><tbody><tr><th scope="row">문서 래퍼</th><td>`main.tr-mdx`</td><td>기존 `main` 안에서는 `article.tr-mdx`로 바꾸세요.</td></tr><tr><th scope="row">인라인 코드와 코드 블록</th><td>`TRCode`, `TRCodeBlock`</td><td>코드 블록에는 Shiki 강조가 점진적으로 적용돼요.</td></tr><tr><th scope="row">링크</th><td>`TRLink`</td><td>링크 의미와 목적지는 MDX에서 작성한 값을 유지해요.</td></tr><tr><th scope="row">표</th><td>`TRTable.Root`</td><td>표 컨테이너 안에서만 가로로 스크롤해요.</td></tr><tr><th scope="row">작업 목록 입력</th><td>네이티브 비활성 체크박스</td><td>작성된 체크 상태를 유지해요.</td></tr><tr><th scope="row">그 밖의 본문</th><td>의미 있는 React 요소</td><td>제목, 목록, 인용문, 이미지, 각주에 공유 MDX 클래스가 적용돼요.</td></tr></tbody></TRTable.Root>
+<TRTable.Root containerProps={{ 'aria-label': 'MDX 컴포넌트 맵 규약', tabIndex: 0 }} density="compact"><thead><tr><th scope="col">MDX 출력</th><th scope="col">기본 담당</th><th scope="col">주요 동작</th></tr></thead><tbody><tr><th scope="row">문서 래퍼</th><td>`main.tr-mdx`</td><td>기존 `main` 안에서는 `article.tr-mdx`로 바꾸세요.</td></tr><tr><th scope="row">인라인 코드와 코드 블록</th><td>`TRCode`, `TRCodeBlock`</td><td>코드 블록에는 Shiki 강조가 점진적으로 적용돼요.</td></tr><tr><th scope="row">링크</th><td>`TRLink`</td><td>링크 의미와 목적지는 MDX에서 작성한 값을 유지해요.</td></tr><tr><th scope="row">표</th><td>`TRTable.Root`</td><td>표 컨테이너 안에서만 가로로 스크롤해요.</td></tr><tr><th scope="row">작업 목록 입력</th><td>네이티브 비활성 체크박스</td><td>작성된 체크 상태를 유지해요.</td></tr><tr><th scope="row">그 밖의 본문</th><td>의미 있는 React 요소</td><td>제목, 목록, 인용문, 이미지, 각주에 공유 MDX 클래스가 적용돼요.</td></tr></tbody></TRTable.Root>
 
 이 연동은 런타임에 MDX를 가져오거나 격리하거나 컴파일하지 않아요. Next.js나 Astro 전용 설정도 다루지 않아요.
 

@@ -10,21 +10,21 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/field.demo.js';
 
-## コントラクト
+## 主なプロパティ
 
-`TRField` は Base UI Field の全 anatomy をラップします。`Label`、`Description`、表示中の `Error` は control に自動関連付けされます。Root の `name` と `disabled` は Control の同名 prop より優先されます。
+`TRField` は Base UI Field の全構造をラップします。`Label`、`Description`、表示中の `Error` はコントロールに自動的に関連付けられます。`Root` の `name` と `disabled` は `Control` の同名プロパティより優先されます。
 
-| Part | 責務 |
+| パーツ | 責務 |
 | --- | --- |
-| `Root` | name、利用可否、validation timing、dirty/touched/filled/focused state |
-| `Label` | accessible name と click-to-focus target |
-| `Control` | native input value、event、validity、form data、reset |
+| `Root` | 名前、利用可否、検証タイミング、dirty・touched・filled・focused の状態 |
+| `Label` | アクセシブルな名前と、クリックでフォーカスする対象 |
+| `Control` | ネイティブ入力の値、イベント、妥当性、フォームデータ、リセット |
 | `Description` | `aria-describedby` に含まれる常時表示の説明 |
-| `Error` | native validity または外部 state に対応する復旧メッセージ |
-| `Validity` | value、errors、native `ValidityState` を読む render prop |
-| `Item` | collection 内の checkbox/radio と label/description の配置 |
+| `Error` | ネイティブの妥当性または外部の状態に応じた復旧メッセージ |
+| `Validity` | 値、エラー、ネイティブの `ValidityState` を読み取るレンダープロップ |
+| `Item` | コレクション内のチェックボックス・ラジオとラベル・説明の配置 |
 
-値を focus 可能なまま submit する場合は Control の `readOnly`、利用不可かつ form data から除外する場合は Root の `disabled` を使います。標準 part の組み合わせでは `aria-labelledby` と `aria-describedby` を手動設定しません。
+値をフォーカス可能なまま送信する場合は `Control` の `readOnly`、操作不可かつフォームデータから除外する場合は `Root` の `disabled` を使います。標準的なパーツの組み合わせでは、`aria-labelledby` と `aria-describedby` を手動で設定する必要はありません。
 
 ## インストール
 
@@ -32,7 +32,7 @@ import * as Stories from '../../../documentation/components/field.demo.js';
 
 ## プレイグラウンド
 
-preview 内で入力すると interaction-owned value が変わります。Playground controls では required、invalid、read-only、disabled、size を切り替えられ、Reset は controls と preview value を初期値へ戻します。
+プレビュー内で入力すると、操作対象の値が変わります。プレイグラウンドのコントロールでは required、invalid、read-only、disabled、size を切り替えられ、リセットするとコントロールとプレビューの値が初期値に戻ります。
 
 <ComponentPlayground definition={Stories.playground} />
 
@@ -100,8 +100,8 @@ export function FieldStates() {
 
 <ComponentExampleTabs
   id="field-validation"
-  title="submit、復旧、reset"
-  description="native email validity が対応する error を選び、Reset が input と feedback を復元します。"
+  title="送信、復旧、リセット"
+  description="メールのネイティブな妥当性に対応するエラーを選び、リセットすると入力とフィードバックが復元されます。"
   preview={<div data-docs-example-item=""><Stories.FieldValidationPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import { useState } from 'react';
 import '@tinyrack/ui/core.css';
@@ -129,8 +129,8 @@ export function EmailValidation() {
 
 <ComponentExampleTabs
   id="field-item-validity"
-  title="Collection item と native validity"
-  description="Item は option と説明を配置し、Validity は validation rule を重複せず現在の状態を公開します。"
+  title="コレクション項目とネイティブの妥当性"
+  description="Item は選択肢と説明を配置し、Validity は検証ルールを重複させずに現在の状態を公開します。"
   preview={<div data-docs-example-item=""><Stories.FieldItemValidityPreview /></div>}
   sources={[{ label: 'React', language: 'tsx', code: String.raw`import '@tinyrack/ui/core.css';
 import '@tinyrack/ui/components/checkbox.css';
@@ -152,15 +152,15 @@ export function NotificationChannels() {
 
 | プロパティ | 型 / 既定値 | 用途 |
 | --- | --- | --- |
-| `name` | `string` | field を命名し `Control.name` より優先 |
-| `disabled` | `boolean` / `false` | control を無効化し全 part に `data-disabled` を付与 |
-| `invalid`, `dirty`, `touched` | `boolean` | 外部管理の field state |
-| `validate` | sync/async validator | error、error array、または `null` を返す |
-| `validationMode` | `'onSubmit' \| 'onBlur' \| 'onChange'` / `'onSubmit'` | validation timing |
-| `validationDebounceTime` | `number` / `0` | onChange validation の debounce（ms） |
-| `actionsRef` | `RefObject<TRFieldRootActions>` | `validate()` を公開 |
-| `uiSize` | `'sm' \| 'md' \| 'lg'` / `'md'` | visual control size |
+| `name` | `string` | フィールドを命名し、`Control.name` より優先します |
+| `disabled` | `boolean` / `false` | コントロールを無効化し、すべてのパーツに `data-disabled` を付与します |
+| `invalid`, `dirty`, `touched` | `boolean` | 外部で管理するフィールドの状態 |
+| `validate` | 同期・非同期バリデーター | エラー、エラー配列、または `null` を返します |
+| `validationMode` | `'onSubmit' \| 'onBlur' \| 'onChange'` / `'onSubmit'` | 検証タイミング |
+| `validationDebounceTime` | `number` / `0` | onChange 検証のデバウンス時間（ミリ秒） |
+| `actionsRef` | `RefObject<TRFieldRootActions>` | `validate()` を公開します |
+| `uiSize` | `'sm' \| 'md' \| 'lg'` / `'md'` | コントロールの表示サイズ |
 
-`Control` は native input props、`value` / `defaultValue`、`onValueChange(value, details)` を受け取ります。`Label.nativeLabel={false}` は `render` が非 label host を使う場合に指定します。`Error.match` は `true` または `valueMissing` などの `ValidityState` key、`Item.disabled` は単一 option の無効化、`Validity` は `validity`、`value`、`initialValue`、`error`、`errors` を提供します。
+`Control` はネイティブ入力のプロパティ、`value` / `defaultValue`、`onValueChange(value, details)` を受け取ります。`Label.nativeLabel={false}` は、`render` が label 以外のホスト要素を使う場合に指定します。`Error.match` は `true` または `valueMissing` などの `ValidityState` のキー、`Item.disabled` は単一の選択肢の無効化、`Validity` は `validity`、`value`、`initialValue`、`error`、`errors` を提供します。
 
-全 host part は ref、native attribute/event、関数形式の `className` / `style`、Base UI `render` を保持します。namespace、7 named part、各 props/state type、`TRFieldUiSize`、`TRFieldRootActions`、`TRFieldValidityData`、Control change-event type はすべて個別 export されます。CSS は opt-in です。
+すべてのホストパーツは `ref`、ネイティブ属性・イベント、関数形式の `className` / `style`、Base UI の `render` を保持します。名前空間、7 つの名前付きパーツ、各プロパティ・状態型、`TRFieldUiSize`、`TRFieldRootActions`、`TRFieldValidityData`、Control の変更イベント型はすべて個別にエクスポートされます。CSS は明示的に読み込みます。

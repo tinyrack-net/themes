@@ -8,9 +8,9 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/file-tree.demo.js';
 
-## コントラクト
+## 主なプロパティ
 
-`TRFileTree` は、記述された Markdown の unordered list を意味のあるファイル一覧に変換します。ネストした list はディレクトリになり、`/` で終わる項目は装飾的な placeholder を持つ空のディレクトリになります。ディレクトリはプラットフォームの `details` disclosure を使い、デフォルトで開き、pointer、Enter、Space のネイティブ操作を維持します。
+`TRFileTree` は、記述した Markdown の箇条書きを意味のあるファイル一覧に変換します。ネストした箇条書きはディレクトリになり、`/` で終わる項目は装飾的なプレースホルダーを持つ空のディレクトリになります。ディレクトリはプラットフォームの `details` 開閉要素を使い、デフォルトで開いた状態になり、ポインター、Enter、Space のネイティブ操作を維持します。
 
 ## インストール
 
@@ -23,12 +23,12 @@ import * as Stories from '../../../documentation/components/file-tree.demo.js';
 
 ## 例
 
-別の Markdown list をネストしてディレクトリを作成します。パスは最後の文字が `/` の場合だけディレクトリになります。link、strong text、code を含む inline Markdown は保持され、長いパスは狭い layout 内で折り返されます。
+別の Markdown 箇条書きをネストしてディレクトリを作成します。パスは最後の文字が `/` の場合だけディレクトリになります。リンク、強調テキスト、コードを含むインライン Markdown は保持され、長いパスは狭いレイアウト内で折り返されます。
 
 <ComponentExampleTabs id="file-tree-authored-content" data-docs-example-item-count="1" title="パス、Markdown、placeholder" preview={<Stories.FileTreeAuthoredContentPreview />} sources={[{ label: 'MDX', language: 'mdx', code: Stories.fileTreeAuthoredContentSource }]} />
 
 ## API
 
-`TRFileTree` に component 固有の scalar props はありません。`children` には記述した unordered list を渡し、`aria-label`、`className`、`style`、event handler、React 19 の `ref` を含む native `ul` props を転送します。周囲の content で tree がラベル付けされていない場合は、`aria-label` で accessible name を指定してください。
+`TRFileTree` にコンポーネント固有のスカラープロパティはありません。`children` には記述した箇条書きを渡し、`aria-label`、`className`、`style`、イベントハンドラー、React 19 の `ref` を含むネイティブの `ul` プロパティを転送します。周囲のコンテンツでツリーがラベル付けされていない場合は、`aria-label` でアクセシブルな名前を指定してください。
 
-表示は `--tr-file-tree-background`、`--tr-file-tree-border`、`--tr-file-tree-border-width`、`--tr-file-tree-color`、`--tr-file-tree-font-family`、`--tr-file-tree-font-size`、`--tr-file-tree-gap`、`--tr-file-tree-indent`、`--tr-file-tree-margin`、`--tr-file-tree-marker`、`--tr-file-tree-padding`、`--tr-file-tree-placeholder-color`、`--tr-file-tree-radius` で調整できます。各 token は対応する Tinyrack semantic token に fallback します。
+表示は `--tr-file-tree-background`、`--tr-file-tree-border`、`--tr-file-tree-border-width`、`--tr-file-tree-color`、`--tr-file-tree-font-family`、`--tr-file-tree-font-size`、`--tr-file-tree-gap`、`--tr-file-tree-indent`、`--tr-file-tree-margin`、`--tr-file-tree-marker`、`--tr-file-tree-padding`、`--tr-file-tree-placeholder-color`、`--tr-file-tree-radius` で調整できます。各トークンは、対応する Tinyrack のセマンティックトークンにフォールバックします。

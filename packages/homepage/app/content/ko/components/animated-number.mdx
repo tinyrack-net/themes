@@ -10,11 +10,11 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/animated-number.demo.js';
 
-## 계약
+## 핵심 속성
 
 `TRAnimatedNumber`는 애플리케이션 상태에서 받은 숫자를 표시해요. 타이머나 카운터 상태를 직접 관리하지 않아요. 기본 `roll` 애니메이션은 값의 증감 방향으로 바뀐 숫자를 이동하고, `count`는 숫자 값을 연속 보간한 뒤 같은 로케일 서식을 적용해요. 첫 렌더는 움직이지 않으므로 서버 렌더링과 hydration에서 최종 값이 바로 보여요.
 
-| 축 | 값 | 기본값 |
+| 속성 | 값 | 기본값 |
 | --- | --- | --- |
 | `animation` | `roll`, `count` | `roll` |
 | `duration` | 0 이상의 밀리초 | `600` |

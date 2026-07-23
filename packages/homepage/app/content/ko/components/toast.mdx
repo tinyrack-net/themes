@@ -11,9 +11,9 @@ import { ComponentInstall } from '../../../documentation/shared/component-instal
 import { ToastAnchoredDemo, ToastDemo, ToastLifecycleDemo, ToastPositionGallery, ToastVariantGallery } from '../../../documentation/components/toast.demo.js';
 import * as Stories from '../../../documentation/components/toast.demo.js';
 
-## 계약
+## 핵심 속성
 
-| 축 | 값 | 기본값 |
+| 속성 | 값 | 기본값 |
 | --- | --- | --- |
 | `variant` | `neutral`, `info`, `success`, `warning`, `danger` | 의미형 toast `type`, 그 외에는 `neutral` |
 | `position` | block start/end × inline start/center/end | `block-end-inline-end` |
@@ -27,7 +27,7 @@ import * as Stories from '../../../documentation/components/toast.demo.js';
 
 ## 플레이그라운드
 
-preview가 toast manager lifecycle을 소유해요. **Reset**은 provider를 다시 mount해 preview notification을 비우며 content, position, semantic variant만 visible control로 제공해요.
+preview가 toast manager lifecycle을 소유해요. **Reset**은 provider를 다시 mount해 preview notification을 비우고, 조절할 수 있는 값은 content, position, semantic variant뿐이에요.
 
 <ComponentPlayground definition={Stories.playground} />
 

@@ -177,7 +177,7 @@ export const welcomeCopy = {
       eyebrow: '01 / 시스템',
       title: '디자인 규칙부터 제품 화면까지 이어서 만드세요.',
       description:
-        'Tinyrack은 시맨틱 토큰과 밝은·어두운 테마, 문서화된 컴포넌트 계약을 하나로 연결해요.',
+        'Tinyrack은 시맨틱 토큰과 밝은·어두운 테마, 문서화된 컴포넌트 규약을 하나로 연결해요.',
       items: [
         {
           description:
@@ -201,7 +201,7 @@ export const welcomeCopy = {
           id: 'components',
           linkLabel: '컴포넌트 살펴보기',
           path: '/components/button/',
-          title: '컴포넌트 계약',
+          title: '컴포넌트 규약',
         },
       ],
     },

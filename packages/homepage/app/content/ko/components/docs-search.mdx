@@ -9,9 +9,9 @@ import { ComponentInstall } from '../../../documentation/shared/component-instal
 import { ComponentPlayground } from '../../../playground/playground.js';
 import * as Stories from '../../../documentation/components/docs-search.demo.js';
 
-## 계약
+## 핵심 속성
 
-`TRDocsSearch.Trigger`는 독립 실행형 버튼이고 `TRDocsSearch.Dialog`는 제어되는 포털 검색 화면이에요. 대화상자는 Ctrl/⌘+K, 로딩, 빈 결과, 오류, `fallback`, 키보드 선택, 포커스 복원, 오래된 요청 취소를 관리해요. 데이터 소스는 `onSearch(query, signal)`이 관리하며, 취소 가능한 작업에 전달받은 `AbortSignal`을 사용해야 해요.
+`TRDocsSearch.Trigger`는 독립형 버튼이고 `TRDocsSearch.Dialog`는 제어형 포털 검색 화면이에요. 대화상자가 Ctrl/⌘+K, 로딩, 빈 결과, 오류, `fallback`, 키보드 선택, 포커스 복원, 오래된 요청 취소를 모두 처리해요. 데이터는 `onSearch(query, signal)`이 공급하며, 취소할 수 있는 작업에는 전달받은 `AbortSignal`을 넘기세요.
 
 ## 설치
 
@@ -91,7 +91,7 @@ export function DisabledSearch() {
 
 ## API
 
-| 내보내기 | 주요 속성 | 용도 |
+| 내보내는 항목 | 주요 속성 | 용도 |
 | --- | --- | --- |
 | `TRDocsSearch` | `Trigger`, `Dialog` | 복합 네임스페이스예요. |
 | `TRDocsSearch.Trigger` | `compact`, `label`, `shortcutLabel`, `uiSize`, `button` 속성, `ref` | 표시형 또는 컴팩트 검색 버튼이에요. `disabled`는 버튼 활성화를 막아요. |

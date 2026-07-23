@@ -9,15 +9,15 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/document-pagination.demo.js';
 
-## 계약
+## 핵심 속성
 
-이전 및 다음 목적지는 데이터로 전달돼요. `renderLink`는 컴포넌트를 라우팅 상태와 결합하지 않고 라우터 요소를 주입해요. 목적지가 하나 이상 있을 때만 landmark를 렌더링해요.
+이전과 다음 목적지는 데이터로 전달해요. `renderLink`는 컴포넌트를 라우팅 상태에 묶지 않고 라우터 요소를 끼워 넣어요. 목적지가 하나 이상 있을 때만 landmark를 렌더링해요.
 
-| 축 | 계약 |
+| 속성 | 설명 |
 | --- | --- |
 | 방향 | 이전 링크는 `rel="prev"`, 다음 링크는 `rel="next"`를 노출해요 |
-| 사용 가능 상태 | 없는 목적지는 생략하고, 표시한 채 사용할 수 없게 하려면 `disabled`를 설정해요 |
-| 라우팅 | `renderLink(destination, direction)`는 anchor 중첩 없이 라우터 링크를 합성해요 |
+| 사용 가능 상태 | 없는 목적지는 생략하고, 보이되 쓸 수 없게 하려면 `disabled`를 설정해요 |
+| 라우팅 | `renderLink(destination, direction)`는 anchor를 중첩하지 않고 라우터 링크를 합성해요 |
 | 이벤트 | `onNavigate(destination, direction)`는 활성 링크에서만 실행돼요 |
 
 ## 설치

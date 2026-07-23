@@ -11,9 +11,9 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/preview-card.demo.js';
 
-## 계약
+## 핵심 속성
 
-이 Tinyrack wrapper는 Base UI 동작, React 19 ref, native props, event, `render` contract를 보존해요. Playground control은 `align`, 화면에 표시되는 `description`, `label`, `side`, `title`을 다뤄요. open 상태는 내부에서 관리하므로 hover와 focus가 일반 component 동작을 사용해요. Reset은 preview를 닫힌 상태로 다시 mount하고 content와 positioning 기본값을 복원해요.
+이 Tinyrack wrapper는 Base UI 동작, React 19 ref, native props, event, `render` contract를 그대로 유지해요. Playground control은 `align`, 화면에 표시되는 `description`, `label`, `side`, `title`을 다뤄요. open 상태는 내부에서 관리하므로 hover와 focus가 일반 component 동작을 사용해요. Reset은 preview를 닫힌 상태로 다시 mount하고 content와 positioning 기본값을 복원해요.
 
 `Trigger`는 기본적으로 열기 전에 `600ms`, 닫기 전에 `300ms`를 기다려요.
 trigger에서 card로 이동하는 pointer path가 충분히 여유로울 때만 `delay`와 `closeDelay`로 해당 값을 override하세요.
@@ -64,8 +64,4 @@ trigger에서 card로 이동하는 pointer path가 충분히 여유로울 때만
 
 Popup content는 non-interactive 상태로 유지하세요. preview content는 touch 및 screen-reader 사용자에게 제공되지 않으므로 trigger destination에도 있는 정보만 요약해야 해요. Escape는 현재 focus context를 옮기지 않고 열린 preview를 닫아요.
 
-TRPreviewCard is a progressive enhancement for mouse hover and keyboard focus, not
-a touch-only disclosure. The trigger remains a real link: tapping it follows its
-`href`, so do not put required information or the only path to an action inside
-the preview. Provide a separate button/dialog pattern when touch users must open
-the supplemental surface without navigating.
+TRPreviewCard는 마우스 hover와 키보드 focus를 위한 점진적 향상 기능이지, 터치 전용 공개 패턴이 아니에요. trigger는 여전히 실제 링크라서 탭하면 `href`로 이동해요. 그러니 꼭 필요한 정보나 어떤 동작에 이르는 유일한 경로를 preview 안에 두지 마세요. 터치 사용자가 이동하지 않고 보조 표면을 열어야 한다면 별도의 button이나 dialog 패턴을 제공하세요.

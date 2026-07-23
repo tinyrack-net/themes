@@ -11,9 +11,9 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/skeleton.demo.js';
 
-## 계약
+## 핵심 속성
 
-`shape`은 `text`, `rectangle`, `circle`을 받으며 기본값은 `text`예요. TRSkeleton은 기본적으로 쉬머 효과를 표시해요. 정적인 플레이스홀더에는 `animate={false}`를 설정하세요. 크기는 레이아웃이나 `style`에서 정해져요.
+`shape`은 `text`, `rectangle`, `circle`을 받고 기본값은 `text`예요. TRSkeleton은 기본적으로 쉬머 효과를 보여 줘요. 움직임 없는 플레이스홀더에는 `animate={false}`를 설정하세요. 크기는 레이아웃이나 `style`로 정해요.
 
 ## 설치
 
@@ -112,7 +112,7 @@ import * as Stories from '../../../documentation/components/skeleton.demo.js';
 | `animate` | `boolean` | `true` | 쉬머 애니메이션 활성화 |
 | `shape` | `'text' \| 'rectangle' \| 'circle'` | `'text'` | 기본 크기와 반경 선택 |
 
-레이블이 없는 스켈레톤에는 `aria-hidden="true"`가 적용돼요. `aria-label`, `aria-labelledby`, `aria-live`, `aria-busy` 또는 `role="status"`를 추가하면 하나의 라이브 영역으로 바뀌어요. 모션 감소 설정이 켜져 있으면 쉬머가 자동으로 멈춰요.
+레이블이 없는 스켈레톤에는 `aria-hidden="true"`가 적용돼요. `aria-label`, `aria-labelledby`, `aria-live`, `aria-busy` 또는 `role="status"`를 추가하면 라이브 영역 하나로 바뀌어요. 모션 감소 설정을 켜면 쉬머가 멈춰요.
 
 | CSS 토큰 | 기본값 | 용도 |
 | --- | --- | --- |

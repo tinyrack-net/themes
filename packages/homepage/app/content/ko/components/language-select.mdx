@@ -9,9 +9,9 @@ import { ComponentInstall } from '../../../documentation/shared/component-instal
 import { ComponentPlayground } from '../../../playground/playground.js';
 import * as Stories from '../../../documentation/components/language-select.demo.js';
 
-## 계약
+## 핵심 속성
 
-이 컴포넌트는 선택 동작만 담당해요. locale route 계산, navigation 및 저장은 사용하는 애플리케이션이 담당해요.
+이 컴포넌트는 선택 동작만 담당해요. locale route 계산과 navigation, 저장은 애플리케이션에서 처리해요.
 
 ## 설치
 
@@ -30,7 +30,7 @@ import * as Stories from '../../../documentation/components/language-select.demo
 
 <ComponentExampleTabs id="language-select-sizes" data-docs-example-item-count="3" title="트리거 크기" preview={<Stories.LanguageSelectSizesPreview />} sources={[{ label: 'React', language: 'tsx', code: Stories.languageSelectSizesSource }]} />
 
-언어를 쉽게 찾도록 `English`, `한국어`, `日本語` 같은 자칭을 사용하세요. popup과 현재 label에 올바른 `lang`이 지정되도록 각 option의 `language`에 BCP 47 tag를 설정해요. router 예시는 search parameter와 hash를 유지하고 locale path segment만 교체하며 현재 locale을 다시 선택하면 navigation하지 않아요.
+언어를 쉽게 찾도록 `English`, `한국어`, `日本語`처럼 각 언어의 자칭을 사용하세요. 각 option의 `language`에 BCP 47 tag를 설정하면 popup과 현재 label에 올바른 `lang`이 붙어요. router 예시는 search parameter와 hash를 그대로 두고 locale path segment만 바꾸며, 현재 locale을 다시 선택하면 이동하지 않아요.
 
 ## API
 
@@ -38,7 +38,7 @@ import * as Stories from '../../../documentation/components/language-select.demo
 | --- | --- | --- | --- |
 | `options` | `readonly { label: string; language?: string; value: string }[]` | 필수 | locale 값과 표시할 자칭이에요. `language`에는 BCP 47 tag를 지정해요. |
 | `value` | `string` | 필수 | 현재 제어형 locale이에요. 알 수 없는 값은 원문 string으로 표시돼요. |
-| `onValueChange` | `(value, eventDetails) => void` | 필수 | 다른 locale이 선택된 후 호출돼요. navigation과 저장은 애플리케이션이 담당해요. |
+| `onValueChange` | `(value, eventDetails) => void` | 필수 | 다른 locale을 선택하면 호출돼요. navigation과 저장은 애플리케이션에서 처리해요. |
 | `label` | `string` | `"Language"` | trigger의 accessible name이에요. |
 | `uiSize` | `"sm" \| "md" \| "lg"` | `"md"` | trigger 크기예요. |
 | `portalContainer` | `HTMLElement \| null` | document body | portalled popup의 container예요. |

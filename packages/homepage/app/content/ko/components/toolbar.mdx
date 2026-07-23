@@ -12,9 +12,9 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/toolbar.demo.js';
 
-## 계약
+## 핵심 속성
 
-이 Tinyrack 래퍼는 Base UI 동작, React 19 ref, 네이티브 속성, 이벤트와 `render` 계약을 유지해요. 플레이그라운드는 방향, Root 비활성화, 제어형 토글 상태를 다루고 아래 예시는 포커스 순환과 세부 비활성화 동작을 보여 줘요. 굵게를 누르면 제어형 미리 보기 인수가 갱신되고 초기화하면 굵게의 눌림 상태와 모든 컨트롤이 기본값으로 돌아가요.
+이 Tinyrack 래퍼는 Base UI 동작, React 19 ref, 네이티브 속성, 이벤트와 `render` 규약을 그대로 유지해요. 플레이그라운드에서는 방향, Root 비활성화, 제어형 토글 상태를 다루고, 아래 예시는 포커스 순환과 개별 비활성화 동작을 보여 줘요. 굵게를 누르면 제어형 미리 보기 인수가 갱신되고, 초기화하면 굵게의 눌림 상태와 모든 컨트롤이 기본값으로 돌아가요.
 
 ## 설치
 
@@ -30,7 +30,7 @@ import * as Stories from '../../../documentation/components/toolbar.demo.js';
 <ComponentExampleTabs
   id="toolbar-basic"
   title="서식 컨트롤"
-  description="아이콘 중심 서식 도구 모음이 Base UI의 `render` 계약을 통해 TRToggle 컨트롤을 조합해요. 모든 아이콘에는 접근 가능한 이름이 있고 모든 Group은 명령 집합의 이름을 가져요."
+  description="아이콘 중심 서식 도구 모음이 Base UI의 `render` 규약으로 TRToggle 컨트롤을 조합해요. 모든 아이콘에는 접근 가능한 이름이 있고 모든 Group은 명령 집합의 이름을 가져요."
   preview={<div data-docs-example-item-count="1"><Stories.ToolbarPreview disabled={false} orientation={'horizontal'} /></div>}
   sources={[{ label: 'React', language: 'tsx', code: Stories.toolbarBasicSource }]}
 />
@@ -73,7 +73,7 @@ import * as Stories from '../../../documentation/components/toolbar.demo.js';
 
 `Group`은 이름 있는 `group`을 렌더링하며 내부 버튼과 입력을 비활성화할 수 있어요. `Button`은 기본적으로 `type="button"`이고 `focusableWhenDisabled`를 지원해요. `false`이면 비활성화된 명령을 순환 포커스에서 제외해요. `Input`도 같은 비활성 포커스 정책과 일반 텍스트 편집 키를 유지해요. `Link`는 의도적으로 항상 탐색할 수 있으므로 비활성화된 `Root`·`Group` 안에서도 활성 상태예요. `Separator`는 `Root`와 반대 방향이 기본이에요. 가로 도구 모음에서는 `Input`을 최대 하나만 마지막에 배치하세요.
 
-모든 파트는 `className`, `style`, 네이티브 속성, 이벤트 처리기, React 19 ref와 Base UI의 상태 기반 `render` 계약을 보존해요. 모든 `Root`와 `Group`에 접근 가능한 이름을 제공하세요.
+모든 파트는 `className`, `style`, 네이티브 속성, 이벤트 처리기, React 19 ref와 Base UI의 상태 기반 `render` 규약을 보존해요. 모든 `Root`와 `Group`에 접근 가능한 이름을 붙이세요.
 
 ### 모양
 

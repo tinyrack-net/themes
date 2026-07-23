@@ -49,7 +49,7 @@ In the Base UI version used by Tinyrack, a rendered Scroll Area uses this class 
 
 ## Know the boundary
 
-`disableStyleElements` suppresses style elements created through Base UI's CSP context. It does not remove inline `style` attributes from Tinyrack, Base UI, or application code. Those attributes are governed separately by directives such as `style-src-attr`; decide how to handle them in the application's own policy.
+`disableStyleElements` suppresses style elements created through Base UI's CSP context. It does not remove inline `style` attributes from Tinyrack, Base UI, or application code. Directives such as `style-src-attr` govern those attributes separately; decide how to handle them in the application's own policy.
 
 The provider also does not attach a nonce to arbitrary application elements, framework scripts, third-party tags, or stylesheets. Continue to use the framework's CSP integration for those resources. See the [Base UI CSP Provider documentation](https://base-ui.com/react/utils/csp-provider) for the underlying behavior.
 

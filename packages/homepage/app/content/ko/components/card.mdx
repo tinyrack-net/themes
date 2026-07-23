@@ -11,9 +11,9 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/card.demo.js';
 
-## 계약
+## 핵심 속성
 
-| 축 | 값 | 기본값 |
+| 속성 | 값 | 기본값 |
 | --- | --- | --- |
 | `variant` | `default`, `outlined`, `elevated` | `default` |
 | `padding` | `none`, `sm`, `md`, `lg` | `md` |
@@ -162,4 +162,4 @@ import * as Stories from '../../../documentation/components/card.demo.js';
 | `TRCard.Content` | `div` | 네이티브 div prop |
 | `TRCard.Footer` | `footer` | 네이티브 footer prop |
 
-`TRCard.Root`와 `TRCard.Title`은 래퍼 노드를 추가하지 않는 Base UI의 additive `render` 계약을 지원해요. 모든 파트는 `className`을 병합하고 네이티브 prop과 `ref`를 전달하며 사용자 스타일을 받아요. Card를 조합할 때 제목의 문서 순서를 지키고, 자식이 카드 가장자리에 닿아야 할 때만 `padding="none"`을 사용하세요.
+`TRCard.Root`와 `TRCard.Title`은 래퍼 노드를 새로 만들지 않고 기존 요소에 얹는 Base UI의 `render` 규약을 지원해요. 모든 파트는 `className`을 병합하고 네이티브 prop과 `ref`를 전달하며 사용자 스타일을 받아요. Card를 조합할 때 제목의 문서 순서를 지키고, 자식이 카드 가장자리에 닿아야 할 때만 `padding="none"`을 사용하세요.

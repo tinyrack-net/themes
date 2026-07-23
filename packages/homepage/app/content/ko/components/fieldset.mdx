@@ -10,9 +10,9 @@ import { ComponentExampleTabs } from '../../../documentation/shared/component-ex
 import { ComponentInstall } from '../../../documentation/shared/component-install.js';
 import * as Stories from '../../../documentation/components/fieldset.demo.js';
 
-## 계약
+## 핵심 속성
 
-`Root`는 네이티브 `<fieldset>`을 렌더링해요. `Legend`는 기본적으로 네이티브 `<legend>`를 렌더링해 그룹에 접근 가능한 이름을 제공해요. 각 하위 컨트롤에는 고유한 표시 레이블이 필요해요. `Root`의 `disabled`는 네이티브 폼 컨트롤 비활성화 전파를 사용해요.
+`Root`는 네이티브 `<fieldset>`을 렌더링해요. `Legend`는 기본적으로 네이티브 `<legend>`를 렌더링해 그룹에 접근 가능한 이름을 붙여요. 하위 컨트롤에는 저마다 고유한 표시 레이블이 필요해요. `Root`에 `disabled`를 주면 네이티브 폼 컨트롤 비활성화가 하위로 전파돼요.
 
 ## 설치
 
@@ -124,9 +124,9 @@ export function IncidentNotifications() {
 
 `TRFieldsetRoot`와 `TRFieldsetLegend`는 개별적으로 내보내며, `TRFieldset.Root`와 `TRFieldset.Legend`로도 사용할 수 있어요.
 
-| 파트 | 공개 계약 |
+| 파트 | 설명 |
 | --- | --- |
-| `Root` | 네이티브 fieldset 속성, `disabled`, `render`, `className`, `style`, 이벤트 및 ref |
-| `Legend` | 기본적으로 네이티브 legend를 렌더링하며 `render`, `className`, `style`, 이벤트 및 ref 지원 |
+| `Root` | 네이티브 fieldset 속성, `disabled`, `render`, `className`, `style`, 이벤트, ref |
+| `Legend` | 기본적으로 네이티브 legend를 렌더링하며 `render`, `className`, `style`, 이벤트, ref 지원 |
 
 네이티브 `<legend>` 배치가 적합하지 않을 때만 `render`를 사용하세요. 사용자 지정 legend도 Base UI가 `aria-labelledby`로 fieldset과 연결해요.

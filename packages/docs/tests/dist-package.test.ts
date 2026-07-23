@@ -370,7 +370,9 @@ async function waitForPreview(url: string, child: ChildProcess, output: () => st
       throw new Error(`preview exited with ${child.exitCode}\n${output()}`);
     }
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: { accept: 'text/html' },
+      });
       if (response.ok) return response;
     } catch {
       // Preview is still starting.
@@ -422,7 +424,9 @@ async function verifyConsumerPreview(root: string, basePath: '/' | '/docs') {
 
   try {
     await waitForPreview(`${origin}${homePath}`, child, () => output);
-    const document = await fetch(`${origin}${documentPath}`);
+    const document = await fetch(`${origin}${documentPath}`, {
+      headers: { accept: 'text/html' },
+    });
     if (!document.ok || !/<h1[^>]*>Install<\/h1>/.test(await document.text())) {
       throw new Error(`${basePath} preview did not serve a prerendered document`);
     }

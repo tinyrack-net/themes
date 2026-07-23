@@ -16,22 +16,33 @@ export function docsPreviewPlugin(basePath: string): Plugin {
       const deploymentRoot = join(clientOutDir, ...segments);
 
       server.middlewares.use((request, response, next) => {
-        if (basePath === '/') {
-          next();
-          return;
-        }
-
         const url = new URL(request.url ?? '/', 'http://tinyrack.local');
-        if (url.pathname === '/' || url.pathname === basePath) {
+        if (basePath !== '/' && (url.pathname === '/' || url.pathname === basePath)) {
           response.statusCode = 302;
           response.setHeader('location', `${basePath}/${url.search}`);
           response.end();
           return;
         }
-        if (url.pathname.startsWith(`${basePath}/`)) {
+        const publicPathname = url.pathname;
+        if (basePath !== '/' && url.pathname.startsWith(`${basePath}/`)) {
           url.pathname = `${basePath}${url.pathname}`;
-          request.url = `${url.pathname}${url.search}`;
         }
+
+        if (
+          (request.method === 'GET' || request.method === 'HEAD') &&
+          request.headers.accept?.includes('text/html') &&
+          publicPathname.endsWith('/')
+        ) {
+          const relativePathname =
+            basePath === '/' ? publicPathname : publicPathname.slice(basePath.length);
+          const indexPath = join(
+            deploymentRoot,
+            ...relativePathname.split('/').filter(Boolean),
+            'index.html',
+          );
+          if (existsSync(indexPath)) url.pathname = `${url.pathname}index.html`;
+        }
+        request.url = `${url.pathname}${url.search}`;
         next();
       });
 

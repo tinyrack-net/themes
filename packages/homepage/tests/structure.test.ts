@@ -721,20 +721,21 @@ describe('React Router documentation contract', () => {
     }
   });
 
-  it('defines all 240 localized content routes as static route modules', () => {
+  it('defines all 243 localized content routes as static route modules', () => {
     const routes = readText('app/routes.ts');
     expect(componentDocsManifest).toHaveLength(62);
-    expect(staticDocumentRoutes).toHaveLength(240);
-    expect(new Set(staticDocumentRoutes.map((entry) => entry.path)).size).toBe(240);
+    expect(staticDocumentRoutes).toHaveLength(243);
+    expect(new Set(staticDocumentRoutes.map((entry) => entry.path)).size).toBe(243);
     expect(new Set(staticDocumentRoutes.map((entry) => entry.sourceFile)).size).toBe(
-      240,
+      243,
     );
     expect(new Set(staticDocumentRoutes.map((entry) => entry.contentKey)).size).toBe(
-      80,
+      81,
     );
     const expectedSectionCounts = {
       brand: 2,
       components: 62,
+      docs: 1,
       foundations: 11,
       integrations: 3,
       start: 2,
@@ -757,6 +758,16 @@ describe('React Router documentation contract', () => {
           path: `/${locale}/installation`,
           section: 'start',
           sourceFile: `app/content/${locale}/installation.mdx`,
+        }),
+      );
+      expect(staticDocumentRoutes).toContainEqual(
+        expect.objectContaining({
+          contentKey: '/docs',
+          id: `${locale}-docs`,
+          order: 0,
+          path: `/${locale}/docs`,
+          section: 'docs',
+          sourceFile: `app/content/${locale}/docs.mdx`,
         }),
       );
       for (const [order, slug] of ['csp', 'text-direction', 'mdx'].entries()) {
@@ -830,6 +841,43 @@ describe('React Router documentation contract', () => {
     expect(readText('react-router.config.ts')).toContain(
       "import.meta.resolve('@tinyrack/docs/react-router')",
     );
+  });
+
+  it('keeps the localized Tinyrack Docs guide aligned with public entrypoints', () => {
+    const english = readText('app/content/en/docs.mdx');
+    const headingCount = [...english.matchAll(/^## /gm)].length;
+    const requiredContracts = [
+      "from '@tinyrack/docs/config'",
+      "from '@tinyrack/docs/react-router'",
+      "from '@tinyrack/docs/vite'",
+      "from '@tinyrack/docs/runtime'",
+      "import '@tinyrack/docs/styles.css'",
+      'pnpm add @tinyrack/docs @tinyrack/ui react react-dom react-router',
+      '"build": "react-router build"',
+    ];
+    const docsPackage = JSON.parse(
+      readFileSync(join(homepageRoot, '..', 'docs', 'package.json'), 'utf8'),
+    ) as { exports: Record<string, unknown> };
+
+    expect(Object.keys(docsPackage.exports)).toEqual(
+      expect.arrayContaining([
+        './config',
+        './react-router',
+        './runtime',
+        './vite',
+        './styles.css',
+      ]),
+    );
+    for (const locale of ['en', 'ko', 'ja']) {
+      const source = readText(`app/content/${locale}/docs.mdx`);
+      expect(source).toContain('title: "Tinyrack Docs"');
+      expect(source).toContain('section: docs');
+      expect(source).toContain('order: 0');
+      expect([...source.matchAll(/^## /gm)]).toHaveLength(headingCount);
+      for (const contract of requiredContracts) {
+        expect(source, `${locale}: ${contract}`).toContain(contract);
+      }
+    }
   });
 
   it('keeps locale-invariant route metadata and foundation section depth aligned', () => {
@@ -1038,7 +1086,7 @@ describe('React Router documentation contract', () => {
         .filter(
           (route) =>
             route.locale === 'ko' &&
-            ['start', 'foundations', 'brand'].includes(route.section),
+            ['start', 'foundations', 'brand', 'docs'].includes(route.section),
         )
         .map((route) => join(homepageRoot, route.sourceFile)),
       join(homepageRoot, 'app/documentation/shared/welcome-page.tsx'),

@@ -57,6 +57,7 @@ export default defineDocsConfig({
       label: { en: 'Integrations', ko: '통합', ja: '連携' },
       order: 4,
     },
+    { id: 'docs', label: 'Docs', order: 5 },
   ],
   site: {
     basePath: '/',

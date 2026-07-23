@@ -64,8 +64,15 @@ describe('docs-shell documentation', () => {
 
     const headings = {
       en: ['Contract', 'Install', 'Playground', 'Usage', 'Examples', 'API'],
-      ko: ['계약', '설치', '플레이그라운드', '사용법', '예시', 'API'],
-      ja: ['コントラクト', 'インストール', 'プレイグラウンド', '使用方法', '例', 'API'],
+      ko: ['핵심 속성', '설치', '플레이그라운드', '사용법', '예시', 'API'],
+      ja: [
+        '主なプロパティ',
+        'インストール',
+        'プレイグラウンド',
+        '使用方法',
+        '例',
+        'API',
+      ],
     } as const;
 
     for (const locale of ['en', 'ko', 'ja'] as const) {

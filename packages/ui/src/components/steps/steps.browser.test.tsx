@@ -87,7 +87,9 @@ test('contains long procedure content at narrow widths', async () => {
 
 function expectMarkerCenteredOnFirstLine(item: HTMLLIElement) {
   const itemRect = item.getBoundingClientRect();
-  const markerSize = Number.parseFloat(getComputedStyle(item).getPropertyValue('line-height'));
+  const markerSize = Number.parseFloat(
+    getComputedStyle(item).getPropertyValue('line-height'),
+  );
   const markerCenter = itemRect.top + markerSize / 2;
 
   const firstChild = item.firstElementChild;
@@ -125,7 +127,9 @@ test('centers the numbered marker on the first line regardless of content type',
   );
 
   for (const testId of ['text-item', 'heading-item']) {
-    expectMarkerCenteredOnFirstLine(page.getByTestId(testId).element() as HTMLLIElement);
+    expectMarkerCenteredOnFirstLine(
+      page.getByTestId(testId).element() as HTMLLIElement,
+    );
   }
 });
 
@@ -145,8 +149,11 @@ test('keeps the marker centered as items and content are added and removed', asy
       <div style={narrow}>
         <TRSteps.Root>
           {Array.from({ length: itemCount }, (_, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: fixed-order synthetic fixture, items never reorder
             <TRSteps.Item data-testid={`item-${index}`} key={index}>
-              {headingFirst && <h3 className="text-tinyrack-lg font-semibold">Step {index}</h3>}
+              {headingFirst && (
+                <h3 className="text-tinyrack-lg font-semibold">Step {index}</h3>
+              )}
               {longText
                 ? 'A much longer line of step content that is expected to wrap across more than one line inside the narrow container'
                 : `Step ${index}`}
@@ -160,16 +167,24 @@ test('keeps the marker centered as items and content are added and removed', asy
   const { rerender } = await render(
     <Fixture headingFirst={false} itemCount={2} longText={false} />,
   );
-  expectMarkerCenteredOnFirstLine(page.getByTestId('item-0').element() as HTMLLIElement);
-  expectMarkerCenteredOnFirstLine(page.getByTestId('item-1').element() as HTMLLIElement);
+  expectMarkerCenteredOnFirstLine(
+    page.getByTestId('item-0').element() as HTMLLIElement,
+  );
+  expectMarkerCenteredOnFirstLine(
+    page.getByTestId('item-1').element() as HTMLLIElement,
+  );
 
   // content added: a new item appended
   await rerender(<Fixture headingFirst={false} itemCount={3} longText={false} />);
   for (const testId of ['item-0', 'item-1', 'item-2']) {
     try {
-      expectMarkerCenteredOnFirstLine(page.getByTestId(testId).element() as HTMLLIElement);
+      expectMarkerCenteredOnFirstLine(
+        page.getByTestId(testId).element() as HTMLLIElement,
+      );
     } catch (error) {
-      throw new Error(`stage=item-appended testId=${testId}: ${(error as Error).message}`);
+      throw new Error(
+        `stage=item-appended testId=${testId}: ${(error as Error).message}`,
+      );
     }
   }
 
@@ -177,7 +192,9 @@ test('keeps the marker centered as items and content are added and removed', asy
   await rerender(<Fixture headingFirst={false} itemCount={3} longText={true} />);
   for (const testId of ['item-0', 'item-1', 'item-2']) {
     try {
-      expectMarkerCenteredOnFirstLine(page.getByTestId(testId).element() as HTMLLIElement);
+      expectMarkerCenteredOnFirstLine(
+        page.getByTestId(testId).element() as HTMLLIElement,
+      );
     } catch (error) {
       throw new Error(`stage=text-wraps testId=${testId}: ${(error as Error).message}`);
     }
@@ -187,16 +204,22 @@ test('keeps the marker centered as items and content are added and removed', asy
   await rerender(<Fixture headingFirst={true} itemCount={3} longText={true} />);
   for (const testId of ['item-0', 'item-1', 'item-2']) {
     try {
-      expectMarkerCenteredOnFirstLine(page.getByTestId(testId).element() as HTMLLIElement);
+      expectMarkerCenteredOnFirstLine(
+        page.getByTestId(testId).element() as HTMLLIElement,
+      );
     } catch (error) {
-      throw new Error(`stage=heading-first testId=${testId}: ${(error as Error).message}`);
+      throw new Error(
+        `stage=heading-first testId=${testId}: ${(error as Error).message}`,
+      );
     }
   }
 
   // content removed: items shrink back down and content reverts to plain text
   await rerender(<Fixture headingFirst={false} itemCount={1} longText={false} />);
   try {
-    expectMarkerCenteredOnFirstLine(page.getByTestId('item-0').element() as HTMLLIElement);
+    expectMarkerCenteredOnFirstLine(
+      page.getByTestId('item-0').element() as HTMLLIElement,
+    );
   } catch (error) {
     throw new Error(`stage=items-removed: ${(error as Error).message}`);
   }
